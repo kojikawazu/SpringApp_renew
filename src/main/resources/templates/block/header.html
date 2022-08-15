@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:fragment="headerA">
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	    <a class="navbar-brand" href="#">life is smile always</a>
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="ナビゲーションの切替">
+	      <span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbar-header">
+	      <ul class="navbar-nav mr-auto">
+	        <li class="nav-item active">
+	          <a class="nav-link" href="#" th:href="@{/home}">ホーム <span class="sr-only">(現位置)</span></a>
+	        </li>
+	        <li class="nav-item">
+	        	<a class="nav-link" href="#" th:href="@{/intro/}">自己紹介</a>
+	        </li>
+	        <li class="nav-item dropdown">
+	        	<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ブログ</a>
+	        	<div class="dropdown-menu" aria-labelledby="dropdown01">
+	        		<a class="dropdown-item" href="#" th:href="@{/blog/}">一覧</a>
+		            <a class="dropdown-item" href="#" th:href="@{/blog/form}">投稿</a>
+	        	</div>
+	        </li>
+	        <li class="nav-item dropdown">
+	        	<a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">アンケート</a>
+	          	<div class="dropdown-menu" aria-labelledby="dropdown02">
+		            <a class="dropdown-item" href="#" th:href="@{/survey}">一覧</a>
+		            <a class="dropdown-item" href="#" th:href="@{/survey/form}">投稿</a>
+		            <a class="dropdown-item" href="#" th:href="@{/survey/satis}">統計</a>
+	          	</div>
+	        </li>
+	        <li class="nav-item dropdown">
+	        	<a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">お問い合わせ</a>
+	          	<div class="dropdown-menu" aria-labelledby="dropdown03">
+		            <a class="dropdown-item" href="#" th:href="@{/inquiry}">一覧</a>
+		            <a class="dropdown-item" href="#" th:href="@{/inquiry/form}">登録</a>
+	          	</div>
+	        </li>
+	      </ul>
+	      <form class="form-inline my-2 my-lg-0">
+	        <input class="form-control mr-sm-2" type="search" placeholder="検索..." aria-label="検索...">
+	        <button class="btn btn-secondary my-2 my-sm-0" type="submit">検索</button>
+	      </form>
+	    </div>
+	  </nav>
+</header>
+
+</html>

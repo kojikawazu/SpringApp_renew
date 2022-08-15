@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+.bloglayout{
+	margin: 10px auto;
+	padding: 10px;
+	background-color: #dddddd;
+	margin-bottom: 30px;
+	box-shadow:2px 2px 7px;
+}
+
+.replylayout{
+	margin: 10px 10px auto 100px;
+	padding: 10px;
+	background-color: #ededed;
+	
+	border-style: solid; 
+	border-width: 1px;
+	border-color: #111111;
+	box-shadow:0px 0px 5px;
+}
+
+.blog-title{
+	padding: 20px;
+}
+
+.blog-delete{
+	margin-right: 5px;
+	margin-top: 5px;
+}
+
+.blog-date{
+	padding-right: 5px;
+}
+
+.cnt_tag{
+	margin-top: 20px;
+}
+
+.thanks{
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-right: 10px;
+}
+
+.tag{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.comment{
+	padding: 20px;
+	margin-top: 60px;
+	margin-bottom: 20px;
+	background-color: white;
+	box-shadow:2px 2px 7px;
+}
+
+.form-edit-delete{
+	width: 120px;
+	margin-left: auto;
+	overflow: hidden;
+}
+
+.form-editor{
+	float: right;
+	margin-bottom: 20px;
+}
+
+.blog-lines{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+	border-style: solid; 
+	border-width: 1px;
+	border-color: #111111;
+}
+
+.reply-title-layout{
+	margin-left: 100px;
+}
+
+.reply-title{
+	padding: 5px;
+	padding-left: 15px;
+}
+
+.reply-date{
+	padding-right: 5px;
+}
+
+.reply-comment{
+	padding: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: white;
+	
+	box-shadow:2px 2px 7px;
+}

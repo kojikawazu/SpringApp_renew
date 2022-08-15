@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+#home_back img{
+	margin-top: 10px;
+	width: 100%;
+	height: 500px;
+	object-fit: cover;
+	object-position: 50% 50%
+}
+
+h1{
+	text-align: left;
+	font-size: 50px;
+}
+
+h2{
+	text-align: left;
+	font-family: cursive;
+	font-size: 40px;
+	
+	padding-bottom: 30px;
+	border-bottom: solid 1px #555;
+}
+
+h3{
+	text-align: left;
+	padding: 10px;
+	margin: 10px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	
+	 padding: 0.25em 0.5em;/*上下 左右の余白*/
+  	 color: #494949;/*文字色*/
+ 	 background: transparent;/*背景透明に*/
+  	 border-left: solid 5px #7db4e6;/*左線*/
+}
+
+.h3-after{
+	text-align: left;
+	padding: 10px;
+	margin: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	
+	font-size: 20px;
+}
+
+.div-after:before {
+  content: '●';
+  color: white;
+  margin-right: 8px;
+}
+
+.exper-after{
+	position: relative;
+  	padding-left: 25px;
+	margin-bottom: 20px;
+}
+
+.exper-after:before {
+  position: absolute;
+  content: '';
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border: none;
+  border-left: solid 15px transparent;
+  border-bottom: solid 15px rgb(119, 195, 223);
+}
+
+.exper-after:after {
+  position: absolute;
+  content: '';
+  bottom: -3px;
+  left: 10px;
+  width: 100%;
+  border-bottom: solid 3px rgb(119, 195, 223);
+}
+
+.div-after{
+  color: #505050;/*文字色*/
+  padding: 0.5em;/*文字周りの余白*/
+  display: inline-block;/*おまじない*/
+  line-height: 1.3;/*行高*/
+  background: #dbebf8;/*背景色*/
+  vertical-align: middle;
+  border-radius: 25px 0px 0px 25px;/*左側の角を丸く*/
+}

@@ -1,0 +1,109 @@
+{
+	"intro": [
+		{
+			"text": "福岡でシステムを開発するSE,PG屋です。主にLinux上アプリ、Webアプリ、Androidアプリに携わっております。またシステムの構築やバグの改修作業にも携わっております。"
+		}
+	],
+	"experience": [
+		{
+			"text": "BBIQケーブルの配線経路管理システムの運用、オペレーター作業"
+		},
+		{
+			"text": "電力監視システムの開発、改修作業"
+		},
+		{
+			"text": "電力復旧状況システムの開発"
+		}
+	],
+	"after": [
+		{
+			"text": "AWSのクラウドやiOSアプリに興味があり、AWSにLinux環境を構築したり、macbookを購入し、iOSアプリを制作する予定でいます。"
+		}
+	],
+	"skill_1" : [
+		{
+			"name": "Java"
+		},
+		{
+			"name": "C言語"
+		},
+		{
+			"name": "C++"
+		},
+		{
+			"name": "Python"
+		},
+		{
+			"name": "Perl"
+		},
+		{
+			"name": "JavaScript"
+		},
+		{
+			"name": "TypeScript"
+		},
+		{
+			"name": "ShellScript"
+		},
+		{
+			"name": "PHP"
+		}
+	],
+	"skill_2": [
+		{
+			"name": "DirectX"
+		},
+		{
+			"name": "Jquery"
+		},
+		{
+			"name": "ChartJS"
+		},
+		{
+			"name": "Bootstrap"
+		},
+		{
+			"name": "OpenLayers"
+		},
+		{
+			"name": "ImageMagick"
+		}
+	],
+	"skill_3" : [
+		{
+			"name": "Spring Framework"
+		}
+	],
+	"skill_4" : [
+		{
+			"name": "CentOS"
+		},
+		{
+			"name": "AWS"
+		},
+		{
+			"name": "GitHub"
+		}
+	],
+	"url": [
+		{
+			"text": "https://github.com/kojikawazu"
+		}
+	],
+	"hobby" : [
+		{
+			"name": "ライブ観戦"
+		},
+		{
+			"name": "野球観戦"
+		},
+		{
+			"name": "ジム"
+		}
+	], 
+	"word" : [
+		{
+			"text" : "システム開発に携わる方と交流を深めていきたいです。よろしくお願いします。"
+		}
+	]
+}

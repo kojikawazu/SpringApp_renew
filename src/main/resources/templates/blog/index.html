@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    <link href="starter-template.css"  th:href="@{/css/blog/blog_index.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    
+    <script type="text/javascript" th:src="@{/js/blog/blog_index.js}"></script>
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<div class="starter-template">
+		    <!-- タイトル -->
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/blog/form}">ブログ投稿(デバッグ用)へ</a>
+	 		
+	 		<form class="" th:action="@{/blog/selected}" method="post" th:object="${blogSelectedForm}">
+	 			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <button type="submit" class="btn btn-outline-secondary">検索</button>
+				  </div>
+				  <select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon" th:field="*{selectIdx}">
+				    <option th:each="blogTag : ${tagList}" th:value="${blogTag.id}" th:text="${blogTag.tag}"></option>
+				  </select>
+				</div>
+	 		</form>
+	 	</div>	
+	 	
+ 		<!-- メイン -->
+ 		<div class="bloglayout rounded" th:each="blogmain : ${blogmainList}" th:id="${blogmain.id}">
+ 			<!-- タイトル -->
+		 	<h2 class="text-left lefter blog-title" th:text="'●  ' + ${blogmain.title}"></h2>
+		 	<!-- 削除ボタン -->
+			<form class="text-right blog-delete" th:action="@{/blog/delete}" method="post" onclick="return checkDelete();">
+				<input type="submit" name="delete" class="btn btn-outline-dark" value="✕"  />
+				<input type="hidden" name="id" th:value="${blogmain.id}" />	
+			</form>
+		 	<!-- 日付 -->
+		 	<div class="lefter-clear text-right blog-date" th:text="${blogmain.updated}"></div>
+		 	<div class="cnt_tag">
+		 		<!-- いいね数 -->
+		 		<form class="lefter" th:id="thanksBtn + ${blogmain.id}" th:action="@{/blog/thanks}" method="post">
+		 			<input type="hidden" name="id" th:value="${blogmain.id}" />	
+		 			<input type="hidden" name="thanksCnt" th:value="${blogmain.thanksCnt}" />
+		 			<input type="submit" name="thanks" class="thanks btn btn-primary btn-sm" th:value="${blogmain.thanksCnt} + '　いいね'" />
+		 		</form>
+			 	 <!-- タグ -->
+			 	<div class="lefter tag  btn btn-secondary btn-sm" th:text="${blogmain.tag}"></div>
+			</div>
+			<!-- ブログ内容 -->
+		 	<div class="text-left lefter-clear rounded comment" th:text="${blogmain.comment}"></div>
+		 	<!-- 返信ボタン -->
+	 		<form class="lefter" th:action="@{/blog/reply}" method="post">
+				<input type="submit" name="reply" class="btn btn-outline-dark" value="返信する"  />
+				<input type="hidden" name="id" th:value="${blogmain.id}" />	
+			</form>
+	 		<!-- 編集ボタン -->
+	 		<form class="form-editor" th:action="@{/blog/edit}" method="post">
+				<input type="submit" name="edit" class="btn btn-outline-dark" value="編集"  />
+				<input type="hidden" name="editor" th:value="${blogmain.id}" />	
+			</form>
+		 	
+			<!-- 境界線 -->
+			<div class="lefter-clear blog-lines"></div>
+			
+			<!-- 返信枠 -->
+			<p class="reply-title-layout">返信内容 : </p>
+			<div  th:each="blogreply : ${blogmain.replyList}" th:id="${blogreply.id}">
+				<div class="replylayout rounded" th:if="${blogmain.id} == ${blogreply.commentid}">
+					<!-- 返信者名 -->
+			 		<h3 class="reply-title" th:text="${blogreply.name}"></h3>
+			 		<!-- 返信日付 -->
+			 		<div class="text-right reply-date" th:text="${blogreply.created}"></div>
+			 		<!-- いいね数 -->
+			 		<div class="replycnt_tag">
+				 		<form th:id="replyThanksBtn + ${blogreply.id}" th:action="@{/blog/reply_thanks}" method="post" passive="false">
+				 			<input type="hidden" name="id" th:value="${blogreply.id}" />	
+				 			<input type="hidden" name="thanksCnt" th:value="${blogreply.thanksCnt}" />
+				 			<input type="submit" name="thanks" class="btn btn-primary btn-sm" th:value="${blogreply.thanksCnt} + '　いいね'"/>
+				 		</form>
+			 		</div>
+			 		<!-- 返信内容 -->
+			 		<div class="lefter-clear rounded reply-comment" th:text="${blogreply.comment}"></div>
+				</div>	
+	 		</div>
+	 	</div>
+	 	
+	 	<!-- ページングバー -->
+		<div th:replace="~{/block/paging::pagingA}"></div>
+	 </main>
+	 
+	 <!-- フッター -->
+	<div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

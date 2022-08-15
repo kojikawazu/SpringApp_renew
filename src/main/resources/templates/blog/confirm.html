@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+	    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <link href="starter-template.css"  th:href="@{/css/home/same_form.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-slim.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<div class="starter-template">
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 	</div>
+	 	
+	 	<!-- 入力内容一覧 -->
+	 	<p>入力内容を確認してください</p>
+	 	<div th:object="${blogForm}">
+	 		<div class="mb-5">
+	 			<ul class="list-group">
+	 				<li th:text="*{blogTitle}" class="list-group-item"></li>
+	 				<li th:text="*{tag}" class="list-group-item"></li>
+	 				<li th:text="*{blogContents}" class="list-group-item"></li>
+	 			</ul>
+	 		</div>
+	 		<div class="btn-toolbar">
+		 		<form method="post" action="#" th:action="${editor} ? @{/blog/edit} : @{/blog/form}">
+		 			<input type="hidden" name="blogTitle" th:value="*{blogTitle}">
+		 			<input type="hidden" name="tag" th:value="*{tag}">
+		 			<input type="hidden" name="blogContents" th:value="*{blogContents}">
+		 			<input type="hidden" name="thanksCnt" th:value="*{thanksCnt}">
+		 			<input type="hidden" name="editor" th:value="${editor}">
+		 			<button type="submit" class="btn btn-primary">戻る</button>
+		 		</form>
+		 		<form method="post" action="#" th:action="@{/blog/complete}">
+		 			<input type="hidden" name="blogTitle" th:value="*{blogTitle}">
+		 			<input type="hidden" name="tag" th:value="*{tag}">
+		 			<input type="hidden" name="blogContents" th:value="*{blogContents}">
+		 			<input type="hidden" name="thanksCnt" th:value="*{thanksCnt}">
+		 			<input type="hidden" name="editor" th:value="${editor}">
+		 			<button type="submit" class="btn btn-primary" th:text="${editor} ? '変更する' : '投稿する'">投稿する</button>
+		 		</form>
+	 		</div>
+	 	</div>
+	 </main>
+	 
+	 <!-- フッター -->
+	 <div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+.surveylayout{
+	margin: 10px auto;
+	padding: 10px;
+	background-color: #dddddd;
+	margin-bottom: 30px;
+	box-shadow:2px 2px 7px;
+}
+
+.survey-title{
+	padding: 20px;
+}
+
+/* ★の書き方 */
+/* 色の付いた方をpositionを使って、重ねる */
+.satis{
+	position: relative;
+	display: inline-block;
+}
+
+.satis:before,
+.satis:after{
+	content: "★★★★★";
+}
+
+/* グレーアウトした星を設定 */
+.satis:before{
+	color: #ccc;
+}
+
+/* 色の付いた星を設定 */
+.satis:after{
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #FFA500;
+	/* 指定した横幅以上は隠れて見えなくなる */
+	overflow: hidden;
+}
+
+.satis.rate0:after{
+	width: 0em;
+}
+
+.satis.rate1:after{
+	width: 1em;
+}
+
+.satis.rate2:after{
+	width: 2em;
+}
+
+.satis.rate3:after{
+	width: 3em;
+}
+
+.satis.rate4:after{
+	width: 4em;
+}
+
+.satis.rate5:after{
+	width: 5em;
+}
+
+.survey-date{
+	padding-right: 5px;
+}
+
+.tag{
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-right: 10px;
+}
+
+.comment{
+	padding: 20px;
+	margin-top: 40px;
+	margin-bottom: 20px;
+	background-color: white;
+	box-shadow:2px 2px 7px;
+}

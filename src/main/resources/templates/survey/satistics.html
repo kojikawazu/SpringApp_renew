@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+	    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <link href="starter-template.css"  th:href="@{/css/survey/survey_satis.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    
+    <!--  Jquery core  -->
+     <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+   
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>  -->
+    <script th:src="@{/js/Chart.bundle.js}"></script>
+    
+    <script th:src="@{/js/survey/survey_satis.js}"></script>
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<!-- タイトル -->
+		<div class="starter-template">
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/survey/}">アンケート一覧</a>
+	 	</div>
+	 	
+ 		<!-- メイン -->
+ 		<div class="rounded" >
+ 			<div class="main-button">
+ 				<button type="button" id="main-satis-button" class="btn btn-warning">満足度集計</button>
+  			</div>
+ 			<div class="all-button">
+ 				<label>全体集計</label>
+ 				<button type="button" id="main-all-button" class="btn btn-warning">全体</button>
+ 			</div>
+ 			<div class="sx-button">
+ 				<label>性別集計</label>
+ 				<button type="button" id="main-sx-button"class="btn btn-primary">全て</button>
+ 				<button type="button" id="men-button" class="btn btn-primary">男性</button>
+ 				<button type="button" id="famale-button" class="btn btn-primary">女性</button>
+ 			</div>
+ 			<div class="prof-button">
+ 				<label>職業別集計</label>
+	 			<button type="button" id="main-prof-button" class="btn btn-primary">全て</button>
+	 			<button type="button" id="student-button" class="btn btn-primary">学生</button>
+	 			<button type="button" id="emplo-button" class="btn btn-primary">会社員</button>
+	 			<button type="button" id="art-button" class="btn btn-primary">芸能人</button>
+	 			<button type="button" id="wife-button" class="btn btn-primary">主婦</button>
+ 			</div>
+ 			<div class="age-button">
+ 				<label>年齢別集計</label>
+	 			<button type="button" id="main-age-button" class="btn btn-primary">全て</button>
+	 			<button type="button" id="age-10-button" class="btn btn-primary">10代</button>
+	 			<button type="button" id="age-20-button" class="btn btn-primary">20代</button>
+	 			<button type="button" id="age-30-button" class="btn btn-primary">30代</button>
+	 			<button type="button" id="age-40-button" class="btn btn-primary">40代</button>
+	 			<button type="button" id="age-50-button" class="btn btn-primary">50代</button>
+	 			<button type="button" id="age-60-button" class="btn btn-primary">60代</button>
+ 			</div>
+ 		</div>
+ 		 <canvas id="myBarChart"></canvas>
+	 </main>
+	 
+	 <!-- フッター -->
+	 <div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+	    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-slim.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/survey/survey_form.js}"></script>
+    
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<!-- タイトル -->
+		<div class="starter-template">
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 	</div>
+	 	
+	 	<!-- アラート -->
+		<div th:unless="${#strings.isEmpty(complete)}">
+			<div th:text="${complete}"class="alert alert-success"></div>
+		</div>
+	 	
+	 	<!-- 登録フォーム -->
+	 	<form method="post" action="#" th:action="@{/survey/confirm}" th:object="${surveyForm}">
+	 	
+	 		<!-- 名前 -->
+	 		<div class="form-group">
+	    		<label for="name">お名前</label>
+	    		<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
+	  		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+	 		
+	 		<!-- 年齢 -->
+	 		<div class="form-group">
+	 			<label for="age">年齢</label>
+	 			<input type="number" name="age" class="form-control" id="age" th:value="*{age}">
+	  		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+	 		
+	 		<!-- 職業 -->
+	 		<div class="form-group">
+	 			<label for="profession">職業</label>
+				<select class="form-control" th:field="*{profession}" >
+					<option th:value="1" th:text="学生" th:checked="*{profession == 1}">学生</option>
+					<option th:value="2" th:text="会社員" th:checked="*{profession == 2}">会社員</option>
+					<option th:value="3" th:text="芸能人" th:checked="*{profession == 3}">芸能人</option>
+					<option th:value="4" th:text="主婦" th:checked="*{profession == 4}">主婦</option>
+				</select>
+	 		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('profession')}" th:errors="*{profession}"></div>
+	 		
+	 		<!-- 性別 -->
+	 		<div class="form-group">
+	 			<label for="gender">性別</label>
+				<select class="form-control" th:field="*{men_or_female}">
+					<option th:value="1" th:text="男性" th:checked="*{men_or_female == 1}">男性</option>
+					<option th:value="2" th:text="女性" th:checked="*{men_or_female == 2}">女性</option>
+				</select>
+	 		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('men_or_female')}" th:errors="*{men_or_female}"></div>
+
+			<!-- 満足度 -->
+			<div class="form-group">
+	    		<label for="email">満足度</label>
+	    		<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="satisfaction1" name="satisfaction" class="custom-control-input" value="1"  th:checked="*{satisfaction == 1}">
+  					<label class="custom-control-label" for="satisfaction1">1</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="satisfaction2" name="satisfaction" class="custom-control-input" value="2"  th:checked="*{satisfaction == 2}">
+					<label class="custom-control-label" for="satisfaction2">2</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="satisfaction3" name="satisfaction" class="custom-control-input" value="3"  th:checked="*{satisfaction == 3}">
+					<label class="custom-control-label" for="satisfaction3">3</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="satisfaction4" name="satisfaction" class="custom-control-input" value="4"  th:checked="*{satisfaction == 4}">
+					<label class="custom-control-label" for="satisfaction4">4</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="satisfaction5" name="satisfaction" class="custom-control-input" value="5"  th:checked="*{satisfaction == 5}">
+					<label class="custom-control-label" for="satisfaction5">5</label>
+				</div>
+			</div>
+  			<div class="text-danger mb-4" th:if="${#fields.hasErrors('satisfaction')}" th:errors="*{satisfaction}"></div>
+	 
+			<!-- コメント -->	 		
+	 		<div class="form-group">
+	 			<label for="comment">コメント</label>
+	 			<textarea name="comment" class="form-control" id="detail" rows="3"  cols="40" th:value="*{comment}" th:text="*{comment}"></textarea>
+	 		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
+			
+			<!-- ボタン -->
+			<a class="btn btn-primary" href="#" role="button" th:href="@{/survey/}">一覧へ戻る</a>
+			<button type="submit" class="btn btn-primary">確認する</button>
+	 	</form>
+	 	 
+	 </main>
+	 
+	 <!-- フッター -->
+	 <div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

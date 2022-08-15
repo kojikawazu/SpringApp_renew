@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+	    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <link href="starter-template.css"  th:href="@{/css/inquiry/inquiry_reply.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-slim.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+   
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<!-- タイトル -->
+		<div class="starter-template">
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 	</div>
+	 	
+	 	<!-- メイン -->
+ 		<div class="inquirylayout rounded">
+	 		<!-- 名前 -->
+	 		<h5 class="lefter inquiry-name" th:text="${inquiry.name}"></h5>
+	 		<!-- メールアドレス -->
+	 		<div class="lefter inquiry-email" th:text="${inquiry.email}"></div>
+	 			
+	 			<!-- 生成日付 -->
+	 		<div class="lefter inquiry-created" th:text="${inquiry.created}"></div>
+	 		 					
+	 		<!-- 問い合わせ内容 -->
+	 		<div class="lefter-clear inquiry-comment" th:text="${inquiry.comment}"></div>
+	 		
+	 		<div class="lefter-clear"></div>
+	 	</div>
+	 	
+	 	<!-- 入力内容一覧 -->
+	 	<p>入力内容を確認してください</p>
+	 	<div th:object="${inquiryReplyForm}">
+	 		<div class="mb-5">
+	 			<ul class="list-group">
+	 				<li th:text="*{name}" class="list-group-item"></li>
+	 				<li th:text="*{email}" class="list-group-item"></li>
+	 				<li th:text="*{comment}" class="list-group-item"></li>
+	 			</ul>
+	 		</div>
+	 		<div class="btn-toolbar">
+		 		<form method="post" action="#" th:action="@{/inquiry/reply_form}">
+		 			<input type="hidden" name="name" th:value="*{name}">
+		 			<input type="hidden" name="email" th:value="*{email}">
+		 			<input type="hidden" name="comment" th:value="*{comment}">
+		 			<input type="hidden" name="id" th:value="${inquiry.id}">
+		 			<button type="submit" class="btn btn-primary">戻る</button>
+		 		</form>
+		 		<form method="post" action="#" th:action="@{/inquiry/reply_complete}">
+		 			<input type="hidden" name="name" th:value="*{name}">
+		 			<input type="hidden" name="email" th:value="*{email}">
+		 			<input type="hidden" name="comment" th:value="*{comment}">
+		 			<input type="hidden" name="id" th:value="${inquiry.id}">
+		 			<button type="submit" class="btn btn-primary">送信する</button>
+		 		</form>
+	 		</div>
+	 	</div>
+	 </main>
+	 
+	 <!-- フッター -->
+	<div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

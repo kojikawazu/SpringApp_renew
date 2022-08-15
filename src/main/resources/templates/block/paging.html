@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="pagingA">
+	<!-- ページング -->
+ 	<div class="paging">
+ 		<!-- 前へ -->
+	 	<div class="lefter page-lt">
+	 		<a href="#" th:unless="${paging.currentID} == 1" th:href="@{${paging.pageName}(pageidx=${paging.currentID}-1)}">前へ</a>
+	 		<div th:if="${paging.currentID} == 1">前へ</div>
+	 	</div>
+	 	<div class="lefter"><<< </div>
+	 	
+	 	<!-- ページ番号 -->
+	 	<div th:each="pageIdx : ${paging.pageNumberList}">
+	 		<a class="lefter page-number" href="#"  th:href="@{${paging.pageName}(pageidx=${pageIdx})}" th:unless="${paging.currentID} == ${pageIdx}" th:text="${pageIdx}">1</a>
+	 		<div class="lefter page-number" th:if="${paging.currentID} == ${pageIdx}" th:text="${pageIdx}">1</div>
+	 	</div>
+	 	<div class="lefter"> >>></div>
+	 	
+	 	<!-- 次へ -->
+	 	<div class="lefter page-lt">
+	 		<a href="#" th:unless="${paging.currentID} == ${paging.pageSize}" th:href="@{${paging.pageName}(pageidx=${paging.currentID}+1)}">次へ</a>
+	 		<div th:if="${paging.currentID} == ${paging.pageSize}">次へ</div>
+	 	</div>
+ 	</div>
+ 	<div class="lefter-clear"></div><br>
+</div>
+
+</html>

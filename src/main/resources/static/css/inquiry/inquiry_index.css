@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+.inquirylayout{
+	margin: 20px auto;
+	padding: 5px 10px 20px 20px;
+	background: #dddddd;
+	box-shadow:2px 2px 7px;
+}
+
+.replylayout{
+	margin: 20px auto;
+	margin-left: 100px;
+	padding: 5px 10px 20px 20px;
+	background: #dddddd;
+	box-shadow:2px 2px 7px;
+}
+
+.inquiry-name{
+	padding: 20px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.inquiry-email{
+	padding: 20px;
+	padding-top: 30px;
+	padding-bottom: 10px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.inquiry-created{
+	padding-top: 30px;
+	padding-bottom: 10px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.inquiry-delete-form{
+	float: right;
+	padding: 10px;
+}
+
+.inquiry-comment{
+	padding: 20px;
+	margin-top: 5px;
+	background-color: white;
+	box-shadow:2px 2px 7px;
+}
+
+.inquiry-reply-form{
+	float: left;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.reply-name{
+	padding: 20px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.reply-email{
+	padding: 20px;
+	padding-top: 22px;
+	padding-bottom: 18px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.reply-created{
+	float: right;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-right: 10px;
+	text-decoration:underline; 
+	text-decoration-color:#111111;
+}
+
+.reply-comment{
+	padding: 20px;
+	background-color: white;
+	box-shadow:2px 2px 7px;
+}

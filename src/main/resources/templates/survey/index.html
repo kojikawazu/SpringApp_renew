@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+	    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <link href="survey_index.css"  th:href="@{/css/survey/survey_index.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-slim.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		<!-- タイトル -->
+		<div class="starter-template">
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/survey/satis}">アンケート集計</a>
+	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/survey/form}">アンケート登録</a>
+	 	</div>
+	 	
+ 		<!-- メイン -->
+ 		<div class="surveylayout rounded" th:each="survey : ${surveyList}" th:id="${survey.id}">
+ 			<!-- タイトル -->
+		 	<h2 class="text-left lefter blog-title" th:text="${survey.name}"></h2>
+		 	<!-- 満足度 -->
+		 	<div class="lefter-clear" th:switch="${survey.satisfaction}">
+				<div th:case="1" class="lefter satis rate1"></div>
+				<div th:case="2" class="lefter satis rate2"></div>
+				<div th:case="3" class="lefter satis rate3"></div>
+				<div th:case="4" class="lefter satis rate4"></div>
+				<div th:case="*" class="lefter satis rate5"></div>
+		 	</div>
+		 	<div class="lefter-clear">
+			 	<!-- 年齢 -->
+				<div class="lefter tag  btn btn-secondary btn-sm" th:text="${survey.age} + '歳'"></div>
+				<!-- 性別 -->
+				<div class="lefter tag  btn btn-secondary btn-sm" th:text="${survey.men_or_female == 1} ? '男性' : '女性'"></div>
+				<!-- 職業 -->
+				<div  th:switch="${survey.profession}">
+					<div class="lefter tag  btn btn-secondary btn-sm" th:case="1" th:text="学生" >学生</div>
+					<div class="lefter tag  btn btn-secondary btn-sm" th:case="2" th:text="会社員">会社員</div>
+					<div class="lefter tag  btn btn-secondary btn-sm" th:case="3" th:text="芸能人">芸能人</div>
+					<div class="lefter tag  btn btn-secondary btn-sm" th:case="4" th:text="主婦">主婦</div>
+					<div class="lefter tag  btn btn-secondary btn-sm" th:case="*" th:text="その他">その他</div>
+				</div>
+				<!-- 投稿日付 -->
+		 		<div class="text-right survey-date" th:text="${survey.created}"></div>
+			 </div>
+		 
+			<!-- ブログ内容 -->
+		 	<div class="text-left lefter-clear rounded comment" th:text="${survey.comment}"></div>
+	 	</div>
+	 	
+	 	<!-- ページングバー -->
+		<div th:replace="~{/block/paging::pagingA}"></div>
+	 </main>
+	 
+	 <!-- フッター -->
+	<div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

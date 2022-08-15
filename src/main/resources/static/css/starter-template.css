@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+body {
+  padding-top: 5rem;
+  background-color: #eeeeee;
+}
+
+main{
+	margin-bottom: 20px;
+}
+
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.lefter{
+	float: left;
+}
+
+.lefter-clear{
+	clear: both;
+}
+
+.paging{
+	width: 300px;
+	margin: auto;
+	overflow: hidden;
+}
+
+.page-lt{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.page-number{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+footer{
+	color: white;
+}

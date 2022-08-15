@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title th:text="${title}">Inquiry home.</title>
+	
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+    <link href="starter-template.css"  th:href="@{/css/blog/blog_reply.css}" rel="stylesheet" crossorigin="anonymous">
+    
+    <!--  Jquery core  -->
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    
+</head>
+<body>
+	<!-- ナビゲーションバー -->
+	<div th:replace="~{/block/header::headerA}"></div>
+	 
+	<!-- メイン画面 -->
+	<main role="main" class="container">
+		
+		<div class="starter-template">
+		    <!-- タイトル -->
+	 		<h1 th:text="${title}">example</h1><br>
+	 		<p class="lead" th:text="${cont}">context</p>
+	 	</div>	
+	 	
+ 		<!-- メイン -->
+ 		<div class="bloglayout rounded" th:object="${blogMain}">
+ 			<!-- タイトル -->
+		 	<h2 class="text-left lefter blog-title" th:text="'●  ' + *{title}"></h2>
+		 	<!-- 日付 -->
+		 	<div class="lefter-clear text-right blog-date" th:text="*{updated}"></div>
+		 	<div class="cnt_tag">
+		 		<!-- いいね数 -->
+		 		<div class="lefter thanks btn btn-primary btn-sm" th:text="*{thanksCnt} + '　いいね'" ></div>
+		 		 <!-- タグ -->
+			 	<div class="lefter tag  btn btn-secondary btn-sm" th:text="*{tag}"></div>
+			</div>
+			<!-- ブログ内容 -->
+		 	<div class="text-left lefter-clear rounded comment" th:text="*{comment}"></div>
+	 	</div>
+	 	
+	 	<!-- アラート -->
+		<div th:unless="${#strings.isEmpty(complete)}">
+			<div th:text="${complete}"class="alert alert-success"></div>
+		</div>
+		
+		<!-- 登録フォーム -->
+	 	<form method="post" action="#" th:action="@{/blog/reply_confirm}" th:object="${replyForm}">
+	 		<div class="form-group">
+	    		<label for="name">お名前</label>
+	    		<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
+	  		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+			<div class="form-group">
+	 			<label for="comment">コメント</label>
+	 			<textarea name="comment" class="form-control" id="detail" rows="3"  th:value="*{comment}"  th:text="*{comment}"></textarea>
+	 		</div>
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
+	 		<input type="hidden" name="id" th:value="${blogMain.id}">
+			<a class="btn btn-primary" href="#" role="button" th:href="@{/blog/}">一覧へ戻る</a>
+			<button type="submit" class="btn btn-primary">確認する</button>
+	 	</form>	
+	 </main>
+	 
+	 <!-- フッター -->
+	 <div th:replace="~{/block/footer::footerA}"></div>
+</body>
+</html>

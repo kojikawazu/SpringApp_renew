@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+.rounded{
+	margin-bottom: 20px;
+}
+
+.main-button{
+	margin-bottom: 10px;
+}
+
+.all-button{
+	margin-bottom: 5px;
+}
+
+.all-button label{
+	margin-right: 15px;
+}
+
+.sx-button{
+	margin-bottom: 5px;
+}
+
+.sx-button label{
+	margin-right: 15px;
+}
+
+.prof-button{
+	margin-bottom: 5px;
+}
+
+.age-button{
+	margin-bottom: 60px;
+}

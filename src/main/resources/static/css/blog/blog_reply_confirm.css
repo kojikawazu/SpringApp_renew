@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.bloglayout{
+	margin: 10px auto;
+	padding: 10px;
+	background-color: #dddddd;
+	margin-bottom: 60px;
+	box-shadow:2px 2px 7px;
+}
+
+.blog-title{
+	padding: 20px;
+}
+
+.blog-date{
+	padding-right: 5px;	
+}
+
+.cnt_tag{
+	margin-top: 20px;
+}
+
+.thanks{
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	margin-right: 10px;
+}
+
+.tag{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.comment{
+	padding: 20px;
+	margin-top: 60px;
+	margin-bottom: 20px;
+	background-color: white;
+	box-shadow:2px 2px 7px;
+}
+
