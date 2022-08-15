@@ -8,7 +8,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.app.intro.IntroJSONModel;
+import com.example.demo.common.entity.IntroJSONModel;
+import com.example.demo.common.list.IntroList;
+import com.example.demo.common.list.SkillList;
+import com.example.demo.common.word.IntroWord;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,74 +39,103 @@ public class IntroReader implements IntroJsonReader {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootJsonNode = mapper.readTree(path.toFile());
-			model = new IntroJSONModel();
 			
 			// 紹介文
-			model.setIntro(rootJsonNode.get("intro").get(0).get("text").asText());
-			
+			IntroWord intro          = this.readData(rootJsonNode, "intro");
 			// 経験
-			List<String> exList = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("experience")) {
-				String text = node.get("text").asText();
-				exList.add(text);
-			}
-			model.setExperienceList(exList);
-			
+			IntroList experienceList = this.readDataList(rootJsonNode, "experience");
 			// 今後やりたいこと
-			model.setAfter(rootJsonNode.get("after").get(0).get("text").asText());
-			
+			IntroWord after          = this.readData(rootJsonNode, "after");
 			// スキル1
-			List<String> skill1List = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("skill_1")) {
-				String skill1 = node.get("name").asText();
-				skill1List.add(skill1);
-			}
-			model.setSkill1List(skill1List);
-			
+			SkillList skill1List     = this.readSkill(rootJsonNode, 1);
 			// スキル2
-			List<String> skill2List = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("skill_2")) {
-				String skill2 = node.get("name").asText();
-				skill2List.add(skill2);
-			}
-			model.setSkill2List(skill2List);
-			
+			SkillList skill2List     = this.readSkill(rootJsonNode, 2);
 			// スキル3
-			List<String> skill3List = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("skill_3")) {
-				String skill3 = node.get("name").asText();
-				skill3List.add(skill3);
-			}
-			model.setSkill3List(skill3List);
-			
+			SkillList skill3List     = this.readSkill(rootJsonNode, 3);
 			// スキル4
-			List<String> skill4List = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("skill_4")) {
-				String skill4 = node.get("name").asText();
-				skill4List.add(skill4);
-			}
-			model.setSkill4List(skill4List);
-			
+			SkillList skill4List     = this.readSkill(rootJsonNode, 4);
 			// URL
-			model.setUrl(rootJsonNode.get("url").get(0).get("text").asText());
-			
+			IntroWord url            = this.readData(rootJsonNode, "url");
 			// 趣味
-			List<String> hobbyList = new ArrayList<String>();
-			for(JsonNode node : rootJsonNode.get("hobby")) {
-				String hobby = node.get("name").asText();
-				hobbyList.add(hobby);
-			}
-			model.setHobbyList(hobbyList);
-			
+			IntroList hobbyList      = this.readDataList(rootJsonNode, "hobby");
 			// 最後に
-			model.setWord(rootJsonNode.get("word").get(0).get("text").asText());
-						
+			IntroWord word           = this.readData(rootJsonNode, "word");
 			
+			model = new IntroJSONModel(
+					// 紹介文
+					intro,
+					// 経験
+					experienceList,
+					// 今後やりたいこと
+					after,
+					// スキル1
+					skill1List,
+					// スキル2
+					skill2List,
+					// スキル3
+					skill3List,
+					// スキル4
+					skill4List,
+					// URL
+					url,
+					// 趣味
+					hobbyList,
+					// 最後に
+					word
+					);
+
 		}catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
 		
 		return model;
+	}
+	
+	/**
+	 * データの読み込み
+	 * @param rootJsonNode
+	 * @param word
+	 * @return データ(文字列)
+	 */
+	private IntroWord readData(JsonNode rootJsonNode, String word) {
+		return (word == null || word == "" ? 
+					new IntroWord(null) :
+					new IntroWord(rootJsonNode.get("intro").get(0).get("name").asText())
+				);
+	}
+	
+	/**
+	 * データリストの読み込み
+	 * @param rootJsonNode
+	 * @return データリスト
+	 */
+	private IntroList readDataList(JsonNode rootJsonNode, String word) {
+		if(word == null || word == "")	return new IntroList(null);
+		
+		List<String> dataList = new ArrayList<String>();
+		for(JsonNode node : rootJsonNode.get(word)) {
+			String text = node.get("name").asText();
+			dataList.add(text);
+		}
+		
+		return new IntroList(dataList);
+	}
+	
+	/**
+	 * スキルデータの読み込み
+	 * @param rootJsonNode
+	 * @return スキルデータリスト
+	 */
+	private SkillList readSkill(JsonNode rootJsonNode, int dataNumber) {
+		if (dataNumber <= 0 || dataNumber > 4) return new SkillList(null);
+		
+		List<String> skillList = new ArrayList<String>();
+		for(JsonNode node : rootJsonNode.get("skill_" + dataNumber)) {
+			String skill = node.get("name").asText();
+			skillList.add(skill);
+		}
+		
+		return new SkillList(skillList);
 	}
 
 }

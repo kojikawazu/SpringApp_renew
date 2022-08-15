@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.app.intro.IntroJSONModel;
+import com.example.demo.common.entity.IntroJSONModel;
 import com.example.demo.json.IntroReader;
 
 @Service

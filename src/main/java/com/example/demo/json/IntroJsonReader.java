@@ -2,7 +2,7 @@ package com.example.demo.json;
 
 import java.nio.file.Path;
 
-import com.example.demo.app.intro.IntroJSONModel;
+import com.example.demo.common.entity.IntroJSONModel;
 
 /**
  * json読み読みインターフェース
