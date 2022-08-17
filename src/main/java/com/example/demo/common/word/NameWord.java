@@ -1,11 +1,11 @@
 package com.example.demo.common.word;
 
 /**
- * イントロ使用文字列
+ * 名前クラス
  * @author nanai
  *
  */
-public class IntroWord implements SuperWord {
+public class NameWord implements SuperWord{
 	
 	/** 文字列保持 */
 	private String word;
@@ -14,7 +14,7 @@ public class IntroWord implements SuperWord {
 	 * コンストラクタ
 	 * @param word
 	 */
-	public IntroWord(String word) {
+	public NameWord(String word) {
 		this.word = word;
 	}
 	

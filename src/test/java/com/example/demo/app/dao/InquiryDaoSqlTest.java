@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.InquiryModel;
+import com.example.demo.app.entity.InquiryReplyModel;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.NameWord;
 
 class InquiryDaoSqlTest {
 	
@@ -119,7 +122,14 @@ class InquiryDaoSqlTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		InquiryModel model = new InquiryModel();
+		InquiryModel model= new InquiryModel(
+				new InquiryId(0),
+				new NameWord(""),
+				new NameWord(""),
+				new NameWord(""),
+				LocalDateTime.of(2000, 01, 01, 00, 00, 00),
+				new ArrayList<InquiryReplyModel>()
+				);
 		dao.insertInquiry(model);
 	}
 	
@@ -144,12 +154,14 @@ class InquiryDaoSqlTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		InquiryModel model = new InquiryModel();
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setEmail("テストメールアドレス");
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
+		InquiryModel model = new InquiryModel(
+				new InquiryId(1),
+				new NameWord("テストネーム"),
+				new NameWord("テストメールアドレス"),
+				new NameWord("テストコメント"),
+				dateTime1,
+				new ArrayList<InquiryReplyModel>()
+				);
 		
 		int ret = dao.updateInquiry(model);
 		Assertions.assertEquals(ret, 1);

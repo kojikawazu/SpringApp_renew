@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.SurveyModel;
+import com.example.demo.common.id.SurveyId;
+import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.NameWord;
 
 class SurveyDaoSqlTest {
 
@@ -94,7 +97,16 @@ class SurveyDaoSqlTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		SurveyModel model = new SurveyModel();
+		SurveyModel model = new SurveyModel(
+				new SurveyId(0),
+				new NameWord(""),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NameWord(""),
+				LocalDateTime.now()
+				);
 		dao.insertSurvey(model);
 	}
 	
@@ -122,15 +134,16 @@ class SurveyDaoSqlTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		SurveyModel model = new SurveyModel();
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setAge(10);
-		model.setProfession(1);
-		model.setMen_or_female(1);
-		model.setSatisfaction(5);
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
+		SurveyModel model = new SurveyModel(
+				new SurveyId(1),
+				new NameWord("テストネーム"),
+				new NormalNumber(10),
+				new NormalNumber(1),
+				new NormalNumber(1),
+				new NormalNumber(5),
+				new NameWord("テストコメント"),
+				dateTime1
+				);
 		
 		int ret = dao.updateSurvey(model);
 		Assertions.assertEquals(ret, 1);

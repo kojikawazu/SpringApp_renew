@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.app.entity.InquiryModel;
+import com.example.demo.app.entity.InquiryReplyModel;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.NameWord;
 
 @Repository
 public class InquiryDaoSql implements InquiryDao {
@@ -52,12 +55,13 @@ public class InquiryDaoSql implements InquiryDao {
 		List<InquiryModel> list = new ArrayList<InquiryModel>();
 		
 		for(Map<String, Object> result : resultList) {
-			InquiryModel model = new InquiryModel();
-			model.setId((int)result.get("id"));
-			model.setName((String)result.get("name"));
-			model.setEmail((String)result.get("email"));
-			model.setComment((String)result.get("comment"));
-			model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
+			InquiryModel model = new InquiryModel(
+					new InquiryId((int)result.get("id")),
+					new NameWord((String)result.get("name")),
+					new NameWord((String)result.get("email")),
+					new NameWord((String)result.get("comment")),
+					((Timestamp)result.get("created")).toLocalDateTime()
+					);
 			list.add(model);
 		}
 		return list;
@@ -76,13 +80,13 @@ public class InquiryDaoSql implements InquiryDao {
 		Map<String, Object> result = jdbcTemp.queryForMap(sql, id);
 			
 		if( result == null) return null;
-		InquiryModel model = new InquiryModel();
-		model.setId((int)result.get("id"));
-		model.setName((String)result.get("name"));
-		model.setEmail((String)result.get("email"));
-		model.setComment((String)result.get("comment"));
-		model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
-		
+		InquiryModel model = new InquiryModel(
+				new InquiryId((int)result.get("id")),
+				new NameWord((String)result.get("name")),
+				new NameWord((String)result.get("email")),
+				new NameWord((String)result.get("comment")),
+				((Timestamp)result.get("created")).toLocalDateTime()
+				);		
 		return model;
 	}
 

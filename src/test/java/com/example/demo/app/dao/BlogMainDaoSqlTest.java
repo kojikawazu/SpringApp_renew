@@ -18,6 +18,9 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogMainModel;
+import com.example.demo.common.id.BlogId;
+import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.NameWord;
 
 class BlogMainDaoSqlTest {
 	
@@ -182,7 +185,14 @@ class BlogMainDaoSqlTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		BlogMainModel model = new BlogMainModel();
+		BlogMainModel model = new BlogMainModel(
+				new NameWord(""),
+				new NameWord(""),
+				new NameWord(""),
+				new ThanksCntNumber(0),
+				LocalDateTime.now(),
+				LocalDateTime.now()
+				);
 		dao.insertBlog(model);
 	}
 	
@@ -209,14 +219,15 @@ class BlogMainDaoSqlTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		BlogMainModel model = new BlogMainModel();
-		model.setId(1);
-		model.setTitle("テストタイトル");
-		model.setTag("テストタグ");
-		model.setComment("テストコメント");
-		model.setThanksCnt(1);
-		model.setCreated(dateTime1);
-		model.setUpdated(dateTime2);
+		BlogMainModel model = new BlogMainModel(
+				new BlogId(1),
+				new NameWord("テストタイトル"),
+				new NameWord("テストタグ"),
+				new NameWord("テストコメント"),
+				new ThanksCntNumber(1),
+				dateTime1,
+				dateTime2
+				);
 		
 		int ret = dao.updateBlog(model);
 		Assertions.assertEquals(ret, 1);

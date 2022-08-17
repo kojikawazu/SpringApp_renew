@@ -7,6 +7,11 @@ import com.example.demo.common.list.IntroList;
 import com.example.demo.common.list.SkillList;
 import com.example.demo.common.word.IntroWord;
 
+/**
+ * JSON専用モデル
+ * @author nanai
+ *
+ */
 public class IntroJSONModel {
 	
 	/** 自己紹介文字列 */

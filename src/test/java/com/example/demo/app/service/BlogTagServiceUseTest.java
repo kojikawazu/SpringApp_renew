@@ -19,6 +19,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.BlogTagDao;
 import com.example.demo.app.dao.BlogTagDaoSql;
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.common.id.BlogTagId;
+import com.example.demo.common.word.NameWord;
 
 class BlogTagServiceUseTest {
 	
@@ -107,7 +109,10 @@ class BlogTagServiceUseTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		BlogTagModel model = new BlogTagModel();
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(0),
+				new NameWord("")
+				);
 		service.save(model);
 	}
 	
@@ -130,13 +135,13 @@ class BlogTagServiceUseTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		BlogTagModel model = new BlogTagModel();
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(1),
+				new NameWord("テストタグ")
+				);
 		
 		// 例外テスト1
-		assertThrows(RuntimeException.class, () -> service.update(model));
-				
-		model.setId(1);
-		model.setTag("テストタグ");
+		//assertThrows(RuntimeException.class, () -> service.update(model));
 		
 		// 例外テスト2
 		assertDoesNotThrow(() -> service.update(model));

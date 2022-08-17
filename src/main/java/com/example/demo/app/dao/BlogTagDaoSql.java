@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.common.id.BlogTagId;
+import com.example.demo.common.word.NameWord;
 
 @Repository
 public class BlogTagDaoSql implements BlogTagDao {
@@ -50,9 +52,10 @@ public class BlogTagDaoSql implements BlogTagDao {
 		List<BlogTagModel> list = new ArrayList<BlogTagModel>();
 		
 		for( Map<String, Object> result : resultList ) {
-			BlogTagModel model = new BlogTagModel();
-			model.setId((int)result.get("id"));
-			model.setTag((String)result.get("tag"));
+			BlogTagModel model = new BlogTagModel(
+					new BlogTagId((int)result.get("id")),
+					new NameWord((String)result.get("tag"))
+					);
 			list.add(model);
 		}
 		return list;
@@ -73,9 +76,10 @@ public class BlogTagDaoSql implements BlogTagDao {
 		String sql = "SELECT id, tag FROM blog_tag WHERE id = ?";
 		Map<String, Object> result = jdbcTemp.queryForMap(sql, id);
 		if( result == null )	return null;
-		BlogTagModel model = new BlogTagModel();
-		model.setId((int)result.get("id"));
-		model.setTag((String)result.get("tag"));
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId((int)result.get("id")),
+				new NameWord((String)result.get("tag"))
+				);
 		return model;
 	}
 

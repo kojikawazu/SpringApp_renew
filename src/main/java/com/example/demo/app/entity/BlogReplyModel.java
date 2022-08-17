@@ -2,6 +2,11 @@ package com.example.demo.app.entity;
 
 import java.time.LocalDateTime;
 
+/**
+ * ブログ返信モデル
+ * @author nanai
+ *
+ */
 public class BlogReplyModel {
 	
 	private int id;

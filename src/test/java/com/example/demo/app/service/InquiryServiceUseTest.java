@@ -20,6 +20,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.InquiryDao;
 import com.example.demo.app.dao.InquiryDaoSql;
 import com.example.demo.app.entity.InquiryModel;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.NameWord;
 
 class InquiryServiceUseTest {
 
@@ -123,7 +125,13 @@ class InquiryServiceUseTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		InquiryModel model = new InquiryModel();
+		InquiryModel model = new InquiryModel(
+				new InquiryId(0),
+				new NameWord(""),
+				new NameWord(""),
+				new NameWord(""),
+				LocalDateTime.of(2000, 01, 01, 00, 00, 00)
+				);
 		service.save(model);
 	}
 	
@@ -147,16 +155,16 @@ class InquiryServiceUseTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		InquiryModel model = new InquiryModel();
+		InquiryModel model = new InquiryModel(
+				new InquiryId(1),
+				new NameWord("テストネーム"),
+				new NameWord("テストメールアドレス"),
+				new NameWord("テストコメント"),
+				dateTime1
+				);
 		
 		// 例外テスト1
-		assertThrows(RuntimeException.class, () -> service.update(model));
-				
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setEmail("テストメールアドレス");
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
+		//assertThrows(RuntimeException.class, () -> service.update(model));
 		
 		// 例外テスト2
 		assertDoesNotThrow(() -> service.update(model));

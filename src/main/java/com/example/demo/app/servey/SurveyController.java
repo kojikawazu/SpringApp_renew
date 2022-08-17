@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.SurveyService;
+import com.example.demo.common.id.SurveyId;
+import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.NameWord;
 
 @Controller
 @RequestMapping("/survey")
@@ -95,14 +98,15 @@ public class SurveyController {
 			return "survey/form";
 		}
 		
-		SurveyModel survey = new SurveyModel();
-		survey.setName(surveyForm.getName());
-		survey.setAge(surveyForm.getAge());
-		survey.setProfession(surveyForm.getProfession());
-		survey.setMen_or_female(surveyForm.getMen_or_female());
-		survey.setSatisfaction(surveyForm.getSatisfaction());
-		survey.setComment(surveyForm.getComment());
-		survey.setCreated(LocalDateTime.now());
+		SurveyModel survey = new SurveyModel(
+				new NameWord(surveyForm.getName()),
+				new NormalNumber(surveyForm.getAge()),
+				new NormalNumber(surveyForm.getProfession()),
+				new NormalNumber(surveyForm.getMen_or_female()),
+				new NormalNumber(surveyForm.getSatisfaction()),
+				new NameWord(surveyForm.getComment()),
+				LocalDateTime.now()
+				);
 		
 		surveyService.save(survey);
 		redirectAttributes.addFlashAttribute("complete", "投稿ありがとうございました！");
