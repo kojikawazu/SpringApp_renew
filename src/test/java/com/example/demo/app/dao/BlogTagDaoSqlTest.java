@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.common.id.BlogTagId;
+import com.example.demo.common.word.NameWord;
 
 class BlogTagDaoSqlTest {
 	
@@ -103,7 +105,10 @@ class BlogTagDaoSqlTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		BlogTagModel model = new BlogTagModel();
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(0),
+				new NameWord("")
+				);
 		dao.insertTag(model);
 	}
 	
@@ -126,9 +131,10 @@ class BlogTagDaoSqlTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		BlogTagModel model = new BlogTagModel();
-		model.setId(1);
-		model.setTag("テストタグ");
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(1),
+				new NameWord("テストタグ")
+				);
 		
 		int ret = dao.updateTag(model);
 		Assertions.assertEquals(ret, 1);

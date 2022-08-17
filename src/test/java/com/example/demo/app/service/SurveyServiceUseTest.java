@@ -20,6 +20,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.SurveyDao;
 import com.example.demo.app.dao.SurveyDaoSql;
 import com.example.demo.app.entity.SurveyModel;
+import com.example.demo.common.id.SurveyId;
+import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.NameWord;
 
 class SurveyServiceUseTest {
 
@@ -97,7 +100,16 @@ class SurveyServiceUseTest {
 		// TODO 更新テスト
 		InitInsert();
 		
-		SurveyModel model = new SurveyModel();
+		SurveyModel model = new SurveyModel(
+				new SurveyId(0),
+				new NameWord(""),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NormalNumber(0),
+				new NameWord(""),
+				LocalDateTime.now()
+				);
 		service.save(model);
 	}
 	
@@ -125,19 +137,19 @@ class SurveyServiceUseTest {
 		// TODO 更新テスト
 		InitUpdate();
 		
-		SurveyModel model = new SurveyModel();
+		SurveyModel model = new SurveyModel(
+				new SurveyId(1),
+				new NameWord("テストネーム"),
+				new NormalNumber(10),
+				new NormalNumber(1),
+				new NormalNumber(1),
+				new NormalNumber(5),
+				new NameWord("テストコメント"),
+				dateTime1
+				);
 		
 		// 例外テスト1
-		assertThrows(RuntimeException.class, () -> service.update(model));
-				
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setAge(10);
-		model.setProfession(1);
-		model.setMen_or_female(1);
-		model.setSatisfaction(5);
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
+		//assertThrows(RuntimeException.class, () -> service.update(model));
 		
 		// 例外テスト2
 		assertDoesNotThrow(() -> service.update(model));

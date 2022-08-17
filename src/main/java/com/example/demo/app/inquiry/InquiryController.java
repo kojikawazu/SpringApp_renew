@@ -21,6 +21,8 @@ import com.example.demo.app.entity.InquiryReplyModel;
 import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.InquiryReplyService;
 import com.example.demo.app.service.InquiryService;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.NameWord;
 
 @Controller
 @RequestMapping("/inquiry")
@@ -96,11 +98,12 @@ public class InquiryController {
 			return "inquiry/form";
 		}
 		
-		InquiryModel inquiry = new InquiryModel();
-		inquiry.setName(inquiryForm.getName());
-		inquiry.setEmail(inquiryForm.getEmail());
-		inquiry.setComment(inquiryForm.getComment());
-		inquiry.setCreated(LocalDateTime.now());
+		InquiryModel inquiry = new InquiryModel(
+				new NameWord(inquiryForm.getName()),
+				new NameWord(inquiryForm.getEmail()),
+				new NameWord(inquiryForm.getComment()),
+				LocalDateTime.now()
+				);
 		
 		inquiryService.save(inquiry);
 		redirectAttributes.addFlashAttribute("complete", "投稿しました。");
@@ -217,7 +220,14 @@ public class InquiryController {
 			List<InquiryReplyModel> replyList = null;
 			InquiryModel inquiry = inquiryList.get(cnt);
 			replyList = inquiryReplyService.select_byInquiryId(inquiry.getId());
-			inquiry.setReplyList(replyList);
+			inquiry = new InquiryModel(
+					new InquiryId(inquiry.getId()),
+					new NameWord(inquiry.getName()),
+					new NameWord(inquiry.getEmail()),
+					new NameWord(inquiry.getComment()),
+					inquiry.getCreated(),
+					replyList
+					);
 		}
 		
 		// ページング設定

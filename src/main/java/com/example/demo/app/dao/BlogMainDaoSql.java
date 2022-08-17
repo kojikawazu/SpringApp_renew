@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.app.entity.BlogMainModel;
+import com.example.demo.common.id.BlogId;
+import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.NameWord;
 
 @Repository
 public class BlogMainDaoSql implements BlogMainDao {
@@ -63,14 +66,15 @@ public class BlogMainDaoSql implements BlogMainDao {
 		List<BlogMainModel> list = new ArrayList<BlogMainModel>();
 		
 		for( Map<String, Object> result : resultList ) {
-			BlogMainModel model = new BlogMainModel();
-			model.setId((int)result.get("id"));
-			model.setTitle((String)result.get("title"));
-			model.setTag((String)result.get("tag"));
-			model.setComment((String)result.get("comment"));
-			model.setThanksCnt((int)result.get("thanksCnt"));
-			model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
-			model.setUpdated(((Timestamp)result.get("updated")).toLocalDateTime());
+			BlogMainModel model = new BlogMainModel(
+					new BlogId((int)result.get("id")),
+					new NameWord((String)result.get("title")),
+					new NameWord((String)result.get("tag")),
+					new NameWord((String)result.get("comment")),
+					new ThanksCntNumber((int)result.get("thanksCnt")),
+					((Timestamp)result.get("created")).toLocalDateTime(),
+					((Timestamp)result.get("updated")).toLocalDateTime()
+				);
 			list.add(model);
 		}
 		return list;
@@ -85,14 +89,15 @@ public class BlogMainDaoSql implements BlogMainDao {
 		
 		BlogMainModel model = null;
 		if(result != null) {
-			model = new BlogMainModel();
-			model.setId((int)result.get("id"));
-			model.setTitle((String)result.get("title"));
-			model.setTag((String)result.get("tag"));
-			model.setComment((String)result.get("comment"));
-			model.setThanksCnt((int)result.get("thanksCnt"));
-			model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
-			model.setUpdated(((Timestamp)result.get("updated")).toLocalDateTime());
+			model = new BlogMainModel(
+					new BlogId((int)result.get("id")),
+					new NameWord((String)result.get("title")),
+					new NameWord((String)result.get("tag")),
+					new NameWord((String)result.get("comment")),
+					new ThanksCntNumber((int)result.get("thanksCnt")),
+					((Timestamp)result.get("created")).toLocalDateTime(),
+					((Timestamp)result.get("updated")).toLocalDateTime()
+					);
 		}
 		return model;
 	}
@@ -105,14 +110,15 @@ public class BlogMainDaoSql implements BlogMainDao {
 		List<BlogMainModel> list = new ArrayList<BlogMainModel>();
 		
 		for( Map<String, Object> result : resultList ) {
-			BlogMainModel model = new BlogMainModel();
-			model.setId((int)result.get("id"));
-			model.setTitle((String)result.get("title"));
-			model.setTag((String)result.get("tag"));
-			model.setComment((String)result.get("comment"));
-			model.setThanksCnt((int)result.get("thanksCnt"));
-			model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
-			model.setUpdated(((Timestamp)result.get("updated")).toLocalDateTime());
+			BlogMainModel model = new BlogMainModel(
+					new BlogId((int)result.get("id")),
+					new NameWord((String)result.get("title")),
+					new NameWord((String)result.get("tag")),
+					new NameWord((String)result.get("comment")),
+					new ThanksCntNumber((int)result.get("thanksCnt")),
+					((Timestamp)result.get("created")).toLocalDateTime(),
+					((Timestamp)result.get("updated")).toLocalDateTime()
+					);
 			list.add(model);
 		}
 		return list;

@@ -24,6 +24,9 @@ import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.BlogMainService;
 import com.example.demo.app.service.BlogReplyService;
 import com.example.demo.app.service.BlogTagService;
+import com.example.demo.common.id.BlogId;
+import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.NameWord;
 
 @Controller
 @RequestMapping("/blog")
@@ -143,12 +146,14 @@ public class BlogMainController {
 			return "blog/form";
 		}
 		
-		BlogMainModel blog = new BlogMainModel();
-		blog.setTitle(blogForm.getBlogTitle());
-		blog.setTag(blogForm.getTag());
-		blog.setComment(blogForm.getBlogContents());
-		blog.setCreated(LocalDateTime.now());
-		blog.setUpdated(LocalDateTime.now());
+		BlogMainModel blog = new BlogMainModel(
+				new NameWord(blogForm.getBlogTitle()),
+				new NameWord(blogForm.getTag()),
+				new NameWord(blogForm.getBlogContents()),
+				new ThanksCntNumber(0),
+				LocalDateTime.now(),
+				LocalDateTime.now()
+				);
 		
 		if( editor == 0 ) {
 			// 追加作業
@@ -158,8 +163,15 @@ public class BlogMainController {
 			return "redirect:/blog/form";
 		}else {
 			// 編集作業
-			blog.setThanksCnt(blogForm.getThanksCnt());
-			blog.setId(editor);
+			blog = new BlogMainModel(
+					new BlogId(editor),
+					new NameWord(blog.getTitle()),
+					new NameWord(blog.getTag()),
+					new NameWord(blog.getComment()),
+					new ThanksCntNumber(blogForm.getThanksCnt()),
+					blog.getCreated(),
+					blog.getUpdated()
+					);
 			blogMainService.update(blog);
 			
 			redirectAttributes.addAttribute("editor", editor);
@@ -377,8 +389,8 @@ public class BlogMainController {
 		// TODO タグリストをチェックし、ない場合は追加。
 		String targetTag = blog.getTag();
 		if( !blogTagService.isSelect_byTag(targetTag) ) {
-			BlogTagModel tagModel = new BlogTagModel();
-			tagModel.setTag(targetTag);
+			BlogTagModel tagModel = new BlogTagModel(
+					new NameWord(targetTag));
 			blogTagService.save(tagModel);
 		}
 	}

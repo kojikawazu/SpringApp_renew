@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.app.entity.SurveyModel;
+import com.example.demo.common.id.SurveyId;
+import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.NameWord;
 
 @Repository
 public class SurveyDaoSql implements SurveyDao {
@@ -58,15 +61,16 @@ public class SurveyDaoSql implements SurveyDao {
 		List<SurveyModel> list = new ArrayList<SurveyModel>();
 		
 		for(Map<String, Object> result : resultList) {
-			SurveyModel model = new SurveyModel();
-			model.setId((int)result.get("id"));
-			model.setName((String)result.get("name"));
-			model.setAge((int)result.get("age"));
-			model.setProfession((int)result.get("profession"));
-			model.setMen_or_female((int)result.get("ismen"));
-			model.setSatisfaction((int)result.get("satisfaction"));
-			model.setComment((String)result.get("comment"));
-			model.setCreated(((Timestamp)result.get("created")).toLocalDateTime());
+			SurveyModel model = new SurveyModel(
+					new SurveyId((int)result.get("id")),
+					new NameWord((String)result.get("name")),
+					new NormalNumber((int)result.get("age")),
+					new NormalNumber((int)result.get("profession")),
+					new NormalNumber((int)result.get("ismen")),
+					new NormalNumber((int)result.get("satisfaction")),
+					new NameWord((String)result.get("comment")),
+					((Timestamp)result.get("created")).toLocalDateTime()
+					);
 			list.add(model);
 		}
 		return list;
