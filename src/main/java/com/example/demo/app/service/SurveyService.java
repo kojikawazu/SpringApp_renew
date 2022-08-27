@@ -5,6 +5,11 @@ import java.util.List;
 import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.app.servey.SurveySatisForm;
 
+/**
+ * 調査サービスインターフェース
+ * @author nanai
+ *
+ */
 public interface SurveyService {
 	
 	void save(SurveyModel model);

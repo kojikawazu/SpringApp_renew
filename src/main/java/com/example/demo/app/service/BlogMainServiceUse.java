@@ -8,64 +8,117 @@ import org.springframework.stereotype.Service;
 import com.example.demo.app.dao.BlogMainDao;
 import com.example.demo.app.entity.BlogMainModel;
 import com.example.demo.app.exception.WebMvcConfig;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.id.BlogId;
 
 @Service
 public class BlogMainServiceUse implements BlogMainService {
 
+	/**
+	 * Daoクラス
+	 */
 	private final BlogMainDao dao;
 	
+	/**
+	 * コンストラクタ
+	 * @param dao
+	 */
 	@Autowired
 	public BlogMainServiceUse(BlogMainDao dao) {
-		// TODO コンストラクタ
 		this.dao = dao;
 	}
 	
-	
+	/**
+	 * 保存
+	 * @param model
+	 */
 	@Override
 	public void save(BlogMainModel model) {
-		// TODO 保存
 		this.dao.insertBlog(model);
 	}
 
+	/**
+	 * 更新
+	 * @param model
+	 */
 	@Override
 	public void update(BlogMainModel model) {
-		// TODO 更新
-		if(this.dao.updateBlog(model) == 0) {
+		if(this.dao.updateBlog(model) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 	}
 
+	/**
+	 * 削除
+	 * @param id
+	 */
 	@Override
-	public void delete(int id) {
-		// TODO 削除
-		if(this.dao.deleteBlog(id) == 0) {
+	public void delete(BlogId id) {
+		if(this.dao.deleteBlog(id) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 	}
 
+	/**
+	 * 全て選択
+	 * @return ブログメインモデルリスト
+	 */
 	@Override
 	public List<BlogMainModel> getAll() {
-		// TODO 全て取得
-		return this.dao.getAll();
+		List<BlogMainModel> list = this.dao.getAll();
+		
+		if(list.isEmpty()) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return list;
 	}
 
-
+	/**
+	 * IDによる選択
+	 * @param  id
+	 * @return ブログメインモデルクラス
+	 */
 	@Override
-	public BlogMainModel select(int id) {
-		// TODO idによる取得
-		return this.dao.select(id);
+	public BlogMainModel select(BlogId id) {
+		BlogMainModel model = this.dao.select(id);
+		
+		if(model == null) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return model;
 	}
 	
+	/**
+	 * タグによる選択
+	 * @param  タグ
+	 * @return ブログメインモデルリスト
+	 */
 	@Override
 	public List<BlogMainModel> select_byTag(String tag) {
-		// TODO 自動生成されたメソッド・スタブ
-		return this.dao.select_byTag(tag);
+		List<BlogMainModel> list = this.dao.select_byTag(tag);
+		
+		if(list.isEmpty()) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return list;
 	}
 
+	/**
+	 * いいね数加算
+	 * @param id
+	 * @return いいね数
+	 */
 	@Override
-	public int thanksIncrement(int id) {
-		// TODO いいね数加算
-		return this.dao.thanksIncrement(id);
-	}	
-
+	public int thanksIncrement(BlogId id) {
+		int number = this.dao.thanksIncrement(id);
+		
+		if(number == WebConsts.ERROR_NUMBER) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return number;
+	}
 }

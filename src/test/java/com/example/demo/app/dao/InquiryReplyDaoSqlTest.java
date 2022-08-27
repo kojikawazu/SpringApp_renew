@@ -17,7 +17,18 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.InquiryReplyModel;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.id.InquiryReplyId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
+import com.example.demo.common.word.NameWord;
 
+/**
+ * 問い合わせ返信Daoクラスのテスト
+ * @author nanai
+ *
+ */
 class InquiryReplyDaoSqlTest {
 	
 	private InquiryReplyDao dao = null;
@@ -26,10 +37,169 @@ class InquiryReplyDaoSqlTest {
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
+	
+	/**
+	 * 追加テストの準備
+	 */
+	public void InitInsert() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "INSERT INTO inquiry_reply("
+				+ "inquiry_id, name, email, comment, created) "
+				+ "VALUES(?,?,?,?,?)";
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				1,
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				dateTime1
+				)).thenReturn(1);
+		
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 追加テスト
+	 */
+	@Test
+	public void InsertTest() {
+		InitInsert();
+		
+		InquiryReplyModel model = new InquiryReplyModel(
+				new InquiryId(1),
+				new NameWord("テストネーム"),
+				new EmailWord("テストメールアドレス"),
+				new CommentWord("テストコメント"),
+				dateTime1
+				);
+		
+		this.dao.insertReplyInquiry(model);
+	}
+	
+	/**
+	 * 更新テストの準備
+	 */
+	public void InitUpdate() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE inquiry_reply SET "
+				+ "inquiry_id = ?, name = ?, email = ?, comment = ? "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				1,
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				1
+				)).thenReturn(1);
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				1,
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				2
+				)).thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 更新テスト
+	 */
+	@Test
+	public void UpdateTest() {
+		InitUpdate();
+		int ret = 0;
+		
+		// 正常系
+		InquiryReplyModel model = new InquiryReplyModel(
+				new InquiryReplyId(1),
+				new InquiryId(1),
+				new NameWord("テストネーム"),
+				new EmailWord("テストメールアドレス"),
+				new CommentWord("テストコメント"),
+				dateTime1
+				);
+		
+		ret = dao.updateReplyInquiry(model);
+		Assertions.assertEquals(ret, 1);
+	}
+	
+	/**
+	 * 削除テストの準備
+	 */
+	public void InitDelete() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM inquiry_reply "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(sql, 1))
+			.thenReturn(1);
+		when(this.jdbcTemp.update(sql, 2))
+			.thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 削除テスト
+	 */
+	@Test
+	public void DeleteTest() {
+		InitDelete();
+		int ret = 0;
+		
+		ret = this.dao.deleteReplyInquiry(new InquiryReplyId(1));
+		Assertions.assertEquals(ret, 1);
+		
+		ret = this.dao.deleteReplyInquiry(new InquiryReplyId(2));
+		Assertions.assertEquals(ret, WebConsts.ERROR_DB_STATUS);
+	}
+	
+	/**
+	 * 削除テストの準備(問い合わせID)
+	 */
+	public void InitDelete_byInquiryId() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM inquiry_reply "
+				+ "WHERE inquiry_id = ?";
+		
+		when(this.jdbcTemp.update(sql, 1))
+			.thenReturn(1);
+		when(this.jdbcTemp.update(sql, 2))
+			.thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 削除テスト(問い合わせID)
+	 */
+	@Test
+	public void Delete_byInquiryId_Test() {
+		InitDelete_byInquiryId();
+		int ret = 0;
+		
+		ret = this.dao.deleteReply_byInquiry(new InquiryId(1));
+		Assertions.assertEquals(ret, 1);
+		
+		ret = this.dao.deleteReply_byInquiry(new InquiryId(2));
+		Assertions.assertEquals(ret, WebConsts.ERROR_DB_STATUS);
+	}
 
+	/**
+	 * 全選択テストの準備
+	 */
 	public void InitSelectAll() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		map.put("id", 1);
@@ -41,19 +211,21 @@ class InquiryReplyDaoSqlTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any())).thenReturn(mapList);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
 		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
 	}
 	
 	
+	/**
+	 * 全選択テスト
+	 */
 	@Test
 	public void SelectAllTest() {
-		// TODO 全選択テスト
 		InitSelectAll();
 		
-		List<InquiryReplyModel> list = dao.getAll();
+		List<InquiryReplyModel> list = this.dao.getAll();
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -65,9 +237,13 @@ class InquiryReplyDaoSqlTest {
 		list.clear();
 	}
 	
+	/**
+	 * IDによる選択テストの準備
+	 */
 	public void InitSelect_byId() {
-		// TODO IDによるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
+		String sql = "SELECT * FROM inquiry_reply "
+				+ "WHERE id = ?";
 		
 		map.put("id", 1);
 		map.put("inquiry_id", 1);
@@ -77,19 +253,21 @@ class InquiryReplyDaoSqlTest {
 		map.put("created", Timestamp.valueOf(dateTime1));
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForMap(sql, 1)).thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 2)).thenReturn(null);
 		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
+		this.dao = new InquiryReplyDaoSql(this.jdbcTemp);
 	}
 	
+	/**
+	 * IDによる選択テスト
+	 */
 	@Test
 	public void Select_byIdTest() {
-		// TODO 全選択テスト
 		InitSelect_byId();
 		
-		InquiryReplyModel model = dao.select(1);
+		InquiryReplyModel model = this.dao.select(new InquiryReplyId(1));
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
@@ -99,15 +277,19 @@ class InquiryReplyDaoSqlTest {
 		Assertions.assertEquals(model.getComment(), "テストコメント");
 		Assertions.assertEquals(model.getCreated().toString(), dateTime1.toString());
 		
-		model = dao.select(2);
+		model = this.dao.select(new InquiryReplyId(2));
 		Assertions.assertNull(model);
 	}
 	
+	/**
+	 * 問い合わせIDによる選択テストの準備
+	 */
 	public void InitSelect_byInquiryId() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map            = new HashMap<String, Object>();
+		List<Map<String, Object>> mapList  = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
+		String sql = "SELECT * FROM inquiry_reply "
+				+ "WHERE inquiry_id = ?";
 		
 		map.put("id", 1);
 		map.put("inquiry_id", 1);
@@ -118,20 +300,21 @@ class InquiryReplyDaoSqlTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any(), eq(1))).thenReturn(mapList);
-		when(jdbcTemp.queryForList(any(), eq(2))).thenReturn(mapList2);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(sql, 1)).thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql, 2)).thenReturn(mapList2);
 		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
+		this.dao = new InquiryReplyDaoSql(jdbcTemp);
 	}
 	
-	
+	/**
+	 * 問い合わせIDによる選択テスト
+	 */
 	@Test
 	public void Select_byInquiryId_Test() {
-		// TODO 全選択テスト
 		InitSelect_byInquiryId();
 		
-		List<InquiryReplyModel> list = dao.select_byInquiryId(1);
+		List<InquiryReplyModel> list = this.dao.select_byInquiryId(new InquiryId(1));
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -142,118 +325,17 @@ class InquiryReplyDaoSqlTest {
 		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
 		list.clear();
 		
-		list = dao.select_byInquiryId(2);
+		list = this.dao.select_byInquiryId(new InquiryId(2));
 		Assertions.assertEquals(list.size(), 0);
 	}
 	
-	public void InitInsert() {
-		// TODO 追加テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq(1),
-				eq("テストネーム"),
-				eq("テストメールアドレス"),
-				eq("テストコメント"),
-				eq(dateTime1)
-				)).thenReturn(1);
-		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void InsertTest() {
-		// TODO 更新テスト
-		InitInsert();
-		
-		InquiryReplyModel model = new InquiryReplyModel();
-		dao.insertReplyInquiry(model);
-	}
-	
-	public void InitUpdate() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq(1),
-				eq("テストネーム"),
-				eq("テストメールアドレス"),
-				eq("テストコメント"),
-				eq(1)
-				)).thenReturn(1);
-		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void UpdateTest() {
-		// TODO 更新テスト
-		InitUpdate();
-		
-		InquiryReplyModel model = new InquiryReplyModel();
-		model.setId(1);
-		model.setInquiry_id(1);
-		model.setName("テストネーム");
-		model.setEmail("テストメールアドレス");
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
-		
-		int ret = dao.updateReplyInquiry(model);
-		Assertions.assertEquals(ret, 1);
-	}
-	
-	public void InitDelete() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void DeleteTest() {
-		// TODO 削除処理のテスト
-		InitDelete();
-		
-		int ret = dao.deleteReplyInquiry(1);
-		Assertions.assertEquals(ret, 1);
-		
-		ret = dao.deleteReplyInquiry(2);
-		Assertions.assertEquals(ret, 0);
-	}
-	
-	public void InitDelete_byInquiryId() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		dao = new InquiryReplyDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void Delete_byInquiryId_Test() {
-		// TODO 削除処理のテスト
-		InitDelete_byInquiryId();
-		
-		int ret = dao.deleteReply_byInquiry(1);
-		Assertions.assertEquals(ret, 1);
-		
-		ret = dao.deleteReply_byInquiry(2);
-		Assertions.assertEquals(ret, 0);
-	}
-	
+	/**
+	 * 後処理
+	 */
 	@AfterEach
 	public void Release() {
-		dao = null;
-		jdbcTemp = null;
+		this.dao = null;
+		this.jdbcTemp = null;
 	}
 
 }

@@ -19,11 +19,23 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.dao.InquiryReplyDao;
 import com.example.demo.app.dao.InquiryReplyDaoSql;
+import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.app.entity.InquiryReplyModel;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.id.InquiryReplyId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
+import com.example.demo.common.word.NameWord;
 
+/**
+ * 問い合わせ返信サービスのテスト
+ * @author nanai
+ *
+ */
 class InquiryReplyServiceUseTest {
 
-	// テスト対象
+	/** テスト対象 */
 	InquiryReplyService service = null;
 	
 	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
@@ -31,9 +43,157 @@ class InquiryReplyServiceUseTest {
 	@Mock
 	JdbcTemplate jdbcTemp = null;
 	
+	/**
+	 * 追加テストの準備
+	 */
+	public void InitInsert() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "INSERT INTO inquiry_reply("
+				+ "inquiry_id, name, email, comment, created) "
+				+ "VALUES(?,?,?,?,?)";
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				1,
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				dateTime1
+				)).thenReturn(1);
+		
+		setService();
+	}
+	
+	/**
+	 * 追加テスト
+	 */
+	@Test
+	public void InsertTest() {
+		InitInsert();
+		
+		InquiryReplyModel model = new InquiryReplyModel(
+				new InquiryId(1),
+				new NameWord("テストネーム"),
+				new EmailWord("テストメールアドレス"),
+				new CommentWord("テストコメント"),
+				dateTime1
+				);
+		
+		this.service.save(model);
+	}
+	
+	/**
+	 * 更新テストの準備
+	 */
+	public void InitUpdate() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE inquiry_reply SET "
+				+ "inquiry_id = ?, name = ?, email = ?, comment = ? "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				1,
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				1
+				)).thenReturn(1);
+		
+		setService();
+	}
+	
+	/**
+	 * 更新テスト
+	 */
+	@Test
+	public void UpdateTest() {
+		InitUpdate();
+		
+		// 正常系
+		assertDoesNotThrow(
+			() -> this.service.update(
+				new InquiryReplyModel(
+					new InquiryReplyId(1),
+					new InquiryId(1),
+					new NameWord("テストネーム"),
+					new EmailWord("テストメールアドレス"),
+					new CommentWord("テストコメント"),
+					dateTime1
+				)
+			));
+	}
+	
+	/**
+	 * 削除テストの準備
+	 */
+	public void InitDelete() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM inquiry_reply "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(sql, 1))
+			.thenReturn(1);
+		when(this.jdbcTemp.update(sql, 2))
+			.thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		setService();
+	}
+	
+	/**
+	 * 削除テスト
+	 */
+	@Test
+	public void DeleteTest() {
+		InitDelete();
+		
+		assertDoesNotThrow(() -> 
+			this.service.delete(new InquiryReplyId(1)));
+		assertThrows(RuntimeException.class, 
+			() -> this.service.delete(new InquiryReplyId(2)));
+	}
+	
+	/**
+	 * 削除テストの準備(問い合わせID)
+	 */
+	public void InitDelete_byInquiryId() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM inquiry_reply "
+				+ "WHERE inquiry_id = ?";
+		
+		when(this.jdbcTemp.update(sql, 1))
+			.thenReturn(1);
+		when(this.jdbcTemp.update(sql, 2))
+			.thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		setService();
+	}
+	
+	/**
+	 * 削除テスト(問い合わせID)
+	 */
+	@Test
+	public void Delete_byInquiryId_Test() {
+		InitDelete_byInquiryId();
+		
+		// 正常系
+		assertDoesNotThrow(() -> 
+			this.service.delete_byInquiry(new InquiryId(1)));
+		
+		// 異常系
+		assertThrows(RuntimeException.class, 
+				() -> this.service.delete_byInquiry(new InquiryId(2)));
+	}
+	
+	/**
+	 * 全選択の準備
+	 */
 	public void InitSelectAll() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		map.put("id", 1);
@@ -45,18 +205,20 @@ class InquiryReplyServiceUseTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any())).thenReturn(mapList);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
 		
 		setService();
 	}
 	
+	/**
+	 * 全選択テスト
+	 */
 	@Test
 	public void SelectAllTest() {
-		// TODO 全選択テスト
 		InitSelectAll();
 		
-		List<InquiryReplyModel> list = service.getAll();
+		List<InquiryReplyModel> list = this.service.getAll();
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -68,9 +230,13 @@ class InquiryReplyServiceUseTest {
 		list.clear();
 	}
 	
+	/**
+	 * IDによるデータ取得テストの準備
+	 */
 	public void InitSelect_byId() {
-		// TODO IDによるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
+		String sql = "SELECT * FROM inquiry_reply "
+				+ "WHERE id = ?";
 		
 		map.put("id", 1);
 		map.put("inquiry_id", 1);
@@ -80,19 +246,23 @@ class InquiryReplyServiceUseTest {
 		map.put("created", Timestamp.valueOf(dateTime1));
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForMap(sql, 1))
+			.thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 2))
+			.thenReturn(null);
 		
 		setService();
 	}
 	
+	/**
+	 * IDによる選択テスト
+	 */
 	@Test
 	public void Select_byIdTest() {
-		// TODO 全選択テスト
 		InitSelect_byId();
 		
-		InquiryReplyModel model = service.select(1);
+		InquiryReplyModel model = this.service.select(new InquiryReplyId(1));
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
@@ -102,15 +272,20 @@ class InquiryReplyServiceUseTest {
 		Assertions.assertEquals(model.getComment(), "テストコメント");
 		Assertions.assertEquals(model.getCreated().toString(), dateTime1.toString());
 		
-		model = service.select(2);
-		Assertions.assertNull(model);
+		// 異常系
+		assertThrows(RuntimeException.class, 
+				() -> this.service.select(new InquiryReplyId(2)));
 	}
 	
+	/**
+	 * 問い合わせIDによる選択テストの準備
+	 */
 	public void InitSelect_byInquiryId() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map            = new HashMap<String, Object>();
+		List<Map<String, Object>> mapList  = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
+		String sql = "SELECT * FROM inquiry_reply "
+				+ "WHERE inquiry_id = ?";
 		
 		map.put("id", 1);
 		map.put("inquiry_id", 1);
@@ -121,20 +296,23 @@ class InquiryReplyServiceUseTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any(), eq(1))).thenReturn(mapList);
-		when(jdbcTemp.queryForList(any(), eq(2))).thenReturn(mapList2);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(sql, 1))
+			.thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql, 2))
+			.thenReturn(mapList2);
 		
 		setService();
 	}
 	
-	
+	/**
+	 * 問い合わせIDによる選択テスト
+	 */
 	@Test
 	public void Select_byInquiryId_Test() {
-		// TODO 全選択テスト
 		InitSelect_byInquiryId();
 		
-		List<InquiryReplyModel> list = service.select_byInquiryId(1);
+		List<InquiryReplyModel> list = this.service.select_byInquiryId(new InquiryId(1));
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -145,122 +323,25 @@ class InquiryReplyServiceUseTest {
 		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
 		list.clear();
 		
-		list = service.select_byInquiryId(2);
-		Assertions.assertEquals(list.size(), 0);
+		assertThrows(RuntimeException.class, 
+				() -> this.service.select_byInquiryId(new InquiryId(2)));
 	}
 	
-	public void InitInsert() {
-		// TODO 追加テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq(1),
-				eq("テストネーム"),
-				eq("テストメールアドレス"),
-				eq("テストコメント"),
-				eq(dateTime1)
-				)).thenReturn(1);
-		
-		setService();
-	}
-	
-	@Test
-	public void InsertTest() {
-		// TODO 更新テスト
-		InitInsert();
-		
-		InquiryReplyModel model = new InquiryReplyModel();
-		service.save(model);
-	}
-	
-	public void InitUpdate() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq(1),
-				eq("テストネーム"),
-				eq("テストメールアドレス"),
-				eq("テストコメント"),
-				eq(1)
-				)).thenReturn(1);
-		
-		setService();
-	}
-	
-	@Test
-	public void UpdateTest() {
-		// TODO 更新テスト
-		InitUpdate();
-		
-		InquiryReplyModel model = new InquiryReplyModel();
-		
-		// 例外テスト1
-		assertThrows(RuntimeException.class, () -> service.update(model));
-				
-		model.setId(1);
-		model.setInquiry_id(1);
-		model.setName("テストネーム");
-		model.setEmail("テストメールアドレス");
-		model.setComment("テストコメント");
-		model.setCreated(dateTime1);
-		
-		// 例外テスト2
-		assertDoesNotThrow(() -> service.update(model));
-	}
-	
-	public void InitDelete() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		setService();
-	}
-	
-	@Test
-	public void DeleteTest() {
-		// TODO 削除処理のテスト
-		InitDelete();
-		
-		assertDoesNotThrow(() -> service.delete(1));
-		assertThrows(RuntimeException.class, () -> service.delete(2));
-	}
-	
-	public void InitDelete_byInquiryId() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		setService();
-	}
-	
-	@Test
-	public void Delete_byInquiryId_Test() {
-		// TODO 削除処理のテスト
-		InitDelete_byInquiryId();
-		
-		service.delete_byInquiry(1);
-		service.delete_byInquiry(2);
-	}
-	
+	/**
+	 * サービスの設定
+	 */
 	public void setService() {
-		// TODO サービスのインスタンス化
-		InquiryReplyDao dao = new InquiryReplyDaoSql(jdbcTemp);
-		service = new InquiryReplyServiceUse(dao);
+		InquiryReplyDao dao = new InquiryReplyDaoSql(this.jdbcTemp);
+		this.service = new InquiryReplyServiceUse(dao);
 	}
 	
+	/**
+	 * 後処理
+	 */
 	@AfterEach
 	public void Release() {
-		jdbcTemp = null;
-		service = null;
+		this.jdbcTemp = null;
+		this.service = null;
 	}
 		
 }

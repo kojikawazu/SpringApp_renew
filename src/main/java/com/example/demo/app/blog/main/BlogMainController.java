@@ -20,11 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.app.entity.BlogMainModel;
 import com.example.demo.app.entity.BlogReplyModel;
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.app.exception.InquiryNotFoundException;
 import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.BlogMainService;
 import com.example.demo.app.service.BlogReplyService;
 import com.example.demo.app.service.BlogTagService;
 import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.BlogReplyId;
+import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.NameWord;
 
@@ -221,7 +224,7 @@ public class BlogMainController {
 		model.addAttribute("title", "コメント投稿確認");
 		model.addAttribute("cont", "これでよろしいですか？");
 		
-		BlogMainModel blogmainModel = blogMainService.select(id);
+		BlogMainModel blogmainModel = blogMainService.select(new BlogId(id));
 		model.addAttribute("blogMain", blogmainModel);
 		model.addAttribute("id", id);
 		
@@ -241,12 +244,13 @@ public class BlogMainController {
 			return "blog/reply";
 		}
 		
-		BlogReplyModel blog = new BlogReplyModel();
-		blog.setCommentid(id);
-		blog.setThanksCnt(0);
-		blog.setName(replyForm.getName());
-		blog.setComment(replyForm.getComment());
-		blog.setCreated(LocalDateTime.now());
+		BlogReplyModel blog = new BlogReplyModel(
+				new BlogId(id),
+				new NameWord(replyForm.getName()),
+				new NameWord(replyForm.getComment()),
+				new ThanksCntNumber(0),
+				LocalDateTime.now()
+				);
 		
 		blogReplyService.save(blog);
 		redirectAttributes.addAttribute("id", id);
@@ -260,8 +264,8 @@ public class BlogMainController {
 			Model model,
 			RedirectAttributes redirectAttributes) {
 		// TODO 削除
-		blogReplyService.delete_byBlogid(id);
-		blogMainService.delete(id);
+		blogReplyService.delete_byBlogid(new BlogId(id));
+		blogMainService.delete(new BlogId(id));
 		
 		return "redirect:/blog/";
 	}
@@ -280,7 +284,7 @@ public class BlogMainController {
 	@ResponseBody
 	public String thanksIncrement2(BlogMainId thanksCnter) {
 		// TODO いいね数加算
-		int cnter = blogMainService.thanksIncrement(thanksCnter.getId());
+		int cnter = blogMainService.thanksIncrement(new BlogId(thanksCnter.getId()));
 		if(cnter != -1)	cnter = 0;
 		return String.valueOf(cnter);
 	}
@@ -290,7 +294,7 @@ public class BlogMainController {
 	@ResponseBody
 	public String replyThanksIncrement(BlogMainId thanksCnter) {
 		// TODO いいね数加算
-		int cnter = blogReplyService.thanksIncrement(thanksCnter.getId());
+		int cnter = blogReplyService.thanksIncrement(new BlogReplyId(thanksCnter.getId()));
 		return String.valueOf(cnter);
 	}
 	
@@ -305,7 +309,7 @@ public class BlogMainController {
 	
 	private void setEditor(int editor, BlogForm blogForm, Model model) {
 		// TODO 編集共通処理
-		BlogMainModel result = blogMainService.select(editor);
+		BlogMainModel result = blogMainService.select(new BlogId(editor));
 		
 		model.addAttribute("title", "ブログの編集");
 		model.addAttribute("cont", "ブログを編集してください。");
@@ -323,7 +327,7 @@ public class BlogMainController {
 		model.addAttribute("title", "コメント投稿");
 		model.addAttribute("cont", "ブログに対してのコメントを入力してください。");
 		
-		BlogMainModel blogmainModel = blogMainService.select(id);
+		BlogMainModel blogmainModel = blogMainService.select(new BlogId(id));
 		model.addAttribute("blogMain", blogmainModel);
 		
 		model.addAttribute("id", id);
@@ -352,8 +356,12 @@ public class BlogMainController {
 		for(int cnt=0, len=blogpageList.size(); cnt<len; cnt++ ) {
 			List<BlogReplyModel> replyList = null;
 			BlogMainModel blogModel = blogpageList.get(cnt);
-			replyList = blogReplyService.select_byBlogId(blogModel.getId());
-			blogModel.setReplyList(replyList);
+			try {
+				replyList = blogReplyService.select_byBlogId(new BlogId(blogModel.getId()));
+				blogModel.setReplyList(replyList);
+			} catch(InquiryNotFoundException ex) {
+				
+			}
 		}
 		
 		// ページクラスに設定
@@ -373,7 +381,7 @@ public class BlogMainController {
 		if( selectidx == 1 ||  selectidx == 0 ) {
 			list = blogMainService.getAll();
 		}else {
-			BlogTagModel tagModel = blogTagService.select(selectidx);
+			BlogTagModel tagModel = blogTagService.select(new BlogTagId(selectidx));
 			list = blogMainService.select_byTag(tagModel.getTag());
 		}
 		return list;

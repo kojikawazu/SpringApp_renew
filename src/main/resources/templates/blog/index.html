@@ -84,7 +84,7 @@
 			<!-- 返信枠 -->
 			<p class="reply-title-layout">返信内容 : </p>
 			<div  th:each="blogreply : ${blogmain.replyList}" th:id="${blogreply.id}">
-				<div class="replylayout rounded" th:if="${blogmain.id} == ${blogreply.commentid}">
+				<div class="replylayout rounded" th:if="${blogmain.id} == ${blogreply.blogId}">
 					<!-- 返信者名 -->
 			 		<h3 class="reply-title" th:text="${blogreply.name}"></h3>
 			 		<!-- 返信日付 -->

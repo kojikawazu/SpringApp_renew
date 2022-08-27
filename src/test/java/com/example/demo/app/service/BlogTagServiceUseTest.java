@@ -19,12 +19,20 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.BlogTagDao;
 import com.example.demo.app.dao.BlogTagDaoSql;
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.app.exception.InquiryNotFoundException;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
 
+/**
+ * ブログタグサービスのテスト
+ * @author nanai
+ *
+ */
 class BlogTagServiceUseTest {
 	
-	// テスト対象
+	/** テスト対象 */
 	BlogTagService service = null;
 	
 	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
@@ -32,9 +40,121 @@ class BlogTagServiceUseTest {
 	@Mock
 	JdbcTemplate jdbcTemp = null;
 	
+	/**
+	 * 追加テストの準備
+	 */
+	public void InitInsert() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "INSERT INTO blog_tag(tag) "
+					+ "VALUES(?)";
+		
+		when(this.jdbcTemp.update(
+				sql,
+				"テストタグ")).thenReturn(1);
+		
+		setService();
+	}
+	
+	/**
+	 * 追加テスト
+	 */
+	@Test
+	public void InsertTest() {
+		InitInsert();
+		
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(0),
+				new NameWord("テストタグ")
+				);
+		
+		this.service.save(model);
+	}
+	
+	/**
+	 * 更新テストの準備
+	 */
+	public void InitUpdate() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE blog_tag SET "
+				+ "tag = ? WHERE id = ?";
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				"テストタグ",
+				1
+				)).thenReturn(1);
+		
+		when(this.jdbcTemp.update(
+				sql, 
+				"テストタグ",
+				2
+				)).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		setService();
+	}
+	
+	/**
+	 * 更新テスト
+	 */
+	@Test
+	public void UpdateTest() {
+		InitUpdate();
+		
+		assertDoesNotThrow(
+			() -> this.service.update(
+				new BlogTagModel(
+					new BlogTagId(1),
+					new NameWord("テストタグ")
+				)
+			));
+		
+		assertThrows(
+				RuntimeException.class, 
+			() -> this.service.update(
+				new BlogTagModel(
+					new BlogTagId(2),
+					new NameWord("テストタグ")
+				)
+			));
+	}
+	
+	/**
+	 * 削除テストの準備
+	 */
+	public void InitDelete() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM blog_tag "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(sql, 
+				1)).thenReturn(1);
+		when(this.jdbcTemp.update(sql, 
+				2)).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		setService();
+	}
+	
+	/**
+	 * 削除テスト
+	 */
+	@Test
+	public void DeleteTest() {
+		InitDelete();		
+
+		assertDoesNotThrow(
+				() -> this.service.delete(new BlogTagId(1)));
+		assertThrows(RuntimeException.class, 
+				() -> this.service.delete(new BlogTagId(2)));
+	}
+	
+	/**
+	 * 全選択テストの準備
+	 */
 	public void InitSelectAll() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		map.put("id", 1);
@@ -42,19 +162,20 @@ class BlogTagServiceUseTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any())).thenReturn(mapList);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
 		
 		setService();
 	}
 	
-	
+	/**
+	 * 全選択テスト
+	 */
 	@Test
 	public void SelectAllTest() {
-		// TODO 全選択テスト
 		InitSelectAll();
 		
-		List<BlogTagModel> list = service.getAll();
+		List<BlogTagModel> list = this.service.getAll();
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -62,121 +183,60 @@ class BlogTagServiceUseTest {
 		list.clear();
 	}
 	
+	/**
+	 * IDによるデータ取得テストの準備
+	 */
 	public void InitSelect_byId() {
-		// TODO IDによるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
+		String sql = "SELECT * "
+				+ "FROM blog_tag "
+				+ "WHERE id = ?";
 		
 		map.put("id", 1);
 		map.put("tag", "テストタグ");
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForMap(sql, 
+				1)).thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 
+				2)).thenReturn(null);
 		
 		setService();
 	}
 	
+	/**
+	 * 選択テスト
+	 */
 	@Test
 	public void Select_byIdTest() {
-		// TODO 全選択テスト
 		InitSelect_byId();
 		
-		BlogTagModel model = service.select(1);
+		BlogTagModel model = this.service.select(new BlogTagId(1));
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
 		Assertions.assertEquals(model.getTag(), "テストタグ");
 		
-		model = service.select(2);
-		Assertions.assertNull(model);
+		assertThrows(RuntimeException.class, () -> 
+			this.service.select(new BlogTagId(2)));
 	}
 	
-	public void InitInsert() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(),
-				eq("テストタグ"))).thenReturn(1);
-		
-		setService();
-	}
-	
-	@Test
-	public void InsertTest() {
-		// TODO 更新テスト
-		InitInsert();
-		
-		BlogTagModel model = new BlogTagModel(
-				new BlogTagId(0),
-				new NameWord("")
-				);
-		service.save(model);
-	}
-	
-	public void InitUpdate() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタグ"),
-				eq(1)
-				)).thenReturn(1);
-		
-		setService();
-	}
-	
-	@Test
-	public void UpdateTest() {
-		// TODO 更新テスト
-		InitUpdate();
-		
-		BlogTagModel model = new BlogTagModel(
-				new BlogTagId(1),
-				new NameWord("テストタグ")
-				);
-		
-		// 例外テスト1
-		//assertThrows(RuntimeException.class, () -> service.update(model));
-		
-		// 例外テスト2
-		assertDoesNotThrow(() -> service.update(model));
-	}
-	
-	public void InitDelete() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		setService();
-	}
-	
-	@Test
-	public void DeleteTest() {
-		// TODO 削除処理のテスト
-		InitDelete();		
-
-		assertDoesNotThrow(() -> service.delete(1));
-		assertThrows(RuntimeException.class, () -> service.delete(2));
-	}
-	
+	/**
+	 * サービスの設定
+	 */
 	public void setService() {
-		// TODO サービスのインスタンス化
 		BlogTagDao dao = new BlogTagDaoSql(jdbcTemp);
-		service = new BlogTagServiceUse(dao);
+		this.service = new BlogTagServiceUse(dao);
 	}
 	
-
+	/**
+	 * 後処理
+	 */
 	@AfterEach
 	public void Release() {
-		jdbcTemp = null;
-		service = null;
+		this.jdbcTemp = null;
+		this.service = null;
 	}
 
 }

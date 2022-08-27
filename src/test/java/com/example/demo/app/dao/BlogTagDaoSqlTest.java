@@ -16,9 +16,15 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogTagModel;
+import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
 
+/**
+ * ブログタグDaoクラステスト
+ * @author nanai
+ *
+ */
 class BlogTagDaoSqlTest {
 	
 	private BlogTagDao dao = null;
@@ -27,10 +33,124 @@ class BlogTagDaoSqlTest {
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
+	
+	/**
+	 * 追加テストの準備
+	 */
+	public void InitInsert() {
+		// Mock化
+		jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT id "
+				+ "FROM blog_tag "
+				+ "WHERE tag = ?";
+		when(this.jdbcTemp.update(
+				sql,
+				"テストタグ")).thenReturn(1);
+		
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 追加テスト
+	 */
+	@Test
+	public void InsertTest() {
+		InitInsert();
+		
+		BlogTagModel model = new BlogTagModel(
+				new BlogTagId(0),
+				new NameWord("テストタグ")
+				);
+		this.dao.insertTag(model);
+	}
+	
+	/**
+	 * 更新テストの準備
+	 */
+	public void InitUpdate() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		
+		when(this.jdbcTemp.update(
+				"UPDATE blog_tag SET "
+					+ "tag = ? WHERE id = ?", 
+				"テストタグ",
+				1
+				)).thenReturn(1);
+		
+		when(this.jdbcTemp.update(
+				"UPDATE blog_tag SET "
+					+ "tag = ? WHERE id = ?", 
+				"テストタグ",
+				2
+				)).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 更新テスト
+	 */
+	@Test
+	public void UpdateTest() {
+		InitUpdate();
+		int ret = 0;
+		BlogTagModel model = null;
+		
+		model = new BlogTagModel(
+				new BlogTagId(1),
+				new NameWord("テストタグ")
+				);
+		
+		ret = this.dao.updateTag(model);
+		Assertions.assertEquals(ret, 1);
+		
+		model = new BlogTagModel(
+				new BlogTagId(2),
+				new NameWord("テストタグ")
+				);
+		
+		ret = this.dao.updateTag(model);
+		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
+	}
+	
+	/**
+	 * 削除テストの準備
+	 */
+	public void InitDelete() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(jdbcTemp.update(
+				"DELETE FROM blog_tag "
+				+ "WHERE id = ?",
+				1)).thenReturn(1);
+		when(jdbcTemp.update(
+				"DELETE FROM blog_tag "
+				+ "WHERE id = ?", 
+				2)).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+	}
+	
+	/**
+	 * 削除テスト
+	 */
+	@Test
+	public void DeleteTest() {
+		InitDelete();
+		
+		int ret = this.dao.deleteTag(new BlogTagId(1));
+		Assertions.assertEquals(ret, 1);
+		
+		ret = this.dao.deleteTag(new BlogTagId(2));
+		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
+	}
 
+	/**
+	 * 全選択テストの準備
+	 */
 	public void InitSelectAll() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		map.put("id", 1);
@@ -38,19 +158,20 @@ class BlogTagDaoSqlTest {
 		mapList.add(map);
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any())).thenReturn(mapList);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
 		
-		dao = new BlogTagDaoSql(jdbcTemp);
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
 	}
 	
-	
+	/**
+	 * 全選択テスト
+	 */
 	@Test
 	public void SelectAllTest() {
-		// TODO 全選択テスト
 		InitSelectAll();
 		
-		List<BlogTagModel> list = dao.getAll();
+		List<BlogTagModel> list = this.dao.getAll();
 		
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
@@ -58,110 +179,48 @@ class BlogTagDaoSqlTest {
 		list.clear();
 	}
 	
+	/**
+	 * IDによるデータ取得テストの準備
+	 */
 	public void InitSelect_byId() {
-		// TODO IDによるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
+		String sql = "SELECT * "
+				+ "FROM blog_tag "
+				+ "WHERE id = ?";
 		
 		map.put("id", 1);
 		map.put("tag", "テストタグ");
 		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForMap(sql, 
+				1)).thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 
+				2)).thenReturn(null);
 		
-		dao = new BlogTagDaoSql(jdbcTemp);
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
 	}
 	
+	/**
+	 * IDによるデータ取得のテスト
+	 */
 	@Test
 	public void Select_byIdTest() {
-		// TODO 全選択テスト
 		InitSelect_byId();
 		
-		BlogTagModel model = dao.select(1);
+		BlogTagModel model = this.dao.select(new BlogTagId(1));
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
 		Assertions.assertEquals(model.getTag(), "テストタグ");
 		
-		model = dao.select(2);
+		model = this.dao.select(new BlogTagId(2));
 		Assertions.assertNull(model);
 	}
 	
-	public void InitInsert() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(),
-				eq("テストタグ"))).thenReturn(1);
-		
-		dao = new BlogTagDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void InsertTest() {
-		// TODO 更新テスト
-		InitInsert();
-		
-		BlogTagModel model = new BlogTagModel(
-				new BlogTagId(0),
-				new NameWord("")
-				);
-		dao.insertTag(model);
-	}
-	
-	public void InitUpdate() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタグ"),
-				eq(1)
-				)).thenReturn(1);
-		
-		dao = new BlogTagDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void UpdateTest() {
-		// TODO 更新テスト
-		InitUpdate();
-		
-		BlogTagModel model = new BlogTagModel(
-				new BlogTagId(1),
-				new NameWord("テストタグ")
-				);
-		
-		int ret = dao.updateTag(model);
-		Assertions.assertEquals(ret, 1);
-	}
-	
-	public void InitDelete() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		dao = new BlogTagDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void DeleteTest() {
-		// TODO 削除処理のテスト
-		InitDelete();
-		
-		int ret = dao.deleteTag(1);
-		Assertions.assertEquals(ret, 1);
-		
-		ret = dao.deleteTag(2);
-		Assertions.assertEquals(ret, 0);
-	}
-	
+	/**
+	 * 後処理
+	 */
 	@AfterEach
 	public void Release() {
 		dao = null;

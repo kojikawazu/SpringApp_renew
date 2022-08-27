@@ -1,12 +1,12 @@
 package com.example.demo.common.word;
 
 /**
- * 名前クラス
+ * Eメール文字列クラス
  * @author nanai
  *
  */
-public class NameWord implements SuperWord {
-	
+public class EmailWord implements SuperWord {
+
 	/** 文字列保持 */
 	private String word;
 	
@@ -14,7 +14,7 @@ public class NameWord implements SuperWord {
 	 * コンストラクタ
 	 * @param word
 	 */
-	public NameWord(String word) {
+	public EmailWord(String word) {
 		this.word = word;
 	}
 	

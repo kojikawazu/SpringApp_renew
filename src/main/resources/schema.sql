@@ -47,7 +47,7 @@ CREATE TABLE blog_main
 CREATE TABLE blog_reply
 (
 	id INT NOT NULL AUTO_INCREMENT,
-	commentid INT NOT NULL,
+	blog_id INT NOT NULL,
 	name VARCHAR(20) NOT NULL,
 	comment VARCHAR(40) NOT NULL,
 	thanksCnt INT NOT NULL,

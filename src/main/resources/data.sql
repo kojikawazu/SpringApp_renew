@@ -98,7 +98,7 @@ INSERT INTO blog_tag(tag)
 VALUES('テスト');
 
 
-INSERT INTO blog_reply(commentid, name, comment, thanksCnt, created)
+INSERT INTO blog_reply(blog_id, name, comment, thanksCnt, created)
 VALUES(1, '管理人', 'Hello thank you!', 0, '2019-11-13 08:34:19');
 
 
