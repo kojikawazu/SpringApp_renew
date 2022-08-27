@@ -1,5 +1,6 @@
 package com.example.demo.app.dao;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -18,10 +19,16 @@ import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogMainModel;
+import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.NameWord;
 
+/**
+ * ブログメインDaoクラステスト
+ * @author nanai
+ *
+ */
 class BlogMainDaoSqlTest {
 	
 	private BlogMainDao dao = null;
@@ -32,16 +39,185 @@ class BlogMainDaoSqlTest {
 	@Mock
 	JdbcTemplate jdbcTemp = null;
 	
-	
+	/**
+	 * 初期化
+	 */
 	@BeforeEach
 	public void Init() {
 		
 		
 	}
 	
+	/**
+	 * 追加テストの準備
+	 */
+	public void InitInsert() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		
+		when(this.jdbcTemp.update(
+				"INSERT INTO blog_main("
+						+ "title, tag, comment, thanksCnt, created, updated) "
+						+ "VALUES(?,?,?,?,?,?)", 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				dateTime1,
+				dateTime2
+				)).thenReturn(1);
+		
+		this.dao = new BlogMainDaoSql(jdbcTemp);
+	}
+	
+	/**
+	 * 追加テスト
+	 */
+	@Test
+	public void InsertTest() {
+		// 準備
+		InitInsert();
+		
+		BlogMainModel model = new BlogMainModel(
+				new NameWord("テストタイトル"),
+				new NameWord("テストタグ"),
+				new NameWord("テストコメント"),
+				new ThanksCntNumber(1),
+				dateTime1,
+				dateTime2
+				);
+		
+		// テスト
+		this.dao.insertBlog(model);
+		verify(this.jdbcTemp, times(1)).update(
+				anyString(), 
+				anyString(), 
+				anyString(), 
+				anyString(), 
+				anyInt(), 
+				any(), 
+				any());
+	}
+	
+	/**
+	 * 更新テストの準備
+	 */
+	public void InitUpdate() {
+		// Mock化
+		jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE blog_main SET "
+				+ "title = ?, tag = ?, comment = ?, thanksCnt = ?, updated = ? "
+				+ "WHERE id = ?";
+		// 正常系
+		when(jdbcTemp.update(
+				sql, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				dateTime2,
+				1
+				)).thenReturn(1);
+		
+		// 異常系
+		when(jdbcTemp.update(
+				sql, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				dateTime2,
+				2
+				)).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		dao = new BlogMainDaoSql(jdbcTemp);
+	}
+	
+	/**
+	 * 更新テスト（正常系)
+	 */
+	@Test
+	public void UpdateTest() {
+		// 準備
+		InitUpdate();
+		
+		int ret = 0;
+		
+		BlogMainModel model = new BlogMainModel(
+				new BlogId(1),
+				new NameWord("テストタイトル"),
+				new NameWord("テストタグ"),
+				new NameWord("テストコメント"),
+				new ThanksCntNumber(1),
+				dateTime1,
+				dateTime2
+				);
+		
+		// 正常系テスト
+		ret = dao.updateBlog(model);
+		Assertions.assertEquals(ret, 1);
+	}
+	
+	/**
+	 * 更新テスト（異常系)
+	 */
+	@Test
+	public void UpdateTestError() {
+		// 準備
+		InitUpdate();
+		
+		int ret = 0;
+		
+		BlogMainModel 	model = new BlogMainModel(
+				new BlogId(2),
+				new NameWord("テストタイトル"),
+				new NameWord("テストタグ"),
+				new NameWord("テストコメント"),
+				new ThanksCntNumber(1),
+				dateTime1,
+				dateTime2
+				);
+		
+		// 異常系テスト
+		ret = dao.updateBlog(model);
+		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
+	}
+	
+	/**
+	 * 削除テストの準備
+	 */
+	public void InitDelete() {
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		
+		when(this.jdbcTemp.update(any(), eq(1))).thenReturn(1);
+		when(this.jdbcTemp.update(any(), eq(2))).thenReturn(WebConsts.ERROR_NUMBER);
+		
+		this.dao = new BlogMainDaoSql(jdbcTemp);
+	}
+	
+	/**
+	 * 削除テスト
+	 */
+	@Test
+	public void DeleteTest() {
+		// 準備
+		InitDelete();
+		int ret = 0;
+		
+		// テスト
+		ret = this.dao.deleteBlog(new BlogId(1));
+		Assertions.assertEquals(ret, 1);
+		
+		ret = this.dao.deleteBlog(new BlogId(2));
+		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
+	}
+	
+	/**
+	 * 全て選択メソッドの準備
+	 */
 	public void InitSelectAll() {
-		// TODO 全て選択初期化
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object>       map     = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		map.put("id", 1);
@@ -60,14 +236,18 @@ class BlogMainDaoSqlTest {
 		dao = new BlogMainDaoSql(jdbcTemp);
 	}
 	
-	
+	/**
+	 * 全て選択のテスト
+	 */
 	@Test
 	public void SelectAllTest() {
-		// TODO 全選択テスト
+		// 前準備
 		InitSelectAll();
 		
+		// メソッド実行
 		List<BlogMainModel> list = dao.getAll();
 		
+		// チェック
 		Assertions.assertEquals(list.size(), 1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
 		Assertions.assertEquals(list.get(0).getTitle(), "テストタイトル");
@@ -76,11 +256,15 @@ class BlogMainDaoSqlTest {
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
 		Assertions.assertEquals(list.get(0).getUpdated().toString(), dateTime2.toString());
+		
+		// 後処理
 		list.clear();
 	}
 	
+	/**
+	 * IDによるデータ取得の準備
+	 */
 	public void InitSelect_byId() {
-		// TODO IDによるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("id", 1);
@@ -99,12 +283,14 @@ class BlogMainDaoSqlTest {
 		dao = new BlogMainDaoSql(jdbcTemp);
 	}
 	
+	/**
+	 * IDによるデータ取得のテスト
+	 */
 	@Test
 	public void Select_byIdTest() {
-		// TODO 全選択テスト
 		InitSelect_byId();
 		
-		BlogMainModel model = dao.select(1);
+		BlogMainModel model = dao.select(new BlogId(1));
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
@@ -115,12 +301,14 @@ class BlogMainDaoSqlTest {
 		Assertions.assertEquals(model.getCreated().toString(), dateTime1.toString());
 		Assertions.assertEquals(model.getUpdated().toString(), dateTime2.toString());
 		
-		model = dao.select(2);
+		model = dao.select(new BlogId(2));
 		Assertions.assertNull(model);
 	}
 	
+	/**
+	 * タグ名によるデータ取得の準備
+	 */
 	public void InitSelect_byTag() {
-		// TODO タグ名によるデータ取得初期化
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
@@ -142,11 +330,15 @@ class BlogMainDaoSqlTest {
 		dao = new BlogMainDaoSql(jdbcTemp);
 	}
 	
+	/**
+	 * タグ名による選択のテスト
+	 */
 	@Test
 	public void Select_byTagTest() {
-		// TODO タグ名による選択テスト
+		// 準備
 		InitSelect_byTag();
 		
+		// テスト
 		List<BlogMainModel> list = dao.select_byTag("テスト");
 		
 		Assertions.assertEquals(list.size(), 1);
@@ -163,133 +355,46 @@ class BlogMainDaoSqlTest {
 		Assertions.assertEquals(list.size(), 0);
 	}
 	
-	public void InitInsert() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタイトル"),
-				eq("テストタグ"),
-				eq("テストコメント"),
-				eq(1),
-				eq(dateTime2)
-				)).thenReturn(1);
-		
-		dao = new BlogMainDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void InsertTest() {
-		// TODO 更新テスト
-		InitInsert();
-		
-		BlogMainModel model = new BlogMainModel(
-				new NameWord(""),
-				new NameWord(""),
-				new NameWord(""),
-				new ThanksCntNumber(0),
-				LocalDateTime.now(),
-				LocalDateTime.now()
-				);
-		dao.insertBlog(model);
-	}
-	
-	public void InitUpdate() {
-		// TODO 更新テストの初期化
-		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタイトル"),
-				eq("テストタグ"),
-				eq("テストコメント"),
-				eq(1),
-				eq(dateTime2),
-				eq(1)
-				)).thenReturn(1);
-		
-		dao = new BlogMainDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void UpdateTest() {
-		// TODO 更新テスト
-		InitUpdate();
-		
-		BlogMainModel model = new BlogMainModel(
-				new BlogId(1),
-				new NameWord("テストタイトル"),
-				new NameWord("テストタグ"),
-				new NameWord("テストコメント"),
-				new ThanksCntNumber(1),
-				dateTime1,
-				dateTime2
-				);
-		
-		int ret = dao.updateBlog(model);
-		Assertions.assertEquals(ret, 1);
-	}
-	
-	public void InitDelete() {
-		// TODO 削除テストの初期化
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
-		
-		dao = new BlogMainDaoSql(jdbcTemp);
-	}
-	
-	@Test
-	public void DeleteTest() {
-		// TODO 削除処理のテスト
-		InitDelete();
-		
-		int ret = dao.deleteBlog(1);
-		Assertions.assertEquals(ret, 1);
-		
-		ret = dao.deleteBlog(2);
-		Assertions.assertEquals(ret, 0);
-	}
-	
+	/**
+	 * インクリメントテストの準備
+	 */
 	public void InitThanksIncrement() {
-		// TODO インクリメントの初期化
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("thanksCnt", 1);
 		
-		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.update(any(), eq(2), eq(1))).thenReturn(1);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		when(this.jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
+		when(this.jdbcTemp.update(any(), eq(2), eq(1))).thenReturn(1);
 		
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		when(this.jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
 		
-		dao = new BlogMainDaoSql(jdbcTemp);
+		this.dao = new BlogMainDaoSql(jdbcTemp);
 	}
 	
+	/**
+	 * インクリメントテスト
+	 */
 	@Test
 	public void IncrementTest() {
-		// TODO インクリメント処理のテスト
+		// 準備
 		InitThanksIncrement();
+		int ret = 0;
 		
-		int ret = dao.thanksIncrement(1);
+		// テスト開始
+		ret = this.dao.thanksIncrement(new BlogId(1));
 		Assertions.assertEquals(ret, 2);
 		
-		ret = dao.thanksIncrement(2);
-		Assertions.assertEquals(ret, -1);
+		ret = this.dao.thanksIncrement(new BlogId(2));
+		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
 	}
 	
-	
+	/**
+	 * 後処理
+	 */
 	@AfterEach
 	public void Release() {
-		dao = null;
-		jdbcTemp = null;
+		this.dao = null;
+		this.jdbcTemp = null;
 	}
-	
-	
-
 }

@@ -2,71 +2,187 @@ package com.example.demo.app.entity;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.id.InquiryReplyId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
+import com.example.demo.common.word.NameWord;
+
+/**
+ * 問い合わせ返信モデルクラス
+ * @author nanai
+ *
+ */
 public class InquiryReplyModel {
 	
-	private int id;
+	/** 問い合わせ返信ID */
+	private InquiryReplyId id;
 	
-	private int inquiry_id;
+	/** 問い合わせID */
+	private InquiryId      inquiry_id;
 	
-	private String name;
+	/** 名前 */
+	private NameWord       name;
 	
-	private String email;
+	/** Eメール */
+	private EmailWord      email;
 	
-	private String comment;
+	/** コメント */
+	private CommentWord    comment;
 	
-	private LocalDateTime created;
+	/** 生成日付 */
+	private LocalDateTime  created;
 
-	public InquiryReplyModel() {
-		super();
+	/**
+	 * コンストラクタ
+	 * @param id
+	 * @param inquiry_id
+	 * @param name
+	 * @param email
+	 * @param comment
+	 * @param created
+	 */
+	public InquiryReplyModel(
+			InquiryReplyId id,
+			InquiryId      inquiry_id,
+			NameWord       name,
+			EmailWord      email,
+			CommentWord    comment,
+			LocalDateTime  created) {
+		this.id = (id == null ?
+				new InquiryReplyId(0) :
+				id);
+		
+		this.inquiry_id = (inquiry_id == null ?
+				new InquiryId(0) :
+					inquiry_id);
+		
+		this.name = (name == null ?
+				new NameWord("") :
+				name);
+		
+		this.email = (email == null ?
+				new EmailWord("") :
+				email);
+		
+		this.comment = (comment == null ?
+				new CommentWord("") :
+				comment);
+		
+		this.created = (created == null ?
+				LocalDateTime.now() :
+				created);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param inquiry_id
+	 * @param name
+	 * @param email
+	 * @param comment
+	 * @param created
+	 */
+	public InquiryReplyModel(
+			InquiryId      inquiry_id,
+			NameWord       name,
+			EmailWord      email,
+			CommentWord    comment,
+			LocalDateTime  created) {
+		this.id = new InquiryReplyId(0);
+		
+		this.inquiry_id = (inquiry_id == null ?
+				new InquiryId(0) :
+					inquiry_id);
+		
+		this.name = (name == null ?
+				new NameWord("") :
+				name);
+		
+		this.email = (email == null ?
+				new EmailWord("") :
+				email);
+		
+		this.comment = (comment == null ?
+				new CommentWord("") :
+				comment);
+		
+		this.created = (created == null ?
+				LocalDateTime.now() :
+				created);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param model
+	 */
+	public InquiryReplyModel(
+			InquiryReplyModel model) {
+		if(model == null) {
+			this.id         = new InquiryReplyId(0);
+			this.inquiry_id = new InquiryId(0);
+			this.name       = new NameWord("");
+			this.email      = new EmailWord("");
+			this.comment    = new CommentWord("");
+			this.created    = LocalDateTime.now();
+		} else {
+			this.id         = new InquiryReplyId(model.getId());
+			this.inquiry_id = new InquiryId(model.getInquiry_id());
+			this.name       = new NameWord(model.getName());
+			this.email      = new EmailWord(model.getEmail());
+			this.comment    = new CommentWord(model.getComment());
+			this.created    = model.getCreated();
+		}
 	}
 
 	public int getId() {
-		return id;
+		return this.id.getId();
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	protected void setId(int id) {
+		this.id = new InquiryReplyId(id);
 	}
 
 	public int getInquiry_id() {
-		return inquiry_id;
+		return this.inquiry_id.getId();
 	}
 
-	public void setInquiry_id(int inquiry_id) {
-		this.inquiry_id = inquiry_id;
+	protected void setInquiry_id(int inquiry_id) {
+		this.inquiry_id = new InquiryId(inquiry_id);
 	}
 
 	public String getName() {
-		return ( name != null ? name : "" );
+		return this.name.getWord();
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	protected void setName(String name) {
+		if(name == null)	return ;
+		this.name = new NameWord(name);
 	}
 
 	public String getEmail() {
-		return ( email != null ? email : "" );
+		return this.email.getWord();
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	protected void setEmail(String email) {
+		if(email == null)	return ;
+		this.email = new EmailWord(email);
 	}
 
 	public String getComment() {
-		return ( comment != null ? comment : "" );
+		return this.comment.getWord();
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	protected void setComment(String comment) {
+		if(comment == null)	return ;
+		this.comment = new CommentWord(comment);
 	}
 
 	public LocalDateTime getCreated() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-		return ( created != null ? created : dateTime );
+		return this.created;
 	}
 
-	public void setCreated(LocalDateTime created) {
+	protected void setCreated(LocalDateTime created) {
+		if(created == null)	return ;
 		this.created = created;
 	}
-
 }

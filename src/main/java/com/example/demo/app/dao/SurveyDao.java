@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.example.demo.app.entity.SurveyModel;
 
+/**
+ * 調査インターフェース
+ * @author nanai
+ *
+ */
 public interface SurveyDao {
 
 	void insertSurvey(SurveyModel model);

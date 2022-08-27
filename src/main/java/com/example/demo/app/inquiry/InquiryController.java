@@ -22,6 +22,8 @@ import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.InquiryReplyService;
 import com.example.demo.app.service.InquiryService;
 import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 @Controller
@@ -145,7 +147,7 @@ public class InquiryController {
 		model.addAttribute("title", "確認画面");
 		model.addAttribute("cont", "これでよろしいでしょうか？");
 		
-		InquiryModel inquiryModel =inquiryService.select(id);
+		InquiryModel inquiryModel =inquiryService.select(new InquiryId(id));
 		model.addAttribute("inquiry", inquiryModel);
 		model.addAttribute("id", id);
 		
@@ -164,12 +166,13 @@ public class InquiryController {
 			return "inquiry/reply_form";
 		}
 		
-		InquiryReplyModel inquiry = new InquiryReplyModel();
-		inquiry.setInquiry_id(id);
-		inquiry.setName(inquiryReplyForm.getName());
-		inquiry.setEmail(inquiryReplyForm.getEmail());
-		inquiry.setComment(inquiryReplyForm.getComment());
-		inquiry.setCreated(LocalDateTime.now());
+		InquiryReplyModel inquiry = new InquiryReplyModel(
+				new InquiryId(id),
+				new NameWord(inquiryReplyForm.getName()),
+				new EmailWord(inquiryReplyForm.getEmail()),
+				new CommentWord(inquiryReplyForm.getComment()),
+				LocalDateTime.now()
+				);
 		
 		inquiryReplyService.save(inquiry);
 		redirectAttributes.addFlashAttribute("complete", "投稿しました。");
@@ -180,8 +183,8 @@ public class InquiryController {
 	public String delete(@RequestParam("id") int id,
 			Model model,
 			RedirectAttributes redirectAttributes) {
-		inquiryReplyService.delete_byInquiry(id);
-		inquiryService.delete(id);
+		inquiryReplyService.delete_byInquiry(new InquiryId(id));
+		inquiryService.delete(new InquiryId(id));
 		return "redirect:/inquiry/";
 	}
 	
@@ -190,7 +193,7 @@ public class InquiryController {
 		model.addAttribute("title", "コメント投稿");
 		model.addAttribute("cont", "お問い合わせに対してのコメントを入力してください。");
 		
-		InquiryModel inquiryModel =inquiryService.select(id);
+		InquiryModel inquiryModel =inquiryService.select(new InquiryId(id));
 		model.addAttribute("inquiry", inquiryModel);
 		
 		model.addAttribute("id", id);
@@ -219,7 +222,7 @@ public class InquiryController {
 		for(int cnt=0, len=inquiryList.size(); cnt<len; cnt++){
 			List<InquiryReplyModel> replyList = null;
 			InquiryModel inquiry = inquiryList.get(cnt);
-			replyList = inquiryReplyService.select_byInquiryId(inquiry.getId());
+			replyList = inquiryReplyService.select_byInquiryId(new InquiryId(inquiry.getId()));
 			inquiry = new InquiryModel(
 					new InquiryId(inquiry.getId()),
 					new NameWord(inquiry.getName()),
