@@ -21,6 +21,7 @@ import com.example.demo.app.dao.BlogTagDaoSql;
 import com.example.demo.app.entity.BlogTagModel;
 import com.example.demo.app.exception.InquiryNotFoundException;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
@@ -32,10 +33,12 @@ import com.example.demo.common.word.NameWord;
  */
 class BlogTagServiceUseTest {
 	
+	/** SQL文(追加) */
+	private static final String SQL_INSERT = "INSERT INTO blog_tag(tag) "
+											+ "VALUES(?)";
+	
 	/** テスト対象 */
 	BlogTagService service = null;
-	
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -46,12 +49,10 @@ class BlogTagServiceUseTest {
 	public void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		String sql = "INSERT INTO blog_tag(tag) "
-					+ "VALUES(?)";
 		
 		when(this.jdbcTemp.update(
-				sql,
-				"テストタグ")).thenReturn(1);
+				SQL_INSERT,
+				"テストタグ")).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		setService();
 	}
@@ -69,6 +70,9 @@ class BlogTagServiceUseTest {
 				);
 		
 		this.service.save(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT, 
+				"テストタグ");
 	}
 	
 	/**
@@ -84,7 +88,7 @@ class BlogTagServiceUseTest {
 				sql, 
 				"テストタグ",
 				1
-				)).thenReturn(1);
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
@@ -96,7 +100,7 @@ class BlogTagServiceUseTest {
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
@@ -110,8 +114,18 @@ class BlogTagServiceUseTest {
 				)
 			));
 		
+		
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
+		
 		assertThrows(
-				RuntimeException.class, 
+			RuntimeException.class, 
 			() -> this.service.update(
 				new BlogTagModel(
 					new BlogTagId(2),
@@ -130,7 +144,7 @@ class BlogTagServiceUseTest {
 				+ "WHERE id = ?";
 		
 		when(this.jdbcTemp.update(sql, 
-				1)).thenReturn(1);
+				1)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		when(this.jdbcTemp.update(sql, 
 				2)).thenReturn(WebConsts.ERROR_NUMBER);
 		
@@ -138,16 +152,25 @@ class BlogTagServiceUseTest {
 	}
 	
 	/**
-	 * 削除テスト
+	 * 削除テスト(正常系)
 	 */
 	@Test
 	public void DeleteTest() {
-		InitDelete();		
+		InitDelete();
 
 		assertDoesNotThrow(
-				() -> this.service.delete(new BlogTagId(1)));
+			() -> this.service.delete(new BlogTagId(1)));
+	}
+	
+	/**
+	 * 削除テスト(異常系)
+	 */
+	@Test
+	public void DeleteTest_Error() {
+		InitDelete();
+		
 		assertThrows(RuntimeException.class, 
-				() -> this.service.delete(new BlogTagId(2)));
+			() -> this.service.delete(new BlogTagId(2)));
 	}
 	
 	/**
@@ -156,14 +179,16 @@ class BlogTagServiceUseTest {
 	public void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		
-		map.put("id", 1);
-		map.put("tag", "テストタグ");
-		mapList.add(map);
-		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
+		String sql = "SELECT * FROM blog_tag";
+		
+		map.put(WebConsts.SQL_ID_NAME,  1);
+		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
+		mapList.add(map);
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
 		
 		setService();
 	}
@@ -184,6 +209,32 @@ class BlogTagServiceUseTest {
 	}
 	
 	/**
+	 * 全選択テストの準備(空)
+	 */
+	public void InitSelectAll_Empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM blog_tag";
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		setService();
+	}
+	
+	/**
+	 * 全選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_Empty() {
+		InitSelectAll_Empty();
+		
+		assertThrows(RuntimeException.class, 
+			() -> this.service.getAll());
+	}
+	
+	/**
 	 * IDによるデータ取得テストの準備
 	 */
 	public void InitSelect_byId() {
@@ -192,8 +243,8 @@ class BlogTagServiceUseTest {
 				+ "FROM blog_tag "
 				+ "WHERE id = ?";
 		
-		map.put("id", 1);
-		map.put("tag", "テストタグ");
+		map.put(WebConsts.SQL_ID_NAME, 1);
+		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
 		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -206,7 +257,7 @@ class BlogTagServiceUseTest {
 	}
 	
 	/**
-	 * 選択テスト
+	 * 選択テスト(正常系)
 	 */
 	@Test
 	public void Select_byIdTest() {
@@ -217,6 +268,14 @@ class BlogTagServiceUseTest {
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
 		Assertions.assertEquals(model.getTag(), "テストタグ");
+	}
+	
+	/**
+	 * 選択テスト(異常系)
+	 */
+	@Test
+	public void Select_byIdTest_Error() {
+		InitSelect_byId();
 		
 		assertThrows(RuntimeException.class, () -> 
 			this.service.select(new BlogTagId(2)));
@@ -226,8 +285,8 @@ class BlogTagServiceUseTest {
 	 * サービスの設定
 	 */
 	public void setService() {
-		BlogTagDao dao = new BlogTagDaoSql(jdbcTemp);
-		this.service = new BlogTagServiceUse(dao);
+		BlogTagDao dao = new BlogTagDaoSql(this.jdbcTemp);
+		this.service   = new BlogTagServiceUse(dao);
 	}
 	
 	/**
@@ -236,7 +295,7 @@ class BlogTagServiceUseTest {
 	@AfterEach
 	public void Release() {
 		this.jdbcTemp = null;
-		this.service = null;
+		this.service  = null;
 	}
 
 }

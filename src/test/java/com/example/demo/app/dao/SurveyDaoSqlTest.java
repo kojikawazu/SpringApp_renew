@@ -1,6 +1,8 @@
 package com.example.demo.app.dao;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -20,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.NameWord;
@@ -30,10 +33,13 @@ import com.example.demo.common.word.NameWord;
  *
  */
 class SurveyDaoSqlTest {
-
+	
+	private static final String SQL_INSERT = "INSERT INTO survey("
+			+ "name, age, profession, ismen, satisfaction, comment, created) "
+			+ "VALUES(?,?,?,?,?,?,?)";
+	
+	/** daoクラス */
 	private SurveyDao dao = null;
-
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -44,22 +50,19 @@ class SurveyDaoSqlTest {
 	public void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		String sql = "INSERT INTO survey("
-				+ "name, age, profession, ismen, satisfaction, comment, created) "
-				+ "VALUES(?,?,?,?,?,?,?)";
 		
 		when(this.jdbcTemp.update(
-				sql, 
+				SQL_INSERT, 
 				"テストネーム",
 				10,
 				1,
 				1,
 				5,
 				"テストコメント",
-				dateTime1
-				)).thenReturn(1);
+				TestConsts.TEST_TIME_01
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
-		this.dao = new SurveyDaoSql(this.jdbcTemp);
+		this.setDao();
 	}
 	
 	/**
@@ -76,10 +79,19 @@ class SurveyDaoSqlTest {
 				new NormalNumber(1),
 				new NormalNumber(5),
 				new NameWord("テストコメント"),
-				dateTime1
+				TestConsts.TEST_TIME_01
 				);
 		
 		this.dao.insertSurvey(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT, 
+				"テストネーム",
+				10,
+				1,
+				1,
+				5,
+				"テストコメント",
+				TestConsts.TEST_TIME_01);
 	}
 	
 	/**
@@ -101,7 +113,7 @@ class SurveyDaoSqlTest {
 				5,
 				"テストコメント",
 				1
-				)).thenReturn(1);
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
@@ -114,16 +126,16 @@ class SurveyDaoSqlTest {
 				2
 				)).thenReturn(WebConsts.ERROR_DB_STATUS);
 		
-		this.dao = new SurveyDaoSql(this.jdbcTemp);
+		this.setDao();
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
 		InitUpdate();
-		int ret = 0;
+		
 		SurveyModel model = new SurveyModel(
 				new SurveyId(1),
 				new NameWord("テストネーム"),
@@ -132,11 +144,33 @@ class SurveyDaoSqlTest {
 				new NormalNumber(1),
 				new NormalNumber(5),
 				new NameWord("テストコメント"),
-				dateTime1
+				TestConsts.TEST_TIME_01
 			);
 		
-		ret = this.dao.updateSurvey(model);
-		Assertions.assertEquals(ret, 1);
+		int ret = this.dao.updateSurvey(model);
+		Assertions.assertEquals(ret, TestConsts.RESULT_NUMBER_OK);
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
+		
+		SurveyModel model = new SurveyModel(
+				new SurveyId(2),
+				new NameWord("テストネーム"),
+				new NormalNumber(10),
+				new NormalNumber(1),
+				new NormalNumber(1),
+				new NormalNumber(5),
+				new NameWord("テストコメント"),
+				TestConsts.TEST_TIME_01
+			);
+		
+		int ret = this.dao.updateSurvey(model);
+		Assertions.assertEquals(ret, WebConsts.ERROR_DB_STATUS);
 	}
 	
 	/**
@@ -145,22 +179,25 @@ class SurveyDaoSqlTest {
 	public void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		
-		map.put("id", 1);
-		map.put("name", "テストネーム");
-		map.put("age", 10);
-		map.put("profession", 2);
-		map.put("ismen", 1);
-		map.put("satisfaction", 1);
-		map.put("comment", "テストコメント");
-		map.put("created", Timestamp.valueOf(dateTime1));
-		mapList.add(map);
-		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
+		String sql = "SELECT * FROM survey";
 		
-		this.dao = new SurveyDaoSql(this.jdbcTemp);
+		map.put(WebConsts.SQL_ID_NAME,           1);
+		map.put(WebConsts.SQL_NAME_NAME,         "テストネーム");
+		map.put(WebConsts.SQL_AGE_NAME,         10);
+		map.put(WebConsts.SQL_PROFESSION_NAME,   1);
+		map.put(WebConsts.SQL_ISMEN_NAME,        1);
+		map.put(WebConsts.SQL_SATISFACTION_NAME, 1);
+		map.put(WebConsts.SQL_COMMENT_NAME,      "テストコメント");
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		mapList.add(map);
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		this.setDao();
 	}
 	
 	/**
@@ -172,16 +209,51 @@ class SurveyDaoSqlTest {
 		
 		List<SurveyModel> list = this.dao.getAll();
 		
-		Assertions.assertEquals(list.size(), 1);
-		Assertions.assertEquals(list.get(0).getId(), 1);
-		Assertions.assertEquals(list.get(0).getName(), "テストネーム");
-		Assertions.assertEquals(list.get(0).getAge(), 10);
-		Assertions.assertEquals(list.get(0).getProfession(), 2);
+		Assertions.assertEquals(list.size(),                   1);
+		Assertions.assertEquals(list.get(0).getId(),           1);
+		Assertions.assertEquals(list.get(0).getName(),          "テストネーム");
+		Assertions.assertEquals(list.get(0).getAge(),          10);
+		Assertions.assertEquals(list.get(0).getProfession(),    1);
 		Assertions.assertEquals(list.get(0).getMen_or_female(), 1);
-		Assertions.assertEquals(list.get(0).getSatisfaction(), 1);
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
-		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
+		Assertions.assertEquals(list.get(0).getSatisfaction(),  1);
+		Assertions.assertEquals(list.get(0).getComment(),       "テストコメント");
+		Assertions.assertEquals(list.get(0).getCreated().toString(), 
+			TestConsts.TEST_TIME_01.toString());
 		list.clear();
+	}
+	
+	/**
+	 * 全選択の初期化(空)
+	 */
+	public void InitSelectAll_Empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM survey";
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		this.setDao();
+	}
+	
+	/**
+	 * 全選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_Empty() {
+		InitSelectAll_Empty();
+		
+		List<SurveyModel> list = this.dao.getAll();
+		assertNotNull(list);
+		assertEquals(list.size(), 0);
+	}
+	
+	/**
+	 * Dao設定
+	 */
+	private void setDao() {
+		this.dao = new SurveyDaoSql(this.jdbcTemp);
 	}
 	
 	/**

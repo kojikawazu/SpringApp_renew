@@ -98,20 +98,14 @@ public class SurveyDaoSql implements SurveyDao {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for(Map<String, Object> result : resultList) {
-				SurveyModel model = new SurveyModel(
-						new SurveyId((int)result.get("id")),
-						new NameWord((String)result.get("name")),
-						new NormalNumber((int)result.get("age")),
-						new NormalNumber((int)result.get("profession")),
-						new NormalNumber((int)result.get("ismen")),
-						new NormalNumber((int)result.get("satisfaction")),
-						new NameWord((String)result.get("comment")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				SurveyModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
+			list.clear();
 		}
 		
 		return list;
@@ -332,6 +326,11 @@ public class SurveyDaoSql implements SurveyDao {
 
 	/**
 	 * 性別 & 年齢 & 職業別の評価の数
+	 * @paran satis 評価
+	 * @param ismen 男 or 女
+	 * @param prof  職業
+	 * @param age   年齢
+	 * @return 評価の数
 	 */
 	@Override
 	public int countSatisfactionSxProfAge(int satis, int ismen, int prof, int age) {
@@ -357,5 +356,22 @@ public class SurveyDaoSql implements SurveyDao {
 		}
 		
 		return count;	
+	}
+	
+	private SurveyModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		SurveyModel model = new SurveyModel(
+				new SurveyId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
+				new NormalNumber((int)result.get(WebConsts.SQL_AGE_NAME)),
+				new NormalNumber((int)result.get(WebConsts.SQL_PROFESSION_NAME)),
+				new NormalNumber((int)result.get(WebConsts.SQL_ISMEN_NAME)),
+				new NormalNumber((int)result.get(WebConsts.SQL_SATISFACTION_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME)).toLocalDateTime()
+				);
+		
+		return model;
 	}
 }

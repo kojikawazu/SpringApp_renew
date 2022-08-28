@@ -20,9 +20,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.BlogMainDao;
 import com.example.demo.app.dao.BlogMainDaoSql;
 import com.example.demo.app.entity.BlogMainModel;
+import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.app.exception.InquiryNotFoundException;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
+import com.example.demo.common.id.InquiryId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.NameWord;
 
@@ -33,11 +37,13 @@ import com.example.demo.common.word.NameWord;
  */
 class BlogMainServiceUseTest {
 	
+	/** SQL文(追加) */
+	private static final String SQL_INSERT = "INSERT INTO blog_main("
+			+ "title, tag, comment, thanksCnt, created, updated) "
+			+ "VALUES(?,?,?,?,?,?)";
+	
 	/** テスト対象 */
 	BlogMainService service = null;
-	
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-	LocalDateTime dateTime2 = LocalDateTime.of(2000, 01, 02, 00, 00, 00);
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -45,19 +51,21 @@ class BlogMainServiceUseTest {
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {		
+	private void InitInsert() {		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタイトル"),
-				eq("テストタグ"),
-				eq("テストコメント"),
-				eq(1),
-				eq(dateTime2)
-				)).thenReturn(1);
+		this.jdbcTemp = mock(JdbcTemplate.class);
 		
-		setService();
+		when(this.jdbcTemp.update(
+				SQL_INSERT, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
+		
+		this.setService();
 	}
 	
 	/**
@@ -65,110 +73,166 @@ class BlogMainServiceUseTest {
 	 */
 	@Test
 	public void InsertTest() {
-		// 準備
 		InitInsert();
 		
-		// テスト
 		BlogMainModel model = new BlogMainModel(
-				new NameWord(""),
-				new NameWord(""),
-				new NameWord(""),
-				new ThanksCntNumber(0),
-				LocalDateTime.now(),
-				LocalDateTime.now()
+				new NameWord("テストタイトル"),
+				new NameWord("テストタグ"),
+				new NameWord("テストコメント"),
+				new ThanksCntNumber(1),
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02
 				);
-		service.save(model);
+		
+		this.service.save(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02);
 	}
 	
 	/**
 	 * 更新テストの準備
 	 */
-	public void InitUpdate() {		
+	private void InitUpdate() {		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(
-				any(), 
-				eq("テストタイトル"),
-				eq("テストタグ"),
-				eq("テストコメント"),
-				eq(1),
-				eq(dateTime2),
-				eq(1)
-				)).thenReturn(1);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE blog_main SET "
+				+ "title = ?, tag = ?, comment = ?, thanksCnt = ?, updated = ? "
+				+ "WHERE id = ?";
 		
-		setService();
+		// 正常系
+		when(this.jdbcTemp.update(
+				sql, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				TestConsts.TEST_TIME_02,
+				1
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
+		
+		// 異常系
+		when(this.jdbcTemp.update(
+				sql, 
+				"テストタイトル",
+				"テストタグ",
+				"テストコメント",
+				1,
+				TestConsts.TEST_TIME_02,
+				2
+				)).thenReturn(WebConsts.ERROR_DB_STATUS);
+		
+		this.setService();
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
-		// 準備
 		InitUpdate();
 		
-		// テスト
-		BlogMainModel model = new BlogMainModel(
-				new BlogId(1),
-				new NameWord("テストタイトル"),
-				new NameWord("テストタグ"),
-				new NameWord("テストコメント"),
-				new ThanksCntNumber(1),
-				dateTime1,
-				dateTime2
-				);
+		assertDoesNotThrow(
+			() -> this.service.update(
+				new BlogMainModel(
+					new BlogId(1),
+					new NameWord("テストタイトル"),
+					new NameWord("テストタグ"),
+					new NameWord("テストコメント"),
+					new ThanksCntNumber(1),
+					TestConsts.TEST_TIME_01,
+					TestConsts.TEST_TIME_02
+				)
+			));
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
 		
-		// 例外テスト1
-		//assertThrows(RuntimeException.class, () -> service.update(model));
-		
-		// 例外テスト2
-		assertDoesNotThrow(() -> service.update(model));
+		assertThrows(
+			RuntimeException.class,
+			() -> this.service.update(
+				new BlogMainModel(
+					new BlogId(2),
+					new NameWord("テストタイトル"),
+					new NameWord("テストタグ"),
+					new NameWord("テストコメント"),
+					new ThanksCntNumber(1),
+					TestConsts.TEST_TIME_01,
+					TestConsts.TEST_TIME_02
+				)
+			));
 	}
 	
 	/**
 	 * 削除テストの準備
 	 */
-	public void InitDelete() {
+	private void InitDelete() {
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.update(any(), eq(1))).thenReturn(1);
-		when(jdbcTemp.update(any(), eq(2))).thenReturn(0);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM blog_main "
+				+ "WHERE id = ?";
+		
+		when(this.jdbcTemp.update(sql, 1))
+			.thenReturn(TestConsts.RESULT_NUMBER_OK);
+		when(this.jdbcTemp.update(sql, 2))
+			.thenReturn(WebConsts.ERROR_DB_STATUS);
 		
 		setService();
 	}
 	
 	/**
-	 * 削除テスト
+	 * 削除テスト(正常系)
 	 */
 	@Test
 	public void DeleteTest() {
-		// 準備
 		InitDelete();
 		
-		// テスト
-		assertDoesNotThrow(() -> service.delete(new BlogId(1)));
-		assertThrows(RuntimeException.class, () -> service.delete(new BlogId(2)));
+		assertDoesNotThrow(() -> 
+			this.service.delete(new BlogId(1)));
+	}
+	
+	/**
+	 * 削除テスト(異常系)
+	 */
+	@Test
+	public void DeleteTest_Error() {
+		InitDelete();
+		
+		assertThrows(RuntimeException.class, 
+			() -> this.service.delete(new BlogId(2)));
 	}
 	
 	/**
 	 * 全て選択の準備
 	 */
-	public void InitSelectAll() {
-		Map<String, Object> map = new HashMap<String, Object>();
+	private void InitSelectAll() {
+		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM blog_main";
 		
-		map.put("id", 1);
-		map.put("title", "テストタイトル");
-		map.put("tag", "テストタグ");
-		map.put("comment", "テストコメント");
-		map.put("thanksCnt", 1);
-		map.put("created", Timestamp.valueOf(dateTime1));
-		map.put("updated", Timestamp.valueOf(dateTime2));
+		map.put(WebConsts.SQL_ID_NAME,        1);
+		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
+		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
+		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
+		map.put(WebConsts.SQL_CREATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map.put(WebConsts.SQL_UPDATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map);
 		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any())).thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
 		
 		setService();
 	}
@@ -178,77 +242,107 @@ class BlogMainServiceUseTest {
 	 */
 	@Test
 	public void SelectAllTest() {
-		// 準備
 		InitSelectAll();
 		
-		// テスト
-		List<BlogMainModel> list = service.getAll();
+		List<BlogMainModel> list = this.service.getAll();
 		
-		Assertions.assertEquals(list.size(), 1);
-		Assertions.assertEquals(list.get(0).getId(), 1);
-		Assertions.assertEquals(list.get(0).getTitle(), "テストタイトル");
-		Assertions.assertEquals(list.get(0).getTag(), "テストタグ");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
+		Assertions.assertEquals(list.size(),                1);
+		Assertions.assertEquals(list.get(0).getId(),        1);
+		Assertions.assertEquals(list.get(0).getTitle(),     "テストタイトル");
+		Assertions.assertEquals(list.get(0).getTag(),       "テストタグ");
+		Assertions.assertEquals(list.get(0).getComment(),   "テストコメント");
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
-		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
-		Assertions.assertEquals(list.get(0).getUpdated().toString(), dateTime2.toString());
+		Assertions.assertEquals(list.get(0).getCreated().toString(), 
+				TestConsts.TEST_TIME_01.toString());
+		Assertions.assertEquals(list.get(0).getUpdated().toString(), 
+				TestConsts.TEST_TIME_02.toString());
 		list.clear();
 	}
 	
 	/**
-	 * IDによるデータ選択の準備
+	 * 全て選択の準備(空)
 	 */
-	public void InitSelect_byId() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("id", 1);
-		map.put("title", "テストタイトル");
-		map.put("tag", "テストタグ");
-		map.put("comment", "テストコメント");
-		map.put("thanksCnt", 1);
-		map.put("created", Timestamp.valueOf(dateTime1));
-		map.put("updated", Timestamp.valueOf(dateTime2));
-		
+	private void InitSelectAll_empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM blog_main";
+		
+		when(this.jdbcTemp.queryForList(sql)).thenReturn(mapList);
 		
 		setService();
 	}
 	
 	/**
-	 * IDによる選択のテスト
+	 * 全て選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_empty() {
+		InitSelectAll_empty();
+		
+		assertThrows(RuntimeException.class, () ->
+			this.service.getAll());
+	}
+	
+	/**
+	 * IDによるデータ選択の準備
+	 */
+	private void InitSelect_byId() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * "
+				+ "FROM blog_main "
+				+ "WHERE id = ?";
+		
+		map.put(WebConsts.SQL_ID_NAME,        1);
+		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
+		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
+		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map.put(WebConsts.SQL_UPDATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_02));
+		
+		when(this.jdbcTemp.queryForMap(sql, 1))
+			.thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 2))
+			.thenReturn(null);
+		
+		setService();
+	}
+	
+	/**
+	 * IDによる選択のテスト(正常系)
 	 */
 	@Test
 	public void Select_byIdTest() {
-		// 準備
 		InitSelect_byId();
-		BlogMainModel model = null;
 		
-		try {
-			model = service.select(new BlogId(1));
-			
-			Assertions.assertNotNull(model);
-			Assertions.assertEquals(model.getId(), 1);
-			Assertions.assertEquals(model.getTitle(), "テストタイトル");
-			Assertions.assertEquals(model.getTag(), "テストタグ");
-			Assertions.assertEquals(model.getComment(), "テストコメント");
-			Assertions.assertEquals(model.getThanksCnt(), 1);
-			Assertions.assertEquals(model.getCreated().toString(), dateTime1.toString());
-			Assertions.assertEquals(model.getUpdated().toString(), dateTime2.toString());
-		} catch(InquiryNotFoundException ex) {
-			Assertions.assertThrows(InquiryNotFoundException.class,
-					() -> { service.select(new BlogId(1)); });
-		}
+		BlogMainModel model = this.service.select(new BlogId(1));
 		
-		try {
-			model = service.select(new BlogId(2));
-			Assertions.assertNull(model);
-		} catch(InquiryNotFoundException ex) {
-			Assertions.assertThrows(InquiryNotFoundException.class,
-					() -> { service.select(new BlogId(2)); });
-		}
+		Assertions.assertNotNull(model);
+		Assertions.assertEquals(model.getId(),        1);
+		Assertions.assertEquals(model.getTitle(),     "テストタイトル");
+		Assertions.assertEquals(model.getTag(),       "テストタグ");
+		Assertions.assertEquals(model.getComment(),   "テストコメント");
+		Assertions.assertEquals(model.getThanksCnt(), 1);
+		Assertions.assertEquals(model.getCreated().toString(), 
+				TestConsts.TEST_TIME_01.toString());
+		Assertions.assertEquals(model.getUpdated().toString(), 
+				TestConsts.TEST_TIME_02.toString());
+	}
+	
+	/**
+	 * IDによる選択のテスト(異常系)
+	 */
+	@Test
+	public void Select_byIdTest_Error() {
+		InitSelect_byId();
+		
+		Assertions.assertThrows(RuntimeException.class,
+				() ->  this.service.select(new BlogId(2)));
 	}
 	
 	/**
@@ -258,58 +352,62 @@ class BlogMainServiceUseTest {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * "
+				+ "FROM blog_main "
+				+ "WHERE tag = ?";
 		
-		map.put("id", 1);
-		map.put("title", "テストタイトル");
-		map.put("tag", "テストタグ");
-		map.put("comment", "テストコメント");
-		map.put("thanksCnt", 1);
-		map.put("created", Timestamp.valueOf(dateTime1));
-		map.put("updated", Timestamp.valueOf(dateTime2));
+		map.put(WebConsts.SQL_ID_NAME,        1);
+		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
+		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
+		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map.put(WebConsts.SQL_UPDATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map);
 		
-		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForList(any(), eq("テスト"))).thenReturn(mapList);
-		when(jdbcTemp.queryForList(any(), eq("バグ"))).thenReturn(mapList2);
+		when(this.jdbcTemp.queryForList(sql, "テスト"))
+			.thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql, "バグ"))
+			.thenReturn(mapList2);
 		
 		setService();
 	}
 	
 	/**
-	 * タグによる選択のテスト
+	 * タグによる選択のテスト(正常系)
 	 */
 	@Test
 	public void Select_byTagTest() {
-		// 準備
 		InitSelect_byTag();
 		
-		// テスト
-		List<BlogMainModel> list = null;
-		try {
-			list = service.select_byTag("テスト");
-			
-			Assertions.assertEquals(list.size(), 1);
-			Assertions.assertEquals(list.get(0).getId(), 1);
-			Assertions.assertEquals(list.get(0).getTitle(), "テストタイトル");
-			Assertions.assertEquals(list.get(0).getTag(), "テストタグ");
-			Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
-			Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
-			Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
-			Assertions.assertEquals(list.get(0).getUpdated().toString(), dateTime2.toString());
-			list.clear();
-		} catch(InquiryNotFoundException ex) {
-			Assertions.assertThrows(InquiryNotFoundException.class,
-					() -> { service.select_byTag("テスト"); });
-		}
+		List<BlogMainModel> list = this.service.select_byTag("テスト");
 		
-		try {
-			list = service.select_byTag("バグ");
-			Assertions.assertEquals(list.size(), 0);
-		} catch(InquiryNotFoundException ex) {
-			Assertions.assertThrows(InquiryNotFoundException.class,
-					() -> { service.select_byTag("バグ"); });
-		}
+		Assertions.assertEquals(list.size(), 1);
+		Assertions.assertEquals(list.get(0).getId(), 1);
+		Assertions.assertEquals(list.get(0).getTitle(), "テストタイトル");
+		Assertions.assertEquals(list.get(0).getTag(), "テストタグ");
+		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
+		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
+		Assertions.assertEquals(list.get(0).getCreated().toString(), 
+				TestConsts.TEST_TIME_01.toString());
+		Assertions.assertEquals(list.get(0).getUpdated().toString(), 
+				TestConsts.TEST_TIME_02.toString());
+		list.clear();
+	}
+	
+	/**
+	 * タグによる選択のテスト(異常系)
+	 */
+	@Test
+	public void Select_byTagTest_Error() {
+		InitSelect_byTag();
+		
+		Assertions.assertThrows(RuntimeException.class,
+				() -> { this.service.select_byTag("バグ"); });
 	}
 	
 	/**
@@ -317,30 +415,47 @@ class BlogMainServiceUseTest {
 	 */
 	public void InitThanksIncrement() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("thanksCnt", 1);
-		
-		
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		when(jdbcTemp.queryForMap(any(), eq(1))).thenReturn(map);
-		when(jdbcTemp.update(any(), eq(2), eq(1))).thenReturn(1);
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT thanksCnt "
+				+ "FROM blog_main "
+				+ "WHERE id = ?";
 		
-		when(jdbcTemp.queryForMap(any(), eq(2))).thenReturn(null);
+		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
+		
+		when(this.jdbcTemp.queryForMap(sql, 1))
+			.thenReturn(map);
+		when(this.jdbcTemp.update("UPDATE blog_main SET "
+				+ "thanksCnt = ? "
+				+ "WHERE id = ?", 
+				2, 1))
+			.thenReturn(TestConsts.RESULT_NUMBER_OK);
+		
+		when(this.jdbcTemp.queryForMap(sql, 2))
+			.thenReturn(null);
 		
 		setService();
 	}
 	
 	/**
-	 * インクリメントテスト
+	 * インクリメントテスト(正常系)
 	 */
 	@Test
 	public void IncrementTest() {
-		// 準備
 		InitThanksIncrement();
 		
-		// テスト
-		int ret = service.thanksIncrement(new BlogId(1));
+		int ret = this.service.thanksIncrement(new BlogId(1));
 		Assertions.assertEquals(ret, 2);
+		
+		
+	}
+	
+	/**
+	 * インクリメントテスト(正常系)
+	 */
+	@Test
+	public void IncrementTest_Error() {
+		InitThanksIncrement();
 		
 		assertThrows(RuntimeException.class, () ->
 			this.service.thanksIncrement(new BlogId(2)));
@@ -350,8 +465,8 @@ class BlogMainServiceUseTest {
 	 * サービスのインスタンス化
 	 */
 	public void setService() {
-		BlogMainDao dao = new BlogMainDaoSql(jdbcTemp);
-		service = new BlogMainServiceUse(dao);
+		BlogMainDao dao = new BlogMainDaoSql(this.jdbcTemp);
+		this.service = new BlogMainServiceUse(dao);
 	}
 	
 	/**
@@ -359,7 +474,7 @@ class BlogMainServiceUseTest {
 	 */
 	@AfterEach
 	public void Release() {
-		service = null;
-		jdbcTemp = null;
+		this.service = null;
+		this.jdbcTemp = null;
 	}
 }

@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogTagModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
 
@@ -27,9 +28,11 @@ import com.example.demo.common.word.NameWord;
  */
 class BlogTagDaoSqlTest {
 	
-	private BlogTagDao dao = null;
+	/** SQL文(追加) */
+	private static final String SQL_INSERT = "INSERT INTO blog_tag(tag) "
+											+ "VALUES(?)";
 	
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
+	private BlogTagDao dao = null;
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -39,15 +42,13 @@ class BlogTagDaoSqlTest {
 	 */
 	public void InitInsert() {
 		// Mock化
-		jdbcTemp = mock(JdbcTemplate.class);
-		String sql = "SELECT id "
-				+ "FROM blog_tag "
-				+ "WHERE tag = ?";
-		when(this.jdbcTemp.update(
-				sql,
-				"テストタグ")).thenReturn(1);
+		this.jdbcTemp = mock(JdbcTemplate.class);
 		
-		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+		when(this.jdbcTemp.update(
+				SQL_INSERT,
+				"テストタグ")).thenReturn(TestConsts.RESULT_NUMBER_OK);
+		
+		this.setDao();
 	}
 	
 	/**
@@ -61,7 +62,11 @@ class BlogTagDaoSqlTest {
 				new BlogTagId(0),
 				new NameWord("テストタグ")
 				);
+		
 		this.dao.insertTag(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT,
+				"テストタグ");
 	}
 	
 	/**
@@ -70,47 +75,53 @@ class BlogTagDaoSqlTest {
 	public void InitUpdate() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "UPDATE blog_tag SET "
+				+ "tag = ? WHERE id = ?";
 		
 		when(this.jdbcTemp.update(
-				"UPDATE blog_tag SET "
-					+ "tag = ? WHERE id = ?", 
+				sql, 
 				"テストタグ",
 				1
-				)).thenReturn(1);
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
-				"UPDATE blog_tag SET "
-					+ "tag = ? WHERE id = ?", 
+				sql, 
 				"テストタグ",
 				2
 				)).thenReturn(WebConsts.ERROR_NUMBER);
 		
-		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+		this.setDao();
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
 		InitUpdate();
-		int ret = 0;
-		BlogTagModel model = null;
 		
-		model = new BlogTagModel(
+		BlogTagModel model = new BlogTagModel(
 				new BlogTagId(1),
 				new NameWord("テストタグ")
 				);
 		
-		ret = this.dao.updateTag(model);
-		Assertions.assertEquals(ret, 1);
+		int ret = this.dao.updateTag(model);
+		Assertions.assertEquals(ret, TestConsts.RESULT_NUMBER_OK);
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
 		
-		model = new BlogTagModel(
+		BlogTagModel model = new BlogTagModel(
 				new BlogTagId(2),
 				new NameWord("テストタグ")
 				);
 		
-		ret = this.dao.updateTag(model);
+		int ret = this.dao.updateTag(model);
 		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
 	}
 	
@@ -120,29 +131,38 @@ class BlogTagDaoSqlTest {
 	public void InitDelete() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "DELETE FROM blog_tag "
+				+ "WHERE id = ?";
+		
 		when(jdbcTemp.update(
-				"DELETE FROM blog_tag "
-				+ "WHERE id = ?",
-				1)).thenReturn(1);
+				sql,
+				1)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		when(jdbcTemp.update(
-				"DELETE FROM blog_tag "
-				+ "WHERE id = ?", 
+				sql, 
 				2)).thenReturn(WebConsts.ERROR_NUMBER);
 		
-		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+		this.setDao();
 	}
 	
 	/**
-	 * 削除テスト
+	 * 削除テスト(正常系)
 	 */
 	@Test
 	public void DeleteTest() {
 		InitDelete();
 		
 		int ret = this.dao.deleteTag(new BlogTagId(1));
-		Assertions.assertEquals(ret, 1);
+		Assertions.assertEquals(ret, TestConsts.RESULT_NUMBER_OK);
+	}
+	
+	/**
+	 * 削除テスト(異常系)
+	 */
+	@Test
+	public void DeleteTest_Error() {
+		InitDelete();
 		
-		ret = this.dao.deleteTag(new BlogTagId(2));
+		int ret = this.dao.deleteTag(new BlogTagId(2));
 		Assertions.assertEquals(ret, WebConsts.ERROR_NUMBER);
 	}
 
@@ -152,16 +172,18 @@ class BlogTagDaoSqlTest {
 	public void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		
-		map.put("id", 1);
-		map.put("tag", "テストタグ");
-		mapList.add(map);
-		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
+		String sql = "SELECT * FROM blog_tag";
 		
-		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+		map.put(WebConsts.SQL_ID_NAME,  1);
+		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
+		mapList.add(map);
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		this.setDao();
 	}
 	
 	/**
@@ -180,29 +202,57 @@ class BlogTagDaoSqlTest {
 	}
 	
 	/**
+	 * 全選択テストの準備(空)
+	 */
+	public void InitSelectAll_Empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM blog_tag";
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		this.setDao();
+	}
+	
+	/**
+	 * 全選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_Empty() {
+		InitSelectAll_Empty();
+		
+		List<BlogTagModel> list = this.dao.getAll();
+		
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 0);
+	}
+	
+	/**
 	 * IDによるデータ取得テストの準備
 	 */
 	public void InitSelect_byId() {
 		Map<String, Object> map = new HashMap<String, Object>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "SELECT * "
 				+ "FROM blog_tag "
 				+ "WHERE id = ?";
 		
-		map.put("id", 1);
-		map.put("tag", "テストタグ");
+		map.put(WebConsts.SQL_ID_NAME,  1);
+		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
 		
-		// Mock化
-		this.jdbcTemp = mock(JdbcTemplate.class);
 		when(this.jdbcTemp.queryForMap(sql, 
 				1)).thenReturn(map);
 		when(this.jdbcTemp.queryForMap(sql, 
 				2)).thenReturn(null);
 		
-		this.dao = new BlogTagDaoSql(this.jdbcTemp);
+		this.setDao();
 	}
 	
 	/**
-	 * IDによるデータ取得のテスト
+	 * IDによるデータ取得のテスト(正常系)
 	 */
 	@Test
 	public void Select_byIdTest() {
@@ -213,9 +263,24 @@ class BlogTagDaoSqlTest {
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(), 1);
 		Assertions.assertEquals(model.getTag(), "テストタグ");
+	}
+	
+	/**
+	 * IDによるデータ取得のテスト(異常系)
+	 */
+	@Test
+	public void Select_byIdTest_Error() {
+		InitSelect_byId();
 		
-		model = this.dao.select(new BlogTagId(2));
+		BlogTagModel model = this.dao.select(new BlogTagId(2));
 		Assertions.assertNull(model);
+	}
+	
+	/**
+	 * Daoクラスの設定
+	 */
+	private void setDao() {
+		this.dao = new BlogTagDaoSql(this.jdbcTemp);
 	}
 	
 	/**

@@ -11,12 +11,15 @@ import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 
+/**
+ * ブログメインサービスクラス
+ * @author nanai
+ *
+ */
 @Service
 public class BlogMainServiceUse implements BlogMainService {
 
-	/**
-	 * Daoクラス
-	 */
+	/** Daoクラス */
 	private final BlogMainDao dao;
 	
 	/**

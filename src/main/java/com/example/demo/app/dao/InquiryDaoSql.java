@@ -71,7 +71,7 @@ public class InquiryDaoSql implements InquiryDao {
 				+ "name = ?, email = ?, comment = ? "
 				+ "WHERE id = ?";
 		
-		return jdbcTemp.update(
+		return this.jdbcTemp.update(
 					sql,
 					model.getName(),
 					model.getEmail(),
@@ -91,7 +91,7 @@ public class InquiryDaoSql implements InquiryDao {
 		String sql = "DELETE FROM inquiry "
 				+ "WHERE id = ?";
 		
-		return jdbcTemp.update(
+		return this.jdbcTemp.update(
 				sql, 
 				id.getId());
 	}
@@ -106,16 +106,12 @@ public class InquiryDaoSql implements InquiryDao {
 		List<InquiryModel> list = new ArrayList<InquiryModel>();
 		
 		try {
-			List<Map<String, Object>> resultList = jdbcTemp.queryForList(sql);
+			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for(Map<String, Object> result : resultList) {
-				InquiryModel model = new InquiryModel(
-						new InquiryId((int)result.get("id")),
-						new NameWord((String)result.get("name")),
-						new NameWord((String)result.get("email")),
-						new NameWord((String)result.get("comment")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				InquiryModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -139,23 +135,34 @@ public class InquiryDaoSql implements InquiryDao {
 		String sql = "SELECT * "
 				+ "FROM inquiry "
 				+ "WHERE id = ?";
-		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
-
-			if(result != null) {
-				model = new InquiryModel(
-						new InquiryId((int)result.get("id")),
-						new NameWord((String)result.get("name")),
-						new NameWord((String)result.get("email")),
-						new NameWord((String)result.get("comment")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
-			}	
+			Map<String, Object> result = this.jdbcTemp.queryForMap(sql, id.getId());
+			if(result == null) return null;
+			
+			model = this.makeModel(result);
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			model = null;
 		}
+		
+		return model;
+	}
+	
+	/**
+	 * モデル生成
+	 * @param  result
+	 * @return 問い合わせモデル
+	 */
+	private InquiryModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		InquiryModel model = new InquiryModel(
+				new InquiryId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_EMAIL_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME)).toLocalDateTime()
+				);
 		
 		return model;
 	}
