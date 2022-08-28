@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ import com.example.demo.app.dao.InquiryDaoSql;
 import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.id.InquiryId;
 import com.example.demo.common.word.NameWord;
 

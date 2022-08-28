@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.dao.InquiryReplyDao;
 import com.example.demo.app.dao.InquiryReplyDaoSql;
-import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.app.entity.InquiryReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
