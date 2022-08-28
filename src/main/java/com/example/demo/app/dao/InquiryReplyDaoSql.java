@@ -50,7 +50,8 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 				+ "VALUES(?,?,?,?,?)";
 		
 		try {
-			this.jdbcTemp.update(sql,
+			this.jdbcTemp.update(
+						sql,
 						model.getInquiry_id(),
 						model.getName(),
 						model.getEmail(),
@@ -94,7 +95,9 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 		String sql = "DELETE FROM inquiry_reply "
 				+ "WHERE id = ?";
 		
-		return this.jdbcTemp.update(sql, id.getId());
+		return this.jdbcTemp.update(
+				sql, 
+				id.getId());
 	}
 	
 	/**
@@ -108,7 +111,9 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 		String sql = "DELETE FROM inquiry_reply "
 				+ "WHERE inquiry_id = ?";
 		
-		return this.jdbcTemp.update(sql, inquiryId.getId());
+		return this.jdbcTemp.update(
+				sql, 
+				inquiryId.getId());
 	}
 
 	/**
@@ -123,14 +128,9 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for(Map<String, Object> result : resultList) {
-				InquiryReplyModel model = new InquiryReplyModel(
-						new InquiryReplyId((int)result.get("id")),
-						new InquiryId((int)result.get("inquiry_id")),
-						new NameWord((String)result.get("name")),
-						new EmailWord((String)result.get("email")),
-						new CommentWord((String)result.get("comment")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				InquiryReplyModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -157,14 +157,9 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 					this.jdbcTemp.queryForList(sql, inquiryId.getId());
 			
 			for(Map<String, Object> result : resultList) {
-				InquiryReplyModel model = new InquiryReplyModel(
-						new InquiryReplyId((int)result.get("id")),
-						new InquiryId((int)result.get("inquiry_id")),
-						new NameWord((String)result.get("name")),
-						new EmailWord((String)result.get("email")),
-						new CommentWord((String)result.get("comment")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				InquiryReplyModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -187,21 +182,34 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 		InquiryReplyModel model = null;
 		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
+			Map<String, Object> result = this.jdbcTemp.queryForMap(sql, id.getId());
 			if(result == null)	return null;
 			
-			model = new InquiryReplyModel(
-					new InquiryReplyId((int)result.get("id")),
-					new InquiryId((int)result.get("inquiry_id")),
-					new NameWord((String)result.get("name")),
-					new EmailWord((String)result.get("email")),
-					new CommentWord((String)result.get("comment")),
-					((Timestamp)result.get("created")).toLocalDateTime()
-					);
+			model = this.makeModel(result);
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			model = null;
 		}
+		
+		return model;
+	}
+	
+	/**
+	 * モデル生成
+	 * @param  result
+	 * @return 問い合わせ返信モデル
+	 */
+	private InquiryReplyModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		InquiryReplyModel model = new InquiryReplyModel(
+				new InquiryReplyId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new InquiryId((int)result.get(WebConsts.SQL_INQUIRY_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
+				new EmailWord((String)result.get(WebConsts.SQL_EMAIL_NAME)),
+				new CommentWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME)).toLocalDateTime()
+				);
 		
 		return model;
 	}

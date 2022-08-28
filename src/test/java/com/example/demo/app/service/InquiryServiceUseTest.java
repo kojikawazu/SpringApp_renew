@@ -21,6 +21,7 @@ import com.example.demo.app.dao.InquiryDao;
 import com.example.demo.app.dao.InquiryDaoSql;
 import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.id.InquiryId;
 import com.example.demo.common.word.NameWord;
@@ -31,11 +32,13 @@ import com.example.demo.common.word.NameWord;
  *
  */
 class InquiryServiceUseTest {
+	
+	private static final String SQL_INSERT = "INSERT INTO inquiry("
+											+ "name, email, comment, created) "
+											+ "VALUES(?,?,?,?)";
 
 	/** テスト対象 */
 	InquiryService service = null;
-	
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -46,17 +49,14 @@ class InquiryServiceUseTest {
 	public void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		String sql = "INSERT INTO inquiry("
-				+ "name, email, comment, created) "
-				+ "VALUES(?,?,?,?)";
 		
 		when(this.jdbcTemp.update(
-				sql, 
+				SQL_INSERT, 
 				"テストネーム",
 				"テストメールアドレス",
 				"テストコメント",
-				dateTime1
-				)).thenReturn(1);
+				TestConsts.TEST_TIME_01
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		setService();
 	}
@@ -72,10 +72,16 @@ class InquiryServiceUseTest {
 				new NameWord("テストネーム"),
 				new NameWord("テストメールアドレス"),
 				new NameWord("テストコメント"),
-				dateTime1
+				TestConsts.TEST_TIME_01
 				);
 		
 		this.service.save(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT, 
+				"テストネーム",
+				"テストメールアドレス",
+				"テストコメント",
+				TestConsts.TEST_TIME_01);
 	}
 	
 	/**
@@ -94,7 +100,7 @@ class InquiryServiceUseTest {
 				"テストメールアドレス",
 				"テストコメント",
 				1
-				)).thenReturn(1);
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
@@ -108,36 +114,44 @@ class InquiryServiceUseTest {
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
 		InitUpdate();
 		
-		// 正常系
 		assertDoesNotThrow(
-				() -> this.service.update(
-						new InquiryModel(
-							new InquiryId(1),
-							new NameWord("テストネーム"),
-							new NameWord("テストメールアドレス"),
-							new NameWord("テストコメント"),
-							dateTime1
-						)
-				));
+			() -> this.service.update(
+				new InquiryModel(
+					new InquiryId(1),
+					new NameWord("テストネーム"),
+					new NameWord("テストメールアドレス"),
+					new NameWord("テストコメント"),
+					TestConsts.TEST_TIME_01
+				)
+			));
 		
-		// 異常系
+	
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
+		
 		assertThrows(
-				RuntimeException.class,
-				() -> this.service.update(
-						new InquiryModel(
-							new InquiryId(2),
-							new NameWord("テストネーム"),
-							new NameWord("テストメールアドレス"),
-							new NameWord("テストコメント"),
-							dateTime1
-						)
-				));
+			RuntimeException.class,
+			() -> this.service.update(
+				new InquiryModel(
+					new InquiryId(2),
+					new NameWord("テストネーム"),
+					new NameWord("テストメールアドレス"),
+					new NameWord("テストコメント"),
+					TestConsts.TEST_TIME_01
+				)
+			));
 	}
 	
 	/**
@@ -150,7 +164,7 @@ class InquiryServiceUseTest {
 				+ "WHERE id = ?";
 		
 		when(this.jdbcTemp.update(sql, 1))
-			.thenReturn(1);
+			.thenReturn(TestConsts.RESULT_NUMBER_OK);
 		when(this.jdbcTemp.update(sql, 2))
 			.thenReturn(WebConsts.ERROR_DB_STATUS);
 		
@@ -158,7 +172,7 @@ class InquiryServiceUseTest {
 	}
 	
 	/**
-	 * 削除テスト
+	 * 削除テスト(正常系)
 	 */
 	@Test
 	public void DeleteTest() {
@@ -166,6 +180,15 @@ class InquiryServiceUseTest {
 		
 		assertDoesNotThrow(() -> 
 			this.service.delete(new InquiryId(1)));
+	}
+	
+	/**
+	 * 削除テスト(異常系)
+	 */
+	@Test
+	public void DeleteTest_Error() {
+		InitDelete();
+		
 		assertThrows(RuntimeException.class, () -> 
 			this.service.delete(new InquiryId(2)));
 	}
@@ -176,17 +199,19 @@ class InquiryServiceUseTest {
 	public void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		
-		map.put("id", 1);
-		map.put("name", "テストネーム");
-		map.put("email", "テストメールアドレス");
-		map.put("comment", "テストコメント");
-		map.put("created", Timestamp.valueOf(dateTime1));
-		mapList.add(map);
-		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
+		String sql = "SELECT * FROM inquiry";
+		
+		map.put(WebConsts.SQL_ID_NAME,      1);
+		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
+		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
+		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		mapList.add(map);
+		
+		when(this.jdbcTemp.queryForList(sql)).thenReturn(mapList);
 		
 		setService();
 	}
@@ -200,12 +225,38 @@ class InquiryServiceUseTest {
 		
 		List<InquiryModel> list = this.service.getAll();
 		
-		Assertions.assertEquals(list.size(), 1);
-		Assertions.assertEquals(list.get(0).getName(), "テストネーム");
-		Assertions.assertEquals(list.get(0).getEmail(), "テストメールアドレス");
+		Assertions.assertEquals(list.size(),             1);
+		Assertions.assertEquals(list.get(0).getName(),   "テストネーム");
+		Assertions.assertEquals(list.get(0).getEmail(),  "テストメールアドレス");
 		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
-		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
+		Assertions.assertEquals(list.get(0).getCreated().toString(), 
+				TestConsts.TEST_TIME_01.toString());
 		list.clear();
+	}
+	
+	/**
+	 * 全て選択の準備(空)
+	 */
+	public void InitSelectAll_Empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM inquiry";
+		
+		when(this.jdbcTemp.queryForList(sql)).thenReturn(mapList);
+		
+		setService();
+	}
+	
+	/**
+	 * 全選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_Empty() {
+		InitSelectAll_Empty();
+		
+		assertThrows(RuntimeException.class, () -> 
+			this.service.getAll());
 	}
 	
 	/**
@@ -213,26 +264,29 @@ class InquiryServiceUseTest {
 	 */
 	public void InitSelect_byId() {
 		Map<String, Object> map = new HashMap<String, Object>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "SELECT * "
 				+ "FROM inquiry "
 				+ "WHERE id = ?";
 		
-		map.put("id", 1);
-		map.put("name", "テストネーム");
-		map.put("email", "テストメールアドレス");
-		map.put("comment", "テストコメント");
-		map.put("created", Timestamp.valueOf(dateTime1));
+		map.put(WebConsts.SQL_ID_NAME,      1);
+		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
+		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
+		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		
-		// Mock化
-		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForMap(sql, 1)).thenReturn(map);
-		when(this.jdbcTemp.queryForMap(sql, 2)).thenReturn(null);
+		when(this.jdbcTemp.queryForMap(sql, 1))
+			.thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 2))
+			.thenReturn(null);
 		
 		setService();
 	}
 	
 	/**
-	 * IDによるデータ取得テスト
+	 * IDによるデータ取得テスト(正常系)
 	 */
 	@Test
 	public void Select_byIdTest() {
@@ -241,11 +295,20 @@ class InquiryServiceUseTest {
 		InquiryModel model = this.service.select(new InquiryId(1));
 		
 		Assertions.assertNotNull(model);
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getEmail(), "テストメールアドレス");
+		Assertions.assertEquals(model.getId(),      1);
+		Assertions.assertEquals(model.getName(),    "テストネーム");
+		Assertions.assertEquals(model.getEmail(),   "テストメールアドレス");
 		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime1.toString());
+		Assertions.assertEquals(model.getCreated().toString(), 
+				TestConsts.TEST_TIME_01.toString());
+	}
+	
+	/**
+	 * IDによるデータ取得テスト(異常系)
+	 */
+	@Test
+	public void Select_byIdTest_Error() {
+		InitSelect_byId();
 		
 		assertThrows(RuntimeException.class, () -> 
 			this.service.select(new InquiryId(2)));
@@ -256,7 +319,7 @@ class InquiryServiceUseTest {
 	 */
 	public void setService() {
 		InquiryDao dao = new InquiryDaoSql(this.jdbcTemp);
-		this.service = new InquiryServiceUse(dao);
+		this.service   = new InquiryServiceUse(dao);
 	}
 	
 	/**
@@ -265,7 +328,7 @@ class InquiryServiceUseTest {
 	@AfterEach
 	public void Release() {
 		this.jdbcTemp = null;
-		this.service = null;
+		this.service  = null;
 	}
 
 }

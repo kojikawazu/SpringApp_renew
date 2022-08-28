@@ -43,10 +43,12 @@ public class BlogTagDaoSql implements BlogTagDao {
 	@Override
 	public void insertTag(BlogTagModel model) {
 		if(model == null)	return ;
+		String sql = "INSERT INTO blog_tag(tag) "
+				+ "VALUES(?)";
 		
 		try {
-			this.jdbcTemp.update("INSERT INTO blog_tag(tag) "
-					+ "VALUES(?)",
+			this.jdbcTemp.update(
+					sql,
 					model.getTag());
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -61,9 +63,11 @@ public class BlogTagDaoSql implements BlogTagDao {
 	@Override
 	public int updateTag(BlogTagModel model) {
 		if(model == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "UPDATE blog_tag SET "
+				+ "tag = ? WHERE id = ?";
 		
-		return this.jdbcTemp.update("UPDATE blog_tag SET "
-				+ "tag = ? WHERE id = ?",
+		return this.jdbcTemp.update(
+				sql,
 				model.getTag(),
 				model.getId());
 	}
@@ -76,9 +80,11 @@ public class BlogTagDaoSql implements BlogTagDao {
 	@Override
 	public int deleteTag(BlogTagId id) {
 		if(id == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "DELETE FROM blog_tag "
+				+ "WHERE id = ?";
 		
-		return this.jdbcTemp.update("DELETE FROM blog_tag "
-				+ "WHERE id = ?", 
+		return this.jdbcTemp.update(
+				sql, 
 				id.getId());
 	}
 
@@ -88,18 +94,16 @@ public class BlogTagDaoSql implements BlogTagDao {
 	 */
 	@Override
 	public List<BlogTagModel> getAll() {
-		String sql = "SELECT * "
-				+ "FROM blog_tag";
+		String sql = "SELECT * FROM blog_tag";
 		List<BlogTagModel> list = new ArrayList<BlogTagModel>();
 		
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for( Map<String, Object> result : resultList ) {
-				BlogTagModel model = new BlogTagModel(
-						new BlogTagId((int)result.get("id")),
-						new NameWord((String)result.get("tag"))
-						);
+				BlogTagModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -143,16 +147,29 @@ public class BlogTagDaoSql implements BlogTagDao {
 		
 		try {
 			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
-			if( result != null ) {
-				model = new BlogTagModel(
-						new BlogTagId((int)result.get("id")),
-						new NameWord((String)result.get("tag"))
-						);
-			}
+			if( result == null ) return null;
+			
+			model = this.makeModel(result);
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			model = null;
 		}
+		
+		return model;
+	}
+	
+	/**
+	 * モデル生成
+	 * @param  result
+	 * @return ブログタグモデル
+	 */
+	private BlogTagModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		BlogTagModel model =  new BlogTagModel(
+				new BlogTagId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_TAG_NAME))
+				);
 		
 		return model;
 	}

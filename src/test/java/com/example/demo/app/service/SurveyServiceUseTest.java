@@ -21,6 +21,7 @@ import com.example.demo.app.dao.SurveyDao;
 import com.example.demo.app.dao.SurveyDaoSql;
 import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.NameWord;
@@ -31,11 +32,13 @@ import com.example.demo.common.word.NameWord;
  *
  */
 class SurveyServiceUseTest {
+	
+	private static final String SQL_INSERT = "INSERT INTO survey("
+			+ "name, age, profession, ismen, satisfaction, comment, created) "
+			+ "VALUES(?,?,?,?,?,?,?)";
 
 	/** テスト対象 */
 	SurveyService service = null;
-	
-	LocalDateTime dateTime1 = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 	
 	@Mock
 	JdbcTemplate jdbcTemp = null;
@@ -46,20 +49,17 @@ class SurveyServiceUseTest {
 	public void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		String sql = "INSERT INTO survey("
-				+ "name, age, profession, ismen, satisfaction, comment, created) "
-				+ "VALUES(?,?,?,?,?,?,?)";
 		
 		when(this.jdbcTemp.update(
-				sql, 
+				SQL_INSERT, 
 				"テストネーム",
 				10,
 				1,
 				1,
 				5,
 				"テストコメント",
-				dateTime1
-				)).thenReturn(1);
+				TestConsts.TEST_TIME_01
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		setService();
 	}
@@ -78,10 +78,19 @@ class SurveyServiceUseTest {
 				new NormalNumber(1),
 				new NormalNumber(5),
 				new NameWord("テストコメント"),
-				LocalDateTime.now()
+				TestConsts.TEST_TIME_01
 				);
 		
 		this.service.save(model);
+		verify(this.jdbcTemp, times(1)).update(
+				SQL_INSERT, 
+				"テストネーム",
+				10,
+				1,
+				1,
+				5,
+				"テストコメント",
+				TestConsts.TEST_TIME_01);
 	}
 	
 	/**
@@ -103,7 +112,7 @@ class SurveyServiceUseTest {
 				5,
 				"テストコメント",
 				1
-				)).thenReturn(1);
+				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
@@ -120,13 +129,12 @@ class SurveyServiceUseTest {
 	}
 	
 	/**
-	 * 更新テスト
+	 * 更新テスト(正常系)
 	 */
 	@Test
 	public void UpdateTest() {
 		InitUpdate();
 		
-		// 正常系
 		assertDoesNotThrow(
 			() -> this.service.update(new SurveyModel(
 					new SurveyId(1),
@@ -136,11 +144,18 @@ class SurveyServiceUseTest {
 					new NormalNumber(1),
 					new NormalNumber(5),
 					new NameWord("テストコメント"),
-					dateTime1
+					TestConsts.TEST_TIME_01
 					)
 			));
-		
-		// 異常系
+	}
+	
+	/**
+	 * 更新テスト(異常系)
+	 */
+	@Test
+	public void UpdateTest_Error() {
+		InitUpdate();
+				
 		assertThrows(RuntimeException.class,
 			() -> this.service.update(new SurveyModel(
 					new SurveyId(2),
@@ -150,7 +165,7 @@ class SurveyServiceUseTest {
 					new NormalNumber(1),
 					new NormalNumber(5),
 					new NameWord("テストコメント"),
-					dateTime1
+					TestConsts.TEST_TIME_01
 					)
 			));
 	}
@@ -161,20 +176,23 @@ class SurveyServiceUseTest {
 	public void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-		
-		map.put("id", 1);
-		map.put("name", "テストネーム");
-		map.put("age", 10);
-		map.put("profession", 2);
-		map.put("ismen", 1);
-		map.put("satisfaction", 1);
-		map.put("comment", "テストコメント");
-		map.put("created", Timestamp.valueOf(dateTime1));
-		mapList.add(map);
-		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
-		when(this.jdbcTemp.queryForList(any())).thenReturn(mapList);
+		String sql = "SELECT * FROM survey";
+		
+		map.put(WebConsts.SQL_ID_NAME,           1);
+		map.put(WebConsts.SQL_NAME_NAME,         "テストネーム");
+		map.put(WebConsts.SQL_AGE_NAME,         10);
+		map.put(WebConsts.SQL_PROFESSION_NAME,   2);
+		map.put(WebConsts.SQL_ISMEN_NAME,        1);
+		map.put(WebConsts.SQL_SATISFACTION_NAME, 1);
+		map.put(WebConsts.SQL_COMMENT_NAME,      "テストコメント");
+		map.put(WebConsts.SQL_CREATED_NAME, 
+				Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		mapList.add(map);
+		
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
 		
 		setService();
 	}
@@ -188,16 +206,45 @@ class SurveyServiceUseTest {
 		
 		List<SurveyModel> list = this.service.getAll();
 		
-		Assertions.assertEquals(list.size(), 1);
-		Assertions.assertEquals(list.get(0).getId(), 1);
-		Assertions.assertEquals(list.get(0).getName(), "テストネーム");
-		Assertions.assertEquals(list.get(0).getAge(), 10);
-		Assertions.assertEquals(list.get(0).getProfession(), 2);
+		Assertions.assertEquals(list.size(),                    1);
+		Assertions.assertEquals(list.get(0).getId(),            1);
+		Assertions.assertEquals(list.get(0).getName(),          "テストネーム");
+		Assertions.assertEquals(list.get(0).getAge(),          10);
+		Assertions.assertEquals(list.get(0).getProfession(),    2);
 		Assertions.assertEquals(list.get(0).getMen_or_female(), 1);
-		Assertions.assertEquals(list.get(0).getSatisfaction(), 1);
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
-		Assertions.assertEquals(list.get(0).getCreated().toString(), dateTime1.toString());
+		Assertions.assertEquals(list.get(0).getSatisfaction(),  1);
+		Assertions.assertEquals(list.get(0).getComment(),       "テストコメント");
+		Assertions.assertEquals(list.get(0).getCreated().toString(), 
+			TestConsts.TEST_TIME_01.toString());
 		list.clear();
+	}
+	
+	/**
+	 * 全選択の初期化(空)
+	 */
+	public void InitSelectAll_Empty() {
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		// Mock化
+		this.jdbcTemp = mock(JdbcTemplate.class);
+		String sql = "SELECT * FROM survey";
+				
+		when(this.jdbcTemp.queryForList(sql))
+			.thenReturn(mapList);
+		
+		setService();
+	}
+	
+	/**
+	 * 全選択テスト(空)
+	 */
+	@Test
+	public void SelectAllTest_Empty() {
+		InitSelectAll_Empty();
+		
+		assertThrows(
+				RuntimeException.class, 
+				() -> this.service.getAll()
+			);
 	}
 	
 	/**
@@ -205,7 +252,7 @@ class SurveyServiceUseTest {
 	 */
 	public void setService() {
 		SurveyDao dao = new SurveyDaoSql(this.jdbcTemp);
-		this.service = new SurveyServiceUse(dao);
+		this.service  = new SurveyServiceUse(dao);
 	}
 	
 	/**
@@ -214,7 +261,7 @@ class SurveyServiceUseTest {
 	@AfterEach
 	public void Release() {
 		this.jdbcTemp = null;
-		this.service = null;
+		this.service  = null;
 	}
 
 }

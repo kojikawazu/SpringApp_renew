@@ -44,11 +44,12 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 	@Override
 	public void insertReply(BlogReplyModel model) {
 		if(model == null)	return ;
+		String sql = "INSERT INTO blog_reply("
+				+ "blog_id, name, comment, thanksCnt, created) "
+				+ "VALUES(?,?,?,?,?)";
 		
 		try {
-			jdbcTemp.update("INSERT INTO blog_reply("
-				+ "blog_id, name, comment, thanksCnt, created) "
-				+ "VALUES(?,?,?,?,?)",
+			this.jdbcTemp.update(sql,
 					model.getBlogId(),
 					model.getName(),
 					model.getComment(),
@@ -69,9 +70,11 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 	@Override
 	public int deleteReply(BlogReplyId id) {
 		if(id == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "DELETE FROM blog_reply "
+				+ "WHERE id = ?";
 		
-		return jdbcTemp.update("DELETE FROM blog_reply "
-				+ "WHERE id = ?", 
+		return this.jdbcTemp.update(
+				sql, 
 				id.getId());
 	}
 	
@@ -83,9 +86,11 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 	@Override
 	public int deleteReply_byBlog(BlogId blogid) {
 		if(blogid == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "DELETE FROM blog_reply "
+				+ "WHERE blog_id = ?";
 		
-		return jdbcTemp.update("DELETE FROM blog_reply "
-				+ "WHERE blog_id = ?",
+		return this.jdbcTemp.update(
+				sql,
 				blogid.getId());
 	}
 
@@ -95,22 +100,16 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 	 */
 	@Override
 	public List<BlogReplyModel> getAll() {
-		String sql = "SELECT * "
-				+ "FROM blog_reply";
+		String sql = "SELECT * FROM blog_reply";
 		List<BlogReplyModel> list = new ArrayList<BlogReplyModel>();
 		
 		try {
-			List<Map<String, Object>> resultList = jdbcTemp.queryForList(sql);
+			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for( Map<String, Object> result : resultList ) {
-				BlogReplyModel model = new BlogReplyModel(
-						new BlogReplyId((int)result.get("id")),
-						new BlogId((int)result.get("blog_id")),
-						new NameWord((String)result.get("name")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				BlogReplyModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -134,19 +133,13 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 		String sql = "SELECT * "
 				+ "FROM blog_reply "
 				+ "WHERE blog_id = ?";
-		
 		try {
-			List<Map<String, Object>> resultList = jdbcTemp.queryForList(sql, blogid.getId());
+			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql, blogid.getId());
 			
 			for( Map<String, Object> result : resultList ) {
-				BlogReplyModel model = new BlogReplyModel(
-						new BlogReplyId((int)result.get("id")),
-						new BlogId((int)result.get("blog_id")),
-						new NameWord((String)result.get("name")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
+				BlogReplyModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -170,19 +163,11 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 				+ "FROM blog_reply "
 				+ "WHERE id = ?";
 		BlogReplyModel model = null;
-		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
-			if(result != null) {
-				model = new BlogReplyModel(
-						new BlogReplyId((int)result.get("id")),
-						new BlogId((int)result.get("blog_id")),
-						new NameWord((String)result.get("name")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime()
-						);
-			}
+			Map<String, Object> result = this.jdbcTemp.queryForMap(sql, id.getId());
+			if(result == null) return null;
+			
+			model = this.makeModel(result);
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			model = null;
@@ -199,30 +184,63 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 	@Override
 	public int thanksIncrement(BlogReplyId id) {
 		if(id == null)	return WebConsts.ERROR_NUMBER;
+		int thanksCnter = 0;
+		int ret = 0;
 		
 		String sql = "SELECT thanksCnt "
 				+ "FROM blog_reply "
 				+ "WHERE id = ?";
-		int thanksCnter = 0;
+		
+		String sql_update = "UPDATE blog_reply "
+				+ "SET thanksCnt = ? "
+				+ "WHERE id = ?"
+				;
 		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
+			Map<String, Object> result = this.jdbcTemp.queryForMap(
+					sql, 
+					id.getId());
 			if(result == null)	return WebConsts.ERROR_NUMBER; 
 			
-			thanksCnter = (int)result.get("thanksCnt");
+			thanksCnter = (int)result.get(WebConsts.SQL_THANKSCNT_NAME);
 			thanksCnter++;
 			
-			jdbcTemp.update("UPDATE blog_reply "
-					+ "SET thanksCnt = ? "
-					+ "WHERE id = ?",
+			ret = this.jdbcTemp.update(
+					sql_update,
 					thanksCnter,
 					id.getId());
+			
+			if(ret <= WebConsts.ERROR_DB_STATUS) {
+				thanksCnter = WebConsts.ERROR_NUMBER;
+			}
+			
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			thanksCnter = WebConsts.ERROR_NUMBER;
 		}
 		
 		return thanksCnter;
+	}
+	
+	/**
+	 * モデル生成
+	 * @param  result マップ
+	 * @return ブログ返信モデル
+	 */
+	private BlogReplyModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		BlogReplyModel model = new BlogReplyModel(
+				new BlogReplyId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new BlogId((int)result.get(WebConsts.SQL_BLOG_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				new ThanksCntNumber((int)result.get(WebConsts.SQL_THANKSCNT_NAME)),
+				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME))
+					.toLocalDateTime()
+				);
+		
+		return model;
 	}
 
 }

@@ -24,9 +24,7 @@ import com.example.demo.common.word.NameWord;
 @Repository
 public class BlogMainDaoSql implements BlogMainDao {
 
-	/**
-	 * Jdbcドライバー
-	 */
+	/** Jdbcドライバー */
 	private JdbcTemplate jdbcTemp;
 	
 	/**
@@ -45,11 +43,12 @@ public class BlogMainDaoSql implements BlogMainDao {
 	@Override
 	public void insertBlog(BlogMainModel model) {
 		if(model == null)	return ;
-		
-		try {
-			jdbcTemp.update("INSERT INTO blog_main("
+		String sql = "INSERT INTO blog_main("
 				+ "title, tag, comment, thanksCnt, created, updated) "
-				+ "VALUES(?,?,?,?,?,?)",
+				+ "VALUES(?,?,?,?,?,?)";
+		try {
+			this.jdbcTemp.update(
+					sql,
 					model.getTitle(),
 					model.getTag(),
 					model.getComment(),
@@ -70,10 +69,11 @@ public class BlogMainDaoSql implements BlogMainDao {
 	@Override
 	public int updateBlog(BlogMainModel model) {
 		if(model == null)	return WebConsts.ERROR_NUMBER;
-		
-		return jdbcTemp.update("UPDATE blog_main SET "
+		String sql = "UPDATE blog_main SET "
 				+ "title = ?, tag = ?, comment = ?, thanksCnt = ?, updated = ? "
-				+ "WHERE id = ?",
+				+ "WHERE id = ?";
+		
+		return this.jdbcTemp.update(sql,
 					model.getTitle(),
 					model.getTag(),
 					model.getComment(),
@@ -91,35 +91,28 @@ public class BlogMainDaoSql implements BlogMainDao {
 	@Override
 	public int deleteBlog(BlogId id) {
 		if(id == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "DELETE FROM blog_main "
+				+ "WHERE id = ?";
 		
-		return jdbcTemp.update("DELETE FROM blog_main "
-				+ "WHERE id = ?", 
+		return this.jdbcTemp.update(sql, 
 				id.getId());
 	}
-
+	
 	/**
 	 * 全て選択
 	 * @return ブログメインモデルリスト
 	 */
 	@Override
 	public List<BlogMainModel> getAll() {
-		String sql = "SELECT * "
-				+ "FROM blog_main";
+		String sql = "SELECT * FROM blog_main";
 		List<BlogMainModel> list = new ArrayList<BlogMainModel>();
 		
 		try {
-			List<Map<String, Object>> resultList = jdbcTemp.queryForList(sql);
+			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			
 			for( Map<String, Object> result : resultList ) {
-				BlogMainModel model = new BlogMainModel(
-						new BlogId((int)result.get("id")),
-						new NameWord((String)result.get("title")),
-						new NameWord((String)result.get("tag")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime(),
-						((Timestamp)result.get("updated")).toLocalDateTime()
-					);
+				BlogMainModel model = this.makeModel(result);
+				if(model == null) continue;
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -145,19 +138,11 @@ public class BlogMainDaoSql implements BlogMainDao {
 				+ "WHERE id = ?";
 		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
+			Map<String, Object> result = this.jdbcTemp.queryForMap(
+					sql, id.getId());
+			if(result == null) return null;
 			
-			if(result != null) {
-				model = new BlogMainModel(
-						new BlogId((int)result.get("id")),
-						new NameWord((String)result.get("title")),
-						new NameWord((String)result.get("tag")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime(),
-						((Timestamp)result.get("updated")).toLocalDateTime()
-						);
-			}
+			model = this.makeModel(result);
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
 			model = null;
@@ -176,20 +161,15 @@ public class BlogMainDaoSql implements BlogMainDao {
 		String sql = "SELECT * "
 				+ "FROM blog_main "
 				+ "WHERE tag = ?";
-		
 		List<BlogMainModel> list = new ArrayList<BlogMainModel>();
+		
 		try {
-			List<Map<String, Object>> resultList = jdbcTemp.queryForList(sql, tag);
+			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(
+					sql, tag);
 			for( Map<String, Object> result : resultList ) {
-				BlogMainModel model = new BlogMainModel(
-						new BlogId((int)result.get("id")),
-						new NameWord((String)result.get("title")),
-						new NameWord((String)result.get("tag")),
-						new NameWord((String)result.get("comment")),
-						new ThanksCntNumber((int)result.get("thanksCnt")),
-						((Timestamp)result.get("created")).toLocalDateTime(),
-						((Timestamp)result.get("updated")).toLocalDateTime()
-						);
+				BlogMainModel model = this.makeModel(result);
+				if(model == null)	continue;
+				
 				list.add(model);
 			}
 		} catch(DataAccessException ex) {
@@ -208,24 +188,35 @@ public class BlogMainDaoSql implements BlogMainDao {
 	@Override
 	public int thanksIncrement(BlogId id) {
 		if(id == null)	return WebConsts.ERROR_NUMBER;
+		int thanksCnter = 0;
+		int ret = 0;
+		
 		String sql = "SELECT thanksCnt "
 				+ "FROM blog_main "
 				+ "WHERE id = ?";
-		int thanksCnter = 0;
+		
+		String sql_update = "UPDATE blog_main SET "
+				+ "thanksCnt = ? "
+				+ "WHERE id = ?";
 		
 		try {
-			Map<String, Object> result = jdbcTemp.queryForMap(sql, id.getId());
+			Map<String, Object> result = this.jdbcTemp.queryForMap(
+					sql, 
+					id.getId());
 			if(result == null) return WebConsts.ERROR_NUMBER;
 			
 			// いいね加算
-			thanksCnter = (int)result.get("thanksCnt");
+			thanksCnter = (int)result.get(WebConsts.SQL_THANKSCNT_NAME);
 			thanksCnter++;
 			
-			jdbcTemp.update("UPDATE blog_main SET "
-					+ "thanksCnt = ? "
-					+ "WHERE id = ?",
+			ret = this.jdbcTemp.update(
+					sql_update,
 					thanksCnter,
 					id.getId());
+			
+			if(ret <= WebConsts.ERROR_DB_STATUS) {
+				thanksCnter = WebConsts.ERROR_NUMBER;
+			}
 			
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -233,5 +224,26 @@ public class BlogMainDaoSql implements BlogMainDao {
 		}
 		
 		return thanksCnter;
+	}
+	
+	/**
+	 * モデル生成
+	 * @param  result マップ
+	 * @return ブログメインモデル
+	 */
+	private BlogMainModel makeModel(Map<String, Object> result) {
+		if(result == null)	return null;
+		
+		BlogMainModel model = new BlogMainModel(
+				new BlogId((int)result.get(WebConsts.SQL_ID_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_TITLE_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_TAG_NAME)),
+				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				new ThanksCntNumber((int)result.get(WebConsts.SQL_THANKSCNT_NAME)),
+				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME)).toLocalDateTime(),
+				((Timestamp)result.get(WebConsts.SQL_UPDATED_NAME)).toLocalDateTime()
+				);
+		
+		return model;
 	}
 }
