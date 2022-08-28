@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +18,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.dao.BlogTagDao;
 import com.example.demo.app.dao.BlogTagDaoSql;
 import com.example.demo.app.entity.BlogTagModel;
-import com.example.demo.app.exception.InquiryNotFoundException;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
 

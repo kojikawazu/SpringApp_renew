@@ -326,7 +326,7 @@ public class SurveyDaoSql implements SurveyDao {
 
 	/**
 	 * 性別 & 年齢 & 職業別の評価の数
-	 * @paran satis 評価
+	 * @param satis 評価
 	 * @param ismen 男 or 女
 	 * @param prof  職業
 	 * @param age   年齢
