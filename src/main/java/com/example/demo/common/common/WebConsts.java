@@ -13,9 +13,8 @@ public class WebConsts {
 	/** データなし */
 	public static final int ERROR_DB_STATUS = 0;
 	
-	
-	
 	// ---------------------------------------------------------------------------------
+	/** SQL */
 	
 	/** SQL[id] */
 	public static final String SQL_ID_NAME         = "id";
@@ -61,5 +60,13 @@ public class WebConsts {
 	
 	/** SQL[updated] */
 	public static final String SQL_UPDATED_NAME    = "updated";
+	
+	// ---------------------------------------------------------------------------------
+	/** attribute key */
+	
+	/** attribute[title] */
+	public static final String ATTRIBUTE_TITLE     = "title";
+	
+	public static final String ATTRIBUTE_CONT      = "cont";
 
 }

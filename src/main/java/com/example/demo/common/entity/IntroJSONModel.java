@@ -14,6 +14,12 @@ import com.example.demo.common.word.IntroWord;
  */
 public class IntroJSONModel {
 	
+	/** 名前リスト */
+	private IntroList nameList;
+	
+	/** タイトルリスト */
+	private IntroList titleList;
+	
 	/** 自己紹介文字列 */
 	private IntroWord intro;
 	
@@ -43,6 +49,8 @@ public class IntroJSONModel {
 
 	/**
 	 * コンストラクタ
+	 * @param nameList
+	 * @param titleList
 	 * @param intro
 	 * @param experienceList
 	 * @param after
@@ -55,6 +63,8 @@ public class IntroJSONModel {
 	 * @param word
 	 */
 	public IntroJSONModel(
+			IntroList nameList,
+			IntroList titleList,
 			IntroWord intro,
 			IntroList experienceList,
 			IntroWord after,
@@ -66,6 +76,14 @@ public class IntroJSONModel {
 			IntroList hobbyList,
 			IntroWord word
 			) {
+		
+		this.nameList = (nameList == null ?
+				new IntroList(new ArrayList<>()) :
+					nameList);
+		
+		this.titleList = (titleList == null ?
+				new IntroList(new ArrayList<>()) :
+					titleList);
 		
 		this.intro = (intro == null ?
 				new IntroWord("") :
@@ -116,6 +134,8 @@ public class IntroJSONModel {
 			IntroJSONModel model
 			) {
 		if(model == null) {
+			this.nameList       = new IntroList(new ArrayList<>());
+			this.titleList      = new IntroList(new ArrayList<>());
 			this.intro          = new IntroWord("");
 			this.experienceList = new IntroList(new ArrayList<>());
 			this.after          = new IntroWord("");
@@ -128,6 +148,8 @@ public class IntroJSONModel {
 			this.word           = new IntroWord("");
 			
 		} else {
+			this.nameList       = new IntroList(model.getNameList());
+			this.titleList      = new IntroList(model.getTitleList());
 			this.intro          = new IntroWord(model.getIntro());
 			this.experienceList = new IntroList(model.getExperienceList());
 			this.after          = new IntroWord(model.getAfter());
@@ -139,6 +161,24 @@ public class IntroJSONModel {
 			this.hobbyList      = new IntroList(model.getHobbyList());
 			this.word           = new IntroWord(model.getWord());
 		}
+	}
+	
+	public List<String> getNameList() {
+		return this.nameList.getList();
+	}
+
+	protected void setNameList(List<String> nameList) {
+		if(nameList == null)	return ;
+		this.nameList = new IntroList(nameList);
+	}
+	
+	public List<String> getTitleList() {
+		return this.titleList.getList();
+	}
+
+	protected void setTitleList(List<String> titleList) {
+		if(titleList == null)	return ;
+		this.titleList = new IntroList(titleList);
 	}
 
 	public String getIntro() {
