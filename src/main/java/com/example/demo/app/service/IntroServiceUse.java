@@ -8,20 +8,33 @@ import org.springframework.stereotype.Service;
 import com.example.demo.common.entity.IntroJSONModel;
 import com.example.demo.json.IntroReader;
 
+/**
+ * JSON読取サービスクラス
+ * @author nanai
+ *
+ */
 @Service
 public class IntroServiceUse implements IntroService {
 
+	/** 自己紹介読取クラス */
 	private final IntroReader reader;
 	
+	/**
+	 * コンストラクタ
+	 * @param reader
+	 */
 	@Autowired
 	public IntroServiceUse(IntroReader reader) {
-		// TODO コンストラクタ
 		this.reader = reader;
 	}
 	
+	/**
+	 * 自己紹介データをJSONデータから読取
+	 * @param  path
+	 * @return JSON読取モデル
+	 */
 	@Override
 	public IntroJSONModel readerIntroData_byJSON(Path path) {
-		// TODO 自己紹介文のJSONデータ読込
 		return this.reader.reader(path);
 	}
 

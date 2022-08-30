@@ -23,9 +23,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class IntroReader implements IntroJsonReader {
 	
+	
+	private static final String JSON_SECTION_KEYWORD    = "name";
+	
+	private static final String JSON_SECTION_SKILL      = "skill_";
+	
+	/** 名前 */
+	private static final String JSON_SECTION_NAME       = "name";
+	
+	/** タイトル */
+	private static final String JSON_SECTION_TITLE      = "title";
+	
+	/** 自己紹介 */
+	private static final String JSON_SECTION_INTRO      = "intro";
+	
+	/** 経験 */
+	private static final String JSON_SECTION_EXPERIENCE = "experience";
+	
+	/** 今後やりたいこと */
+	private static final String JSON_SECTION_AFTER      = "after";
+	
+	/** URL */
+	private static final String JSON_SECTION_URL        = "url";
+	
+	/** 趣味 */
+	private static final String JSON_SECTION_HOBBY      = "hobby";
+
+	/** 最後に */
+	private static final String JSON_SECTION_WORD       = "word";
+	
+	/**
+	 * コンストラクタ
+	 */
 	@Autowired
 	public IntroReader() {
-		// コンストラクタ
+		
 	}
 
 	/**
@@ -37,31 +69,40 @@ public class IntroReader implements IntroJsonReader {
 		// JSON読み取り
 		IntroJSONModel model = null;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper   = new ObjectMapper();
 			JsonNode rootJsonNode = mapper.readTree(path.toFile());
+			int skill_number      = 1;
 			
+			/** 名前 */
+			IntroList nameList        = this.readDataList(rootJsonNode,  JSON_SECTION_NAME);
+			// タイトル
+			IntroList titleList       = this.readDataList(rootJsonNode, JSON_SECTION_TITLE);
 			// 紹介文
-			IntroWord intro          = this.readData(rootJsonNode, "intro");
+			IntroWord intro           = this.readData(rootJsonNode,     JSON_SECTION_INTRO);
 			// 経験
-			IntroList experienceList = this.readDataList(rootJsonNode, "experience");
+			IntroList experienceList  = this.readDataList(rootJsonNode, JSON_SECTION_EXPERIENCE);
 			// 今後やりたいこと
-			IntroWord after          = this.readData(rootJsonNode, "after");
+			IntroWord after           = this.readData(rootJsonNode,     JSON_SECTION_AFTER);
 			// スキル1
-			SkillList skill1List     = this.readSkill(rootJsonNode, 1);
+			SkillList skill1List      = this.readSkill(rootJsonNode, skill_number);
 			// スキル2
-			SkillList skill2List     = this.readSkill(rootJsonNode, 2);
+			SkillList skill2List      = this.readSkill(rootJsonNode, skill_number + 1);
 			// スキル3
-			SkillList skill3List     = this.readSkill(rootJsonNode, 3);
+			SkillList skill3List      = this.readSkill(rootJsonNode, skill_number + 2);
 			// スキル4
-			SkillList skill4List     = this.readSkill(rootJsonNode, 4);
+			SkillList skill4List      = this.readSkill(rootJsonNode, skill_number + 3);
 			// URL
-			IntroWord url            = this.readData(rootJsonNode, "url");
+			IntroWord url             = this.readData(rootJsonNode,     JSON_SECTION_URL);
 			// 趣味
-			IntroList hobbyList      = this.readDataList(rootJsonNode, "hobby");
+			IntroList hobbyList       = this.readDataList(rootJsonNode, JSON_SECTION_HOBBY);
 			// 最後に
-			IntroWord word           = this.readData(rootJsonNode, "word");
+			IntroWord word            = this.readData(rootJsonNode,     JSON_SECTION_WORD);
 			
 			model = new IntroJSONModel(
+					// 名前
+					nameList,
+					// タイトル
+					titleList,
 					// 紹介文
 					intro,
 					// 経験
@@ -100,7 +141,7 @@ public class IntroReader implements IntroJsonReader {
 	private IntroWord readData(JsonNode rootJsonNode, String word) {
 		return (word == null || word == "" ? 
 					new IntroWord(null) :
-					new IntroWord(rootJsonNode.get("intro").get(0).get("name").asText())
+					new IntroWord(rootJsonNode.get(word).get(0).get(JSON_SECTION_KEYWORD).asText())
 				);
 	}
 	
@@ -114,7 +155,7 @@ public class IntroReader implements IntroJsonReader {
 		
 		List<String> dataList = new ArrayList<String>();
 		for(JsonNode node : rootJsonNode.get(word)) {
-			String text = node.get("name").asText();
+			String text = node.get(JSON_SECTION_KEYWORD).asText();
 			dataList.add(text);
 		}
 		
@@ -130,8 +171,8 @@ public class IntroReader implements IntroJsonReader {
 		if (dataNumber <= 0 || dataNumber > 4) return new SkillList(null);
 		
 		List<String> skillList = new ArrayList<String>();
-		for(JsonNode node : rootJsonNode.get("skill_" + dataNumber)) {
-			String skill = node.get("name").asText();
+		for(JsonNode node : rootJsonNode.get(JSON_SECTION_SKILL + dataNumber)) {
+			String skill = node.get(JSON_SECTION_KEYWORD).asText();
 			skillList.add(skill);
 		}
 		
