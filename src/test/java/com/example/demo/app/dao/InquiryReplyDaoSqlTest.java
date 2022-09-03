@@ -45,7 +45,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {
+	private void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		
@@ -89,7 +89,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 更新テストの準備
 	 */
-	public void InitUpdate() {
+	private void InitUpdate() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "UPDATE inquiry_reply SET "
@@ -160,7 +160,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 削除テストの準備
 	 */
-	public void InitDelete() {
+	private void InitDelete() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM inquiry_reply "
@@ -199,7 +199,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 削除テストの準備(問い合わせID)
 	 */
-	public void InitDelete_byInquiryId() {
+	private void InitDelete_byInquiryId() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM inquiry_reply "
@@ -238,7 +238,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 全選択テストの準備
 	 */
-	public void InitSelectAll() {
+	private void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
@@ -283,7 +283,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 全選択テストの準備(空)
 	 */
-	public void InitSelectAll_Empty() {
+	private void InitSelectAll_Empty() {
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -310,7 +310,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * IDによる選択テストの準備
 	 */
-	public void InitSelect_byId() {
+	private void InitSelect_byId() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -366,7 +366,7 @@ class InquiryReplyDaoSqlTest {
 	/**
 	 * 問い合わせIDによる選択テストの準備
 	 */
-	public void InitSelect_byInquiryId() {
+	private void InitSelect_byInquiryId() {
 		Map<String, Object> map            = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList  = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();

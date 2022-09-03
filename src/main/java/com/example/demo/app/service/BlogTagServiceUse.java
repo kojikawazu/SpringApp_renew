@@ -47,7 +47,7 @@ public class BlogTagServiceUse implements BlogTagService {
 	@Override
 	public void update(BlogTagModel model) {
 		if(this.dao.updateTag(model) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
@@ -58,7 +58,7 @@ public class BlogTagServiceUse implements BlogTagService {
 	@Override
 	public void delete(BlogTagId id) {
 		if(this.dao.deleteTag(id) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 

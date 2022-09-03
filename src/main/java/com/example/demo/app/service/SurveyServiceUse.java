@@ -48,7 +48,7 @@ public class SurveyServiceUse implements SurveyService {
 	@Override
 	public void update(SurveyModel model) {
 		if(this.dao.updateSurvey(model) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 

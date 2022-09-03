@@ -48,7 +48,7 @@ public class InquiryReplyServiceUse implements InquiryReplyService {
 	@Override
 	public void update(InquiryReplyModel model) {
 		if(this.dao.updateReplyInquiry(model) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
@@ -59,7 +59,7 @@ public class InquiryReplyServiceUse implements InquiryReplyService {
 	@Override
 	public void delete(InquiryReplyId id) {
 		if(this.dao.deleteReplyInquiry(id) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class InquiryReplyServiceUse implements InquiryReplyService {
 	@Override
 	public void delete_byInquiry(InquiryId inquiryId) {
 		if(this.dao.deleteReply_byInquiry(inquiryId) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
@@ -80,13 +80,7 @@ public class InquiryReplyServiceUse implements InquiryReplyService {
 	 */
 	@Override
 	public List<InquiryReplyModel> getAll() {
-		List<InquiryReplyModel> list = this.dao.getAll();
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.getAll();
 	}
 	
 	/**
@@ -96,13 +90,7 @@ public class InquiryReplyServiceUse implements InquiryReplyService {
 	 */
 	@Override
 	public List<InquiryReplyModel> select_byInquiryId(InquiryId id) {
-		List<InquiryReplyModel> list = this.dao.select_byInquiryId(id);
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.select_byInquiryId(id);
 	}
 
 	/**

@@ -48,7 +48,7 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	@Override
 	public void delete(BlogReplyId id) {
 		if(this.dao.deleteReply(id) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	@Override
 	public void delete_byBlogid(BlogId blogid) {
 		if(this.dao.deleteReply_byBlog(blogid) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 

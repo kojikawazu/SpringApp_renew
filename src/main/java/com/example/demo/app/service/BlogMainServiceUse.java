@@ -47,7 +47,7 @@ public class BlogMainServiceUse implements BlogMainService {
 	@Override
 	public void update(BlogMainModel model) {
 		if(this.dao.updateBlog(model) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
@@ -58,7 +58,7 @@ public class BlogMainServiceUse implements BlogMainService {
 	@Override
 	public void delete(BlogId id) {
 		if(this.dao.deleteBlog(id) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 

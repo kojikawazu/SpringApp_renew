@@ -34,7 +34,13 @@ public interface InquiryService {
 	 * 全選択
 	 * @return 問い合わせモデルリスト
 	 */
-	List<InquiryModel> getAll();
+	List<InquiryModel> getAll(boolean isDesc);
+	
+	/**
+	 * 全選択(問い合わせ返信モデルリストつき)
+	 * @return 問い合わせモデルリスト
+	 */
+	List<InquiryModel> getAllPlus(boolean isDesc);
 	
 	/**
 	 * 選択

@@ -226,16 +226,16 @@ public class SurveyController {
 	private void setPaging(List<SurveyModel> list, int pageidx, Model model) {
 		// TODO ページング設定
 		PageController page = new PageController();
-		page.setPage1Cnt(5);
+		page.setPage1Size(5);
 		List<SurveyModel> surveyList = new ArrayList<SurveyModel>();
 		List<Integer> pageList = new ArrayList<Integer>();
 		
 		int surveySize = list.size();
-		int paging = (int)(surveySize / page.getPage1Cnt()) + 1;
-		int idx = ((pageidx-1) * page.getPage1Cnt());
+		int paging = (int)(surveySize / page.getPage1Size()) + 1;
+		int idx = ((pageidx-1) * page.getPage1Size());
 		
 		// ページによるブログ投稿リストの再作成
-		for(int cnt=0, pagelen=page.getPage1Cnt(); idx<surveySize && cnt<pagelen; idx++, cnt++){
+		for(int cnt=0, pagelen=page.getPage1Size(); idx<surveySize && cnt<pagelen; idx++, cnt++){
 			surveyList.add(list.get(idx));
 		}
 		for(int cnt=1; cnt<paging+1; cnt++) {

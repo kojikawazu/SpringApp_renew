@@ -1,4 +1,4 @@
-package com.example.demo.app.exception;
+package com.example.demo.common.exception;
 
 public class InquiryNotFoundException extends RuntimeException {
 	

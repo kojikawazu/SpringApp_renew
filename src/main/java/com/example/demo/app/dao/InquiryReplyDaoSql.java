@@ -150,6 +150,8 @@ public class InquiryReplyDaoSql implements InquiryReplyDao {
 	public List<InquiryReplyModel> select_byInquiryId(InquiryId inquiryId) {
 		String sql = "SELECT * FROM inquiry_reply "
 				+ "WHERE inquiry_id = ?";
+		//		+ "order by id ";
+		//sql += (isDesc ? "desc" : "asc");
 		List<InquiryReplyModel> list = new ArrayList<InquiryReplyModel>();
 		
 		try {

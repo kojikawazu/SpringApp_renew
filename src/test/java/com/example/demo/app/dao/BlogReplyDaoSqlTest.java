@@ -44,7 +44,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {
+	private void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		
@@ -89,7 +89,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * 削除テストの準備
 	 */
-	public void InitDelete() {
+	private void InitDelete() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM blog_reply "
@@ -130,7 +130,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * ブログIDによる削除テストの準備
 	 */
-	public void InitDelete_byCommentId() {
+	private void InitDelete_byCommentId() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM blog_reply "
@@ -172,7 +172,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * 全て選択の準備
 	 */
-	public void InitSelectAll() {
+	private void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
@@ -218,7 +218,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * 全て選択の準備(空)
 	 */
-	public void InitSelectAll_empty() {
+	private void InitSelectAll_empty() {
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		// Mock化
@@ -247,7 +247,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * ブログIDによる選択テストの準備
 	 */
-	public void InitSelect_byBlogId() {
+	private void InitSelect_byBlogId() {
 		Map<String, Object> map            = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList  = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
@@ -309,7 +309,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * 選択テストの準備
 	 */
-	public void InitSelect() {
+	private void InitSelect() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -369,7 +369,7 @@ class BlogReplyDaoSqlTest {
 	/**
 	 * インクリメントテストの準備
 	 */
-	public void InitThanksIncrement() {
+	private void InitThanksIncrement() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);

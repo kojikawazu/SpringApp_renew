@@ -307,8 +307,9 @@ class InquiryReplyServiceUseTest {
 	public void SelectAllTest_Empty() {
 		InitSelectAll_Empty();
 		
-		assertThrows(RuntimeException.class, 
-			() -> this.service.getAll());
+		List<InquiryReplyModel> list = this.service.getAll();
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 0);
 	}
 	
 	/**
@@ -423,8 +424,9 @@ class InquiryReplyServiceUseTest {
 	public void Select_byInquiryId_Test_Error() {
 		InitSelect_byInquiryId();
 		
-		assertThrows(RuntimeException.class, 
-			() -> this.service.select_byInquiryId(new InquiryId(2)));
+		List<InquiryReplyModel> list = this.service.select_byInquiryId(new InquiryId(2));
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 0);
 	}
 	
 	/**

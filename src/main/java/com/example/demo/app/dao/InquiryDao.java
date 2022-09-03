@@ -34,9 +34,17 @@ public interface InquiryDao {
 	
 	/**
 	 * 全選択
+	 * @param isDesc false 昇順 true 降順
 	 * @return 問い合わせモデルリスト
 	 */
-	List<InquiryModel> getAll();
+	List<InquiryModel> getAll(boolean isDesc);
+	
+	/**
+	 * 全て選択(問い合わせ返信モデルリストつき)
+	 * @param isDesc false 昇順 true 降順
+	 * @return 問い合わせモデルリスト
+	 */
+	List<InquiryModel> getAll_Plus(boolean isDesc);
 	
 	/**
 	 * 選択(ID)

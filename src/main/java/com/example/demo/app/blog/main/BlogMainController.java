@@ -20,11 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.app.entity.BlogMainModel;
 import com.example.demo.app.entity.BlogReplyModel;
 import com.example.demo.app.entity.BlogTagModel;
-import com.example.demo.app.exception.InquiryNotFoundException;
 import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.BlogMainService;
 import com.example.demo.app.service.BlogReplyService;
 import com.example.demo.app.service.BlogTagService;
+import com.example.demo.common.exception.InquiryNotFoundException;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.id.BlogTagId;
@@ -336,16 +336,16 @@ public class BlogMainController {
 	private void setPaging(List<BlogMainModel> list, int pageidx, Model model) {
 		// TODO ページング設定
 		PageController page = new PageController();
-		page.setPage1Cnt(5);
+		page.setPage1Size(5);
 		List<BlogMainModel> blogpageList = new ArrayList<BlogMainModel>();
 		List<Integer> pageList = new ArrayList<Integer>();
 		
 		int blogSize = list.size();
-		int paging = (int)(blogSize / page.getPage1Cnt()) + 1;
-		int idx = ((pageidx-1) * page.getPage1Cnt());
+		int paging = (int)(blogSize / page.getPage1Size()) + 1;
+		int idx = ((pageidx-1) * page.getPage1Size());
 		
 		// ページによるブログ投稿リストの再作成
-		for(int cnt=0, pagelen=page.getPage1Cnt(); idx<blogSize && cnt<pagelen; idx++, cnt++){
+		for(int cnt=0, pagelen=page.getPage1Size(); idx<blogSize && cnt<pagelen; idx++, cnt++){
 			blogpageList.add(list.get(idx));
 		}
 		for(int cnt=1; cnt<paging+1; cnt++) {

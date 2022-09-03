@@ -39,7 +39,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {
+	private void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		
@@ -71,7 +71,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * 更新テストの準備
 	 */
-	public void InitUpdate() {
+	private void InitUpdate() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "UPDATE blog_tag SET "
@@ -127,7 +127,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * 削除テストの準備
 	 */
-	public void InitDelete() {
+	private void InitDelete() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM blog_tag "
@@ -168,7 +168,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * 全選択テストの準備
 	 */
-	public void InitSelectAll() {
+	private void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
@@ -203,7 +203,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * 全選択テストの準備(空)
 	 */
-	public void InitSelectAll_Empty() {
+	private void InitSelectAll_Empty() {
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -231,7 +231,7 @@ class BlogTagDaoSqlTest {
 	/**
 	 * IDによるデータ取得テストの準備
 	 */
-	public void InitSelect_byId() {
+	private void InitSelect_byId() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);

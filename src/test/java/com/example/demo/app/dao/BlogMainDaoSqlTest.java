@@ -52,10 +52,12 @@ class BlogMainDaoSqlTest {
 		
 	}
 	
+	// --------------------------------------------------------------------------------------------------
+	
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {
+	private void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		
@@ -99,10 +101,12 @@ class BlogMainDaoSqlTest {
 				TestConsts.TEST_TIME_02);
 	}
 	
+	// --------------------------------------------------------------------------------------------------
+	
 	/**
 	 * 更新テストの準備
 	 */
-	public void InitUpdate() {
+	private void InitUpdate() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "UPDATE blog_main SET "
@@ -179,7 +183,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * 削除テストの準備
 	 */
-	public void InitDelete() {
+	private void InitDelete() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "DELETE FROM blog_main "
@@ -218,7 +222,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * 全て選択テストの準備
 	 */
-	public void InitSelectAll() {
+	private void InitSelectAll() {
 		Map<String, Object>       map     = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
@@ -266,7 +270,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * 全て選択テストの準備(空リスト)
 	 */
-	public void InitSelectAll_Empty() {
+	private void InitSelectAll_Empty() {
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -294,7 +298,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * IDによるデータ取得の準備
 	 */
-	public void InitSelect_byId() {
+	private void InitSelect_byId() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -356,7 +360,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * タグ名によるデータ取得の準備
 	 */
-	public void InitSelect_byTag() {
+	private void InitSelect_byTag() {
 		Map<String, Object> map            = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList  = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
@@ -422,7 +426,7 @@ class BlogMainDaoSqlTest {
 	/**
 	 * インクリメントテストの準備
 	 */
-	public void InitThanksIncrement() {
+	private void InitThanksIncrement() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
