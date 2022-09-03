@@ -1,23 +1,71 @@
 package com.example.demo.app.home;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.app.entity.InquiryModel;
+
+/**
+ * ページコントローラー
+ * @author nanai
+ *
+ */
 public class PageController {
 	
+	/** カレントID */
 	private int currentID;
 	
+	/** リストサイズ */
 	private int listSize;
 	
+	/** ページサイズ */
 	private int pageSize;
 	
-	private int page1Cnt;
+	/** ページカウンタ */
+	private int page1Size;
 	
+	/** ページ番号リスト */
 	private List<Integer> pageNumberList;
 	
+	/** ページ名前 */
 	private String pageName;
 
+	/**
+	 * コンストラクタ
+	 */
 	public PageController() {
-		super();
+		
+	}
+	
+	/**
+	 * ページ設定
+	 * @param <T>
+	 * @param inputList
+	 * @param currentPageIdx
+	 * @param page1Size
+	 * @return 
+	 */
+	public <T> List<T> setPaging(List<T> inputList, int currentPageIdx, int page1Size) {
+		List<T> outputList  = new ArrayList<T>();
+		this.pageNumberList = new ArrayList<Integer>();
+		
+		this.currentID      = currentPageIdx;
+		this.page1Size      = page1Size;
+		this.listSize       = inputList.size();
+		this.pageSize       = (int)(this.listSize / this.page1Size) + 1;
+		int pageIdx         = ((currentPageIdx-1) * this.page1Size);
+		
+		// ページによるリストの再作成
+		for(int cnt=0, idx=pageIdx, pagelen=this.page1Size; 
+				idx<this.listSize && cnt<pagelen; 
+				idx++, cnt++){
+			outputList.add(inputList.get(idx));
+		}
+		for(int cnt=1; cnt<this.pageSize+1; cnt++) {
+			this.pageNumberList.add(cnt);
+		}
+		
+		return outputList;
 	}
 
 	public int getCurrentID() {
@@ -44,12 +92,12 @@ public class PageController {
 		this.pageSize = pageSize;
 	}
 
-	public int getPage1Cnt() {
-		return page1Cnt;
+	public int getPage1Size() {
+		return page1Size;
 	}
 
-	public void setPage1Cnt(int page1Cnt) {
-		this.page1Cnt = page1Cnt;
+	public void setPage1Size(int page1Size) {
+		this.page1Size = page1Size;
 	}
 	
 	public List<Integer> getPageNumberList() {

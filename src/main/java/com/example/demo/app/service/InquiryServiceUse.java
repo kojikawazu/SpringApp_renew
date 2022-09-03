@@ -47,7 +47,7 @@ public class InquiryServiceUse implements InquiryService {
 	@Override
 	public void update(InquiryModel model) {
 		if(this.dao.updateInquiry(model) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 	
@@ -58,23 +58,28 @@ public class InquiryServiceUse implements InquiryService {
 	@Override
 	public void delete(InquiryId id) {
 		if(this.dao.deleteInquiry(id) <= WebConsts.ERROR_DB_STATUS) {
-			throw WebMvcConfig.NOT_FOUND();
+			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
 	/**
 	 * 全選択
+	 * @param isDesc false 昇順 true 降順
 	 * @return 問い合わせモデルリスト
 	 */
 	@Override
-	public List<InquiryModel> getAll() {
-		List<InquiryModel> list = this.dao.getAll();
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+	public List<InquiryModel> getAll(boolean isDesc) {
+		return this.dao.getAll(isDesc);
+	}
+	
+	/**
+	 * 全選択(問い合わせ返信モデルリストつき)
+	 * @param isDesc false 昇順 true 降順
+	 * @return 問い合わせモデルリスト
+	 */
+	@Override
+	public List<InquiryModel> getAllPlus(boolean isDesc) {
+		return this.dao.getAll_Plus(isDesc);
 	}
 	
 	/**

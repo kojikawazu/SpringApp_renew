@@ -44,7 +44,7 @@ class SurveyDaoSqlTest {
 	/**
 	 * 追加テストの準備
 	 */
-	public void InitInsert() {
+	private void InitInsert() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		
@@ -94,7 +94,7 @@ class SurveyDaoSqlTest {
 	/**
 	 * 更新テストの準備
 	 */
-	public void InitUpdate() {
+	private void InitUpdate() {
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
 		String sql = "UPDATE survey SET "
@@ -173,7 +173,7 @@ class SurveyDaoSqlTest {
 	/**
 	 * 全選択の初期化
 	 */
-	public void InitSelectAll() {
+	private void InitSelectAll() {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
@@ -222,7 +222,7 @@ class SurveyDaoSqlTest {
 	/**
 	 * 全選択の初期化(空)
 	 */
-	public void InitSelectAll_Empty() {
+	private void InitSelectAll_Empty() {
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
