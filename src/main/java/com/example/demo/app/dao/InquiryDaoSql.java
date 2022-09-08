@@ -157,7 +157,7 @@ public class InquiryDaoSql implements InquiryDao {
 				// 問い合わせモデルの作成
 				Map<String, Object> result   = resultList.get(idx);
 				InquiryModel model           = this.makeInquiryModel(result);
-				if(model == null)	continue;
+				if(model == null)		continue;
 				list.add(model);
 				
 				// 問い合わせ返信モデルの作成
@@ -216,9 +216,9 @@ public class InquiryDaoSql implements InquiryDao {
 	 */
 	private int setInquiryReplyList(
 			List<Map<String, Object>> resultList,
-			int idx,
-			InquiryModel model,
-			boolean isDesc) {
+			int                       idx,
+			InquiryModel              model,
+			boolean                   isDesc) {
 		List<InquiryReplyModel> replyList = model.getReplyList();
 		int inquiryId                     = model.getId();
 		int skipCnt                       = 0;
@@ -228,7 +228,7 @@ public class InquiryDaoSql implements InquiryDao {
 			int replyId                     = (int)resultReply.get(WebConsts.SQL_ID_NAME);
 			
 			// 違う問い合わせIDだったら終了
-			if( inquiryId != replyId ) break;
+			if( inquiryId != replyId )	break;
 			
 			InquiryReplyModel modelSameReply = this.makeInquiryReplyModel(resultReply);
 			// モデルがなかったら終了

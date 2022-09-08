@@ -6,6 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.blog.main.form.BlogSelectedForm;
+
 class BlogSelectedFormTest {
 	
 	BlogSelectedForm form = null;

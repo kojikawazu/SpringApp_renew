@@ -68,13 +68,16 @@ public class BlogMainServiceUse implements BlogMainService {
 	 */
 	@Override
 	public List<BlogMainModel> getAll() {
-		List<BlogMainModel> list = this.dao.getAll();
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.getAll();
+	}
+	
+	/**
+	 * 全て選択(ブログ返信モデルリストつき)
+	 * @return ブログメインモデルリスト
+	 */
+	@Override
+	public List<BlogMainModel> getAllPlus(boolean isDesc) {
+		return this.dao.getAll_Plus(isDesc);
 	}
 
 	/**
@@ -100,13 +103,18 @@ public class BlogMainServiceUse implements BlogMainService {
 	 */
 	@Override
 	public List<BlogMainModel> select_byTag(String tag) {
-		List<BlogMainModel> list = this.dao.select_byTag(tag);
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.select_byTag(tag);
+	}
+	
+	/**
+	 * タグによる選択(ブログ返信モデルリストつき)
+	 * @param  タグ
+	 * @param  isDesc false 昇順 true 降順
+	 * @return ブログメインモデルリスト
+	 */
+	@Override
+	public List<BlogMainModel> select_byTagPlus(String tag, boolean isDesc) {
+		return this.dao.select_byTagPlus(tag, isDesc);
 	}
 
 	/**

@@ -39,6 +39,13 @@ public interface BlogMainDao {
 	List<BlogMainModel> getAll();
 	
 	/**
+	 * 全て選択(ブログ返信リストつき)
+	 * @param  isDesc
+	 * @return ブログメインモデルリスト
+	 */
+	List<BlogMainModel> getAll_Plus(boolean isDesc);
+	
+	/**
 	 * IDによるデータ取得
 	 * @param  id
 	 * @return ブログメインモデル
@@ -51,6 +58,14 @@ public interface BlogMainDao {
 	 * @return ブログモデルクラスリスト
 	 */
 	List<BlogMainModel> select_byTag(String tag);
+	
+	/**
+	 * タグによる選択(ブログ返信リストつき)
+	 * @param  tag タグ
+	 * @param  isDesc false 昇順 true 降順
+	 * @return ブログモデルクラスリスト
+	 */
+	List<BlogMainModel> select_byTagPlus(String tag, boolean isDesc);
 	
 	/**
 	 * いいね数加算

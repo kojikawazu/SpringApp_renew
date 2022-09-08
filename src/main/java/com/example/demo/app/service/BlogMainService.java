@@ -37,6 +37,12 @@ public interface BlogMainService {
 	List<BlogMainModel> getAll();
 	
 	/**
+	 * 全て選択(ブログ返信モデルリストつき)
+	 * @return ブログメインモデルリスト
+	 */
+	List<BlogMainModel> getAllPlus(boolean isDesc);
+	
+	/**
 	 * IDによる選択
 	 * @param  id
 	 * @return ブログメインモデルクラス
@@ -49,6 +55,14 @@ public interface BlogMainService {
 	 * @return ブログメインモデルリスト
 	 */
 	List<BlogMainModel> select_byTag(String tag);
+	
+	/**
+	 * タグによる選択(ブログ返信モデルリストつき)
+	 * @param  タグ
+	 * @param  isDesc false 昇順 true 降順
+	 * @return ブログメインモデルリスト
+	 */
+	List<BlogMainModel> select_byTagPlus(String tag, boolean isDesc);
 	
 	/**
 	 * いいね数加算
