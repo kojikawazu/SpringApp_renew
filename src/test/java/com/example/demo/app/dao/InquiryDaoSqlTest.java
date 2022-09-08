@@ -34,6 +34,14 @@ class InquiryDaoSqlTest {
 											+ "name, email, comment, created) "
 											+ "VALUES(?,?,?,?)";
 	
+	private final String        TEST_NAME     = "テストネーム";
+	private final String        TEST_EMAIL    = "テストメールアドレス";
+	private final String        TEST_COMMENT  = "テストコメント";
+	
+	private final String        TEST_REPLY_NAME     = "リプライネーム";
+	private final String        TEST_REPLY_EMAIL    = "リプライメールアドレス";
+	private final String        TEST_REPLY_COMMENT  = "リプライコメント";
+	
 	/** daoクラス */
 	private InquiryDao dao = null;
 	
@@ -51,9 +59,9 @@ class InquiryDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TEST_NAME,
+				TEST_EMAIL,
+				TEST_COMMENT,
 				TestConsts.TEST_TIME_01
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
@@ -68,20 +76,18 @@ class InquiryDaoSqlTest {
 		InitInsert();
 		
 		InquiryModel model= new InquiryModel(
-				new InquiryId(0),
-				new NameWord("テストネーム"),
-				new NameWord("テストメールアドレス"),
-				new NameWord("テストコメント"),
-				TestConsts.TEST_TIME_01,
-				new ArrayList<InquiryReplyModel>()
+				new NameWord(TEST_NAME),
+				new NameWord(TEST_EMAIL),
+				new NameWord(TEST_COMMENT),
+				TestConsts.TEST_TIME_01
 				);
 		
 		this.dao.insertInquiry(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TEST_NAME,
+				TEST_EMAIL,
+				TEST_COMMENT,
 				TestConsts.TEST_TIME_01);
 	}
 	
@@ -99,17 +105,17 @@ class InquiryDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TEST_NAME,
+				TEST_EMAIL,
+				TEST_COMMENT,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TEST_NAME,
+				TEST_EMAIL,
+				TEST_COMMENT,
 				2
 				)).thenReturn(WebConsts.ERROR_DB_STATUS);
 		
@@ -125,11 +131,10 @@ class InquiryDaoSqlTest {
 		
 		InquiryModel model = new InquiryModel(
 				new InquiryId(1),
-				new NameWord("テストネーム"),
-				new NameWord("テストメールアドレス"),
-				new NameWord("テストコメント"),
-				TestConsts.TEST_TIME_01,
-				new ArrayList<InquiryReplyModel>()
+				new NameWord(TEST_NAME),
+				new NameWord(TEST_EMAIL),
+				new NameWord(TEST_COMMENT),
+				TestConsts.TEST_TIME_01
 				);
 		
 		int ret = this.dao.updateInquiry(model);
@@ -145,11 +150,10 @@ class InquiryDaoSqlTest {
 		
 		InquiryModel model = new InquiryModel(
 				new InquiryId(2),
-				new NameWord("テストネーム"),
-				new NameWord("テストメールアドレス"),
-				new NameWord("テストコメント"),
-				TestConsts.TEST_TIME_01,
-				new ArrayList<InquiryReplyModel>()
+				new NameWord(TEST_NAME),
+				new NameWord(TEST_EMAIL),
+				new NameWord(TEST_COMMENT),
+				TestConsts.TEST_TIME_01
 				);
 		
 		int ret = this.dao.updateInquiry(model);
@@ -211,23 +215,16 @@ class InquiryDaoSqlTest {
 					+ "order by id ";
 		sql += (isDesc ? "desc" : "asc");
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(WebConsts.SQL_ID_NAME,      1);
-		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
-		map.put(WebConsts.SQL_CREATED_NAME, 
-				Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		mapList.add(map);
-		
-		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put(WebConsts.SQL_ID_NAME,      2);
-		map2.put(WebConsts.SQL_NAME_NAME,    "テストネーム2");
-		map2.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス2");
-		map2.put(WebConsts.SQL_COMMENT_NAME, "テストコメント2");
-		map2.put(WebConsts.SQL_CREATED_NAME, 
-				Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		mapList.add(map2);
+		for(int idx=1; idx<=2; idx++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put(WebConsts.SQL_ID_NAME,      idx);
+			map.put(WebConsts.SQL_NAME_NAME,    TEST_NAME + idx);
+			map.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL + idx);
+			map.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + idx);
+			map.put(WebConsts.SQL_CREATED_NAME, 
+					Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			mapList.add(map);
+		}
 		
 		if(isDesc) {
 			Map<String, Object> mapTemp = mapList.get(0);
@@ -250,19 +247,13 @@ class InquiryDaoSqlTest {
 		List<InquiryModel> list = this.dao.getAll(false);
 		
 		Assertions.assertEquals(list.size(),              2);
-		
-		Assertions.assertEquals(list.get(0).getName(),    "テストネーム");
-		Assertions.assertEquals(list.get(0).getEmail(),   "テストメールアドレス");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
-		Assertions.assertEquals(list.get(0).getCreated().toString(), 
-				TestConsts.TEST_TIME_01.toString());
-		
-		Assertions.assertEquals(list.get(1).getName(),    "テストネーム2");
-		Assertions.assertEquals(list.get(1).getEmail(),   "テストメールアドレス2");
-		Assertions.assertEquals(list.get(1).getComment(), "テストコメント2");
-		Assertions.assertEquals(list.get(1).getCreated().toString(), 
-				TestConsts.TEST_TIME_01.toString());
-		
+		for(int idx=1; idx<=2; idx++) {
+			Assertions.assertEquals(list.get(idx-1).getName(),    TEST_NAME + idx);
+			Assertions.assertEquals(list.get(idx-1).getEmail(),   TEST_EMAIL + idx);
+			Assertions.assertEquals(list.get(idx-1).getComment(), TEST_COMMENT + idx);
+			Assertions.assertEquals(list.get(idx-1).getCreated().toString(), 
+					TestConsts.TEST_TIME_01.toString());
+		}
 		list.clear();
 	}
 	
@@ -276,19 +267,13 @@ class InquiryDaoSqlTest {
 		List<InquiryModel> list = this.dao.getAll(true);
 		
 		Assertions.assertEquals(list.size(),              2);
-		
-		Assertions.assertEquals(list.get(0).getName(),    "テストネーム2");
-		Assertions.assertEquals(list.get(0).getEmail(),   "テストメールアドレス2");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント2");
-		Assertions.assertEquals(list.get(0).getCreated().toString(), 
-				TestConsts.TEST_TIME_01.toString());
-		
-		Assertions.assertEquals(list.get(1).getName(),    "テストネーム");
-		Assertions.assertEquals(list.get(1).getEmail(),   "テストメールアドレス");
-		Assertions.assertEquals(list.get(1).getComment(), "テストコメント");
-		Assertions.assertEquals(list.get(1).getCreated().toString(), 
-				TestConsts.TEST_TIME_01.toString());
-		
+		for(int idx=1; idx<=2; idx++) {
+			Assertions.assertEquals(list.get(idx-1).getName(),    TEST_NAME + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getEmail(),   TEST_EMAIL + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getComment(), TEST_COMMENT + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getCreated().toString(), 
+					TestConsts.TEST_TIME_01.toString());
+		}
 		list.clear();
 	}
 	
@@ -343,41 +328,46 @@ class InquiryDaoSqlTest {
 				+ "order by id ";
 		sql += (isDesc ? "desc" : "asc");
 		
+		int modelCnt      = 1;
+		int modelReplyCnt = 1;
+		
 		Map<String, Object> map01 = new HashMap<String, Object>();
-		map01.put(WebConsts.SQL_ID_NAME,      1);
-		map01.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map01.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map01.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map01.put(WebConsts.SQL_ID_NAME,      modelCnt);
+		map01.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
+		map01.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
+		map01.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
 		map01.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		map01.put(WebConsts.SQL_REPLY_ID_NAME,      1);
-		map01.put(WebConsts.SQL_REPLY_NAME_NAME,    "リプライネーム");
-		map01.put(WebConsts.SQL_REPLY_EMAIL_NAME,   "リプライメール");
-		map01.put(WebConsts.SQL_REPLY_COMMENT_NAME, "リプライコメント");
+		map01.put(WebConsts.SQL_REPLY_ID_NAME,      modelReplyCnt);
+		map01.put(WebConsts.SQL_REPLY_NAME_NAME,    TEST_REPLY_NAME    + modelReplyCnt);
+		map01.put(WebConsts.SQL_REPLY_EMAIL_NAME,   TEST_REPLY_EMAIL   + modelReplyCnt);
+		map01.put(WebConsts.SQL_REPLY_COMMENT_NAME, TEST_REPLY_COMMENT + modelReplyCnt);
 		map01.put(WebConsts.SQL_REPLY_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map01);
 		
 		Map<String, Object> map11 = new HashMap<String, Object>();
-		map11.put(WebConsts.SQL_ID_NAME,      1);
-		map11.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map11.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map11.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		modelReplyCnt++;
+		map11.put(WebConsts.SQL_ID_NAME,      modelCnt);
+		map11.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
+		map11.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
+		map11.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
 		map11.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map11.put(WebConsts.SQL_REPLY_ID_NAME,      2);
-		map11.put(WebConsts.SQL_REPLY_NAME_NAME,    "リプライネーム2");
-		map11.put(WebConsts.SQL_REPLY_EMAIL_NAME,   "リプライメール2");
-		map11.put(WebConsts.SQL_REPLY_COMMENT_NAME, "リプライコメント2");
+		map11.put(WebConsts.SQL_REPLY_NAME_NAME,    TEST_REPLY_NAME    + modelReplyCnt);
+		map11.put(WebConsts.SQL_REPLY_EMAIL_NAME,   TEST_REPLY_EMAIL   + modelReplyCnt);
+		map11.put(WebConsts.SQL_REPLY_COMMENT_NAME, TEST_REPLY_COMMENT + modelReplyCnt);
 		map11.put(WebConsts.SQL_REPLY_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map11);
 		
 		Map<String, Object> map21 = new HashMap<String, Object>();
-		map21.put(WebConsts.SQL_ID_NAME,      2);
-		map21.put(WebConsts.SQL_NAME_NAME,    "テストネーム2");
-		map21.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス2");
-		map21.put(WebConsts.SQL_COMMENT_NAME, "テストコメント2");
+		modelCnt++;
+		map21.put(WebConsts.SQL_ID_NAME,      modelCnt);
+		map21.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
+		map21.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
+		map21.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
 		map21.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map21);
@@ -401,45 +391,49 @@ class InquiryDaoSqlTest {
 		InitSelectAll_Plus(false);
 		
 		List<InquiryModel> list = this.dao.getAll_Plus(false);
+		int modelCnt      = 1;
+		int modelReplyCnt = 1;
 		
-		Assertions.assertEquals(list.size(),              2);
+		Assertions.assertEquals(list.size(), 2);
 		InquiryModel model1                 = list.get(0);
 		List<InquiryReplyModel> replyModel1 = model1.getReplyList();
 		InquiryModel model2                 = list.get(1);
 		List<InquiryReplyModel> replyModel2 = model2.getReplyList();
 		
 		// model1
-		Assertions.assertEquals(model1.getId(),      1);
-		Assertions.assertEquals(model1.getName(),    "テストネーム");
-		Assertions.assertEquals(model1.getEmail(),   "テストメールアドレス");
-		Assertions.assertEquals(model1.getComment(), "テストコメント");
+		Assertions.assertEquals(model1.getId(),      modelCnt);
+		Assertions.assertEquals(model1.getName(),    TEST_NAME    + modelCnt);
+		Assertions.assertEquals(model1.getEmail(),   TEST_EMAIL   + modelCnt);
+		Assertions.assertEquals(model1.getComment(), TEST_COMMENT + modelCnt);
 		Assertions.assertEquals(model1.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel1.size(),  2);
 		
 		// replyModel1
-		Assertions.assertEquals(replyModel1.get(0).getId(),          1);
-		Assertions.assertEquals(replyModel1.get(0).getInquiry_id(),  1);
-		Assertions.assertEquals(replyModel1.get(0).getName(),        "リプライネーム");
-		Assertions.assertEquals(replyModel1.get(0).getEmail(),       "リプライメール");
-		Assertions.assertEquals(replyModel1.get(0).getComment(),     "リプライコメント");
+		Assertions.assertEquals(replyModel1.get(0).getId(),          modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(0).getInquiry_id(),  modelCnt);
+		Assertions.assertEquals(replyModel1.get(0).getName(),        TEST_REPLY_NAME    + modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(0).getEmail(),       TEST_REPLY_EMAIL   + modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(0).getComment(),     TEST_REPLY_COMMENT + modelReplyCnt);
 		Assertions.assertEquals(replyModel1.get(0).getCreated().toString(),
 				TestConsts.TEST_TIME_01.toString());
 		
 		// replyModel2
-		Assertions.assertEquals(replyModel1.get(1).getId(),          2);
-		Assertions.assertEquals(replyModel1.get(1).getInquiry_id(),  1);
-		Assertions.assertEquals(replyModel1.get(1).getName(),        "リプライネーム2");
-		Assertions.assertEquals(replyModel1.get(1).getEmail(),       "リプライメール2");
-		Assertions.assertEquals(replyModel1.get(1).getComment(),     "リプライコメント2");
+		modelReplyCnt++;
+		Assertions.assertEquals(replyModel1.get(1).getId(),          modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(1).getInquiry_id(),  modelCnt);
+		Assertions.assertEquals(replyModel1.get(1).getName(),        TEST_REPLY_NAME    + modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(1).getEmail(),       TEST_REPLY_EMAIL   + modelReplyCnt);
+		Assertions.assertEquals(replyModel1.get(1).getComment(),     TEST_REPLY_COMMENT + modelReplyCnt);
 		Assertions.assertEquals(replyModel1.get(1).getCreated().toString(),
 				TestConsts.TEST_TIME_01.toString());
 		
 		// model1
+		modelCnt++;
 		Assertions.assertEquals(model2.getId(),      2);
-		Assertions.assertEquals(model2.getName(),    "テストネーム2");
-		Assertions.assertEquals(model2.getEmail(),   "テストメールアドレス2");
-		Assertions.assertEquals(model2.getComment(), "テストコメント2");
+		Assertions.assertEquals(model2.getName(),    TEST_NAME    + modelCnt);
+		Assertions.assertEquals(model2.getEmail(),   TEST_EMAIL   + modelCnt);
+		Assertions.assertEquals(model2.getComment(), TEST_COMMENT + modelCnt);
 		Assertions.assertEquals(model2.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel2.size(),  0);
@@ -461,9 +455,9 @@ class InquiryDaoSqlTest {
 				+ "WHERE id = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,      1);
-		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,    TEST_NAME);
+		map.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL);
+		map.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		
@@ -485,10 +479,10 @@ class InquiryDaoSqlTest {
 		InquiryModel model = this.dao.select(new InquiryId(1));
 		
 		Assertions.assertNotNull(model);
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getEmail(), "テストメールアドレス");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
+		Assertions.assertEquals(model.getId(),      1);
+		Assertions.assertEquals(model.getName(),    TEST_NAME);
+		Assertions.assertEquals(model.getEmail(),   TEST_EMAIL);
+		Assertions.assertEquals(model.getComment(), TEST_COMMENT);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 	}
