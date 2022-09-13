@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.app.dao.SurveyDao;
 import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.app.exception.WebMvcConfig;
-import com.example.demo.app.servey.SurveySatisForm;
+import com.example.demo.app.survey.form.SurveySatisForm;
 import com.example.demo.common.common.WebConsts;
 
 /**
@@ -19,6 +19,9 @@ import com.example.demo.common.common.WebConsts;
  */
 @Service
 public class SurveyServiceUse implements SurveyService {
+	
+	/** 評価最大数 */
+	private static final int MAX_SATIS = 5;
 
 	/** daoクラス */
 	private final SurveyDao dao;
@@ -58,13 +61,7 @@ public class SurveyServiceUse implements SurveyService {
 	 */
 	@Override
 	public List<SurveyModel> getAll() {
-		List<SurveyModel> list = this.dao.getAll();
-		
-		if(list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.getAll();
 	}
 
 	/**
@@ -75,7 +72,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionAll() {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionAll(idx));
@@ -94,7 +91,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionAge(int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionAge(idx, age));
@@ -113,7 +110,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionSx(int ismen) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSx(idx, ismen));
@@ -132,7 +129,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionProf(int prof) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionProf(idx, prof));
@@ -152,7 +149,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionSxProf(int ismen, int prof) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxProf(idx, ismen, prof));
@@ -172,7 +169,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionProfAge(int prof, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionProfAge(idx, prof, age));
@@ -192,7 +189,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionSxAge(int ismen, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxAge(idx, ismen, age));
@@ -213,7 +210,7 @@ public class SurveyServiceUse implements SurveyService {
 	public List<SurveySatisForm> countSatisfactionSxProfAge(int ismen, int prof, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=5; idx>0; idx--){
+		for(int idx=MAX_SATIS; idx>0; idx--){
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxProfAge(idx, ismen, prof, age));

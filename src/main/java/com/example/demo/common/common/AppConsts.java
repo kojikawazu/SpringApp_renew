@@ -55,6 +55,16 @@ public class AppConsts {
 	/** request mapping[/edit] */
 	public static final String REQUEST_MAPPING_EDIT           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_EDIT;
 	
+	/** request mapping[/survey] */
+	public static final String REQUEST_MAPPING_SURVEY        = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_SURVEY;
+	
+	/** request mapping[/satis] */
+	public static final String REQUEST_MAPPING_SATIS         = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_SATIS;
+	
+	/** request mapping[/satis_reply] */
+	public static final String REQUEST_MAPPING_SATIS_REPLY   = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_REPLY_SATIS;
+	
+	
 	// ---------------------------------------------------------------------------------
 	/** return URL */
 	
@@ -93,6 +103,18 @@ public class AppConsts {
 	
 	/** ブログ返信確認のURL */
 	public static final String URL_BLOG_REPLY_CONFIRM       = WebConsts.URL_KEY_BLOG + "/" + WebConsts.URL_KEY_REPLY_CONFIRM;
+
+	/** 調査一覧のURL */
+	public static final String URL_SURVEY_INDEX             = WebConsts.URL_KEY_SURVEY + "/" + WebConsts.URL_KEY_INDEX;
+
+	/** 調査フォームのURL */
+	public static final String URL_SURVEY_FORM              = WebConsts.URL_KEY_SURVEY + "/" + WebConsts.URL_KEY_FORM;
+	
+	/** 調査投稿確認のURL */
+	public static final String URL_SURVEY_CONFIRM           = WebConsts.URL_KEY_SURVEY + "/" + WebConsts.URL_KEY_CONFIRM;
+	
+	/** 調査投稿確認のURL */
+	public static final String URL_SURVEY_SATISTICS         = WebConsts.URL_KEY_SURVEY + "/" + WebConsts.URL_KEY_SATISTICS;
 	
 	/** リダイレクト[/inquiry] */
 	public static final String REDIRECT_URL_INQUIRY_INDEX   = WebConsts.URL_REDIRECT + WebConsts.URL_KEY_INQUIRY;
@@ -114,6 +136,10 @@ public class AppConsts {
 	
 	/** リダイレクト[/blog/reply] */
 	public static final String REDIRECT_URL_BLOG_REPLY      = WebConsts.URL_REDIRECT + WebConsts.URL_KEY_BLOG + REQUEST_MAPPING_REPLY;
+	
+	/** リダイレクト[/survey/form] */
+	public static final String REDIRECT_URL_SURVEY_FORM     = WebConsts.URL_REDIRECT + WebConsts.URL_KEY_SURVEY + REQUEST_MAPPING_FORM;
+	
 	
 	// ---------------------------------------------------------------------------------
 	
@@ -137,5 +163,9 @@ public class AppConsts {
 	/** attribute[blogMain] */
 	public static final String ATTRIBUTE_BLOG_MAIN      = "blogMain";
 	
+	/** attribute[satisList] */
+	public static final String ATTRIBUTE_SATIS_LIST      = "satisList";
 	
+	/** attribute[surveyList] */
+	public static final String ATTRIBUTE_SURVEY_LIST      = "surveyList";
 }

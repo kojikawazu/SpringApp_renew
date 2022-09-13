@@ -1,42 +1,25 @@
 package com.example.demo.app.blog.main.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.app.blog.main.BlogMainId;
-import com.example.demo.app.blog.main.form.BlogForm;
 import com.example.demo.app.blog.main.form.BlogSelectedForm;
-import com.example.demo.app.blog.main.form.ReplyForm;
 import com.example.demo.app.entity.BlogMainModel;
-import com.example.demo.app.entity.BlogReplyModel;
 import com.example.demo.app.entity.BlogTagModel;
-import com.example.demo.app.entity.InquiryModel;
 import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.BlogMainService;
 import com.example.demo.app.service.BlogReplyService;
 import com.example.demo.app.service.BlogTagService;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.exception.InquiryNotFoundException;
-import com.example.demo.common.id.BlogId;
-import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.id.BlogTagId;
-import com.example.demo.common.number.ThanksCntNumber;
-import com.example.demo.common.word.NameWord;
 
 /**
  * ブログメインコントローラー
