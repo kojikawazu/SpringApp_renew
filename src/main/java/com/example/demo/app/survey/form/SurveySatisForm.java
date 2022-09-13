@@ -1,4 +1,4 @@
-package com.example.demo.app.servey;
+package com.example.demo.app.survey.form;
 
 public class SurveySatisForm {
 	

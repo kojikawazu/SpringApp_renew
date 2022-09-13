@@ -10,7 +10,6 @@ import com.example.demo.app.service.BlogReplyService;
 import com.example.demo.app.service.BlogTagService;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.id.BlogId;
-import com.example.demo.common.id.BlogReplyId;
 
 /**
  * ブログいいねプッシュコントローラー

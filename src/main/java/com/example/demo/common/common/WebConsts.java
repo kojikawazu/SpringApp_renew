@@ -8,13 +8,16 @@ package com.example.demo.common.common;
 public class WebConsts {
 	
 	/** エラー番号 */
-	public static final int ERROR_NUMBER = -1;
+	public static final int    ERROR_NUMBER    = -1;
 	
 	/** データなし */
-	public static final int ERROR_DB_STATUS = 0;
+	public static final int    ERROR_DB_STATUS = 0;
 	
 	/** 0の文字列 */
-	public static final String ZERO_STRING = "0";
+	public static final String ZERO_STRING     = "0";
+	
+	/** 0の数字 */
+	public static final int    ZERO_NUMBER     = 0;
 	
 	// ---------------------------------------------------------------------------------
 	/** SQL */
@@ -82,6 +85,9 @@ public class WebConsts {
 	/** SQL[reply_created] */
 	public static final String SQL_REPLY_CREATED_NAME    = "reply_created";
 	
+	/** SQL[satis_count] */
+	public static final String SQL_SATIS_COUNT           = "satis_count";
+	
 	
 	// ---------------------------------------------------------------------------------
 	/** URL key */
@@ -105,6 +111,15 @@ public class WebConsts {
 	
 	/** URL key[blog] */
 	public static final String URL_KEY_BLOG           = "blog";
+	
+	/** URL key[survey] */
+	public static final String URL_KEY_SURVEY         = "survey";
+	
+	/** URL key[satis] */
+	public static final String URL_KEY_SATIS          = "satis";
+	
+	/** URL key[satistics] */
+	public static final String URL_KEY_SATISTICS      = "satistics";
 	
 	/** URL key[reply] */
 	public static final String URL_KEY_REPLY          = "reply";
@@ -140,7 +155,10 @@ public class WebConsts {
 	public static final String URL_KEY_REPLY_COMPLETE = URL_KEY_REPLY + "_" + URL_KEY_COMPLETE;
 	
 	/** URL key[reply_thanks] */
-	public static final String URL_KEY_REPLY_THANKS = URL_KEY_REPLY + "_" + URL_KEY_THANKS;
+	public static final String URL_KEY_REPLY_THANKS   = URL_KEY_REPLY + "_" + URL_KEY_THANKS;
+	
+	/** URL key[satis_reply] */
+	public static final String URL_KEY_REPLY_SATIS    = URL_KEY_SATIS + "_" + URL_KEY_REPLY;
 	
 	// ---------------------------------------------------------------------------------
 	/** attribute key */

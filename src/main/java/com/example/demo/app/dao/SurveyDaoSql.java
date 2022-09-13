@@ -129,7 +129,7 @@ public class SurveyDaoSql implements SurveyDao {
 					sql, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -146,12 +146,13 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionAge(int satis, int age) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( age <= 0 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( age <= 0 ) 					return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
-				+ "WHERE age >= ? AND age < ? AND satisfaction = ?";
+				+ "WHERE age >= ? AND age < ? "
+				+ "AND satisfaction = ?";
 		int count = 0;
 		
 		try {
@@ -159,7 +160,7 @@ public class SurveyDaoSql implements SurveyDao {
 					sql, age, age + 10, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -176,12 +177,13 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionSx(int satis, int ismen) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( ismen != 1 && ismen != 2 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( ismen != 1 && ismen != 2 ) 	return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
-				+ "WHERE ismen = ? AND satisfaction = ?";
+				+ "WHERE ismen = ? AND "
+				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
@@ -189,7 +191,7 @@ public class SurveyDaoSql implements SurveyDao {
 					sql, ismen, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -206,19 +208,20 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionProf(int satis, int prof) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( prof <= 0 || prof > 4 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( prof <= 0 || prof > 4 ) 	return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
-				+ "WHERE profession = ? AND satisfaction = ?";
+				+ "WHERE profession = ? AND "
+				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
 			Map<String, Object> result = this.jdbcTemp.queryForMap(sql, prof, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -236,20 +239,22 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionSxProf(int satis, int ismen, int prof) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( ismen != 1 && ismen != 2 ) return 0;
-		if( prof <= 0 || prof > 4 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( ismen != 1 && ismen != 2 ) 	return 0;
+		if( prof <= 0 || prof > 4 ) 	return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
-				+ "WHERE ismen = ? AND profession = ? AND satisfaction = ?";
+				+ "WHERE ismen = ? AND "
+				+ "profession = ? AND "
+				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
 			Map<String, Object> result = this.jdbcTemp.queryForMap(
 					sql, ismen, prof, satis);
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -267,14 +272,15 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionProfAge(int satis, int prof, int age) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( age <= 0 ) return 0;
-		if( prof <= 0 || prof > 4 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( age <= 0 ) 					return 0;
+		if( prof <= 0 || prof > 4 ) 	return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
 				+ "WHERE age >= ? AND age < ? AND "
-				+ "profession = ? AND satisfaction = ?";
+				+ "profession = ? AND "
+				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
@@ -282,7 +288,7 @@ public class SurveyDaoSql implements SurveyDao {
 					sql, age, age + 10, prof, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -300,14 +306,15 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionSxAge(int satis, int ismen, int age) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( ismen != 1 && ismen != 2 ) return 0;
-		if( age <= 0 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( ismen != 1 && ismen != 2 ) 	return 0;
+		if( age <= 0 ) 					return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
 				+ "WHERE age >= ? AND age < ? AND "
-				+ "ismen = ? AND satisfaction = ?";
+				+ "ismen = ? AND "
+				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
@@ -315,7 +322,7 @@ public class SurveyDaoSql implements SurveyDao {
 					sql, age, age + 10, ismen, satis);
 			if(result == null)	return 0;
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
@@ -334,22 +341,23 @@ public class SurveyDaoSql implements SurveyDao {
 	 */
 	@Override
 	public int countSatisfactionSxProfAge(int satis, int ismen, int prof, int age) {
-		if( satis <= 0 || satis > 5 ) return 0;
-		if( ismen != 1 && ismen != 2 ) return 0;
-		if( prof <= 0 || prof > 4 ) return 0;
-		if( age <= 0 ) return 0;
+		if( satis <= 0 || satis > 5 ) 	return 0;
+		if( ismen != 1 && ismen != 2 ) 	return 0;
+		if( prof <= 0 || prof > 4 ) 	return 0;
+		if( age <= 0 ) 					return 0;
 		
 		String sql = "SELECT COUNT(*) AS satis_count "
 				+ "FROM survey "
 				+ "WHERE age >= ? AND age < ? AND "
-				+ "ismen = ? AND profession = ? AND "
+				+ "ismen = ? AND "
+				+ "profession = ? AND "
 				+ "satisfaction = ?";
 		int count = 0;
 		
 		try {
 			Map<String, Object> result = jdbcTemp.queryForMap(sql, age, age + 10, ismen, prof, satis);
 			
-			long ll_count = (long)result.get("satis_count");
+			long ll_count = (long)result.get(WebConsts.SQL_SATIS_COUNT);
 			count = (int)ll_count;
 		} catch(DataAccessException ex) {
 			ex.printStackTrace();
