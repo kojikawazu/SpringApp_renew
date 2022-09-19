@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.example.demo.common.id.BlogCommentId;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -29,7 +30,7 @@ class BlogCommentModelTest {
 				new BlogCommentId(0),
 				new BlogId(0),
 				new NameWord(""),
-				new NameWord(""),
+				new CommentWord(""),
 				new ThanksCntNumber(0),
 				LocalDateTime.of(2000, 01, 01, 00, 00, 00)
 				);
@@ -104,7 +105,7 @@ class BlogCommentModelTest {
 				new BlogCommentId(1),
 				new BlogId(1),
 				new NameWord("テスト"),
-				new NameWord("コメントテスト"),
+				new CommentWord("コメントテスト"),
 				new ThanksCntNumber(1),
 				now
 				);

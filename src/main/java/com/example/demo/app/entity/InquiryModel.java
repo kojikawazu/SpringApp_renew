@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -15,19 +17,19 @@ import com.example.demo.common.word.NameWord;
 public class InquiryModel {
 	
 	/** 問い合わせID */
-	private InquiryId id;
+	private InquiryId               id;
 	
 	/** 名前 */
-	private NameWord name;
+	private NameWord                name;
 	
 	/** Eメール */
-	private NameWord email;
+	private EmailWord               email;
 	
 	/** コメント*/
-	private NameWord comment;
+	private CommentWord             comment;
 	
 	/** 生成日付 */
-	private LocalDateTime created;
+	private LocalDateTime           created;
 	
 	/** 返信リスト */
 	private List<InquiryReplyModel> replyList;
@@ -42,11 +44,11 @@ public class InquiryModel {
 	 * @param replyList
 	 */
 	public InquiryModel(
-			InquiryId id,
-			NameWord name,
-			NameWord email,
-			NameWord comment,
-			LocalDateTime created,
+			InquiryId               id,
+			NameWord                name,
+			EmailWord               email,
+			CommentWord             comment,
+			LocalDateTime           created,
 			List<InquiryReplyModel> replyList) {
 		this.id = (id == null ?
 				new InquiryId(0) :
@@ -57,11 +59,11 @@ public class InquiryModel {
 					name);
 		
 		this.email = (email == null ?
-				new NameWord("") :
+				new EmailWord("") :
 				email);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 				comment);
 		
 		this.created = (created == null ?
@@ -82,10 +84,10 @@ public class InquiryModel {
 	 * @param created
 	 */
 	public InquiryModel(
-			InquiryId id,
-			NameWord name,
-			NameWord email,
-			NameWord comment,
+			InquiryId     id,
+			NameWord      name,
+			EmailWord     email,
+			CommentWord   comment,
 			LocalDateTime created) {
 		this.id = (id == null ?
 				new InquiryId(0) :
@@ -96,11 +98,11 @@ public class InquiryModel {
 					name);
 		
 		this.email = (email == null ?
-				new NameWord("") :
+				new EmailWord("") :
 				email);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 				comment);
 		
 		this.created = (created == null ?
@@ -118,9 +120,9 @@ public class InquiryModel {
 	 * @param created
 	 */
 	public InquiryModel(
-			NameWord name,
-			NameWord email,
-			NameWord comment,
+			NameWord      name,
+			EmailWord     email,
+			CommentWord   comment,
 			LocalDateTime created) {
 		this.id = new InquiryId(0);
 		
@@ -129,11 +131,11 @@ public class InquiryModel {
 					name);
 		
 		this.email = (email == null ?
-				new NameWord("") :
+				new EmailWord("") :
 				email);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 				comment);
 		
 		this.created = (created == null ?
@@ -152,15 +154,15 @@ public class InquiryModel {
 		if(model == null) {
 			this.id        = new InquiryId(0);
 			this.name      = new NameWord("");
-			this.email     = new NameWord("");
-			this.comment   = new NameWord("");
+			this.email     = new EmailWord("");
+			this.comment   = new CommentWord("");
 			this.created   = LocalDateTime.now();
 			this.replyList = new ArrayList<InquiryReplyModel>();
 		} else {
 			this.id        = new InquiryId(model.getId());
 			this.name      = new NameWord(model.getName());
-			this.email     = new NameWord(model.getEmail());
-			this.comment   = new NameWord(model.getComment());
+			this.email     = new EmailWord(model.getEmail());
+			this.comment   = new CommentWord(model.getComment());
 			this.created   = model.getCreated();
 			this.replyList = model.getReplyList();
 		}
@@ -189,7 +191,7 @@ public class InquiryModel {
 
 	protected void setEmail(String email) {
 		if(email == null)	return ;
-		this.email = new NameWord(email);
+		this.email = new EmailWord(email);
 	}
 
 	public String getComment() {
@@ -198,7 +200,7 @@ public class InquiryModel {
 
 	protected void setComment(String comment) {
 		if(comment == null)	return ;
-		this.comment = new NameWord(comment);
+		this.comment = new CommentWord(comment);
 	}
 
 	public LocalDateTime getCreated() {

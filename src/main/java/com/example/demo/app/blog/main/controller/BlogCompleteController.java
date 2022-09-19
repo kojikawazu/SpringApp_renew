@@ -22,7 +22,10 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.EditorSwitch;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
+import com.example.demo.common.word.TittleWord;
 
 /**
  * ブログ投稿 or 編集実施コントローラー
@@ -75,9 +78,9 @@ public class BlogCompleteController extends SuperBlogMainController {
 		}
 		
 		BlogMainModel blog = new BlogMainModel(
-				new NameWord(blogForm.getBlogTitle()),
-				new NameWord(blogForm.getTag()),
-				new NameWord(blogForm.getBlogContents()),
+				new TittleWord(blogForm.getBlogTitle()),
+				new TagWord(blogForm.getTag()),
+				new CommentWord(blogForm.getBlogContents()),
 				new ThanksCntNumber(0),
 				LocalDateTime.now(),
 				LocalDateTime.now()
@@ -124,9 +127,9 @@ public class BlogCompleteController extends SuperBlogMainController {
 			RedirectAttributes redirectAttributes) {
 		blog = new BlogMainModel(
 				new BlogId(edit.getEditorNumber()),
-				new NameWord(blog.getTitle()),
-				new NameWord(blog.getTag()),
-				new NameWord(blog.getComment()),
+				new TittleWord(blog.getTitle()),
+				new TagWord(blog.getTag()),
+				new CommentWord(blog.getComment()),
 				new ThanksCntNumber(blogForm.getThanksCnt()),
 				blog.getCreated(),
 				blog.getUpdated()
@@ -145,7 +148,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 		if( !this.blogTagService.isSelect_byTag(targetTag) ) {
 			// タグなし。タグの追加
 			BlogTagModel tagModel = new BlogTagModel(
-					new NameWord(targetTag));
+					new TagWord(targetTag));
 			this.blogTagService.save(tagModel);
 		}
 	}

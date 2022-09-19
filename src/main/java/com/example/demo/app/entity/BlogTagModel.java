@@ -2,6 +2,7 @@ package com.example.demo.app.entity;
 
 import com.example.demo.common.id.BlogTagId;
 import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
 
 /**
  * ブログタグモデル
@@ -14,7 +15,7 @@ public class BlogTagModel {
 	private BlogTagId id;
 	
 	/** タグ名 */
-	private NameWord tag;
+	private TagWord   tag;
 
 	/**
 	 * コンストラクタ
@@ -23,14 +24,14 @@ public class BlogTagModel {
 	 */
 	public BlogTagModel(
 			BlogTagId id,
-			NameWord  tag
+			TagWord   tag
 			) {
 		this.id = (id == null ?
 				new BlogTagId(0) :
 				id);
 		
 		this.tag = (tag == null ?
-				new NameWord("") :
+				new TagWord("") :
 				tag);
 	}
 	
@@ -42,10 +43,10 @@ public class BlogTagModel {
 			BlogTagModel model) {
 		if(model == null) {
 			this.id  = new BlogTagId(0);
-			this.tag = new NameWord("");
+			this.tag = new TagWord("");
 		} else {
 			this.id = new BlogTagId(model.getId());
-			this.tag = new NameWord(model.getTag());
+			this.tag = new TagWord(model.getTag());
 		}
 	}
 	
@@ -54,11 +55,11 @@ public class BlogTagModel {
 	 * @param tag
 	 */
 	public BlogTagModel(
-			NameWord tag) {
+			TagWord tag) {
 		this.id = new BlogTagId(0);
 		
 		this.tag = (tag == null ?
-				new NameWord("") :
+				new TagWord("") :
 				tag);
 	}
 
@@ -76,6 +77,6 @@ public class BlogTagModel {
 
 	protected void setTag(String tag) {
 		if(tag == null)	return ;
-		this.tag = new NameWord(tag);
+		this.tag = new TagWord(tag);
 	}
 }

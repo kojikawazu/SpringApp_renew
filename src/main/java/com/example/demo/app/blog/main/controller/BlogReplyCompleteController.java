@@ -20,6 +20,7 @@ import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -70,7 +71,7 @@ public class BlogReplyCompleteController extends SuperBlogMainController  {
 		BlogReplyModel blog = new BlogReplyModel(
 				new BlogId(id),
 				new NameWord(replyForm.getName()),
-				new NameWord(replyForm.getComment()),
+				new CommentWord(replyForm.getComment()),
 				new ThanksCntNumber(0),
 				LocalDateTime.now()
 				);

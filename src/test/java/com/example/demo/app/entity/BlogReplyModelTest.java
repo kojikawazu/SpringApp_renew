@@ -1,14 +1,14 @@
 package com.example.demo.app.entity;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -29,9 +29,9 @@ class BlogReplyModelTest {
 				new BlogReplyId(0),
 				new BlogId(0),
 				new NameWord(""),
-				new NameWord(""),
+				new CommentWord(""),
 				new ThanksCntNumber(0),
-				LocalDateTime.of(2000, 01, 01, 00, 00, 00)
+				TestConsts.TEST_TIME_01
 				);
 	}
 
@@ -40,14 +40,12 @@ class BlogReplyModelTest {
 	 */
 	@Test
 	public void InitTest0() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getBlogId(), 0);
-		Assertions.assertEquals(model.getName(), "");
-		Assertions.assertEquals(model.getComment(), "");
+		Assertions.assertEquals(model.getId(),        0);
+		Assertions.assertEquals(model.getBlogId(),    0);
+		Assertions.assertEquals(model.getName(),      "");
+		Assertions.assertEquals(model.getComment(),   "");
 		Assertions.assertEquals(model.getThanksCnt(), 0);
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 	}
 	
 	/**
@@ -55,21 +53,19 @@ class BlogReplyModelTest {
 	 */
 	@Test
 	public void InitTest1() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
+		model.setId(                1);
+		model.setBlogId(            1);
+		model.setName(              TestConsts.TEST_NAME_NAME);
+		model.setComment(           TestConsts.TEST_COMMENT_NAME);
+		model.setThanksCnt(         1);
+		model.setCreated(           TestConsts.TEST_TIME_01);
 		
-		model.setId(1);
-		model.setBlogId(1);
-		model.setName("テストネーム");
-		model.setComment("テストコメント");
-		model.setThanksCnt(1);
-		model.setCreated(dateTime);
-		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getBlogId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
+		Assertions.assertEquals(model.getId(),        1);
+		Assertions.assertEquals(model.getBlogId(),    1);
+		Assertions.assertEquals(model.getName(),      TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getThanksCnt(), 1);
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 	}
 	
 	/**
@@ -99,25 +95,23 @@ class BlogReplyModelTest {
 	 */
 	@Test
 	public void InitModel() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 02, 00, 00, 00);
 		BlogReplyModel test= new BlogReplyModel(
 				new BlogReplyId(1),
 				new BlogId(1),
-				new NameWord("テストネーム"),
-				new NameWord("テストコメント"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
-				dateTime
+				TestConsts.TEST_TIME_01
 				);
 		
 		model = new BlogReplyModel(test);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getBlogId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
+		Assertions.assertEquals(model.getId(),        1);
+		Assertions.assertEquals(model.getBlogId(),    1);
+		Assertions.assertEquals(model.getName(),      TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getThanksCnt(), 1);
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 	}
 	
-
 }

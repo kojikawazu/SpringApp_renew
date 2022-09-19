@@ -261,9 +261,9 @@ public class InquiryDaoSql implements InquiryDao {
 							WebConsts.SQL_ID_NAME)),
 					new NameWord((String)result.get(
 							WebConsts.SQL_NAME_NAME)),
-					new NameWord((String)result.get(
+					new EmailWord((String)result.get(
 							WebConsts.SQL_EMAIL_NAME)),
-					new NameWord((String)result.get(
+					new CommentWord((String)result.get(
 							WebConsts.SQL_COMMENT_NAME)),
 					((Timestamp)result.get(
 							WebConsts.SQL_CREATED_NAME)).toLocalDateTime()

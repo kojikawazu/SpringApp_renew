@@ -19,13 +19,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.example.demo.app.entity.BlogMainModel;
 import com.example.demo.app.entity.BlogReplyModel;
-import com.example.demo.app.entity.InquiryModel;
-import com.example.demo.app.entity.InquiryReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
-import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.TagWord;
+import com.example.demo.common.word.TittleWord;
 
 /**
  * ブログメインDaoクラステスト
@@ -38,10 +38,6 @@ class BlogMainDaoSqlTest {
 	private static final String SQL_INSERT = "INSERT INTO blog_main("
 			+ "title, tag, comment, thanksCnt, created, updated) "
 			+ "VALUES(?,?,?,?,?,?)";
-	
-	private final String        TEST_TITLE    = "テストタイトル";
-	private final String        TEST_TAG      = "テストタグ";
-	private final String        TEST_COMMENT  = "テストコメント";
 	
 	private final String        TEST_REPLY_NAME     = "リプライネーム";
 	private final String        TEST_REPLY_COMMENT  = "リプライコメント";
@@ -73,9 +69,9 @@ class BlogMainDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				TEST_TITLE,
-				TEST_TAG,
-				TEST_COMMENT,
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -92,9 +88,9 @@ class BlogMainDaoSqlTest {
 		InitInsert();
 		
 		BlogMainModel model = new BlogMainModel(
-				new NameWord(TEST_TITLE),
-				new NameWord(TEST_TAG),
-				new NameWord(TEST_COMMENT),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -103,9 +99,9 @@ class BlogMainDaoSqlTest {
 		this.dao.insertBlog(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				TEST_TITLE,
-				TEST_TAG,
-				TEST_COMMENT,
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02);
@@ -125,9 +121,9 @@ class BlogMainDaoSqlTest {
 		// 正常系
 		when(this.jdbcTemp.update(
 				sql, 
-				TEST_TITLE,
-				TEST_TAG,
-				TEST_COMMENT,
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_02,
 				1
@@ -136,9 +132,9 @@ class BlogMainDaoSqlTest {
 		// 異常系
 		when(this.jdbcTemp.update(
 				sql, 
-				TEST_TITLE,
-				TEST_TAG,
-				TEST_COMMENT,
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_02,
 				2
@@ -156,9 +152,9 @@ class BlogMainDaoSqlTest {
 		
 		BlogMainModel model = new BlogMainModel(
 				new BlogId(1),
-				new NameWord(TEST_TITLE),
-				new NameWord(TEST_TAG),
-				new NameWord(TEST_COMMENT),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -177,9 +173,9 @@ class BlogMainDaoSqlTest {
 		
 		BlogMainModel 	model = new BlogMainModel(
 				new BlogId(2),
-				new NameWord(TEST_TITLE),
-				new NameWord(TEST_TAG),
-				new NameWord(TEST_COMMENT),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -244,9 +240,9 @@ class BlogMainDaoSqlTest {
 		String sql = "SELECT * FROM blog_main";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TEST_TITLE);
-		map.put(WebConsts.SQL_TAG_NAME,       TEST_TAG);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TEST_COMMENT);
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map.put(WebConsts.SQL_UPDATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_02));
@@ -269,9 +265,9 @@ class BlogMainDaoSqlTest {
 		
 		Assertions.assertEquals(list.size(),                1);
 		Assertions.assertEquals(list.get(0).getId(),        1);
-		Assertions.assertEquals(list.get(0).getTitle(),     TEST_TITLE);
-		Assertions.assertEquals(list.get(0).getTag(),       TEST_TAG);
-		Assertions.assertEquals(list.get(0).getComment(),   TEST_COMMENT);
+		Assertions.assertEquals(list.get(0).getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(list.get(0).getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -336,9 +332,9 @@ class BlogMainDaoSqlTest {
 		for(int idx=1; idx<=2; idx++) {
 			Map<String, Object> map01 = new HashMap<String, Object>();
 			map01.put(WebConsts.SQL_ID_NAME,               cnter);
-			map01.put(WebConsts.SQL_TITLE_NAME,            TEST_TITLE   + cnter);
-			map01.put(WebConsts.SQL_TAG_NAME,              TEST_TAG     + cnter);
-			map01.put(WebConsts.SQL_COMMENT_NAME,          TEST_COMMENT + cnter);
+			map01.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME   + cnter);
+			map01.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME     + cnter);
+			map01.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
 			map01.put(WebConsts.SQL_THANKSCNT_NAME,        cnter);
 			map01.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
 			map01.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
@@ -353,9 +349,9 @@ class BlogMainDaoSqlTest {
 		cnter++;
 		Map<String, Object> map02 = new HashMap<String, Object>();
 		map02.put(WebConsts.SQL_ID_NAME,               2);
-		map02.put(WebConsts.SQL_TITLE_NAME,            TEST_TITLE + cnter);
-		map02.put(WebConsts.SQL_TAG_NAME,              TEST_TAG   + cnter);
-		map02.put(WebConsts.SQL_COMMENT_NAME,          TEST_COMMENT + cnter);
+		map02.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME + cnter);
+		map02.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME   + cnter);
+		map02.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
 		map02.put(WebConsts.SQL_THANKSCNT_NAME,        1);
 		map02.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map02.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
@@ -385,9 +381,9 @@ class BlogMainDaoSqlTest {
 		// model1
 		int modelCnt = 1;
 		Assertions.assertEquals(model1.getId(),        modelCnt);
-		Assertions.assertEquals(model1.getTitle(),     TEST_TITLE   + modelCnt);
-		Assertions.assertEquals(model1.getTag(),       TEST_TAG     + modelCnt);
-		Assertions.assertEquals(model1.getComment(),   TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model1.getTitle(),     TestConsts.TEST_TITLE_NAME   + modelCnt);
+		Assertions.assertEquals(model1.getTag(),       TestConsts.TEST_TAG_NAME     + modelCnt);
+		Assertions.assertEquals(model1.getComment(),   TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model1.getThanksCnt(), 1);
 		Assertions.assertEquals(model1.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -411,9 +407,9 @@ class BlogMainDaoSqlTest {
 		// model2
 		modelCnt++;
 		Assertions.assertEquals(model2.getId(),        modelCnt);
-		Assertions.assertEquals(model2.getTitle(),     TEST_TITLE   + modelCnt);
-		Assertions.assertEquals(model2.getTag(),       TEST_TAG     + modelCnt);
-		Assertions.assertEquals(model2.getComment(),   TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model2.getTitle(),     TestConsts.TEST_TITLE_NAME   + modelCnt);
+		Assertions.assertEquals(model2.getTag(),       TestConsts.TEST_TAG_NAME     + modelCnt);
+		Assertions.assertEquals(model2.getComment(),   TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model2.getThanksCnt(), 1);
 		Assertions.assertEquals(model2.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -438,9 +434,9 @@ class BlogMainDaoSqlTest {
 				+ "WHERE id = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TEST_TITLE);
-		map.put(WebConsts.SQL_TAG_NAME,       TEST_TAG);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TEST_COMMENT);
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -466,9 +462,9 @@ class BlogMainDaoSqlTest {
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getTitle(),     TEST_TITLE);
-		Assertions.assertEquals(model.getTag(),       TEST_TAG);
-		Assertions.assertEquals(model.getComment(),   TEST_COMMENT);
+		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getThanksCnt(), 1);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -503,9 +499,9 @@ class BlogMainDaoSqlTest {
 				+ "WHERE tag = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TEST_TITLE);
-		map.put(WebConsts.SQL_TAG_NAME,       TEST_TAG);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TEST_COMMENT);
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -532,9 +528,9 @@ class BlogMainDaoSqlTest {
 		
 		Assertions.assertEquals(list.size(),                1);
 		Assertions.assertEquals(list.get(0).getId(),        1);
-		Assertions.assertEquals(list.get(0).getTitle(),     TEST_TITLE);
-		Assertions.assertEquals(list.get(0).getTag(),       TEST_TAG);
-		Assertions.assertEquals(list.get(0).getComment(),   TEST_COMMENT);
+		Assertions.assertEquals(list.get(0).getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(list.get(0).getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -582,9 +578,9 @@ class BlogMainDaoSqlTest {
 		for(int idx=1; idx<=2; idx++) {
 			Map<String, Object> map01 = new HashMap<String, Object>();
 			map01.put(WebConsts.SQL_ID_NAME,               cnter);
-			map01.put(WebConsts.SQL_TITLE_NAME,            TEST_TITLE   + cnter);
-			map01.put(WebConsts.SQL_TAG_NAME,              TEST_TAG);
-			map01.put(WebConsts.SQL_COMMENT_NAME,          TEST_COMMENT + cnter);
+			map01.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME   + cnter);
+			map01.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME);
+			map01.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
 			map01.put(WebConsts.SQL_THANKSCNT_NAME,        cnter);
 			map01.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
 			map01.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
@@ -599,15 +595,15 @@ class BlogMainDaoSqlTest {
 		cnter++;
 		Map<String, Object> map02 = new HashMap<String, Object>();
 		map02.put(WebConsts.SQL_ID_NAME,               2);
-		map02.put(WebConsts.SQL_TITLE_NAME,            TEST_TITLE + cnter);
-		map02.put(WebConsts.SQL_TAG_NAME,              TEST_TAG);
-		map02.put(WebConsts.SQL_COMMENT_NAME,          TEST_COMMENT + cnter);
+		map02.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME + cnter);
+		map02.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME);
+		map02.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
 		map02.put(WebConsts.SQL_THANKSCNT_NAME,        1);
 		map02.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map02.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map02);
 		
-		when(this.jdbcTemp.queryForList(sql, TEST_TAG))
+		when(this.jdbcTemp.queryForList(sql, TestConsts.TEST_TAG_NAME))
 			.thenReturn(mapList);
 		
 		this.setDao();
@@ -621,7 +617,7 @@ class BlogMainDaoSqlTest {
 	public void Select_byTagPlus_Test() {
 		this.InitSelect_byTagPlus(false);
 		
-		List<BlogMainModel> list = this.dao.select_byTagPlus(TEST_TAG, false);
+		List<BlogMainModel> list = this.dao.select_byTagPlus(TestConsts.TEST_TAG_NAME, false);
 
 		Assertions.assertEquals(list.size(), 2);
 		BlogMainModel model1                 = list.get(0);
@@ -632,9 +628,9 @@ class BlogMainDaoSqlTest {
 		// model1
 		int modelCnt = 1;
 		Assertions.assertEquals(model1.getId(),        modelCnt);
-		Assertions.assertEquals(model1.getTitle(),     TEST_TITLE   + modelCnt);
-		Assertions.assertEquals(model1.getTag(),       TEST_TAG);
-		Assertions.assertEquals(model1.getComment(),   TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model1.getTitle(),     TestConsts.TEST_TITLE_NAME   + modelCnt);
+		Assertions.assertEquals(model1.getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(model1.getComment(),   TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model1.getThanksCnt(), 1);
 		Assertions.assertEquals(model1.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -658,9 +654,9 @@ class BlogMainDaoSqlTest {
 		// model2
 		modelCnt++;
 		Assertions.assertEquals(model2.getId(),        modelCnt);
-		Assertions.assertEquals(model2.getTitle(),     TEST_TITLE   + modelCnt);
-		Assertions.assertEquals(model2.getTag(),       TEST_TAG);
-		Assertions.assertEquals(model2.getComment(),   TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model2.getTitle(),     TestConsts.TEST_TITLE_NAME   + modelCnt);
+		Assertions.assertEquals(model2.getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(model2.getComment(),   TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model2.getThanksCnt(), 1);
 		Assertions.assertEquals(model2.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());

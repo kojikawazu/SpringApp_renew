@@ -23,5 +23,19 @@ public class TestConsts {
 	public static final LocalDateTime TEST_TIME_02 = 
 			LocalDateTime.of(2000, 01, 02, 00, 00, 00);
 	
+	/** テスト用ネーム */
+	public static final String TEST_NAME_NAME       = "テストネーム";
+	
+	/** テスト用メールアドレス */
+	public static final String TEST_EMAIL_NAME      = "テストメールアドレス";
+	
+	/** テスト用タイトル */
+	public static final String TEST_TITLE_NAME      = "テストタイトル";
+	
+	/** テスト用タグ */
+	public static final String TEST_TAG_NAME        = "テストタグ";
+	
+	/** テスト用コメント */
+	public static final String TEST_COMMENT_NAME    = "テストコメント";
 	
 }

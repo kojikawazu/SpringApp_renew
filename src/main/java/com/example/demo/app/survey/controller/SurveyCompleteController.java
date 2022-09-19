@@ -16,6 +16,7 @@ import com.example.demo.app.service.SurveyService;
 import com.example.demo.app.survey.form.SurveyForm;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -63,7 +64,7 @@ public class SurveyCompleteController extends SuperSurveyController {
 				new NormalNumber(surveyForm.getProfession()),
 				new NormalNumber(surveyForm.getMen_or_female()),
 				new NormalNumber(surveyForm.getSatisfaction()),
-				new NameWord(surveyForm.getComment()),
+				new CommentWord(surveyForm.getComment()),
 				LocalDateTime.now()
 				);
 		this.surveyService.save(survey);

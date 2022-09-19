@@ -20,6 +20,8 @@ import com.example.demo.app.entity.InquiryReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -33,10 +35,6 @@ class InquiryDaoSqlTest {
 	private static final String SQL_INSERT = "INSERT INTO inquiry("
 											+ "name, email, comment, created) "
 											+ "VALUES(?,?,?,?)";
-	
-	private final String        TEST_NAME     = "テストネーム";
-	private final String        TEST_EMAIL    = "テストメールアドレス";
-	private final String        TEST_COMMENT  = "テストコメント";
 	
 	private final String        TEST_REPLY_NAME     = "リプライネーム";
 	private final String        TEST_REPLY_EMAIL    = "リプライメールアドレス";
@@ -59,9 +57,9 @@ class InquiryDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				TEST_NAME,
-				TEST_EMAIL,
-				TEST_COMMENT,
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
@@ -76,18 +74,18 @@ class InquiryDaoSqlTest {
 		InitInsert();
 		
 		InquiryModel model= new InquiryModel(
-				new NameWord(TEST_NAME),
-				new NameWord(TEST_EMAIL),
-				new NameWord(TEST_COMMENT),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 				);
 		
 		this.dao.insertInquiry(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				TEST_NAME,
-				TEST_EMAIL,
-				TEST_COMMENT,
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01);
 	}
 	
@@ -105,17 +103,17 @@ class InquiryDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				TEST_NAME,
-				TEST_EMAIL,
-				TEST_COMMENT,
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				TEST_NAME,
-				TEST_EMAIL,
-				TEST_COMMENT,
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				2
 				)).thenReturn(WebConsts.ERROR_DB_STATUS);
 		
@@ -131,9 +129,9 @@ class InquiryDaoSqlTest {
 		
 		InquiryModel model = new InquiryModel(
 				new InquiryId(1),
-				new NameWord(TEST_NAME),
-				new NameWord(TEST_EMAIL),
-				new NameWord(TEST_COMMENT),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 				);
 		
@@ -150,9 +148,9 @@ class InquiryDaoSqlTest {
 		
 		InquiryModel model = new InquiryModel(
 				new InquiryId(2),
-				new NameWord(TEST_NAME),
-				new NameWord(TEST_EMAIL),
-				new NameWord(TEST_COMMENT),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 				);
 		
@@ -218,9 +216,9 @@ class InquiryDaoSqlTest {
 		for(int idx=1; idx<=2; idx++) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put(WebConsts.SQL_ID_NAME,      idx);
-			map.put(WebConsts.SQL_NAME_NAME,    TEST_NAME + idx);
-			map.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL + idx);
-			map.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + idx);
+			map.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME    + idx);
+			map.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME   + idx);
+			map.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + idx);
 			map.put(WebConsts.SQL_CREATED_NAME, 
 					Timestamp.valueOf(TestConsts.TEST_TIME_01));
 			mapList.add(map);
@@ -248,9 +246,9 @@ class InquiryDaoSqlTest {
 		
 		Assertions.assertEquals(list.size(),              2);
 		for(int idx=1; idx<=2; idx++) {
-			Assertions.assertEquals(list.get(idx-1).getName(),    TEST_NAME + idx);
-			Assertions.assertEquals(list.get(idx-1).getEmail(),   TEST_EMAIL + idx);
-			Assertions.assertEquals(list.get(idx-1).getComment(), TEST_COMMENT + idx);
+			Assertions.assertEquals(list.get(idx-1).getName(),    TestConsts.TEST_NAME_NAME    + idx);
+			Assertions.assertEquals(list.get(idx-1).getEmail(),   TestConsts.TEST_EMAIL_NAME   + idx);
+			Assertions.assertEquals(list.get(idx-1).getComment(), TestConsts.TEST_COMMENT_NAME + idx);
 			Assertions.assertEquals(list.get(idx-1).getCreated().toString(), 
 					TestConsts.TEST_TIME_01.toString());
 		}
@@ -268,9 +266,9 @@ class InquiryDaoSqlTest {
 		
 		Assertions.assertEquals(list.size(),              2);
 		for(int idx=1; idx<=2; idx++) {
-			Assertions.assertEquals(list.get(idx-1).getName(),    TEST_NAME + (3-idx));
-			Assertions.assertEquals(list.get(idx-1).getEmail(),   TEST_EMAIL + (3-idx));
-			Assertions.assertEquals(list.get(idx-1).getComment(), TEST_COMMENT + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getName(),    TestConsts.TEST_NAME_NAME    + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getEmail(),   TestConsts.TEST_EMAIL_NAME   + (3-idx));
+			Assertions.assertEquals(list.get(idx-1).getComment(), TestConsts.TEST_COMMENT_NAME + (3-idx));
 			Assertions.assertEquals(list.get(idx-1).getCreated().toString(), 
 					TestConsts.TEST_TIME_01.toString());
 		}
@@ -333,9 +331,9 @@ class InquiryDaoSqlTest {
 		
 		Map<String, Object> map01 = new HashMap<String, Object>();
 		map01.put(WebConsts.SQL_ID_NAME,      modelCnt);
-		map01.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
-		map01.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
-		map01.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
+		map01.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME    + modelCnt);
+		map01.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME   + modelCnt);
+		map01.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + modelCnt);
 		map01.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map01.put(WebConsts.SQL_REPLY_ID_NAME,      modelReplyCnt);
@@ -349,9 +347,9 @@ class InquiryDaoSqlTest {
 		Map<String, Object> map11 = new HashMap<String, Object>();
 		modelReplyCnt++;
 		map11.put(WebConsts.SQL_ID_NAME,      modelCnt);
-		map11.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
-		map11.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
-		map11.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
+		map11.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME    + modelCnt);
+		map11.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME   + modelCnt);
+		map11.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + modelCnt);
 		map11.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map11.put(WebConsts.SQL_REPLY_ID_NAME,      2);
@@ -365,9 +363,9 @@ class InquiryDaoSqlTest {
 		Map<String, Object> map21 = new HashMap<String, Object>();
 		modelCnt++;
 		map21.put(WebConsts.SQL_ID_NAME,      modelCnt);
-		map21.put(WebConsts.SQL_NAME_NAME,    TEST_NAME    + modelCnt);
-		map21.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL   + modelCnt);
-		map21.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT + modelCnt);
+		map21.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME    + modelCnt);
+		map21.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME   + modelCnt);
+		map21.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + modelCnt);
 		map21.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map21);
@@ -402,9 +400,9 @@ class InquiryDaoSqlTest {
 		
 		// model1
 		Assertions.assertEquals(model1.getId(),      modelCnt);
-		Assertions.assertEquals(model1.getName(),    TEST_NAME    + modelCnt);
-		Assertions.assertEquals(model1.getEmail(),   TEST_EMAIL   + modelCnt);
-		Assertions.assertEquals(model1.getComment(), TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model1.getName(),    TestConsts.TEST_NAME_NAME    + modelCnt);
+		Assertions.assertEquals(model1.getEmail(),   TestConsts.TEST_EMAIL_NAME   + modelCnt);
+		Assertions.assertEquals(model1.getComment(), TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model1.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel1.size(),  2);
@@ -431,9 +429,9 @@ class InquiryDaoSqlTest {
 		// model1
 		modelCnt++;
 		Assertions.assertEquals(model2.getId(),      2);
-		Assertions.assertEquals(model2.getName(),    TEST_NAME    + modelCnt);
-		Assertions.assertEquals(model2.getEmail(),   TEST_EMAIL   + modelCnt);
-		Assertions.assertEquals(model2.getComment(), TEST_COMMENT + modelCnt);
+		Assertions.assertEquals(model2.getName(),    TestConsts.TEST_NAME_NAME    + modelCnt);
+		Assertions.assertEquals(model2.getEmail(),   TestConsts.TEST_EMAIL_NAME   + modelCnt);
+		Assertions.assertEquals(model2.getComment(), TestConsts.TEST_COMMENT_NAME + modelCnt);
 		Assertions.assertEquals(model2.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel2.size(),  0);
@@ -455,9 +453,9 @@ class InquiryDaoSqlTest {
 				+ "WHERE id = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,      1);
-		map.put(WebConsts.SQL_NAME_NAME,    TEST_NAME);
-		map.put(WebConsts.SQL_EMAIL_NAME,   TEST_EMAIL);
-		map.put(WebConsts.SQL_COMMENT_NAME, TEST_COMMENT);
+		map.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		
@@ -480,9 +478,9 @@ class InquiryDaoSqlTest {
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(),      1);
-		Assertions.assertEquals(model.getName(),    TEST_NAME);
-		Assertions.assertEquals(model.getEmail(),   TEST_EMAIL);
-		Assertions.assertEquals(model.getComment(), TEST_COMMENT);
+		Assertions.assertEquals(model.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(), TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 	}

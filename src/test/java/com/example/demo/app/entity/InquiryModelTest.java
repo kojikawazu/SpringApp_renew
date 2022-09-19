@@ -1,13 +1,15 @@
 package com.example.demo.app.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -27,9 +29,9 @@ class InquiryModelTest {
 		model= new InquiryModel(
 				new InquiryId(0),
 				new NameWord(""),
-				new NameWord(""),
-				new NameWord(""),
-				LocalDateTime.of(2000, 01, 01, 00, 00, 00),
+				new EmailWord(""),
+				new CommentWord(""),
+				TestConsts.TEST_TIME_01,
 				new ArrayList<InquiryReplyModel>()
 				);
 	}
@@ -39,13 +41,11 @@ class InquiryModelTest {
 	 */
 	@Test
 	public void InitTest0() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getName(), "");
-		Assertions.assertEquals(model.getEmail(), "");
+		Assertions.assertEquals(model.getId(),      0);
+		Assertions.assertEquals(model.getName(),    "");
+		Assertions.assertEquals(model.getEmail(),   "");
 		Assertions.assertEquals(model.getComment(), "");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}
 	
@@ -54,19 +54,17 @@ class InquiryModelTest {
 	 */
 	@Test
 	public void InitTest1() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
+		model.setId(     1);
+		model.setName(   TestConsts.TEST_NAME_NAME);
+		model.setEmail(  TestConsts.TEST_EMAIL_NAME);
+		model.setComment(TestConsts.TEST_COMMENT_NAME);
+		model.setCreated(TestConsts.TEST_TIME_01);
 		
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setEmail("テストメールアドレス");
-		model.setComment("テストコメント");
-		model.setCreated(dateTime);
-		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getEmail(), "テストメールアドレス");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getId(),                 1);
+		Assertions.assertEquals(model.getName(),               TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),              TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(),            TestConsts.TEST_COMMENT_NAME);
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}
 	
@@ -97,23 +95,22 @@ class InquiryModelTest {
 	 */
 	@Test
 	public void InitModel() {
-		LocalDateTime now = LocalDateTime.now();
 		InquiryModel test= new InquiryModel(
 				new InquiryId(1),
-				new NameWord("テスト"),
-				new NameWord("テストメール"),
-				new NameWord("テストコメント"),
-				now,
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				TestConsts.TEST_TIME_01,
 				new ArrayList<InquiryReplyModel>()
 				);
 		
 		model = new InquiryModel(test);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テスト");
-		Assertions.assertEquals(model.getEmail(), "テストメール");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), now.toString());
+		Assertions.assertEquals(model.getId(),      1);
+		Assertions.assertEquals(model.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(), TestConsts.TEST_COMMENT_NAME);
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}
 	
@@ -122,20 +119,19 @@ class InquiryModelTest {
 	 */
 	@Test
 	public void InitTest2() {
-		LocalDateTime now = LocalDateTime.now();
 		model= new InquiryModel(
 				new InquiryId(1),
-				new NameWord("テスト"),
-				new NameWord("テストメール"),
-				new NameWord("テストコメント"),
-				now
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				TestConsts.TEST_TIME_01
 				);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テスト");
-		Assertions.assertEquals(model.getEmail(), "テストメール");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), now.toString());
+		Assertions.assertEquals(model.getId(),      1);
+		Assertions.assertEquals(model.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(), TestConsts.TEST_COMMENT_NAME);
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}
 	
@@ -144,19 +140,18 @@ class InquiryModelTest {
 	 */
 	@Test
 	public void InitTest3() {
-		LocalDateTime now = LocalDateTime.now();
 		model= new InquiryModel(
-				new NameWord("テスト"),
-				new NameWord("テストメール"),
-				new NameWord("テストコメント"),
-				now
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				TestConsts.TEST_TIME_01
 				);
 		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getName(), "テスト");
-		Assertions.assertEquals(model.getEmail(), "テストメール");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), now.toString());
+		Assertions.assertEquals(model.getId(),      0);
+		Assertions.assertEquals(model.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(), TestConsts.TEST_COMMENT_NAME);
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}
 
