@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/** 問い合わせ一覧レイアウト **/
 .inquirylayout{
 	margin: 20px auto;
 	padding: 5px 10px 20px 20px;
@@ -7,6 +8,7 @@
 	box-shadow:2px 2px 7px;
 }
 
+/** 問い合わせ返信レイアウト **/
 .replylayout{
 	margin: 20px auto;
 	margin-left: 100px;
@@ -15,12 +17,14 @@
 	box-shadow:2px 2px 7px;
 }
 
+/** 問い合わせ名 **/
 .inquiry-name{
 	padding: 20px;
 	text-decoration:underline; 
 	text-decoration-color:#111111;
 }
 
+/** 問い合わせメールアドレス **/
 .inquiry-email{
 	padding: 20px;
 	padding-top: 22px;
@@ -29,6 +33,7 @@
 	text-decoration-color:#111111;
 }
 
+/** 問い合わせ日付 **/
 .inquiry-created{
 	padding-top: 30px;
 	padding-bottom: 10px;
@@ -38,11 +43,13 @@
 	text-decoration-color:#111111;
 }
 
+/** 問い合わせ削除フォーム **/
 .inquiry-delete-form{
 	float: right;
 	padding: 10px;
 }
 
+/** 問い合わせコメント **/
 .inquiry-comment{
 	padding: 20px;
 	margin-top: 5px;

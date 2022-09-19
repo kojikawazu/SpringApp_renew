@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【ブログ返信確認.html】
+-->
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,6 +41,7 @@
 		 	<h2 class="text-left lefter blog-title" th:text="'●  ' + *{title}"></h2>
 		 	<!-- 日付 -->
 		 	<div class="lefter-clear text-right blog-date" th:text="*{updated}"></div>
+		 	<!-- いいね欄 / タグ欄 -->
 		 	<div class="cnt_tag">
 		 		<!-- いいね数 -->
 		 		<div class="lefter thanks btn btn-primary btn-sm" th:text="*{thanksCnt} + '　いいね'" ></div>
@@ -58,12 +62,15 @@
 	 			</ul>
 	 		</div>
 	 		<div class="btn-toolbar">
+	 			<!-- 一覧に戻る -->
 		 		<form method="post" action="#" th:action="@{/blog/reply}">
 		 			<input type="hidden" name="name" th:value="*{name}">
 		 			<input type="hidden" name="comment" th:value="*{comment}">
 		 			<input type="hidden" name="id" th:value="${blogMain.id}">
 		 			<button type="submit" class="btn btn-primary">戻る</button>
 		 		</form>
+		 		
+		 		<!-- 返信する -->
 		 		<form method="post" action="#" th:action="@{/blog/reply_complete}">
 		 			<input type="hidden" name="name" th:value="*{name}">
 		 			<input type="hidden" name="comment" th:value="*{comment}">

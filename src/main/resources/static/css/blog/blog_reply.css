@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+/**
+ * ブログ返信フォーム[css]
+ */
+ 
+/** ブログレイアウト */
 .bloglayout{
 	margin: 10px auto;
 	padding: 10px;
@@ -8,18 +13,22 @@
 	box-shadow:2px 2px 7px;
 }
 
+/** ブログタイトル */
 .blog-title{
 	padding: 20px;
 }
 
+/** ブログ日付 */
 .blog-date{
 	padding-right: 5px;	
 }
 
+/** いいね欄 / タグ欄 */
 .cnt_tag{
 	margin-top: 20px;
 }
 
+/** いいね欄 */
 .thanks{
 	padding-left: 30px;
 	padding-right: 30px;
@@ -27,11 +36,13 @@
 	margin-right: 10px;
 }
 
+/** ラグ欄 */
 .tag{
 	padding-left: 20px;
 	padding-right: 20px;
 }
 
+/** コメント */
 .comment{
 	padding: 20px;
 	margin-top: 60px;
@@ -39,5 +50,3 @@
 	background-color: white;
 	box-shadow:2px 2px 7px;
 }
-
-

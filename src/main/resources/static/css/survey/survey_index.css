@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/** 調査レイアウト **/
 .surveylayout{
 	margin: 10px auto;
 	padding: 10px;
@@ -8,12 +9,13 @@
 	box-shadow:2px 2px 7px;
 }
 
+/** 調査タイトル **/
 .survey-title{
 	padding: 20px;
 }
 
-/* ★の書き方 */
-/* 色の付いた方をpositionを使って、重ねる */
+/** ★の書き方 **/
+/** 色の付いた方をpositionを使って、重ねる **/
 .satis{
 	position: relative;
 	display: inline-block;
@@ -39,6 +41,7 @@
 	overflow: hidden;
 }
 
+/** 満足度 **/
 .satis.rate0:after{
 	width: 0em;
 }
@@ -63,16 +66,19 @@
 	width: 5em;
 }
 
+/** 調査投稿日付 **/
 .survey-date{
 	padding-right: 5px;
 }
 
+/** 調査タグ **/
 .tag{
 	padding-left: 20px;
 	padding-right: 20px;
 	margin-right: 10px;
 }
 
+/** 調査コメント **/
 .comment{
 	padding: 20px;
 	margin-top: 40px;

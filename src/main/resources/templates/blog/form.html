@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【ブログ投稿 or 編集フォーム.html】
+-->
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,10 +12,9 @@
     <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
-    
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">    
     <link href="starter-template.css"  th:href="@{/css/home/same_form.css}" rel="stylesheet" crossorigin="anonymous">
-    
+
     <!--  Jquery core  -->
     <script th:src="@{/js/jquery-slim.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
@@ -37,26 +39,35 @@
 	 	
 	 	<!-- 登録フォーム -->
 	 	<form method="post" action="#" th:action="@{/blog/confirm}" th:object="${blogForm}">
+	 		<!-- タイトル -->
 	 		<div class="form-group">
 	    		<label for="name">タイトル</label>
 	    		<input type="text" name="blogTitle" class="form-control" id="blogTitle" th:value="*{blogTitle}">
 	  		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('blogTitle')}" th:errors="*{blogTitle}"></div>
+	 		
+	 		<!-- タグ -->
 	 		<div class="form-group">
 	    		<label for="tag">タグ</label>
 	    		<input type="text" name="tag" class="form-control" id="tag" th:value="*{tag}">
 	  		</div>
-	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}"></div> 		
+	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}"></div> 
+	 		
+	 		<!-- 内容 -->
 	 		<div class="form-group">
 	 			<label for="blogContents">内容</label>
 	 			<textarea name="blogContents" class="form-control" id="blogContents" rows="3" cols="40" th:value="*{blogContents}" th:text="*{blogContents}"></textarea>
 	 		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('blogContents')}" th:errors="*{blogContents}"></div>
 	 		
+	 		<!-- 編集フラグ -->
+	 		<!-- いいね数  -->
 	 		<input type="hidden" name="editor" th:value="${editor}" />
 	 		<input type="hidden" name="thanksCnt" class="form-control" id="thanksCnt" th:value="*{thanksCnt}" />
 	 		
+	 		<!-- 一覧に戻る -->
 			<a class="btn btn-primary" href="#" role="button" th:href="@{/blog/}">一覧へ戻る</a>
+			<!-- 確認する -->
 			<button type="submit" class="btn btn-primary">確認する</button>
 	 	</form> 
 	 </main>
