@@ -22,6 +22,7 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -50,12 +51,12 @@ class SurveyDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				"テストネーム",
+				TestConsts.TEST_NAME_NAME,
 				10,
 				1,
 				1,
 				5,
-				"テストコメント",
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
@@ -70,24 +71,24 @@ class SurveyDaoSqlTest {
 		InitInsert();
 		
 		SurveyModel model = new SurveyModel(
-				new NameWord("テストネーム"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
 				new NormalNumber(10),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(5),
-				new NameWord("テストコメント"),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 				);
 		
 		this.dao.insertSurvey(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				"テストネーム",
+				TestConsts.TEST_NAME_NAME,
 				10,
 				1,
 				1,
 				5,
-				"テストコメント",
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01);
 	}
 	
@@ -103,23 +104,23 @@ class SurveyDaoSqlTest {
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
+				TestConsts.TEST_NAME_NAME,
 				10,
 				1,
 				1,
 				5,
-				"テストコメント",
+				TestConsts.TEST_COMMENT_NAME,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
+				TestConsts.TEST_NAME_NAME,
 				10,
 				1,
 				1,
 				5,
-				"テストコメント",
+				TestConsts.TEST_COMMENT_NAME,
 				2
 				)).thenReturn(WebConsts.ERROR_DB_STATUS);
 		
@@ -135,12 +136,12 @@ class SurveyDaoSqlTest {
 		
 		SurveyModel model = new SurveyModel(
 				new SurveyId(1),
-				new NameWord("テストネーム"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
 				new NormalNumber(10),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(5),
-				new NameWord("テストコメント"),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 			);
 		
@@ -157,12 +158,12 @@ class SurveyDaoSqlTest {
 		
 		SurveyModel model = new SurveyModel(
 				new SurveyId(2),
-				new NameWord("テストネーム"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
 				new NormalNumber(10),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(5),
-				new NameWord("テストコメント"),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 			);
 		
@@ -181,12 +182,12 @@ class SurveyDaoSqlTest {
 		String sql = "SELECT * FROM survey";
 		
 		map.put(WebConsts.SQL_ID_NAME,           1);
-		map.put(WebConsts.SQL_NAME_NAME,         "テストネーム");
+		map.put(WebConsts.SQL_NAME_NAME,         TestConsts.TEST_NAME_NAME);
 		map.put(WebConsts.SQL_AGE_NAME,         10);
 		map.put(WebConsts.SQL_PROFESSION_NAME,   1);
 		map.put(WebConsts.SQL_ISMEN_NAME,        1);
 		map.put(WebConsts.SQL_SATISFACTION_NAME, 1);
-		map.put(WebConsts.SQL_COMMENT_NAME,      "テストコメント");
+		map.put(WebConsts.SQL_COMMENT_NAME,      TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map);
@@ -208,12 +209,12 @@ class SurveyDaoSqlTest {
 		
 		Assertions.assertEquals(list.size(),                   1);
 		Assertions.assertEquals(list.get(0).getId(),           1);
-		Assertions.assertEquals(list.get(0).getName(),          "テストネーム");
+		Assertions.assertEquals(list.get(0).getName(),         TestConsts.TEST_NAME_NAME);
 		Assertions.assertEquals(list.get(0).getAge(),          10);
 		Assertions.assertEquals(list.get(0).getProfession(),    1);
 		Assertions.assertEquals(list.get(0).getMen_or_female(), 1);
 		Assertions.assertEquals(list.get(0).getSatisfaction(),  1);
-		Assertions.assertEquals(list.get(0).getComment(),       "テストコメント");
+		Assertions.assertEquals(list.get(0).getComment(),       TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 			TestConsts.TEST_TIME_01.toString());
 		list.clear();

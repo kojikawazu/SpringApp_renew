@@ -15,6 +15,7 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -234,7 +235,7 @@ public class BlogReplyDaoSql implements BlogReplyDao {
 				new BlogReplyId((int)result.get(WebConsts.SQL_ID_NAME)),
 				new BlogId((int)result.get(WebConsts.SQL_BLOG_ID_NAME)),
 				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
-				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				new CommentWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
 				new ThanksCntNumber((int)result.get(WebConsts.SQL_THANKSCNT_NAME)),
 				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME))
 					.toLocalDateTime()

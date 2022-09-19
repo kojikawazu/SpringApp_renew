@@ -6,7 +6,10 @@ import java.util.List;
 
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
+import com.example.demo.common.word.TittleWord;
 
 /**
  * メインブログモデル
@@ -19,13 +22,13 @@ public class BlogMainModel {
 	private BlogId               id;
 	
 	/** タイトル */
-	private NameWord             title;
+	private TittleWord           title;
 	
 	/** タグ */
-	private NameWord             tag;
+	private TagWord              tag;
 	
 	/** コメント */
-	private NameWord             comment;
+	private CommentWord          comment;
 	
 	/** いいね数 */
 	private ThanksCntNumber      thanksCnt;
@@ -52,9 +55,9 @@ public class BlogMainModel {
 	 */
 	public BlogMainModel(
 			BlogId               id,
-			NameWord             title,
-			NameWord             tag,
-			NameWord             comment,
+			TittleWord           title,
+			TagWord              tag,
+			CommentWord          comment,
 			ThanksCntNumber      thanksCnt,
 			LocalDateTime        created,
 			LocalDateTime        updated,
@@ -65,15 +68,15 @@ public class BlogMainModel {
 				id);
 		
 		this.title = (title == null ?
-				new NameWord("") :
+				new TittleWord("") :
 				title);
 		
 		this.tag = (tag == null ?
-				new NameWord("") :
+				new TagWord("") :
 				tag);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 				comment);
 		
 		this.thanksCnt = (thanksCnt == null ?
@@ -105,9 +108,9 @@ public class BlogMainModel {
 	 */
 	public BlogMainModel(
 			BlogId               id,
-			NameWord             title,
-			NameWord             tag,
-			NameWord             comment,
+			TittleWord           title,
+			TagWord              tag,
+			CommentWord          comment,
 			ThanksCntNumber      thanksCnt,
 			LocalDateTime        created,
 			LocalDateTime        updated
@@ -132,9 +135,9 @@ public class BlogMainModel {
 	 * @param updated
 	 */
 	public BlogMainModel(
-			NameWord             title,
-			NameWord             tag,
-			NameWord             comment,
+			TittleWord           title,
+			TagWord              tag,
+			CommentWord          comment,
 			ThanksCntNumber      thanksCnt,
 			LocalDateTime        created,
 			LocalDateTime        updated
@@ -157,18 +160,18 @@ public class BlogMainModel {
 			BlogMainModel model) {
 		if(model == null) {
 			this.id        = new BlogId(0);
-			this.title     = new NameWord("");
-			this.tag       = new NameWord("");
-			this.comment   = new NameWord("");
+			this.title     = new TittleWord("");
+			this.tag       = new TagWord("");
+			this.comment   = new CommentWord("");
 			this.thanksCnt = new ThanksCntNumber(0);
 			this.created   = LocalDateTime.now();
 			this.updated   = LocalDateTime.now();
 			this.replyList = new ArrayList<BlogReplyModel>();
 		} else {
 			this.id        = new BlogId(model.getId());
-			this.title     = new NameWord(model.getTitle());
-			this.tag       = new NameWord(model.getTag());
-			this.comment   = new NameWord(model.getComment());
+			this.title     = new TittleWord(model.getTitle());
+			this.tag       = new TagWord(model.getTag());
+			this.comment   = new CommentWord(model.getComment());
 			this.thanksCnt = new ThanksCntNumber(model.getThanksCnt());
 			this.created   = model.getCreated();
 			this.updated   = model.getUpdated();
@@ -190,7 +193,7 @@ public class BlogMainModel {
 	
 	protected void setTitle(String title) {
 		if(title == null)	return ;
-		this.title = new NameWord(title);
+		this.title = new TittleWord(title);
 	}
 	
 	public String getTag() {
@@ -199,7 +202,7 @@ public class BlogMainModel {
 	
 	protected void setTag(String tag) {
 		if(tag == null)	return ;
-		this.tag = new NameWord(tag);
+		this.tag = new TagWord(tag);
 	}
 	
 	public String getComment() {
@@ -208,7 +211,7 @@ public class BlogMainModel {
 	
 	protected void setComment(String comment) {
 		if(comment == null)	return ;
-		this.comment = new NameWord(comment);
+		this.comment = new CommentWord(comment);
 	}
 	
 	public int getThanksCnt() {

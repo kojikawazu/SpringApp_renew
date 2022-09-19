@@ -16,6 +16,8 @@ import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.InquiryReplyService;
 import com.example.demo.app.service.InquiryService;
 import com.example.demo.common.common.AppConsts;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -60,8 +62,8 @@ public class InquiryCompleteController extends SuperInquiryController {
 		
 		InquiryModel inquiry = new InquiryModel(
 				new NameWord(inquiryForm.getName()),
-				new NameWord(inquiryForm.getEmail()),
-				new NameWord(inquiryForm.getComment()),
+				new EmailWord(inquiryForm.getEmail()),
+				new CommentWord(inquiryForm.getComment()),
 				LocalDateTime.now()
 				);
 		

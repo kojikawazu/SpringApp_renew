@@ -21,7 +21,7 @@ import com.example.demo.app.entity.BlogTagModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogTagId;
-import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
 
 /**
  * ブログタグサービスのテスト
@@ -49,7 +49,7 @@ class BlogTagServiceUseTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT,
-				"テストタグ")).thenReturn(TestConsts.RESULT_NUMBER_OK);
+				TestConsts.TEST_TAG_NAME)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		setService();
 	}
@@ -63,13 +63,13 @@ class BlogTagServiceUseTest {
 		
 		BlogTagModel model = new BlogTagModel(
 				new BlogTagId(0),
-				new NameWord("テストタグ")
+				new TagWord(TestConsts.TEST_TAG_NAME)
 				);
 		
 		this.service.save(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				"テストタグ");
+				TestConsts.TEST_TAG_NAME);
 	}
 	
 	/**
@@ -83,13 +83,13 @@ class BlogTagServiceUseTest {
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストタグ",
+				TestConsts.TEST_TAG_NAME,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストタグ",
+				TestConsts.TEST_TAG_NAME,
 				2
 				)).thenReturn(WebConsts.ERROR_NUMBER);
 		
@@ -107,7 +107,7 @@ class BlogTagServiceUseTest {
 			() -> this.service.update(
 				new BlogTagModel(
 					new BlogTagId(1),
-					new NameWord("テストタグ")
+					new TagWord(TestConsts.TEST_TAG_NAME)
 				)
 			));
 		
@@ -126,7 +126,7 @@ class BlogTagServiceUseTest {
 			() -> this.service.update(
 				new BlogTagModel(
 					new BlogTagId(2),
-					new NameWord("テストタグ")
+					new TagWord(TestConsts.TEST_TAG_NAME)
 				)
 			));
 	}
@@ -181,7 +181,7 @@ class BlogTagServiceUseTest {
 		String sql = "SELECT * FROM blog_tag";
 		
 		map.put(WebConsts.SQL_ID_NAME,  1);
-		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
+		map.put(WebConsts.SQL_TAG_NAME, TestConsts.TEST_TAG_NAME);
 		mapList.add(map);
 		
 		when(this.jdbcTemp.queryForList(sql))
@@ -199,9 +199,9 @@ class BlogTagServiceUseTest {
 		
 		List<BlogTagModel> list = this.service.getAll();
 		
-		Assertions.assertEquals(list.size(), 1);
+		Assertions.assertEquals(list.size(),         1);
 		Assertions.assertEquals(list.get(0).getId(), 1);
-		Assertions.assertEquals(list.get(0).getTag(), "テストタグ");
+		Assertions.assertEquals(list.get(0).getTag(), TestConsts.TEST_TAG_NAME);
 		list.clear();
 	}
 	
@@ -240,8 +240,8 @@ class BlogTagServiceUseTest {
 				+ "FROM blog_tag "
 				+ "WHERE id = ?";
 		
-		map.put(WebConsts.SQL_ID_NAME, 1);
-		map.put(WebConsts.SQL_TAG_NAME, "テストタグ");
+		map.put(WebConsts.SQL_ID_NAME,  1);
+		map.put(WebConsts.SQL_TAG_NAME, TestConsts.TEST_TAG_NAME);
 		
 		// Mock化
 		this.jdbcTemp = mock(JdbcTemplate.class);
@@ -263,8 +263,8 @@ class BlogTagServiceUseTest {
 		BlogTagModel model = this.service.select(new BlogTagId(1));
 		
 		Assertions.assertNotNull(model);
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getTag(), "テストタグ");
+		Assertions.assertEquals(model.getId(),  1);
+		Assertions.assertEquals(model.getTag(), TestConsts.TEST_TAG_NAME);
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -24,7 +25,7 @@ public class BlogReplyModel {
 	private NameWord        name;
 	
 	/** コメント */
-	private NameWord        comment;
+	private CommentWord     comment;
 	
 	/** いいね数 */
 	private ThanksCntNumber thanksCnt;
@@ -45,7 +46,7 @@ public class BlogReplyModel {
 			BlogReplyId     id,
 			BlogId          blogId,
 			NameWord        name,
-			NameWord        comment,
+			CommentWord     comment,
 			ThanksCntNumber thanksCnt,
 			LocalDateTime   created) {
 		this.id = (id == null ?
@@ -61,7 +62,7 @@ public class BlogReplyModel {
 				name);
 		
 		this.comment = (comment == null ? 
-				new NameWord("") :
+				new CommentWord("") :
 					comment);
 		
 		this.thanksCnt = (thanksCnt == null ? 
@@ -84,7 +85,7 @@ public class BlogReplyModel {
 	public BlogReplyModel(
 			BlogId          blogId,
 			NameWord        name,
-			NameWord        comment,
+			CommentWord     comment,
 			ThanksCntNumber thanksCnt,
 			LocalDateTime   created) {
 		this.blogId = (blogId == null ? 
@@ -96,7 +97,7 @@ public class BlogReplyModel {
 				name);
 		
 		this.comment = (comment == null ? 
-				new NameWord("") :
+				new CommentWord("") :
 					comment);
 		
 		this.thanksCnt = (thanksCnt == null ? 
@@ -118,14 +119,14 @@ public class BlogReplyModel {
 			this.id        = new BlogReplyId(0);
 			this.blogId    = new BlogId(0);
 			this.name      = new NameWord("");
-			this.comment   = new NameWord("");
+			this.comment   = new CommentWord("");
 			this.thanksCnt = new ThanksCntNumber(0);
 			this.created   = LocalDateTime.now();
 		} else {
 			this.id        = new BlogReplyId(model.getId());
 			this.blogId    = new BlogId(model.getBlogId());
 			this.name      = new NameWord(model.getName());
-			this.comment   = new NameWord(model.getComment());
+			this.comment   = new CommentWord(model.getComment());
 			this.thanksCnt = new ThanksCntNumber(model.getThanksCnt());
 			this.created   = model.getCreated();
 		}
@@ -162,7 +163,7 @@ public class BlogReplyModel {
 
 	protected void setComment(String comment) {
 		if(comment == null)	return ;
-		this.comment = new NameWord(comment);
+		this.comment = new CommentWord(comment);
 	}
 
 	public int getThanksCnt() {

@@ -23,7 +23,9 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
-import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.TagWord;
+import com.example.demo.common.word.TittleWord;
 
 /**
  * ブログメインサービスクラス
@@ -52,9 +54,9 @@ class BlogMainServiceUseTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				"テストタイトル",
-				"テストタグ",
-				"テストコメント",
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -71,9 +73,9 @@ class BlogMainServiceUseTest {
 		InitInsert();
 		
 		BlogMainModel model = new BlogMainModel(
-				new NameWord("テストタイトル"),
-				new NameWord("テストタグ"),
-				new NameWord("テストコメント"),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
@@ -82,9 +84,9 @@ class BlogMainServiceUseTest {
 		this.service.save(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				"テストタイトル",
-				"テストタグ",
-				"テストコメント",
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02);
@@ -103,9 +105,9 @@ class BlogMainServiceUseTest {
 		// 正常系
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストタイトル",
-				"テストタグ",
-				"テストコメント",
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_02,
 				1
@@ -114,9 +116,9 @@ class BlogMainServiceUseTest {
 		// 異常系
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストタイトル",
-				"テストタグ",
-				"テストコメント",
+				TestConsts.TEST_TITLE_NAME,
+				TestConsts.TEST_TAG_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_02,
 				2
@@ -136,9 +138,9 @@ class BlogMainServiceUseTest {
 			() -> this.service.update(
 				new BlogMainModel(
 					new BlogId(1),
-					new NameWord("テストタイトル"),
-					new NameWord("テストタグ"),
-					new NameWord("テストコメント"),
+					new TittleWord(TestConsts.TEST_TITLE_NAME),
+					new TagWord(TestConsts.TEST_TAG_NAME),
+					new CommentWord(TestConsts.TEST_COMMENT_NAME),
 					new ThanksCntNumber(1),
 					TestConsts.TEST_TIME_01,
 					TestConsts.TEST_TIME_02
@@ -158,9 +160,9 @@ class BlogMainServiceUseTest {
 			() -> this.service.update(
 				new BlogMainModel(
 					new BlogId(2),
-					new NameWord("テストタイトル"),
-					new NameWord("テストタグ"),
-					new NameWord("テストコメント"),
+					new TittleWord(TestConsts.TEST_TITLE_NAME),
+					new TagWord(TestConsts.TEST_TAG_NAME),
+					new CommentWord(TestConsts.TEST_COMMENT_NAME),
 					new ThanksCntNumber(1),
 					TestConsts.TEST_TIME_01,
 					TestConsts.TEST_TIME_02
@@ -218,9 +220,9 @@ class BlogMainServiceUseTest {
 		String sql = "SELECT * FROM blog_main";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
-		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map.put(WebConsts.SQL_UPDATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_02));
@@ -243,9 +245,9 @@ class BlogMainServiceUseTest {
 		
 		Assertions.assertEquals(list.size(),                1);
 		Assertions.assertEquals(list.get(0).getId(),        1);
-		Assertions.assertEquals(list.get(0).getTitle(),     "テストタイトル");
-		Assertions.assertEquals(list.get(0).getTag(),       "テストタグ");
-		Assertions.assertEquals(list.get(0).getComment(),   "テストコメント");
+		Assertions.assertEquals(list.get(0).getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(list.get(0).getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -275,8 +277,9 @@ class BlogMainServiceUseTest {
 	public void SelectAllTest_empty() {
 		InitSelectAll_empty();
 		
-		assertThrows(RuntimeException.class, () ->
-			this.service.getAll());
+		List<BlogMainModel> list =  this.service.getAll();
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 0);
 	}
 	
 	/**
@@ -291,9 +294,9 @@ class BlogMainServiceUseTest {
 				+ "WHERE id = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
-		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -319,9 +322,9 @@ class BlogMainServiceUseTest {
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getTitle(),     "テストタイトル");
-		Assertions.assertEquals(model.getTag(),       "テストタグ");
-		Assertions.assertEquals(model.getComment(),   "テストコメント");
+		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getThanksCnt(), 1);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -354,9 +357,9 @@ class BlogMainServiceUseTest {
 				+ "WHERE tag = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     "テストタイトル");
-		map.put(WebConsts.SQL_TAG_NAME,       "テストタグ");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
+		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -381,11 +384,11 @@ class BlogMainServiceUseTest {
 		
 		List<BlogMainModel> list = this.service.select_byTag("テスト");
 		
-		Assertions.assertEquals(list.size(), 1);
-		Assertions.assertEquals(list.get(0).getId(), 1);
-		Assertions.assertEquals(list.get(0).getTitle(), "テストタイトル");
-		Assertions.assertEquals(list.get(0).getTag(), "テストタグ");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
+		Assertions.assertEquals(list.size(),                1);
+		Assertions.assertEquals(list.get(0).getId(),        1);
+		Assertions.assertEquals(list.get(0).getTitle(),     TestConsts.TEST_TITLE_NAME);
+		Assertions.assertEquals(list.get(0).getTag(),       TestConsts.TEST_TAG_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -401,8 +404,9 @@ class BlogMainServiceUseTest {
 	public void Select_byTagTest_Error() {
 		InitSelect_byTag();
 		
-		Assertions.assertThrows(RuntimeException.class,
-				() -> { this.service.select_byTag("バグ"); });
+		List<BlogMainModel> list =  this.service.select_byTag("バグ");
+		Assertions.assertNotNull(list);
+		Assertions.assertEquals(list.size(), 0);
 	}
 	
 	/**

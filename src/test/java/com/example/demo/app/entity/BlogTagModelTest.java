@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogTagId;
-import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
 
 /**
  * ブログタグモデルテスト
@@ -23,7 +24,7 @@ class BlogTagModelTest {
 	public void Init() {
 		model = new BlogTagModel(
 				new BlogTagId(0),
-				new NameWord("")
+				new TagWord("")
 				);
 	}
 
@@ -44,10 +45,10 @@ class BlogTagModelTest {
 	public void InitTest1() {
 		
 		model.setId(1);
-		model.setTag("テストタグ");
+		model.setTag(TestConsts.TEST_TAG_NAME);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getTag(), "テストタグ");
+		Assertions.assertEquals(model.getId(),  1);
+		Assertions.assertEquals(model.getTag(), TestConsts.TEST_TAG_NAME);
 	}
 	
 	/**
@@ -60,7 +61,7 @@ class BlogTagModelTest {
 				null
 				);
 		
-		Assertions.assertEquals(model.getId(), 0);
+		Assertions.assertEquals(model.getId(),  0);
 		Assertions.assertEquals(model.getTag(), "");
 	}
 	
@@ -72,13 +73,13 @@ class BlogTagModelTest {
 		
 		BlogTagModel test = new BlogTagModel(
 				new BlogTagId(1),
-				new NameWord("テストタグ")
+				new TagWord(TestConsts.TEST_TAG_NAME)
 				);
 		
 		model = new BlogTagModel(test);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getTag(), "テストタグ");
+		Assertions.assertEquals(model.getId(),  1);
+		Assertions.assertEquals(model.getTag(), TestConsts.TEST_TAG_NAME);
 	}
 	
 	/**
@@ -88,13 +89,13 @@ class BlogTagModelTest {
 	public void InitTest2() {
 		
 		BlogTagModel test = new BlogTagModel(
-				new NameWord("テストタグ")
+				new TagWord("テストタグ")
 				);
 		
 		model = new BlogTagModel(test);
 		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getTag(), "テストタグ");
+		Assertions.assertEquals(model.getId(),  0);
+		Assertions.assertEquals(model.getTag(), TestConsts.TEST_TAG_NAME);
 	}
 
 }

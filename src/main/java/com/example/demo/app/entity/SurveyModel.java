@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -32,7 +33,7 @@ public class SurveyModel {
 	private NormalNumber  satisfaction;
 	
 	/** コメント */
-	private NameWord      comment;
+	private CommentWord   comment;
 	
 	/** 生成日付 */
 	private LocalDateTime created;
@@ -55,7 +56,7 @@ public class SurveyModel {
 			NormalNumber  profession,
 			NormalNumber  men_or_female,
 			NormalNumber  satisfaction,
-			NameWord      comment,
+			CommentWord   comment,
 			LocalDateTime created
 			) {
 		this.id = (id == null ?
@@ -83,7 +84,7 @@ public class SurveyModel {
 				satisfaction);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 					comment);
 		
 		this.created = (created == null ?
@@ -107,7 +108,7 @@ public class SurveyModel {
 			NormalNumber  profession,
 			NormalNumber  men_or_female,
 			NormalNumber  satisfaction,
-			NameWord      comment,
+			CommentWord   comment,
 			LocalDateTime created
 			) {
 		this.id = new SurveyId(0);
@@ -133,7 +134,7 @@ public class SurveyModel {
 				satisfaction);
 		
 		this.comment = (comment == null ?
-				new NameWord("") :
+				new CommentWord("") :
 					comment);
 		
 		this.created = (created == null ?
@@ -154,7 +155,7 @@ public class SurveyModel {
 			this.profession = new NormalNumber(0);
 			this.men_or_female = new NormalNumber(0);
 			this.satisfaction = new NormalNumber(0);
-			this.comment = new NameWord("");
+			this.comment = new CommentWord("");
 			this.created = LocalDateTime.now();
 		} else {
 			this.id = new SurveyId(model.getId());
@@ -163,7 +164,7 @@ public class SurveyModel {
 			this.profession = new NormalNumber(model.getProfession());
 			this.men_or_female = new NormalNumber(model.getMen_or_female());
 			this.satisfaction = new NormalNumber(model.getSatisfaction());
-			this.comment = new NameWord(model.getComment());
+			this.comment = new CommentWord(model.getComment());
 			this.created = model.getCreated();
 		}
 	}
@@ -223,7 +224,7 @@ public class SurveyModel {
 	
 	protected void setComment(String comment) {
 		if(comment == null)	return ;
-		this.comment = new NameWord(comment);
+		this.comment = new CommentWord(comment);
 	}
 	
 	public LocalDateTime getCreated() {

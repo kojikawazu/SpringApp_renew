@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -31,7 +32,7 @@ class SurveyModelTest {
 				new NormalNumber(0),
 				new NormalNumber(0),
 				new NormalNumber(0),
-				new NameWord(""),
+				new CommentWord(""),
 				LocalDateTime.of(2000, 01, 01, 00, 00, 00)
 				);
 	}
@@ -118,7 +119,7 @@ class SurveyModelTest {
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
-				new NameWord("コメント"),
+				new CommentWord("コメント"),
 				dateTime
 				);
 		
@@ -147,7 +148,7 @@ class SurveyModelTest {
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
-				new NameWord("コメント"),
+				new CommentWord("コメント"),
 				dateTime
 				);
 		

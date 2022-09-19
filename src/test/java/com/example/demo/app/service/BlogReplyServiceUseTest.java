@@ -24,6 +24,7 @@ import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -72,8 +73,8 @@ class BlogReplyServiceUseTest {
 		
 		BlogReplyModel model = new BlogReplyModel(
 				new BlogId(1),
-				new NameWord("テストネーム"),
-				new NameWord("テストコメント"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01 
 				);
@@ -83,8 +84,8 @@ class BlogReplyServiceUseTest {
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
 				1,
-				"テストネーム",
-				"テストコメント",
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1,
 				TestConsts.TEST_TIME_01);
 	}
@@ -181,8 +182,8 @@ class BlogReplyServiceUseTest {
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
 		map.put(WebConsts.SQL_BLOG_ID_NAME,   1);
-		map.put(WebConsts.SQL_NAME_NAME,      "テストネーム");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,      TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -206,8 +207,8 @@ class BlogReplyServiceUseTest {
 		Assertions.assertEquals(list.size(),                1);
 		Assertions.assertEquals(list.get(0).getId(),        1);
 		Assertions.assertEquals(list.get(0).getBlogId(),    1);
-		Assertions.assertEquals(list.get(0).getName(),      "テストネーム");
-		Assertions.assertEquals(list.get(0).getComment(),   "テストコメント");
+		Assertions.assertEquals(list.get(0).getName(),      TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -227,8 +228,8 @@ class BlogReplyServiceUseTest {
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
 		map.put(WebConsts.SQL_BLOG_ID_NAME,   1);
-		map.put(WebConsts.SQL_NAME_NAME,      "テストネーム");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,      TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -255,8 +256,8 @@ class BlogReplyServiceUseTest {
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(),        1);
 		Assertions.assertEquals(model.getBlogId(),    1);
-		Assertions.assertEquals(model.getName(),      "テストネーム");
-		Assertions.assertEquals(model.getComment(),   "テストコメント");
+		Assertions.assertEquals(model.getName(),      TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getThanksCnt(), 1);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
@@ -288,8 +289,8 @@ class BlogReplyServiceUseTest {
 		
 		map.put(WebConsts.SQL_ID_NAME,        1);
 		map.put(WebConsts.SQL_BLOG_ID_NAME,   1);
-		map.put(WebConsts.SQL_NAME_NAME,      "テストネーム");
-		map.put(WebConsts.SQL_COMMENT_NAME,   "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,      TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
 		map.put(WebConsts.SQL_CREATED_NAME,   
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
@@ -315,8 +316,8 @@ class BlogReplyServiceUseTest {
 		Assertions.assertEquals(list.size(),                1);
 		Assertions.assertEquals(list.get(0).getId(),        1);
 		Assertions.assertEquals(list.get(0).getBlogId(),    1);
-		Assertions.assertEquals(list.get(0).getName(),      "テストネーム");
-		Assertions.assertEquals(list.get(0).getComment(),   "テストコメント");
+		Assertions.assertEquals(list.get(0).getName(),      TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(list.get(0).getComment(),   TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getThanksCnt(), 1);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());

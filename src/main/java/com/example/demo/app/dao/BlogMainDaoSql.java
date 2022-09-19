@@ -17,7 +17,10 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogId;
 import com.example.demo.common.id.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
+import com.example.demo.common.word.TittleWord;
 
 /**
  * ブログメインDaoクラス
@@ -393,11 +396,11 @@ public class BlogMainDaoSql implements BlogMainDao {
 			model = new BlogMainModel(
 				new BlogId((int)result.get(
 						WebConsts.SQL_ID_NAME)),
-				new NameWord((String)result.get(
+				new TittleWord((String)result.get(
 						WebConsts.SQL_TITLE_NAME)),
-				new NameWord((String)result.get(
+				new TagWord((String)result.get(
 						WebConsts.SQL_TAG_NAME)),
-				new NameWord((String)result.get(
+				new CommentWord((String)result.get(
 						WebConsts.SQL_COMMENT_NAME)),
 				new ThanksCntNumber((int)result.get(
 						WebConsts.SQL_THANKSCNT_NAME)),
@@ -430,7 +433,7 @@ public class BlogMainDaoSql implements BlogMainDao {
 							WebConsts.SQL_ID_NAME)),
 					new NameWord((String)result.get(
 							WebConsts.SQL_REPLY_NAME_NAME)),
-					new NameWord((String)result.get(
+					new CommentWord((String)result.get(
 							WebConsts.SQL_REPLY_COMMENT_NAME)),
 					new ThanksCntNumber((int)result.get(
 							WebConsts.SQL_REPLY_THANKS_CNT_NAME)),

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.app.entity.BlogTagModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.BlogTagId;
-import com.example.demo.common.word.NameWord;
+import com.example.demo.common.word.TagWord;
 
 /**
  * ブログタグDaoクラス
@@ -168,7 +168,7 @@ public class BlogTagDaoSql implements BlogTagDao {
 		
 		BlogTagModel model =  new BlogTagModel(
 				new BlogTagId((int)result.get(WebConsts.SQL_ID_NAME)),
-				new NameWord((String)result.get(WebConsts.SQL_TAG_NAME))
+				new TagWord((String)result.get(WebConsts.SQL_TAG_NAME))
 				);
 		
 		return model;

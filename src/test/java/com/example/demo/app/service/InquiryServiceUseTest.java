@@ -23,6 +23,8 @@ import com.example.demo.app.entity.InquiryReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.word.CommentWord;
+import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -53,9 +55,9 @@ class InquiryServiceUseTest {
 		
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
@@ -70,18 +72,18 @@ class InquiryServiceUseTest {
 		InitInsert();
 		
 		InquiryModel model = new InquiryModel(
-				new NameWord("テストネーム"),
-				new NameWord("テストメールアドレス"),
-				new NameWord("テストコメント"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
+				new EmailWord(TestConsts.TEST_EMAIL_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				TestConsts.TEST_TIME_01
 				);
 		
 		this.service.save(model);
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_INSERT, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				TestConsts.TEST_TIME_01);
 	}
 	
@@ -99,17 +101,17 @@ class InquiryServiceUseTest {
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
 		
 		when(this.jdbcTemp.update(
 				sql, 
-				"テストネーム",
-				"テストメールアドレス",
-				"テストコメント",
+				TestConsts.TEST_NAME_NAME,
+				TestConsts.TEST_EMAIL_NAME,
+				TestConsts.TEST_COMMENT_NAME,
 				2
 				)).thenReturn(WebConsts.ERROR_DB_STATUS);
 		
@@ -127,9 +129,9 @@ class InquiryServiceUseTest {
 			() -> this.service.update(
 				new InquiryModel(
 					new InquiryId(1),
-					new NameWord("テストネーム"),
-					new NameWord("テストメールアドレス"),
-					new NameWord("テストコメント"),
+					new NameWord(TestConsts.TEST_NAME_NAME),
+					new EmailWord(TestConsts.TEST_EMAIL_NAME),
+					new CommentWord(TestConsts.TEST_COMMENT_NAME),
 					TestConsts.TEST_TIME_01
 				)
 			));
@@ -149,9 +151,9 @@ class InquiryServiceUseTest {
 			() -> this.service.update(
 				new InquiryModel(
 					new InquiryId(2),
-					new NameWord("テストネーム"),
-					new NameWord("テストメールアドレス"),
-					new NameWord("テストコメント"),
+					new NameWord(TestConsts.TEST_NAME_NAME),
+					new EmailWord(TestConsts.TEST_EMAIL_NAME),
+					new CommentWord(TestConsts.TEST_COMMENT_NAME),
 					TestConsts.TEST_TIME_01
 				)
 			));
@@ -213,18 +215,18 @@ class InquiryServiceUseTest {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(WebConsts.SQL_ID_NAME,      1);
-		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map);
 		
 		Map<String, Object> map2 = new HashMap<String, Object>();
 		map2.put(WebConsts.SQL_ID_NAME,      2);
-		map2.put(WebConsts.SQL_NAME_NAME,    "テストネーム2");
-		map2.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス2");
-		map2.put(WebConsts.SQL_COMMENT_NAME, "テストコメント2");
+		map2.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME + "2");
+		map2.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME + "2");
+		map2.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + "2");
 		map2.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map2);
@@ -251,15 +253,15 @@ class InquiryServiceUseTest {
 		
 		Assertions.assertEquals(list.size(),             2);
 		
-		Assertions.assertEquals(list.get(0).getName(),   "テストネーム");
-		Assertions.assertEquals(list.get(0).getEmail(),  "テストメールアドレス");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント");
+		Assertions.assertEquals(list.get(0).getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(list.get(0).getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(list.get(0).getComment(), TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		
-		Assertions.assertEquals(list.get(1).getName(),   "テストネーム2");
-		Assertions.assertEquals(list.get(1).getEmail(),  "テストメールアドレス2");
-		Assertions.assertEquals(list.get(1).getComment(), "テストコメント2");
+		Assertions.assertEquals(list.get(1).getName(),    TestConsts.TEST_NAME_NAME    + "2");
+		Assertions.assertEquals(list.get(1).getEmail(),   TestConsts.TEST_EMAIL_NAME   + "2");
+		Assertions.assertEquals(list.get(1).getComment(), TestConsts.TEST_COMMENT_NAME + "2");
 		Assertions.assertEquals(list.get(1).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		
@@ -277,15 +279,15 @@ class InquiryServiceUseTest {
 		
 		Assertions.assertEquals(list.size(),             2);
 		
-		Assertions.assertEquals(list.get(0).getName(),   "テストネーム2");
-		Assertions.assertEquals(list.get(0).getEmail(),  "テストメールアドレス2");
-		Assertions.assertEquals(list.get(0).getComment(), "テストコメント2");
+		Assertions.assertEquals(list.get(0).getName(),    TestConsts.TEST_NAME_NAME    + "2");
+		Assertions.assertEquals(list.get(0).getEmail(),   TestConsts.TEST_EMAIL_NAME   + "2");
+		Assertions.assertEquals(list.get(0).getComment(), TestConsts.TEST_COMMENT_NAME + "2");
 		Assertions.assertEquals(list.get(0).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		
-		Assertions.assertEquals(list.get(1).getName(),   "テストネーム");
-		Assertions.assertEquals(list.get(1).getEmail(),  "テストメールアドレス");
-		Assertions.assertEquals(list.get(1).getComment(), "テストコメント");
+		Assertions.assertEquals(list.get(1).getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(list.get(1).getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(list.get(1).getComment(), TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(list.get(1).getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		
@@ -345,9 +347,9 @@ class InquiryServiceUseTest {
 		
 		Map<String, Object> map01 = new HashMap<String, Object>();
 		map01.put(WebConsts.SQL_ID_NAME,      1);
-		map01.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map01.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map01.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map01.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME);
+		map01.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME);
+		map01.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME);
 		map01.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map01.put(WebConsts.SQL_REPLY_ID_NAME,      1);
@@ -360,9 +362,9 @@ class InquiryServiceUseTest {
 		
 		Map<String, Object> map11 = new HashMap<String, Object>();
 		map11.put(WebConsts.SQL_ID_NAME,      1);
-		map11.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map11.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map11.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map11.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME);
+		map11.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME);
+		map11.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME);
 		map11.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		map11.put(WebConsts.SQL_REPLY_ID_NAME,      2);
@@ -375,9 +377,9 @@ class InquiryServiceUseTest {
 		
 		Map<String, Object> map21 = new HashMap<String, Object>();
 		map21.put(WebConsts.SQL_ID_NAME,      2);
-		map21.put(WebConsts.SQL_NAME_NAME,    "テストネーム2");
-		map21.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス2");
-		map21.put(WebConsts.SQL_COMMENT_NAME, "テストコメント2");
+		map21.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME    + "2");
+		map21.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME   + "2");
+		map21.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME + "2");
 		map21.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		mapList.add(map21);
@@ -409,9 +411,9 @@ class InquiryServiceUseTest {
 		
 		// model1
 		Assertions.assertEquals(model1.getId(),      1);
-		Assertions.assertEquals(model1.getName(),    "テストネーム");
-		Assertions.assertEquals(model1.getEmail(),   "テストメールアドレス");
-		Assertions.assertEquals(model1.getComment(), "テストコメント");
+		Assertions.assertEquals(model1.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model1.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model1.getComment(), TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model1.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel1.size(),  2);
@@ -436,9 +438,9 @@ class InquiryServiceUseTest {
 		
 		// model1
 		Assertions.assertEquals(model2.getId(),      2);
-		Assertions.assertEquals(model2.getName(),    "テストネーム2");
-		Assertions.assertEquals(model2.getEmail(),   "テストメールアドレス2");
-		Assertions.assertEquals(model2.getComment(), "テストコメント2");
+		Assertions.assertEquals(model2.getName(),    TestConsts.TEST_NAME_NAME    + "2");
+		Assertions.assertEquals(model2.getEmail(),   TestConsts.TEST_EMAIL_NAME   + "2");
+		Assertions.assertEquals(model2.getComment(), TestConsts.TEST_COMMENT_NAME + "2");
 		Assertions.assertEquals(model2.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(replyModel2.size(),  0);
@@ -460,9 +462,9 @@ class InquiryServiceUseTest {
 				+ "WHERE id = ?";
 		
 		map.put(WebConsts.SQL_ID_NAME,      1);
-		map.put(WebConsts.SQL_NAME_NAME,    "テストネーム");
-		map.put(WebConsts.SQL_EMAIL_NAME,   "テストメールアドレス");
-		map.put(WebConsts.SQL_COMMENT_NAME, "テストコメント");
+		map.put(WebConsts.SQL_NAME_NAME,    TestConsts.TEST_NAME_NAME);
+		map.put(WebConsts.SQL_EMAIL_NAME,   TestConsts.TEST_EMAIL_NAME);
+		map.put(WebConsts.SQL_COMMENT_NAME, TestConsts.TEST_COMMENT_NAME);
 		map.put(WebConsts.SQL_CREATED_NAME, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
 		
@@ -485,9 +487,9 @@ class InquiryServiceUseTest {
 		
 		Assertions.assertNotNull(model);
 		Assertions.assertEquals(model.getId(),      1);
-		Assertions.assertEquals(model.getName(),    "テストネーム");
-		Assertions.assertEquals(model.getEmail(),   "テストメールアドレス");
-		Assertions.assertEquals(model.getComment(), "テストコメント");
+		Assertions.assertEquals(model.getName(),    TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getEmail(),   TestConsts.TEST_EMAIL_NAME);
+		Assertions.assertEquals(model.getComment(), TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getCreated().toString(), 
 				TestConsts.TEST_TIME_01.toString());
 	}

@@ -14,6 +14,7 @@ import com.example.demo.app.entity.SurveyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.SurveyId;
 import com.example.demo.common.number.NormalNumber;
+import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
@@ -376,7 +377,7 @@ public class SurveyDaoSql implements SurveyDao {
 				new NormalNumber((int)result.get(WebConsts.SQL_PROFESSION_NAME)),
 				new NormalNumber((int)result.get(WebConsts.SQL_ISMEN_NAME)),
 				new NormalNumber((int)result.get(WebConsts.SQL_SATISFACTION_NAME)),
-				new NameWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
+				new CommentWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
 				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME)).toLocalDateTime()
 				);
 		
