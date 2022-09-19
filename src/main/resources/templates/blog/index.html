@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【ブログメイン.html】
+-->
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,6 +58,7 @@
 			</form>
 		 	<!-- 日付 -->
 		 	<div class="lefter-clear text-right blog-date" th:text="${blogmain.updated}"></div>
+		 	<!-- いいね欄 / タグ欄 -->
 		 	<div class="cnt_tag">
 		 		<!-- いいね数 -->
 		 		<form class="lefter" th:id="thanksBtn + ${blogmain.id}" th:action="@{/blog/thanks}" method="post">
@@ -79,10 +83,12 @@
 			</form>
 		 	
 			<!-- 境界線 -->
+			<!-- -------------------------------------------------------------------------------------- -->
 			<div class="lefter-clear blog-lines"></div>
 			
 			<!-- 返信枠 -->
 			<p class="reply-title-layout">返信内容 : </p>
+			<!-- 返信リスト -->
 			<div  th:each="blogreply : ${blogmain.replyList}" th:id="${blogreply.id}">
 				<div class="replylayout rounded" th:if="${blogmain.id} == ${blogreply.blogId}">
 					<!-- 返信者名 -->

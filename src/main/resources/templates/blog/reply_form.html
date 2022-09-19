@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【ブログ返信フォーム.html】
+-->
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,6 +41,7 @@
 		 	<h2 class="text-left lefter blog-title" th:text="'●  ' + *{title}"></h2>
 		 	<!-- 日付 -->
 		 	<div class="lefter-clear text-right blog-date" th:text="*{updated}"></div>
+		 	<!-- いいね欄 / タグ欄 -->
 		 	<div class="cnt_tag">
 		 		<!-- いいね数 -->
 		 		<div class="lefter thanks btn btn-primary btn-sm" th:text="*{thanksCnt} + '　いいね'" ></div>
@@ -55,18 +59,25 @@
 		
 		<!-- 登録フォーム -->
 	 	<form method="post" action="#" th:action="@{/blog/reply_confirm}" th:object="${replyForm}">
+	 		<!-- 名前 -->
 	 		<div class="form-group">
 	    		<label for="name">お名前</label>
 	    		<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
 	  		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+			
+			<!-- コメント -->
 			<div class="form-group">
 	 			<label for="comment">コメント</label>
 	 			<textarea name="comment" class="form-control" id="detail" rows="3"  th:value="*{comment}"  th:text="*{comment}"></textarea>
 	 		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
+	 		
 	 		<input type="hidden" name="id" th:value="${blogMain.id}">
+			
+			<!-- 一覧に戻る -->
 			<a class="btn btn-primary" href="#" role="button" th:href="@{/blog/}">一覧へ戻る</a>
+			<!-- 確認する -->
 			<button type="submit" class="btn btn-primary">確認する</button>
 	 	</form>	
 	 </main>

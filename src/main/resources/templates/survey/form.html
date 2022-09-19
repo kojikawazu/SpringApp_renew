@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【調査フォーム.html】
+-->
 <head>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title th:text="${title}">Inquiry home.</title>
 	
-	    <!-- Bootstrap core CSS -->
+	<!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
-
-    <!-- Custom styles for this template -->
-    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
-    
-    
-    <!--  Jquery core  -->
-    <script th:src="@{/js/jquery-slim.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/bootbox.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/survey/survey_form.js}"></script>
-    
+	
+	<!-- Custom styles for this template -->
+	<link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+	
+	<!--  Jquery core  -->
+	<script th:src="@{/js/jquery-slim.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/bootbox.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/survey/survey_form.js}"></script>
 </head>
 <body>
 	<!-- ナビゲーションバー -->
@@ -39,11 +40,10 @@
 	 	
 	 	<!-- 登録フォーム -->
 	 	<form method="post" action="#" th:action="@{/survey/confirm}" th:object="${surveyForm}">
-	 	
 	 		<!-- 名前 -->
 	 		<div class="form-group">
-	    		<label for="name">お名前</label>
-	    		<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
+				<label for="name">お名前</label>
+				<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
 	  		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 	 		
@@ -113,7 +113,6 @@
 			<a class="btn btn-primary" href="#" role="button" th:href="@{/survey/}">一覧へ戻る</a>
 			<button type="submit" class="btn btn-primary">確認する</button>
 	 	</form>
-	 	 
 	 </main>
 	 
 	 <!-- フッター -->

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--
+	【ホーム.html】
+-->
 <head>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title th:text="${title}">Practice Home</title>
 	
-	    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
-
-    <!-- Custom styles for this template -->
-    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
-    
-    <!-- CSS core -->
-    <link href="home.css"  th:href="@{/css/home/home_index.css}" rel="stylesheet" crossorigin="anonymous">
-    
-    <!--  Jquery core  -->
-    <script th:src="@{/js/jquery-slim.min.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+	<!-- Bootstrap core CSS -->
+	<link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
+	
+	<!-- Custom styles for this template -->
+	<link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet" crossorigin="anonymous">
+	
+	<!-- CSS core -->
+	<link href="home.css"  th:href="@{/css/home/home_index.css}" rel="stylesheet" crossorigin="anonymous">
+   	 
+	<!--  Jquery core  -->
+	<script th:src="@{/js/jquery-slim.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body>
 	<!-- ナビゲーションバー -->
@@ -32,21 +35,23 @@
 	 		<h1 th:text="${title}">Practice Home</h1><br>
 	 		<p class="lead" id="cont" th:text="${cont}">context</p><br>
 	 		
-	 		
-	 		
 	 		<div class="row">
+	 			<!-- 自己紹介 -->
 		 		<div class="col">
 		 			<h3 class="lead">自己紹介</h3>
 		 			<a href="#" th:href="@{/intro/}"><img th:src="@{/images/intro.png}" class="rounded-circle" width="50%" height="50%"></a>
 		 		</div>
+		 		<!-- ブログ -->
 		 		<div class="col">
 		 			<h3 class="lead">ブログ</h3>
 		 			<a href="#" th:href="@{/blog/}"><img th:src="@{/images/blog.png}" class="rounded-circle" width="50%" height="50%"></a>
 		 		</div>
+		 		<!-- アンケート -->
 		 		<div class="col">
 		 			<h3 class="lead">アンケート</h3>
 		 			<a href="#" th:href="@{/survey/}"><img th:src="@{/images/survey.png}" class="rounded-circle" width="50%" height="50%"></a>
 		 		</div>
+		 		<!-- お問い合わせ -->
 		 		<div class="col">
 		 			<h3 class="lead">お問い合わせ</h3>
 		 			<a href="#" th:href="@{/inquiry/}"><img th:src="@{/images/inquiry.png}" class="rounded-circle" width="50%" height="50%"></a>
@@ -54,6 +59,5 @@
 		 	</div>
 	 	</div>
 	 </main>
-
 </body>
 </html>

@@ -8,6 +8,7 @@
 	margin-bottom: 10px;
 }
 
+/** 全てボタン **/
 .all-button{
 	margin-bottom: 5px;
 }
@@ -16,6 +17,7 @@
 	margin-right: 15px;
 }
 
+/** 性別ボタン **/
 .sx-button{
 	margin-bottom: 5px;
 }
@@ -24,10 +26,12 @@
 	margin-right: 15px;
 }
 
+/** 職業ボタン **/
 .prof-button{
 	margin-bottom: 5px;
 }
 
+/** 年齢ボタン **/
 .age-button{
 	margin-bottom: 60px;
 }
