@@ -3,6 +3,7 @@ package com.example.demo.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.common.list.ExperienceList;
 import com.example.demo.common.list.IntroList;
 import com.example.demo.common.list.SkillList;
 import com.example.demo.common.word.IntroWord;
@@ -15,37 +16,37 @@ import com.example.demo.common.word.IntroWord;
 public class IntroJSONModel {
 	
 	/** 名前リスト */
-	private IntroList nameList;
+	private IntroList 			nameList;
 	
 	/** タイトルリスト */
-	private IntroList titleList;
+	private IntroList 			titleList;
 	
 	/** 自己紹介文字列 */
-	private IntroWord intro;
+	private IntroWord 			intro;
 	
 	/** 経験リスト */
-	private IntroList experienceList;
+	private ExperienceList 		experienceList;
 	
 	/** 今後の計画文字列 */
-	private IntroWord after;
+	private IntroWord 			after;
 	
 	/** スキル1リスト */
-	private SkillList skill1List;
+	private SkillList 			skill1List;
 	/** スキル2リスト */
-	private SkillList skill2List;
+	private SkillList 			skill2List;
 	/** スキル3リスト */
-	private SkillList skill3List;
+	private SkillList 			skill3List;
 	/** スキル4リスト */
-	private SkillList skill4List;
+	private SkillList 			skill4List;
 	
 	/** URL文字列 */
-	private IntroWord url;
+	private IntroWord			url;
 	
 	/** 趣味リスト */
-	private IntroList hobbyList;
+	private IntroList 			hobbyList;
 	
 	/** 意気込み文字列 */
-	private IntroWord word;
+	private IntroWord 			word;
 
 	/**
 	 * コンストラクタ
@@ -63,18 +64,18 @@ public class IntroJSONModel {
 	 * @param word
 	 */
 	public IntroJSONModel(
-			IntroList nameList,
-			IntroList titleList,
-			IntroWord intro,
-			IntroList experienceList,
-			IntroWord after,
-			SkillList skill1List,
-			SkillList skill2List,
-			SkillList skill3List,
-			SkillList skill4List,
-			IntroWord url,
-			IntroList hobbyList,
-			IntroWord word
+			IntroList 		nameList,
+			IntroList 		titleList,
+			IntroWord 		intro,
+			ExperienceList 	experienceList,
+			IntroWord 		after,
+			SkillList 		skill1List,
+			SkillList 		skill2List,
+			SkillList 		skill3List,
+			SkillList 		skill4List,
+			IntroWord 		url,
+			IntroList 		hobbyList,
+			IntroWord 		word
 			) {
 		
 		this.nameList = (nameList == null ?
@@ -90,7 +91,7 @@ public class IntroJSONModel {
 				intro);
 		
 		this.experienceList = (experienceList == null ?
-				new IntroList(new ArrayList<>()) :
+				new ExperienceList() :
 				experienceList);
 		
 		this.after = (after == null ?
@@ -137,7 +138,7 @@ public class IntroJSONModel {
 			this.nameList       = new IntroList(new ArrayList<>());
 			this.titleList      = new IntroList(new ArrayList<>());
 			this.intro          = new IntroWord("");
-			this.experienceList = new IntroList(new ArrayList<>());
+			this.experienceList = new ExperienceList();
 			this.after          = new IntroWord("");
 			this.skill1List     = new SkillList(new ArrayList<>());
 			this.skill2List     = new SkillList(new ArrayList<>());
@@ -151,7 +152,7 @@ public class IntroJSONModel {
 			this.nameList       = new IntroList(model.getNameList());
 			this.titleList      = new IntroList(model.getTitleList());
 			this.intro          = new IntroWord(model.getIntro());
-			this.experienceList = new IntroList(model.getExperienceList());
+			this.experienceList = new ExperienceList(model.getExperienceList());
 			this.after          = new IntroWord(model.getAfter());
 			this.skill1List     = new SkillList(model.getSkill1List());
 			this.skill2List     = new SkillList(model.getSkill2List());
@@ -190,13 +191,13 @@ public class IntroJSONModel {
 		this.intro = new IntroWord(intro);
 	}
 
-	public List<String> getExperienceList() {
+	public List<ExperienceModel> getExperienceList() {
 		return this.experienceList.getList();
 	}
 
-	protected void setExperienceList(List<String> experienceList) {
+	protected void setExperienceList(List<ExperienceModel> experienceList) {
 		if(experienceList == null) return ;
-		this.experienceList = new IntroList(experienceList);
+		this.experienceList = new ExperienceList(experienceList);
 	}
 
 	public String getAfter() {

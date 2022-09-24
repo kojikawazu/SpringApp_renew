@@ -1,4 +1,42 @@
 {
+	"header": [
+		{
+			"name": "name"
+		},
+		{
+			"name": "title"
+		},
+		{
+			"name": "intro"
+		},
+		{
+			"name": "experience"
+		},
+		{
+			"name": "after"
+		},
+		{
+			"name": "skill_1"
+		},
+		{
+			"name": "skill_2"
+		},
+		{
+			"name": "skill_3"
+		},
+		{
+			"name": "skill_4"
+		},
+		{
+			"name": "url"
+		},
+		{
+			"name": "hobby"
+		},
+		{
+			"name": "word"
+		}
+	],
 	"name": [
 		{
 			"name": "川津宏司"
@@ -46,13 +84,24 @@
 	],
 	"experience": [
 		{
-			"name": "BBIQケーブルの配線経路管理システムの運用、オペレーター作業"
+			"name"  : "BBIQケーブルの配線経路管理システム",
+			"before": "2015/4",
+			"after" : "2018/8"
 		},
 		{
-			"name": "電力監視システムの開発、改修作業"
+			"name": "電力監視システムの開発、機能改修",
+			"before": "2019/1",
+			"after" : "2020/9"
 		},
 		{
-			"name": "電力復旧状況システムの開発"
+			"name": "新CIサーバのリプレイス開発",
+			"before": "2021/1",
+			"after" : "2021/4"
+		},
+		{
+			"name": "PCライン生産制御システムの機能改善",
+			"before": "2021/5",
+			"after" : "now"
 		}
 	],
 	"after": [

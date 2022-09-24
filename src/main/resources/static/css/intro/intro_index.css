@@ -45,16 +45,14 @@ h3{
 	font-size: 20px;
 }
 
-.div-after:before {
-  content: '●';
-  color: white;
-  margin-right: 8px;
-}
-
-.exper-after{
+.exper-after {
 	position: relative;
   	padding-left: 25px;
 	margin-bottom: 20px;
+	display:flex;
+}
+.exper-after div {
+	padding-right: 10px;
 }
 
 .exper-after:before {
@@ -76,6 +74,12 @@ h3{
   left: 10px;
   width: 100%;
   border-bottom: solid 3px rgb(119, 195, 223);
+}
+
+.div-after:before {
+  content: '●';
+  color: white;
+  margin-right: 8px;
 }
 
 .div-after{
