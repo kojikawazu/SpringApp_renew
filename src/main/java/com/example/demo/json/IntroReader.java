@@ -2,13 +2,22 @@ package com.example.demo.json;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.text.DateFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.common.entity.ExperienceModel;
 import com.example.demo.common.entity.IntroJSONModel;
+import com.example.demo.common.list.ExperienceList;
 import com.example.demo.common.list.IntroList;
 import com.example.demo.common.list.SkillList;
 import com.example.demo.common.word.IntroWord;
@@ -23,34 +32,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class IntroReader implements IntroJsonReader {
 	
+	/** タイトル番号 */
+	private static enum ATTRIBUTE_LIST_ENUM {
+		A_NAME, 
+		A_TITLE,
+		A_INTRO,
+		A_EXPERIENCE,
+		A_AFTER, 
+		A_SKILL_LANGUAGE, 
+		A_SKILL_LIBRARY,
+		A_SKILL_FRAMEWORK,
+		A_SKILL_OTHER,
+		A_URL,
+		A_HOBBY,
+		A_WORD
+	};
 	
-	private static final String JSON_SECTION_KEYWORD    = "name";
+	/** JSONキーワード */
+	private static final String JSON_SECTION_KEYWORD		= "name";
 	
-	private static final String JSON_SECTION_SKILL      = "skill_";
+	/** JSONキーワード(header) */
+	private static final String JSON_SECTION_HEADER			= "header";
 	
-	/** 名前 */
-	private static final String JSON_SECTION_NAME       = "name";
+	/** JSONキーワード(before) */
+	private static final String JSON_SECTION_BEFORE			= "before";
 	
-	/** タイトル */
-	private static final String JSON_SECTION_TITLE      = "title";
+	/** JSONキーワード(after) */
+	private static final String JSON_SECTION_AFTER			= "after";
 	
-	/** 自己紹介 */
-	private static final String JSON_SECTION_INTRO      = "intro";
-	
-	/** 経験 */
-	private static final String JSON_SECTION_EXPERIENCE = "experience";
-	
-	/** 今後やりたいこと */
-	private static final String JSON_SECTION_AFTER      = "after";
-	
-	/** URL */
-	private static final String JSON_SECTION_URL        = "url";
-	
-	/** 趣味 */
-	private static final String JSON_SECTION_HOBBY      = "hobby";
-
-	/** 最後に */
-	private static final String JSON_SECTION_WORD       = "word";
+	/** JSONデータ(now) */
+	private static final String JSON_VALUE_NOW				= "now";
 	
 	/**
 	 * コンストラクタ
@@ -71,32 +82,46 @@ public class IntroReader implements IntroJsonReader {
 		try {
 			ObjectMapper mapper   = new ObjectMapper();
 			JsonNode rootJsonNode = mapper.readTree(path.toFile());
-			int skill_number      = 1;
+		
+			/** ヘッダー */
+			IntroList 		headerList			= this.readDataList(rootJsonNode, JSON_SECTION_HEADER);
+			List<String> 	headerStringList	= headerList.getList();
 			
 			/** 名前 */
-			IntroList nameList        = this.readDataList(rootJsonNode,  JSON_SECTION_NAME);
-			// タイトル
-			IntroList titleList       = this.readDataList(rootJsonNode, JSON_SECTION_TITLE);
-			// 紹介文
-			IntroWord intro           = this.readData(rootJsonNode,     JSON_SECTION_INTRO);
-			// 経験
-			IntroList experienceList  = this.readDataList(rootJsonNode, JSON_SECTION_EXPERIENCE);
-			// 今後やりたいこと
-			IntroWord after           = this.readData(rootJsonNode,     JSON_SECTION_AFTER);
-			// スキル1
-			SkillList skill1List      = this.readSkill(rootJsonNode, skill_number);
-			// スキル2
-			SkillList skill2List      = this.readSkill(rootJsonNode, skill_number + 1);
-			// スキル3
-			SkillList skill3List      = this.readSkill(rootJsonNode, skill_number + 2);
-			// スキル4
-			SkillList skill4List      = this.readSkill(rootJsonNode, skill_number + 3);
-			// URL
-			IntroWord url             = this.readData(rootJsonNode,     JSON_SECTION_URL);
-			// 趣味
-			IntroList hobbyList       = this.readDataList(rootJsonNode, JSON_SECTION_HOBBY);
-			// 最後に
-			IntroWord word            = this.readData(rootJsonNode,     JSON_SECTION_WORD);
+			IntroList nameList					= this.readDataList(rootJsonNode,  
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_NAME.ordinal()));
+			/** タイトル */
+			IntroList titleList					= this.readDataList(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_TITLE.ordinal()));
+			/** 紹介文 */
+			IntroWord intro						= this.readData(rootJsonNode,
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()));
+			/** 経験 */
+			ExperienceList experienceList  		= this.readExperienceList(rootJsonNode, headerList);
+			/** 今後やりたいこと */
+			IntroWord after						= this.readData(rootJsonNode,
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()));
+			/** スキル1 */
+			SkillList skill1List				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal()));
+			/** スキル2 */
+			SkillList skill2List				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal()));
+			/** スキル3 */
+			SkillList skill3List				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal()));
+			/** スキル4 */
+			SkillList skill4List				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal()));
+			/** URL */
+			IntroWord url						= this.readData(rootJsonNode,
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_URL.ordinal()));
+			/** 趣味 */
+			IntroList hobbyList					= this.readDataList(rootJsonNode,
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_HOBBY.ordinal()));
+			/** 最後に */
+			IntroWord word						= this.readData(rootJsonNode,
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_WORD.ordinal()));
 			
 			model = new IntroJSONModel(
 					// 名前
@@ -139,7 +164,7 @@ public class IntroReader implements IntroJsonReader {
 	 * @return データ(文字列)
 	 */
 	private IntroWord readData(JsonNode rootJsonNode, String word) {
-		return (word == null || word == "" ? 
+		return (rootJsonNode == null || word == null || word == "" ? 
 					new IntroWord(null) :
 					new IntroWord(rootJsonNode.get(word).get(0).get(JSON_SECTION_KEYWORD).asText())
 				);
@@ -151,7 +176,7 @@ public class IntroReader implements IntroJsonReader {
 	 * @return データリスト
 	 */
 	private IntroList readDataList(JsonNode rootJsonNode, String word) {
-		if(word == null || word == "")	return new IntroList(null);
+		if(rootJsonNode == null || word == null || word == "")	return new IntroList(null);
 		
 		List<String> dataList = new ArrayList<String>();
 		for(JsonNode node : rootJsonNode.get(word)) {
@@ -163,15 +188,50 @@ public class IntroReader implements IntroJsonReader {
 	}
 	
 	/**
+	 * データリストの読み込み
+	 * @param rootJsonNode
+	 * @param introList		ヘッダーリスト
+	 * @return 				経験リスト
+	 */
+	private ExperienceList readExperienceList(JsonNode rootJsonNode, IntroList headerList) {
+		if(rootJsonNode == null || headerList == null || headerList.getList().isEmpty())	return new ExperienceList(null);
+		
+		ExperienceList 			list 				= new ExperienceList();
+		List<ExperienceModel> 	experList 			= list.getList();
+		List<String> 			headerStringList	= headerList.getList();
+		String					experKeyword		= headerStringList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal());
+		
+		for(JsonNode node : rootJsonNode.get(experKeyword)) {
+			String exper 			= node.get(JSON_SECTION_KEYWORD).asText();
+			String start 			= node.get(JSON_SECTION_BEFORE).asText();
+			String end 				= node.get(JSON_SECTION_AFTER).asText();
+			
+			// String型 → LocalDateTime型へ変換
+			LocalDateTime 		startLocalDateTime 	= this.changeLocalDateTime(start);
+			LocalDateTime 		endLocalDateTime 	= this.changeLocalDateTime(end);
+			
+			// モデル生成
+			ExperienceModel model = new ExperienceModel(
+					exper,
+					startLocalDateTime,
+					endLocalDateTime);
+			// リスト追加
+			experList.add(model);
+		}
+		
+		return list;
+	}
+	
+	/**
 	 * スキルデータの読み込み
 	 * @param rootJsonNode
 	 * @return スキルデータリスト
 	 */
-	private SkillList readSkill(JsonNode rootJsonNode, int dataNumber) {
-		if (dataNumber <= 0 || dataNumber > 4) return new SkillList(null);
+	private SkillList readSkill(JsonNode rootJsonNode, String keyword) {
+		if(rootJsonNode == null || keyword == null)	return new SkillList(null);
 		
 		List<String> skillList = new ArrayList<String>();
-		for(JsonNode node : rootJsonNode.get(JSON_SECTION_SKILL + dataNumber)) {
+		for(JsonNode node : rootJsonNode.get(keyword)) {
 			String skill = node.get(JSON_SECTION_KEYWORD).asText();
 			skillList.add(skill);
 		}
@@ -179,4 +239,33 @@ public class IntroReader implements IntroJsonReader {
 		return new SkillList(skillList);
 	}
 
+	/**
+	 * String型 → LocalDateTime型へ変換
+	 * @param  timeString
+	 * @return LocalDateTime型の時間
+	 */
+	private LocalDateTime changeLocalDateTime(String timeString) {
+		DateTimeFormatter 	formatPatternA 	= DateTimeFormatter.ofPattern("uuuu/M/dd");
+		DateTimeFormatter 	formatPatternB 	= DateTimeFormatter.ofPattern("uuuu/MM/dd");
+		String 				dayFormatString = "/01";
+		int 				timeLength 		= timeString.length();
+		int 				lengthStandard  = 6;
+		LocalTime			timeFormat		= LocalTime.of(0, 0);
+		
+		// nowは現在の日付を返す
+		if(timeString.equals(JSON_VALUE_NOW)) {
+			return LocalDateTime.now();
+		}
+		
+		// uuuu/MM + /01
+		timeString = timeString + dayFormatString;
+		// uuuu/MM/01 or uuuu/M/01
+		LocalDate localDate = LocalDate.parse(timeString, 
+					(timeLength == lengthStandard ? 
+					formatPatternA : formatPatternB));
+		// uuuu/MM/01 mm:ss
+		LocalDateTime localDateTime = LocalDateTime.of(localDate, timeFormat);
+		
+		return localDateTime;
+	}
 }

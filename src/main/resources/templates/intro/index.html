@@ -30,8 +30,8 @@
 		
 		<div class="starter-template">
 		    <!-- タイトル -->
-	 		<h1 th:text="${title}">example</h1><br>
-	 		<h2 class="lead" th:text="${cont}">context</h2>
+	 		<h1 th:text="${title}"></h1><br>
+	 		<h2 class="lead" th:text="${cont}"></h2>
 	 		
 	 		<!-- 紹介文 -->
 	 		<h3 th:text="${introTitle}"></h3>
@@ -39,8 +39,14 @@
 	 		
 	 		<!-- 経験 -->
 	 		<h3 th:text="${experTitle}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="exper-after" th:each="exper : ${experList}" th:text="${exper}"></div>
+	 		<div class="h3-after" th:each="exper, experStat : ${experList}">
+ 				<div class="exper-after">
+ 					<div th:text="${#temporals.format(exper.startTime, 'yyyy年MM月dd日')}"></div>
+	 				<div th:text="～"></div>
+ 					<div th:text="${#temporals.format(exper.endTime, 'yyyy年MM月dd日')}"></div>
+ 					<div th:text="："></div>
+	 				<div th:text="${exper.experience}"></div>
+ 				</div>
 	 		</div>
 	 		
 	 		<!-- 今後やりたいこと -->

@@ -7,7 +7,7 @@ import java.util.List;
  * @author nanai
  *
  */
-public class SkillList {
+public class SkillList implements ListInterface {
 
 	/** スキルリスト */
 	private List<String> list;
@@ -20,6 +20,7 @@ public class SkillList {
 		this.list = list;
 	}
 	
+	@Override
 	public List<String> getList(){
 		return list;
 	}
