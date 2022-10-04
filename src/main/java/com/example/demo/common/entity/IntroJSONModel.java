@@ -3,6 +3,7 @@ package com.example.demo.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.common.list.AfterList;
 import com.example.demo.common.list.ExperienceList;
 import com.example.demo.common.list.IntroList;
 import com.example.demo.common.list.SkillList;
@@ -28,16 +29,20 @@ public class IntroJSONModel {
 	private ExperienceList 		experienceList;
 	
 	/** 今後の計画文字列 */
-	private IntroWord 			after;
+	private AfterList 			afterList;
 	
-	/** スキル1リスト */
-	private SkillList 			skill1List;
-	/** スキル2リスト */
-	private SkillList 			skill2List;
-	/** スキル3リスト */
-	private SkillList 			skill3List;
-	/** スキル4リスト */
-	private SkillList 			skill4List;
+	/** スキル(言語)リスト */
+	private SkillList 			skillLanguageList;
+	/** スキル(ライブラリ)リスト */
+	private SkillList 			skillLibraryList;
+	/** スキル(フレームワーク)リスト */
+	private SkillList 			skillFrameworkList;
+	/** スキル(OS)リスト */
+	private SkillList 			skillOSList;
+	/** スキル(Tool)リスト */
+	private SkillList 			skillToolList;
+	/** スキル(その他)リスト */
+	private SkillList 			skillOtherList;
 	
 	/** URL文字列 */
 	private IntroWord			url;
@@ -55,10 +60,12 @@ public class IntroJSONModel {
 	 * @param intro
 	 * @param experienceList
 	 * @param after
-	 * @param skill1List
-	 * @param skill2List
-	 * @param skill3List
-	 * @param skill4List
+	 * @param skillLanguageList
+	 * @param skillLibraryList
+	 * @param skillFrameworkList
+	 * @param skillOSList
+	 * @param skillToolList
+	 * @param skillOtherList
 	 * @param url
 	 * @param hobbyList
 	 * @param word
@@ -68,11 +75,13 @@ public class IntroJSONModel {
 			IntroList 		titleList,
 			IntroWord 		intro,
 			ExperienceList 	experienceList,
-			IntroWord 		after,
-			SkillList 		skill1List,
-			SkillList 		skill2List,
-			SkillList 		skill3List,
-			SkillList 		skill4List,
+			AfterList 		afterList,
+			SkillList 		skillLanguageList,
+			SkillList 		skillLibraryList,
+			SkillList 		skillFrameworkList,
+			SkillList		skillOSList,
+			SkillList		skillToolList,
+			SkillList 		skillOtherList,
 			IntroWord 		url,
 			IntroList 		hobbyList,
 			IntroWord 		word
@@ -94,25 +103,33 @@ public class IntroJSONModel {
 				new ExperienceList() :
 				experienceList);
 		
-		this.after = (after == null ?
-				new IntroWord("") :
-				after);
+		this.afterList = (afterList == null ?
+				new AfterList() :
+				afterList);
 		
-		this.skill1List = (skill1List == null ?
+		this.skillLanguageList = (skillLanguageList == null ?
 				new SkillList(new ArrayList<>()) :
-				skill1List);
+				skillLanguageList);
 		
-		this.skill2List = (skill2List == null ?
+		this.skillLibraryList = (skillLibraryList == null ?
 				new SkillList(new ArrayList<>()) :
-				skill2List);
+				skillLibraryList);
 		
-		this.skill3List = (skill3List == null ?
+		this.skillFrameworkList = (skillFrameworkList == null ?
 				new SkillList(new ArrayList<>()) :
-				skill3List);
+				skillFrameworkList);
 		
-		this.skill4List = (skill4List == null ?
+		this.skillOSList = (skillOSList == null ?
 				new SkillList(new ArrayList<>()) :
-				skill4List);
+					skillOSList);
+		
+		this.skillToolList = (skillToolList == null ?
+				new SkillList(new ArrayList<>()) :
+					skillToolList);
+		
+		this.skillOtherList = (skillOtherList == null ?
+				new SkillList(new ArrayList<>()) :
+				skillOtherList);
 		
 		this.url = (url == null ?
 				new IntroWord("") :
@@ -135,35 +152,41 @@ public class IntroJSONModel {
 			IntroJSONModel model
 			) {
 		if(model == null) {
-			this.nameList       = new IntroList(new ArrayList<>());
-			this.titleList      = new IntroList(new ArrayList<>());
-			this.intro          = new IntroWord("");
-			this.experienceList = new ExperienceList();
-			this.after          = new IntroWord("");
-			this.skill1List     = new SkillList(new ArrayList<>());
-			this.skill2List     = new SkillList(new ArrayList<>());
-			this.skill3List     = new SkillList(new ArrayList<>());
-			this.skill4List     = new SkillList(new ArrayList<>());
-			this.url            = new IntroWord("");
-			this.hobbyList      = new IntroList(new ArrayList<>());
-			this.word           = new IntroWord("");
+			this.nameList			= new IntroList(new ArrayList<>());
+			this.titleList			= new IntroList(new ArrayList<>());
+			this.intro				= new IntroWord("");
+			this.experienceList		= new ExperienceList();
+			this.afterList			= new AfterList();
+			this.skillLanguageList	= new SkillList(new ArrayList<>());
+			this.skillLibraryList	= new SkillList(new ArrayList<>());
+			this.skillFrameworkList	= new SkillList(new ArrayList<>());
+			this.skillOSList		= new SkillList(new ArrayList<>());
+			this.skillOtherList		= new SkillList(new ArrayList<>());
+			this.url				= new IntroWord("");
+			this.hobbyList			= new IntroList(new ArrayList<>());
+			this.word				= new IntroWord("");
 			
 		} else {
-			this.nameList       = new IntroList(model.getNameList());
-			this.titleList      = new IntroList(model.getTitleList());
-			this.intro          = new IntroWord(model.getIntro());
-			this.experienceList = new ExperienceList(model.getExperienceList());
-			this.after          = new IntroWord(model.getAfter());
-			this.skill1List     = new SkillList(model.getSkill1List());
-			this.skill2List     = new SkillList(model.getSkill2List());
-			this.skill3List     = new SkillList(model.getSkill3List());
-			this.skill4List     = new SkillList(model.getSkill4List());
-			this.url            = new IntroWord(model.getUrl());
-			this.hobbyList      = new IntroList(model.getHobbyList());
-			this.word           = new IntroWord(model.getWord());
+			this.nameList			= new IntroList(model.getNameList());
+			this.titleList			= new IntroList(model.getTitleList());
+			this.intro				= new IntroWord(model.getIntro());
+			this.experienceList		= new ExperienceList(model.getExperienceList());
+			this.afterList			= new AfterList(model.getAfter());
+			this.skillLanguageList	= new SkillList(model.getSkillLanguageList());
+			this.skillLibraryList	= new SkillList(model.getSkillLibraryList());
+			this.skillFrameworkList	= new SkillList(model.getSkillFrameworkList());
+			this.skillOSList		= new SkillList(model.getSkillOSList());
+			this.skillOtherList		= new SkillList(model.getSkillOtherList());
+			this.url				= new IntroWord(model.getUrl());
+			this.hobbyList			= new IntroList(model.getHobbyList());
+			this.word				= new IntroWord(model.getWord());
 		}
 	}
 	
+	/** 
+	 * 名前リスト取得
+	 * @return List<String>  
+	 */
 	public List<String> getNameList() {
 		return this.nameList.getList();
 	}
@@ -173,6 +196,10 @@ public class IntroJSONModel {
 		this.nameList = new IntroList(nameList);
 	}
 	
+	/** 
+	 * タイトルリスト取得
+	 * @return List<String>  
+	 */
 	public List<String> getTitleList() {
 		return this.titleList.getList();
 	}
@@ -182,6 +209,10 @@ public class IntroJSONModel {
 		this.titleList = new IntroList(titleList);
 	}
 
+	/** 
+	 * 自己紹介取得
+	 * @return String  
+	 */
 	public String getIntro() {
 		return this.intro.getWord();
 	}
@@ -191,6 +222,10 @@ public class IntroJSONModel {
 		this.intro = new IntroWord(intro);
 	}
 
+	/** 
+	 * 経験リスト取得
+	 * @return List<ExperienceModel>  
+	 */
 	public List<ExperienceModel> getExperienceList() {
 		return this.experienceList.getList();
 	}
@@ -200,51 +235,101 @@ public class IntroJSONModel {
 		this.experienceList = new ExperienceList(experienceList);
 	}
 
-	public String getAfter() {
-		return this.after.getWord();
+	/** 
+	 * 今後やりたいことリスト取得
+	 * @return List<String>  
+	 */
+	public List<String> getAfter() {
+		return this.afterList.getList();
 	}
 
-	protected void setAfter(String after) {
-		if(after == null)	return ;
-		this.after = new IntroWord(after);
+	protected void setAfterList(List<String> afterList) {
+		if(afterList == null)	return ;
+		this.afterList = new AfterList(afterList);
 	}
 
-	public List<String> getSkill1List() {
-		return this.skill1List.getList();
+	/** 
+	 * スキル(言語)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillLanguageList() {
+		return this.skillLanguageList.getList();
 	}
 
-	protected void setSkill1List(List<String> skill1List) {
-		if(skill1List == null)	return ;
-		this.skill1List = new SkillList(skill1List);
+	protected void setSkillLanguageList(List<String> skillLanguageList) {
+		if(skillLanguageList == null)	return ;
+		this.skillLanguageList = new SkillList(skillLanguageList);
 	}
 
-	public List<String> getSkill2List() {
-		return this.skill2List.getList();
+	/** 
+	 * スキル(ライブラリ)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillLibraryList() {
+		return this.skillLibraryList.getList();
 	}
 
-	protected void setSkill2List(List<String> skill2List) {
-		if(skill2List == null)	return ;
-		this.skill2List = new SkillList(skill2List);
+	protected void setSkillLibraryList(List<String> skillLibraryList) {
+		if(skillLibraryList == null)	return ;
+		this.skillLibraryList = new SkillList(skillLibraryList);
 	}
 
-	public List<String> getSkill3List() {
-		return this.skill3List.getList();
+	/** 
+	 * スキル(フレームワーク)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillFrameworkList() {
+		return this.skillFrameworkList.getList();
 	}
 
-	protected void setSkill3List(List<String> skill3List) {
-		if(skill3List == null)	return ;
-		this.skill3List = new SkillList(skill3List);
+	protected void setSkill3List(List<String> skillFrameworkList) {
+		if(skillFrameworkList == null)	return ;
+		this.skillFrameworkList = new SkillList(skillFrameworkList);
 	}
 
-	public List<String> getSkill4List() {
-		return this.skill4List.getList();
+	/** 
+	 * スキル(OS)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillOSList() {
+		return this.skillOSList.getList();
 	}
 
-	protected void setSkill4List(List<String> skill4List) {
-		if(skill4List == null)	return ;
-		this.skill4List = new SkillList(skill4List);
+	protected void setSkillOSList(List<String> skillOSList) {
+		if(skillOSList == null)	return ;
+		this.skillOSList = new SkillList(skillOSList);
 	}
 
+	/** 
+	 * スキル(Tool)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillToolList() {
+		return this.skillToolList.getList();
+	}
+
+	protected void setSkillToolList(List<String> skillToolList) {
+		if(skillToolList == null)	return ;
+		this.skillToolList = new SkillList(skillToolList);
+	}
+
+	/** 
+	 * スキル(その他)取得
+	 * @return List<String>  
+	 */
+	public List<String> getSkillOtherList() {
+		return this.skillOtherList.getList();
+	}
+
+	protected void setSkillOtherList(List<String> skillOtherList) {
+		if(skillOtherList == null)	return ;
+		this.skillOtherList = new SkillList(skillOtherList);
+	}
+
+	/** 
+	 * URL取得
+	 * @return String  
+	 */
 	public String getUrl() {
 		return this.url.getWord();
 	}
@@ -254,6 +339,10 @@ public class IntroJSONModel {
 		this.url = new IntroWord(url);
 	}
 
+	/** 
+	 * 趣味リスト取得
+	 * @return List<String>  
+	 */
 	public List<String> getHobbyList() {
 		return this.hobbyList.getList();
 	}
@@ -263,6 +352,10 @@ public class IntroJSONModel {
 		this.hobbyList = new IntroList(hobbyList);
 	}
 
+	/** 
+	 * 最後に一言取得
+	 * @return String  
+	 */
 	public String getWord() {
 		return this.word.getWord();
 	}

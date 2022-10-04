@@ -6,20 +6,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.text.DateFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.common.entity.ExperienceModel;
 import com.example.demo.common.entity.IntroJSONModel;
+import com.example.demo.common.list.AfterList;
 import com.example.demo.common.list.ExperienceList;
 import com.example.demo.common.list.IntroList;
 import com.example.demo.common.list.SkillList;
+import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.IntroWord;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +41,8 @@ public class IntroReader implements IntroJsonReader {
 		A_SKILL_LANGUAGE, 
 		A_SKILL_LIBRARY,
 		A_SKILL_FRAMEWORK,
+		A_SKILL_OS,
+		A_SKILL_TOOL,
 		A_SKILL_OTHER,
 		A_URL,
 		A_HOBBY,
@@ -53,15 +54,24 @@ public class IntroReader implements IntroJsonReader {
 	
 	/** JSONキーワード(header) */
 	private static final String JSON_SECTION_HEADER			= "header";
-	
-	/** JSONキーワード(before) */
-	private static final String JSON_SECTION_BEFORE			= "before";
-	
-	/** JSONキーワード(after) */
-	private static final String JSON_SECTION_AFTER			= "after";
-	
+	/** JSONキーワード(start) */
+	private static final String JSON_SECTION_START			= "start";
+	/** JSONキーワード(end) */
+	private static final String JSON_SECTION_END			= "end";
 	/** JSONデータ(now) */
 	private static final String JSON_VALUE_NOW				= "now";
+	/** JSONデータ(memberSum) */
+	private static final String JSON_SECTION_MEMBER_SUM		= "memberSum";
+	/** JSONデータ(position) */
+	private static final String JSON_SECTION_POSITION	 	= "position";
+	/** JSONデータ(overview) */
+	private static final String JSON_SECTION_OVERVIEW 		= "overview";
+	/** JSONデータ(personCharge) */
+	private static final String JSON_SECTION_PERSON_CHARGE 	= "personCharge";
+	/** JSONデータ(workPoint) */
+	private static final String JSON_SECTION_WORK_POINT		= "workPoint";
+	/** JSONデータ(tech) */
+	private static final String JSON_SECTION_TECH 			= "tech";
 	
 	/**
 	 * コンストラクタ
@@ -99,19 +109,24 @@ public class IntroReader implements IntroJsonReader {
 			/** 経験 */
 			ExperienceList experienceList  		= this.readExperienceList(rootJsonNode, headerList);
 			/** 今後やりたいこと */
-			IntroWord after						= this.readData(rootJsonNode,
-													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()));
-			/** スキル1 */
-			SkillList skill1List				= this.readSkill(rootJsonNode, 
+			AfterList afterList					= this.readAfterList(rootJsonNode, headerList);
+			/** スキル(言語) */
+			SkillList skillLanguageList			= this.readSkill(rootJsonNode, 
 													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal()));
-			/** スキル2 */
-			SkillList skill2List				= this.readSkill(rootJsonNode, 
+			/** スキル(ライブラリ) */
+			SkillList skillLibraryList			= this.readSkill(rootJsonNode, 
 													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal()));
-			/** スキル3 */
-			SkillList skill3List				= this.readSkill(rootJsonNode, 
+			/** スキル(フレームワーク) */
+			SkillList skillFrameworkList		= this.readSkill(rootJsonNode, 
 													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal()));
-			/** スキル4 */
-			SkillList skill4List				= this.readSkill(rootJsonNode, 
+			/** スキル(OS) */
+			SkillList skillOSList				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_OS.ordinal()));
+			/** スキル(Tool) */
+			SkillList skillToolList				= this.readSkill(rootJsonNode, 
+													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_TOOL.ordinal()));
+			/** スキル(その他) */
+			SkillList skillOtherList			= this.readSkill(rootJsonNode, 
 													headerStringList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal()));
 			/** URL */
 			IntroWord url						= this.readData(rootJsonNode,
@@ -133,15 +148,19 @@ public class IntroReader implements IntroJsonReader {
 					// 経験
 					experienceList,
 					// 今後やりたいこと
-					after,
-					// スキル1
-					skill1List,
-					// スキル2
-					skill2List,
-					// スキル3
-					skill3List,
-					// スキル4
-					skill4List,
+					afterList,
+					// スキル(言語)
+					skillLanguageList,
+					// スキル(ライブラリ)
+					skillLibraryList,
+					// スキル(フレームワーク)
+					skillFrameworkList,
+					// スキル(OS)
+					skillOSList,
+					// スキル(Tool)
+					skillToolList,
+					// スキル(その他)
+					skillOtherList,
 					// URL
 					url,
 					// 趣味
@@ -159,8 +178,8 @@ public class IntroReader implements IntroJsonReader {
 	
 	/**
 	 * データの読み込み
-	 * @param rootJsonNode
-	 * @param word
+	 * @param  rootJsonNode
+	 * @param  word
 	 * @return データ(文字列)
 	 */
 	private IntroWord readData(JsonNode rootJsonNode, String word) {
@@ -172,7 +191,8 @@ public class IntroReader implements IntroJsonReader {
 	
 	/**
 	 * データリストの読み込み
-	 * @param rootJsonNode
+	 * @param  rootJsonNode
+	 * @param  word
 	 * @return データリスト
 	 */
 	private IntroList readDataList(JsonNode rootJsonNode, String word) {
@@ -185,6 +205,24 @@ public class IntroReader implements IntroJsonReader {
 		}
 		
 		return new IntroList(dataList);
+	}
+	
+	/**
+	 * データリストの読み込み + 長文へ変換
+	 * @param  rootJsonNode
+	 * @param  word
+	 * @return データ
+	 */
+	private String readDataLongString(JsonNode rootJsonNode, String word) {
+		if(rootJsonNode == null || word == null || word == "")	return "";
+		
+		String dataLong = "";
+		for(JsonNode node : rootJsonNode.get(word)) {
+			String text = node.get(JSON_SECTION_KEYWORD).asText();
+			dataLong = dataLong + text;
+		}
+		
+		return dataLong;
 	}
 	
 	/**
@@ -202,9 +240,25 @@ public class IntroReader implements IntroJsonReader {
 		String					experKeyword		= headerStringList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal());
 		
 		for(JsonNode node : rootJsonNode.get(experKeyword)) {
-			String exper 			= node.get(JSON_SECTION_KEYWORD).asText();
-			String start 			= node.get(JSON_SECTION_BEFORE).asText();
-			String end 				= node.get(JSON_SECTION_AFTER).asText();
+			/** 経験    */
+			String exper 				= node.get(JSON_SECTION_KEYWORD).asText();
+			/** 開始日付 */
+			String start 				= node.get(JSON_SECTION_START).asText();
+			/** 終了日付 */
+			String end 					= node.get(JSON_SECTION_END).asText();
+			/** メンバー人数 */
+			NormalNumber memberSum		= new NormalNumber(
+											Integer.valueOf(node.get(JSON_SECTION_MEMBER_SUM).asText()));
+			/** ポジション */
+			String position				= node.get(JSON_SECTION_POSITION).asText();
+			/** 概要 */
+			String overview				= this.readDataLongString(node, JSON_SECTION_OVERVIEW);
+			/** 担当業務 */
+			IntroList personChargeList	= this.readDataList(node, JSON_SECTION_PERSON_CHARGE);
+			/** 業務ポイント */
+			String workPoint			= this.readDataLongString(node, JSON_SECTION_WORK_POINT);
+			/** 技術リスト */
+			IntroList techList			= this.readDataList(node, JSON_SECTION_TECH);
 			
 			// String型 → LocalDateTime型へ変換
 			LocalDateTime 		startLocalDateTime 	= this.changeLocalDateTime(start);
@@ -214,12 +268,38 @@ public class IntroReader implements IntroJsonReader {
 			ExperienceModel model = new ExperienceModel(
 					exper,
 					startLocalDateTime,
-					endLocalDateTime);
+					endLocalDateTime,
+					memberSum,
+					position,
+					overview,
+					personChargeList,
+					workPoint,
+					techList);
+			
 			// リスト追加
 			experList.add(model);
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 今後やりたいことデータの読み込み
+	 * @param rootJsonNode
+	 * @return データリスト
+	 */
+	private AfterList readAfterList(JsonNode rootJsonNode, IntroList headerList) {
+		if(rootJsonNode == null)	return new AfterList(null);
+		
+		List<String> 			dataList 			= new ArrayList<String>();
+		List<String> 			headerStringList	= headerList.getList();
+		String					afterKeyword		= headerStringList.get(ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal());
+		for(JsonNode node : rootJsonNode.get(afterKeyword)) {
+			String text = node.get(JSON_SECTION_KEYWORD).asText();
+			dataList.add(text);
+		}
+		
+		return new AfterList(dataList);
 	}
 	
 	/**

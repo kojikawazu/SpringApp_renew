@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/** 全体共通部 */
+@import url("../common/app_common.css");
+
 /** 問い合わせ一覧レイアウト **/
 .inquirylayout{
 	margin: 20px auto;

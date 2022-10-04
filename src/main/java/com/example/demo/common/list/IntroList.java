@@ -1,5 +1,6 @@
 package com.example.demo.common.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,14 @@ public class IntroList {
 	
 	/** イントロリスト */
 	private List<String> list;
+	
+	/**
+	 * コンストラクタ
+	 * @param リスト
+	 */
+	public IntroList() {
+		this.list = new ArrayList<String>();
+	}
 	
 	/**
 	 * コンストラクタ

@@ -1,0 +1,37 @@
+/**
+  * 【app_common.css】
+  */
+
+/** ----------------------------------------------------------------------- */
+
+/** 上に戻るボタン */
+.pagetop {
+ 	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 14px;
+	line-height: 1;
+	z-index: 99;
+}
+
+/** 上に戻るボタン a */
+.pagetop a {
+	background: rgb(100, 240, 240);
+	text-decoration: none;
+  	color: #fff;
+  	width: 60px;
+  	padding: 28px 5px;
+  	text-align: center;
+  	display: block;
+  	border-radius: 90px;
+  	opacity: 0.9;
+  	transition: all .3s ease;
+}
+
+/** 上に戻るボタン 表示 */
+.pagetop a:hover {
+  	text-decoration: none;
+  	opacity: .5;
+}
+
+/** ----------------------------------------------------------------------- */

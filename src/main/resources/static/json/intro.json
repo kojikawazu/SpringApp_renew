@@ -16,16 +16,22 @@
 			"name": "after"
 		},
 		{
-			"name": "skill_1"
+			"name": "skill_language"
 		},
 		{
-			"name": "skill_2"
+			"name": "skill_library"
 		},
 		{
-			"name": "skill_3"
+			"name": "skill_framework"
 		},
 		{
-			"name": "skill_4"
+			"name": "skill_os"
+		},
+		{
+			"name": "skill_tool"
+		},
+		{
+			"name": "skill_other"
 		},
 		{
 			"name": "url"
@@ -65,6 +71,12 @@
 			"name": "スキル(フレームワーク)"
 		},
 		{
+			"name": "スキル(OS)"
+		},
+		{
+			"name": "スキル(Tool)"
+		},
+		{
 			"name": "スキル(その他)"
 		},
 		{
@@ -79,71 +91,321 @@
 	],
 	"intro": [
 		{
-			"name": "福岡でシステムを開発するSE,PG屋です。主にLinux上アプリ、Webアプリ、Androidアプリに携わっております。またシステムの構築やバグの改修作業にも携わっております。"
+			"name": "福岡でシステム開発を行うエンジニアです。主にLinux上アプリ、Webアプリを携わっており、設計～実装～テストフェーズを担当しております。現在の保有技術を強化しつつ、新しい技術にも幅を広げてます。"
 		}
 	],
 	"experience": [
 		{
-			"name"  : "BBIQケーブルの配線経路管理システム",
-			"before": "2015/4",
-			"after" : "2018/8"
+			"name"			: "PCライン生産制御システムの機能開発",
+			"start"			: "2021/5",
+			"end"			: "now",
+			"memberSum"		: "7",
+			"position" 		: "PG(インフラ、バックエンド)",
+			"overview"		: [
+				{
+					"name" : "RHEL8系の新PCでの導入調査～テストまでを主担当として実施。"
+				},
+				{
+					"name" : "並行してシステムの新規インストーラーの改造、バージョンアップシステムの改造案件を繰り返し実施。(代表的な案件として、NFSやSambaディレクトリの共有機能。他は小さな案件が多数。)"
+				},
+				{
+					"name" : "LinuxPCでTomcatをインストール済の段階から入れ替える方法の技術調査等を実施した。"
+				}
+			],
+			"personCharge"	: [
+				{
+					"name" : "技術調査"
+				},
+				{
+					"name" : "不具合調査"
+				},
+				{
+					"name" : "詳細設計"
+				},
+				{
+					"name" : "実装"
+				},
+				{
+					"name" : "テスト設計"
+				},
+				{
+					"name" : "テスト実施"
+				}
+			],
+			"workPoint"	: [
+				{
+					"name" : "なかなか仕様が決まらない中着手し、スケジュールが右往左往しながらテスト完了まで辿り着くことができた。"
+				},
+				{
+					"name" : "機能に対しての仕様書がないこと、仕様書とコードが違っている中、並行して仕様書を合わせながら機能改造を行うことができた。"
+				}
+			],
+			"tech"  	: [
+				{
+					"name" : "MIRACLE LINUX V8"
+				},
+				{
+					"name" : "MIRACLE LINUX V7"
+				},
+				{
+					"name" : "MIRACLE LINUX V6"
+				},
+				{
+					"name" : "MIRACLE LINUX V5"
+				},
+				{
+					"name" : "ShellScript"
+				},
+				{
+					"name" : "Java8"
+				},
+				{
+					"name" : "bat"
+				},
+				{
+					"name" : "VMWare"
+				}
+			]
 		},
 		{
-			"name": "電力監視システムの開発、機能改修",
-			"before": "2019/1",
-			"after" : "2020/9"
+			"name"			: "新CIサーバのリプレイス開発",
+			"start"			: "2021/1",
+			"end"			: "2021/4",
+			"memberSum"		: "5",
+			"position" 		: "PG(業務改善、CIサーバ)",
+			"overview"		: [
+				{
+					"name" : "Jenkinsを用いたCIサーバのリプレイスPJで構築から参画。テスト、不具合改修、リリース作業を実施。"
+				},
+				{
+					"name" : "Jenkins内でプログラムを組み実行するJobの不具合改修、機能追加がメイン作業となった。"
+				}
+			],
+			"personCharge"	: [
+				{
+					"name" : "技術調査"
+				},
+				{
+					"name" : "不具合調査"
+				},
+				{
+					"name" : "詳細設計"
+				},
+				{
+					"name" : "実装"
+				},
+				{
+					"name" : "テスト設計"
+				},
+				{
+					"name" : "テスト実施"
+				}
+			],
+			"workPoint"	: [
+				{
+					"name" : "Jenkins、Jiraチケット、Confluenceでの作業は今回初となったが順応できたことはプラスとなった。"
+				},
+				{
+					"name" : "短納期で設計～テストまで回すのが主でその期間内でどう作業するかのノウハウを培った。"
+				},
+				{
+					"name" : "テストや技術調査は現行で動いているCIサーバをお借りしないといけなかった。24時間ビルドリリース計画がある中、ビルドチームとの調整には苦労した。"
+				}
+			],
+			"tech"		: [
+				{
+					"name" : "Jenkins"
+				},
+				{
+					"name" : "ShellScript"
+				},
+				{
+					"name" : "bat"
+				},
+				{
+					"name" : "Java11"
+				},
+				{
+					"name" : "Tomcat9"
+				},
+				{
+					"name" : "Windows Server 2016"
+				},
+				{
+					"name" : "Jira"
+				},
+				{
+					"name" : "Confluence"
+				},
+				{
+					"name" : "Harness"
+				},
+				{
+					"name" : "JFrog"
+				}
+			]
 		},
 		{
-			"name": "新CIサーバのリプレイス開発",
-			"before": "2021/1",
-			"after" : "2021/4"
+			"name"			: "配電線自動制御システムの開発、機能改修",
+			"start"			: "2019/1",
+			"end"			: "2020/9",
+			"memberSum"		: "10",
+			"position"		: "PG(インフラ、バックエンド、アプリ画面、システム構築)",
+			"overview"		: [
+				{
+					"name" : "Linux化プロジェクトからグラフィックMWの機能改修から始まり、システムの画面側、バックエンド側、アプリ間ソケット通信、システム構築部分と幅広く関わることができました。"
+				},
+				{
+					"name" : "他にもシステム構築の手順書作成や現地に赴き不具合調査も実施してきました。"
+				},
+				{
+					"name" : "他にも同時期に「オンプレ環境のアプリではなく、ブラウザで配電線経路を表示できないか」という提案前の技術調査も実施してきました。"
+				}
+			],
+			"personCharge"	: [
+				{
+					"name" : "技術調査"
+				},
+				{
+					"name" : "不具合調査"
+				},
+				{
+					"name" : "詳細設計"
+				},
+				{
+					"name" : "実装"
+				},
+				{
+					"name" : "テスト設計"
+				},
+				{
+					"name" : "テスト実施"
+				}
+			],
+			"workPoint"	: [
+				{
+					"name" : "この時点で設計～実装～テスト設計～テストのフェーズのノウハウを積み重ねてきました。"
+				},
+				{
+					"name" : "そして、未経験言語も積極的に触れてきました。"
+				},
+				{
+					"name" : "さらに不具合に関しても調査から改修提案を1人称で行い、改修ノウハウを築き上げてきました。"
+				},
+				{
+					"name" : "他にも技術調査にも関わることができました。"
+				}
+			],
+			"tech"		: [
+				{
+					"name" : "CentOS6.8"
+				},
+				{
+					"name" : "CentOS7.4"
+				},
+				{
+					"name" : "Java8"
+				},
+				{
+					"name" : "C++11"
+				},
+				{
+					"name" : "C言語"
+				},
+				{
+					"name" : "ShellScript"
+				},
+				{
+					"name" : "Python2"
+				},
+				{
+					"name" : "Python3"
+				},
+				{
+					"name" : "JavaScript"
+				},
+				{
+					"name" : "GraphMiddleWare(GMW)"
+				}
+			]
 		},
 		{
-			"name": "PCライン生産制御システムの機能改善",
-			"before": "2021/5",
-			"after" : "now"
+			"name" 			: "BBIQケーブルの配線経路管理システムを使用したケーブル線路選定",
+			"start"			: "2015/4",
+			"end" 			: "2018/8",
+			"memberSum"		: "50",
+			"position"		: "非エンジニア",
+			"overview"		: [
+				{
+					"name" : "BBIQケーブルや携帯回線のエリア拡大の為、変電所から目的地域への回線経路の図面作成を実施してました。"
+				},
+				{
+					"name" : "さらに他メンバーの管理やシステム改善のミーティングにも参加し、改善提案も実施してました。"
+				}
+			], 
+			"personCharge"	: [
+				{
+					"name" : "図面作成"
+				},
+				{
+					"name" : "システム改善"
+				}
+			],
+			"workPoint"	: [
+				{
+					"name" : "この時期から使用されているマクロの改造やWindowsアプリの改善点を洗い出し、エンジニアと改善ミーティングにも参加することができていた。"
+				}
+			],
+			"tech"  : [
+				{
+					"name" : "CNets"
+				}
+			]
 		}
 	],
 	"after": [
 		{
-			"name": "AWSのクラウドやiOSアプリに興味があり、AWSにLinux環境を構築したり、macbookを購入し、iOSアプリを制作する予定でいます。"
+			"name": "Linux分野、Java分野の特化(RHEL7、RHEL8、Spring Framework等)"
+		},
+		{
+			"name": "クラウド分野、コンテナ分野への新規開拓(AWS、Docker、Kubernetes)"
+		},
+		{
+			"name": "JavaScript分野の幅を広げること(Node.js、React)"
 		}
 	],
-	"skill_1" : [
+	"skill_language" : [
 		{
-			"name": "Java"
+			"name": "Java8"
 		},
 		{
-			"name": "C言語"
-		},
-		{
-			"name": "C++"
-		},
-		{
-			"name": "Python"
-		},
-		{
-			"name": "Perl"
-		},
-		{
-			"name": "JavaScript"
-		},
-		{
-			"name": "TypeScript"
+			"name": "Java11"
 		},
 		{
 			"name": "ShellScript"
 		},
 		{
-			"name": "PHP"
-		}
-	],
-	"skill_2": [
-		{
-			"name": "DirectX"
+			"name": "C言語"
 		},
 		{
-			"name": "Jquery"
+			"name": "C++11"
+		},
+		{
+			"name": "JavaScript"
+		},
+		{
+			"name": "Python2"
+		},
+		{
+			"name": "Python3"
+		},
+		{
+			"name": "Perl"
+		}
+	],
+	"skill_library": [
+		{
+			"name": "jQuery"
 		},
 		{
 			"name": "ChartJS"
@@ -156,22 +418,71 @@
 		},
 		{
 			"name": "ImageMagick"
+		},
+		{
+			"name": "DirectX"
 		}
 	],
-	"skill_3" : [
+	"skill_framework" : [
 		{
 			"name": "Spring Framework"
 		}
 	],
-	"skill_4" : [
+	"skill_os" : [
 		{
-			"name": "CentOS"
+			"name": "CentOS6"
+		},
+		{
+			"name": "CentOS7"
+		},
+		{
+			"name": "MIRACLE LINUX6"
+		},
+		{
+			"name": "MIRACLE LINUX7"
+		},
+		{
+			"name": "MIRACLE LINUX8"
+		},
+		{
+			"name": "Windows10"
+		}
+	],
+	"skill_tool" : [
+		{
+			"name": "Jenkins"
 		},
 		{
 			"name": "AWS"
 		},
 		{
 			"name": "GitHub"
+		},
+		{
+			"name": "TortoiseSVN"
+		},
+		{
+			"name": "VMWare"
+		},
+		{
+			"name": "Jira"
+		},
+		{
+			"name": "Confluence"
+		}
+	],
+	"skill_other" : [
+		{
+			"name": "Samba"
+		},
+		{
+			"name": "NFS"
+		},
+		{
+			"name": "Tomcat9"
+		},
+		{
+			"name": "NTP"
 		}
 	],
 	"url": [

@@ -3,6 +3,9 @@
 /**
  * ブログメイン[css]
  */
+ 
+ /** 全体共通部 */
+@import url("../common/app_common.css");
 
 /** ブログリストレイアウト */
 .bloglayout{

@@ -1,0 +1,144 @@
+/**
+  * 【intro_experience.css】
+  */
+
+/** ----------------------------------------------------------------------- */
+
+/** 経験-名称(css) */
+.exper-name-after {
+	position: relative;
+  	padding-left: 25px;
+	margin-bottom: 20px;
+	display:flex;
+}
+
+/** 経験-名称 + div(css) */
+.exper-name-after div {
+	padding-right: 10px;
+}
+
+/** 経験-名称 before(css) */
+.exper-name-after:before {
+  position: absolute;
+  content: '';
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border: none;
+  border-left: solid 15px transparent;
+  border-bottom: solid 15px rgb(119, 195, 223);
+}
+
+/** 経験-名称 after(css) */
+.exper-name-after:after {
+  position: absolute;
+  content: '';
+  bottom: -3px;
+  left: 10px;
+  width: 100%;
+  border-bottom: solid 3px rgb(119, 195, 223);
+}
+
+/** -------------------------------------------------------- */
+/** 経験-詳細(css) */
+.exper-detail-after {
+	background		: rgb(240,240,240);
+	display			: flex;
+	flex-flow		: column;
+}
+
+/** 経験-詳細 div(css) */
+.exper-detail-after div {
+	margin-bottom	: 3px;
+}
+
+/** 経験-詳細-パーツ(css) */
+.exper-detail-parts {
+	display			: flex;
+	flex-wrap		: nowrap;
+	font-size		: 80%;
+}
+
+/** 経験-詳細-タイトル(css) */
+.exper-detail-tittle {
+	width			: 25%;
+}
+
+/** 経験-詳細-リスト(css) */
+.exper-detail-list {
+	width			: 75%;
+	display			: flex;
+	flex-wrap		: wrap;
+}
+
+/** -------------------------------------------------------- */
+
+/** 経験-概要-リスト(css) */
+.exper-detail-overview-list {
+	width			: 75%;
+}
+
+/** 経験-概要-パーツ(css) */
+.exper-detail-overview-parts {
+	overflow-wrap	: break-word;
+}
+
+/** -------------------------------------------------------- */
+
+/** 経験-担当業務-リスト(css) */
+.exper-detail-person-list {
+	width		: 75%;
+}
+
+/** 経験-担当業務-パーツ(css) */
+.exper-detail-person-parts {
+	display			: flex;
+	flex-wrap		: wrap;
+	color			: #505050;			/*文字色*/
+	display			: inline-block;			/*おまじない*/
+	background		: #dbebf8;			/*背景色*/
+	padding			: 0.4em;
+	font-size		: 85%;
+}
+
+/** -------------------------------------------------------- */
+
+/** 経験-業務ポイント-リスト(css) */
+.exper-detail-workpoint-list {
+	width			: 75%;
+}
+
+/** 経験-業務ポイント-パーツ(css) */
+.exper-detail-workpoint-parts {
+	overflow-wrap	: break-word;
+}
+
+/** -------------------------------------------------------- */
+
+/** 経験-技術-リスト(css) */
+.exper-detail-tech-list {
+	width			: 75%;
+}
+
+.exper-detail-tech-parts:before {
+  content			: '●';
+  color				: white;
+  margin-right		: 8px;
+}
+
+/** 経験-技術-パーツ(css) */
+.exper-detail-tech-parts {
+	display			: flex;
+	flex-wrap		: wrap;
+	color			: #505050;			/*文字色*/
+	padding			: 0.5em;				/*文字周りの余白*/
+ 	display			: inline-block;			/*おまじない*/
+	line-height		: 1.3;					/*行高*/
+	background		: #dbebf8;			/*背景色*/
+	vertical-align	: middle;
+	border-radius	: 25px 0px 0px 25px;	/*左側の角を丸く*/
+	font-size		: 85%;
+}
+
+/** -------------------------------------------------------- */
