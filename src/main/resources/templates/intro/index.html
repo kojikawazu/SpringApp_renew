@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+<!--
+	【自己紹介.html】
+-->
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,6 +22,8 @@
 	<script th:src="@{/js/popper.min.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script th:src="@{/js/bootbox.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common/app_common.js}"></script>
+	<script type="text/javascript" th:src="@{/js/intro/intro_index.js}"></script>
 </head>
 <body>
 	<!-- ナビゲーションバー -->
@@ -29,73 +36,110 @@
 	<main role="main" class="container">
 		
 		<div class="starter-template">
-		    <!-- タイトル -->
-	 		<h1 th:text="${title}"></h1><br>
-	 		<h2 class="lead" th:text="${cont}"></h2>
+			<!-- タイトル -->
+			<div class="fadeclass">
+				<h1 th:text="${title}"></h1><br>
+	 			<h2 class="lead" th:text="${cont}"></h2>
+			</div >
 	 		
 	 		<!-- 紹介文 -->
-	 		<h3 th:text="${introTitle}"></h3>
-	 		<div class="h3-after" th:text="${intro}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${introTitle}"></h3>
+	 			<div class="h3-after" th:text="${intro}"></div>
+	 		</div>
+	 		
 	 		
 	 		<!-- 経験 -->
-	 		<h3 th:text="${experTitle}"></h3>
-	 		<div class="h3-after" th:each="exper, experStat : ${experList}">
- 				<div class="exper-after">
- 					<div th:text="${#temporals.format(exper.startTime, 'yyyy年MM月dd日')}"></div>
-	 				<div th:text="～"></div>
- 					<div th:text="${#temporals.format(exper.endTime, 'yyyy年MM月dd日')}"></div>
- 					<div th:text="："></div>
-	 				<div th:text="${exper.experience}"></div>
- 				</div>
-	 		</div>
+	 		<div class="fadeclass">
+	 			<div th:replace="~{/intro/experience::experienceFragment}"></div>
+	 		</div >
+	 		
 	 		
 	 		<!-- 今後やりたいこと -->
-	 		<h3 th:text="${afterTitle}"></h3>
-	 		<div class="h3-after" th:text="${after}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${afterTitle}"></h3>
+	 			<div class="h3-after after-after-parent" th:each="after, afterStat : ${afterList}">
+	 				<div class="after-after">
+	 					<div>●</div>
+	 					<div th:text="${after}"></div>
+	 				</div>
+	 			</div>
+	 		</div>
+	 		
 	 		
 	 		<!-- スキル(言語) -->
-	 		<h3 th:text="${skill1Title}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="div-after" th:each="skill1 : ${skill1List}" th:text="${skill1}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillLanguageTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillLanguage : ${skillLanguageList}" th:text="${skillLanguage}"></div>
+	 			</div>
 	 		</div>
+	 		
 	 		
 	 		<!-- スキル(ライブラリ) -->
-	 		<h3 th:text="${skill2Title}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="div-after" th:each="skill2 : ${skill2List}" th:text="${skill2}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillLibraryTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillLibrary : ${skillLibraryList}" th:text="${skillLibrary}"></div>
+	 			</div>
+	 		</div>
+	 		<!-- スキル(FW) -->
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillFrameworkTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillFramework : ${skillFrameworkList}" th:text="${skillFramework}"></div>
+	 			</div>
 	 		</div>
 	 		
-	 		<!-- スキル(FW) -->
-	 		<h3 th:text="${skill3Title}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="div-after" th:each="skill3 : ${skill3List}" th:text="${skill3}"></div>
+	 		<!-- スキル(OS) -->
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillOSTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillOS : ${skillOSList}" th:text="${skillOS}"></div>
+	 			</div>
+	 		</div>
+	 		
+	 		<!-- スキル(Tool) -->
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillToolTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillTool : ${skillToolList}" th:text="${skillTool}"></div>
+	 			</div>
 	 		</div>
 	 		
 	 		<!-- スキル(その他) -->
-	 		<h3 th:text="${skill4Title}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="div-after" th:each="skill4 : ${skill4List}" th:text="${skill4}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${skillOtherTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="skillOther : ${skillOtherList}" th:text="${skillOther}"></div>
+	 			</div>
 	 		</div>
 	 		
 	 		<!-- URL -->
-	 		<h3 th:text="${urlTitle}"></h3>
-	 		<div class="h3-after">
-	 			<a th:href="${url}" th:text="${url}"></a>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${urlTitle}"></h3>
+	 			<div class="h3-after">
+	 				<a th:href="${url}" th:text="${url}"></a>
+	 			</div>
 	 		</div>
 	 		
 	 		<!-- 趣味 -->
-	 		<h3 th:text="${hobbyTitle}"></h3>
-	 		<div class="h3-after" >
-	 			<div class="div-after" th:each="hobby : ${hobbyList}" th:text="${hobby}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${hobbyTitle}"></h3>
+	 			<div class="h3-after" >
+	 				<div class="div-after" th:each="hobby : ${hobbyList}" th:text="${hobby}"></div>
+	 			</div>
 	 		</div>
 	 		
 	 		<!-- 最後に一言 -->
-	 		<h3 th:text="${wordTitle}"></h3>
-	 		<div class="h3-after" th:text="${word}"></div>
+	 		<div class="fadeclass">
+	 			<h3 th:text="${wordTitle}"></h3>
+	 			<div class="h3-after" th:text="${word}"></div>
+	 		</div>
 	 	</div>	
-	 </main>
-	 
-	 <!-- フッター -->
+	</main>
+	
+	<!-- フッター -->
 	<div th:replace="~{/block/footer::footerA}"></div>
 </body>
 </html>

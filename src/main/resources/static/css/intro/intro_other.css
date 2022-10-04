@@ -1,0 +1,24 @@
+/**
+  * 【intro_other.css】
+  */
+
+/** ----------------------------------------------------------------------- */
+
+/* フェードクラス */
+.fadeclass {
+	/* 最初は非表示 */
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(30px);
+	transition: opacity 1s, visibility 1s, transform 1s;
+}
+
+/* フェードイン時に入るクラス */
+.fadeinclass {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/** ----------------------------------------------------------------------- */
+
