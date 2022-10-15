@@ -16,9 +16,10 @@
     <link href="starter-template.css"  th:href="@{/css/home/same_form.css}" rel="stylesheet" crossorigin="anonymous">
 	
 	<!--  Jquery core  -->
-	<script th:src="@{/js/jquery-slim.min.js}"></script>
+	<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
 	<script th:src="@{/js/popper.min.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common/app_common.js}"></script>
 </head>
 <body>
 	<!-- ナビゲーションバー -->
@@ -30,6 +31,7 @@
 		<div class="starter-template">
 	 		<h1 th:text="${title}">example</h1><br>
 	 		<p class="lead" th:text="${cont}">context</p>
+	 		<p class="asterisk-cont">* 印の入力は必須です。 </p >
 	 	</div>
 	 	
 	 	<!-- アラート -->
@@ -41,7 +43,7 @@
 	 	<form method="post" action="#" th:action="@{/inquiry/confirm}" th:object="${inquiryForm}">
 	 		<!-- 問い合わせ名 -->
 	 		<div class="form-group">
-	    		<label for="name">お名前</label>
+	    		<label for="name">お名前<spac class="asterisk-input">*</span ></label>
 	    		<input type="text" name="name" class="form-control" id="name" th:value="*{name}">
 	  		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>

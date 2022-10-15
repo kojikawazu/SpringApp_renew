@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.app.entity.SurveyModel;
-import com.example.demo.app.service.SurveyService;
+import com.example.demo.app.entity.survey.SurveyModel;
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.app.survey.form.SurveyForm;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.number.NormalNumber;
@@ -30,30 +33,41 @@ public class SurveyCompleteController extends SuperSurveyController {
 
 	/**
 	 * コンストラクタ
-	 * @param service
+	 * @param surveyService			{@link SurveyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SurveyCompleteController(
-			SurveyService service) {
-		super(service);
+			SurveyService 		surveyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(surveyService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * 調査投稿実施受信
-	 * @param surveyForm
-	 * @param result
-	 * @param model
-	 * @param redirectAttributes
-	 * @return リダイレクト[調査投稿フォーム] or 調査投稿フォームURL
+	 * @param  headerForm			{@link HeaderForm}
+	 * @param surveyForm			{@link SurveyForm}
+	 * @param result				{@link BindingResult}
+	 * @param model					{@link Model}
+	 * @param redirectAttributes	{@link RedirectAttributes}
+	 * @return {@value AppConsts#URL_SURVEY_FORM}
+	 * 			{@value AppConsts#REDIRECT_URL_SURVEY_FORM}
 	 */
 	@PostMapping(AppConsts.REQUEST_MAPPING_COMPLETE)
 	public String complete(
-			@Validated SurveyForm surveyForm,
-			BindingResult         result,
-			Model                 model,
-			RedirectAttributes    redirectAttributes) {
+			HeaderForm				headerForm,
+			@Validated SurveyForm	surveyForm,
+			BindingResult			result,
+			Model					model,
+			RedirectAttributes		redirectAttributes) {
 		if(result.hasErrors()) {
 			// エラー
+			// attribute設定
+			this.setCommonAttribute(model);
 			this.setFormAttribute(model);
 			return AppConsts.URL_SURVEY_FORM;
 		}

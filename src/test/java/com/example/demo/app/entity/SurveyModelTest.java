@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.example.demo.common.id.SurveyId;
+import com.example.demo.app.entity.survey.SurveyModel;
+import com.example.demo.common.consts.TestConsts;
+import com.example.demo.common.id.survey.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
@@ -33,7 +35,7 @@ class SurveyModelTest {
 				new NormalNumber(0),
 				new NormalNumber(0),
 				new CommentWord(""),
-				LocalDateTime.of(2000, 01, 01, 00, 00, 00)
+				TestConsts.TEST_TIME_01
 				);
 	}
 
@@ -42,42 +44,14 @@ class SurveyModelTest {
 	 */
 	@Test
 	public void InitTest0() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getName(), "");
-		Assertions.assertEquals(model.getAge(), 0);
-		Assertions.assertEquals(model.getProfession(), 0);
-		Assertions.assertEquals(model.getMen_or_female(), 0);
-		Assertions.assertEquals(model.getSatisfaction(), 0);
-		Assertions.assertEquals(model.getComment(), "");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
-	}
-	
-	/**
-	 * 値設定後テスト
-	 */
-	@Test
-	public void InitTest1() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
-		
-		model.setId(1);
-		model.setName("テストネーム");
-		model.setAge(10);
-		model.setProfession(2);
-		model.setMen_or_female(1);
-		model.setSatisfaction(1);
-		model.setComment("テストコメント");
-		model.setCreated(dateTime);
-		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テストネーム");
-		Assertions.assertEquals(model.getAge(), 10);
-		Assertions.assertEquals(model.getProfession(), 2);
-		Assertions.assertEquals(model.getMen_or_female(), 1);
-		Assertions.assertEquals(model.getSatisfaction(), 1);
-		Assertions.assertEquals(model.getComment(), "テストコメント");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getId(), 				0);
+		Assertions.assertEquals(model.getName(), 			"");
+		Assertions.assertEquals(model.getAge(), 			0);
+		Assertions.assertEquals(model.getProfession(), 		0);
+		Assertions.assertEquals(model.getMen_or_female(), 	0);
+		Assertions.assertEquals(model.getSatisfaction(), 	0);
+		Assertions.assertEquals(model.getComment(), 		"");
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 	}
 	
 	/**
@@ -111,28 +85,27 @@ class SurveyModelTest {
 	 */
 	@Test
 	public void InitModel() {
-		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 		SurveyModel test = new SurveyModel(
 				new SurveyId(1),
-				new NameWord("テスト"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
-				new CommentWord("コメント"),
-				dateTime
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				TestConsts.TEST_TIME_02
 				);
 		
 		this.model = new SurveyModel(test);
 		
-		Assertions.assertEquals(model.getId(), 1);
-		Assertions.assertEquals(model.getName(), "テスト");
-		Assertions.assertEquals(model.getAge(), 1);
-		Assertions.assertEquals(model.getProfession(), 1);
-		Assertions.assertEquals(model.getMen_or_female(), 1);
-		Assertions.assertEquals(model.getSatisfaction(), 1);
-		Assertions.assertEquals(model.getComment(), "コメント");
-		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
+		Assertions.assertEquals(model.getId(), 				1);
+		Assertions.assertEquals(model.getName(), 			TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getAge(), 			1);
+		Assertions.assertEquals(model.getProfession(), 		1);
+		Assertions.assertEquals(model.getMen_or_female(), 	1);
+		Assertions.assertEquals(model.getSatisfaction(), 	1);
+		Assertions.assertEquals(model.getComment(), 		TestConsts.TEST_COMMENT_NAME);
+		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_02.toString());
 	}
 	
 	/**
@@ -143,22 +116,22 @@ class SurveyModelTest {
 		LocalDateTime dateTime = LocalDateTime.of(2000, 01, 01, 00, 00, 00);
 		
 		model = new SurveyModel(
-				new NameWord("テスト"),
+				new NameWord(TestConsts.TEST_NAME_NAME),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
 				new NormalNumber(1),
-				new CommentWord("コメント"),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
 				dateTime
 				);
 		
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getName(), "テスト");
-		Assertions.assertEquals(model.getAge(), 1);
-		Assertions.assertEquals(model.getProfession(), 1);
-		Assertions.assertEquals(model.getMen_or_female(), 1);
-		Assertions.assertEquals(model.getSatisfaction(), 1);
-		Assertions.assertEquals(model.getComment(), "コメント");
+		Assertions.assertEquals(model.getId(), 				0);
+		Assertions.assertEquals(model.getName(), 			TestConsts.TEST_NAME_NAME);
+		Assertions.assertEquals(model.getAge(), 			1);
+		Assertions.assertEquals(model.getProfession(), 		1);
+		Assertions.assertEquals(model.getMen_or_female(), 	1);
+		Assertions.assertEquals(model.getSatisfaction(), 	1);
+		Assertions.assertEquals(model.getComment(), 		TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getCreated().toString(), dateTime.toString());
 	}
 }

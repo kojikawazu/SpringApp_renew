@@ -12,18 +12,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.blog.main.form.BlogForm;
-import com.example.demo.app.entity.BlogMainModel;
-import com.example.demo.app.entity.BlogTagModel;
-import com.example.demo.app.service.BlogMainService;
-import com.example.demo.app.service.BlogReplyService;
-import com.example.demo.app.service.BlogTagService;
+import com.example.demo.app.entity.blog.BlogMainModel;
+import com.example.demo.app.entity.blog.BlogTagModel;
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogReplyService;
+import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.EditorSwitch;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
-import com.example.demo.common.word.NameWord;
 import com.example.demo.common.word.TagWord;
 import com.example.demo.common.word.TittleWord;
 
@@ -38,40 +40,54 @@ public class BlogCompleteController extends SuperBlogMainController {
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService
-	 * @param blogReplyService
-	 * @param blogTagService
+	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogReplyService		{@link BlogReplyService}
+	 * @param blogTagService		{@link BlogTagService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	public BlogCompleteController(
-			BlogMainService  blogMainService, 
-			BlogReplyService blogReplyService,
-			BlogTagService   blogTagService) {
-		super(blogMainService, blogReplyService, blogTagService);
+			BlogMainService		blogMainService, 
+			BlogReplyService	blogReplyService, 
+			BlogTagService		blogTagService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(blogMainService,
+				blogReplyService,
+				blogTagService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * 投稿 or 編集実施受信
-	 * @param blogForm
-	 * @param editor
-	 * @param result
-	 * @param model
-	 * @param redirectAttributes
-	 * @return リダイレクト:[ブログ投稿] or リダイレクト[ブログ編集] or ブログ投稿フォームURL
+	 * @param  headerForm			{@link HeaderForm}
+	 * @param  blogForm				{@link BlogForm}
+	 * @param  editor
+	 * @param  result				{@link BindingResult}
+	 * @param  model				{@link Model}
+	 * @param  redirectAttributes	{@link RedirectAttributes}
+	 * @return {@value AppConsts#URL_BLOG_MAIN_FORM}
+	 * 			{@value AppConsts#REDIRECT_URL_BLOG_FORM}
+	 * 			{@value AppConsts#REDIRECT_URL_BLOG_EDIT}
 	 */
 	@PostMapping(AppConsts.REQUEST_MAPPING_COMPLETE)
 	public String complete(
-			@Validated BlogForm blogForm,
+			HeaderForm			headerForm,
+			@Validated BlogForm	blogForm,
 			@RequestParam(WebConsts.ATTRIBUTE_EDITOR) int editor,
-			BindingResult result,
-			Model         model,
-			RedirectAttributes redirectAttributes) {
+			BindingResult		result,
+			Model				model,
+			RedirectAttributes	redirectAttributes) {
 		EditorSwitch edit = new EditorSwitch(editor);
 		
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			// エラー
-			if( edit.isEdit() ) {
+			// attribute設定
+			this.setCommonAttribute(model);
+			if (edit.isEdit()) {
 				this.setEditorAttribute(edit, blogForm, model);
-			}else {
+			} else {
 				this.setAddFormAttribute(edit, model);
 			}
 			return AppConsts.URL_BLOG_MAIN_FORM;
@@ -86,11 +102,11 @@ public class BlogCompleteController extends SuperBlogMainController {
 				LocalDateTime.now()
 				);
 		
-		if( !edit.isEdit() ) {
+		if (!edit.isEdit()) {
 			// 追加作業
 			this.executeAdd(blog, redirectAttributes);
 			return AppConsts.REDIRECT_URL_BLOG_FORM;
-		}else {
+		} else {
 			// 編集作業
 			this.executeEdit(edit, blogForm, blog, model, redirectAttributes);
 			return AppConsts.REDIRECT_URL_BLOG_EDIT;
@@ -99,8 +115,8 @@ public class BlogCompleteController extends SuperBlogMainController {
 	
 	/**
 	 * 投稿作業
-	 * @param blog
-	 * @param redirectAttributes
+	 * @param blog					{@link BlogMainModel}
+	 * @param redirectAttributes	{@link RedirectAttributes}
 	 */
 	private void executeAdd(
 			BlogMainModel      blog, 
@@ -113,18 +129,18 @@ public class BlogCompleteController extends SuperBlogMainController {
 	
 	/**
 	 * 編集作業
-	 * @param edit
-	 * @param blogForm
-	 * @param blog
-	 * @param model
-	 * @param redirectAttributes
+	 * @param edit					{@link EditorSwitch}
+	 * @param blogForm				{@link BlogForm}
+	 * @param blog					{@link BlogMainModel}
+	 * @param model					{@link Model}
+	 * @param redirectAttributes	{@link RedirectAttributes}
 	 */
 	private void executeEdit(
-			EditorSwitch       edit, 
-			BlogForm           blogForm,
-			BlogMainModel      blog,
-			Model              model,
-			RedirectAttributes redirectAttributes) {
+			EditorSwitch		edit, 
+			BlogForm			blogForm,
+			BlogMainModel		blog,
+			Model				model,
+			RedirectAttributes	redirectAttributes) {
 		blog = new BlogMainModel(
 				new BlogId(edit.getEditorNumber()),
 				new TittleWord(blog.getTitle()),
@@ -141,11 +157,11 @@ public class BlogCompleteController extends SuperBlogMainController {
 	
 	/**
 	 * タグの保存
-	 * @param blog
+	 * @param blog {@link BlogMainModel}
 	 */
 	private void saveTag(BlogMainModel blog) {
 		String targetTag = blog.getTag();
-		if( !this.blogTagService.isSelect_byTag(targetTag) ) {
+		if (!this.blogTagService.isSelect_byTag(targetTag)) {
 			// タグなし。タグの追加
 			BlogTagModel tagModel = new BlogTagModel(
 					new TagWord(targetTag));

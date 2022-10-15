@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.app.blog.main.BlogMainId;
-import com.example.demo.app.service.BlogMainService;
-import com.example.demo.app.service.BlogReplyService;
-import com.example.demo.app.service.BlogTagService;
+import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogReplyService;
+import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.AppConsts;
-import com.example.demo.common.id.BlogReplyId;
+import com.example.demo.common.id.blog.BlogReplyId;
 
 /**
  * ブログ返信いいねプッシュコントローラー
@@ -22,21 +24,29 @@ public class BlogReplyThanksController extends SuperBlogMainController {
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService
-	 * @param blogReplyService
-	 * @param blogTagService
+	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogReplyService		{@link BlogReplyService}
+	 * @param blogTagService		{@link BlogTagService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	public BlogReplyThanksController(
-			BlogMainService  blogMainService, 
-			BlogReplyService blogReplyService,
-			BlogTagService   blogTagService) {
-		super(blogMainService, blogReplyService, blogTagService);
+			BlogMainService		blogMainService, 
+			BlogReplyService	blogReplyService, 
+			BlogTagService		blogTagService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(blogMainService,
+				blogReplyService,
+				blogTagService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * [非同期通信]
 	 * 返信いいねプッシュ受信
-	 * @param  thanksCnter
+	 * @param  thanksCnter {@link BlogMainId}
 	 * @return いいね数
 	 */
 	@RequestMapping(AppConsts.REQUEST_MAPPING_REPLY_THANKS)
@@ -45,7 +55,7 @@ public class BlogReplyThanksController extends SuperBlogMainController {
 			BlogMainId thanksCnter) {
 		BlogReplyId id     = new BlogReplyId(thanksCnter.getId());
 		int         cnter  = this.blogReplyService.thanksIncrement(id);
-		if(cnter <= 0)	cnter = 0;
+		if (cnter <= 0)	cnter = 0;
 		return String.valueOf(cnter);
 	}
 }

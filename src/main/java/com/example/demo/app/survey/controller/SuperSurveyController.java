@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.app.service.SurveyService;
+import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.app.survey.form.SurveySatisForm;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
@@ -45,24 +48,54 @@ public class SuperSurveyController {
 	/** 調査統計の一言 */
 	private static final String CONT_SURVEY_SATIS  = "アンケートを集計した一覧です。";
 	
-	/**
-	 * サービス
+	/** サービス　*/
+	/** --------------------------------------------------------------- */
+	
+	/** 
+	 * 調査サービス 
+	 * {@link SurveyService} 
 	 */
 	protected final SurveyService surveyService;
 	
+	/** コントローラー */
+	/** --------------------------------------------------------------- */
+	
+	/** 
+	 * ヘッダーサービス 
+	 * {@link HeaderController} 
+	 */
+	protected final HeaderController	headerController;
+	
+	/** --------------------------------------------------------------- */
+	
 	/**
 	 * コンストラクタ
-	 * @param service
+	 * @param surveyService			{@link SurveyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SuperSurveyController(
-			SurveyService service) {
-		this.surveyService = service;
+			SurveyService 		surveyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		this.surveyService 		= surveyService;
+		this.headerController	= new HeaderController(userServiceUse, 
+											sessionLoginUser);
+	}
+	
+	/**
+	 * 共通attribute設定
+	 * @param model {@link Model}
+	 */
+	protected void setCommonAttribute(Model model) {
+		/** ヘッダーの設定 */
+		this.headerController.setHeader(model);
 	}
 	
 	/**
 	 * アンケート一覧attribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setIndexAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_SURVEY_INDEX);
@@ -71,7 +104,7 @@ public class SuperSurveyController {
 	
 	/**
 	 * フォームattribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setFormAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_SURVEY_FORM);
@@ -80,7 +113,7 @@ public class SuperSurveyController {
 	
 	/**
 	 * 投稿確認attribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setConfirmAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_SURVEY_CONFIRM);
@@ -89,7 +122,7 @@ public class SuperSurveyController {
 	
 	/**
 	 * 調査投稿 - リダイレクトattribute設定
-	 * @param redirectAttributes
+	 * @param redirectAttributes {@link RedirectAttributes}
 	 */
 	protected void setCompleteAttribute(RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(WebConsts.ATTRIBUTE_COMPLETE, 
@@ -98,8 +131,8 @@ public class SuperSurveyController {
 	
 	/**
 	 * 調査統計attribute設定
-	 * @param model
-	 * @param list
+	 * @param model {@link Model}
+	 * @param list  調査評価フォーム型リスト
 	 */
 	protected void setSatisAttribute(Model model, List<SurveySatisForm> list) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,      TITLE_SURVEY_SATIS);

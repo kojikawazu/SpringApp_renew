@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.entity.inquiry.InquiryModel;
+import com.example.demo.app.entity.inquiry.InquiryReplyModel;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.id.inquiry.InquiryId;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
@@ -45,25 +47,6 @@ class InquiryModelTest {
 		Assertions.assertEquals(model.getName(),    "");
 		Assertions.assertEquals(model.getEmail(),   "");
 		Assertions.assertEquals(model.getComment(), "");
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertNotNull(model.getReplyList());
-	}
-	
-	/**
-	 * 値設定テスト
-	 */
-	@Test
-	public void InitTest1() {
-		model.setId(     1);
-		model.setName(   TestConsts.TEST_NAME_NAME);
-		model.setEmail(  TestConsts.TEST_EMAIL_NAME);
-		model.setComment(TestConsts.TEST_COMMENT_NAME);
-		model.setCreated(TestConsts.TEST_TIME_01);
-		
-		Assertions.assertEquals(model.getId(),                 1);
-		Assertions.assertEquals(model.getName(),               TestConsts.TEST_NAME_NAME);
-		Assertions.assertEquals(model.getEmail(),              TestConsts.TEST_EMAIL_NAME);
-		Assertions.assertEquals(model.getComment(),            TestConsts.TEST_COMMENT_NAME);
 		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertNotNull(model.getReplyList());
 	}

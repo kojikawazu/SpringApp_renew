@@ -5,13 +5,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.blog.main.form.BlogForm;
-import com.example.demo.app.entity.BlogMainModel;
-import com.example.demo.app.service.BlogMainService;
-import com.example.demo.app.service.BlogReplyService;
-import com.example.demo.app.service.BlogTagService;
+import com.example.demo.app.entity.blog.BlogMainModel;
+import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogReplyService;
+import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.EditorSwitch;
 
 /**
@@ -69,32 +72,72 @@ public class SuperBlogMainController {
 	/** ブログ返信成功のメッセージ */
 	private static final String MESSAGE_BLOG_REPLY_COMPLETE   = "返信されました。";
 	
+	/** サービス */
+	/** --------------------------------------------------------------- */
+	
 	/**
-	 *  サービス
+	 * ブログメインサービス 
+	 * {@link BlogMainService} 
 	 */
 	protected final BlogMainService  blogMainService;
+	
+	/**
+	 * ブログ返信サービス 
+	 * {@link BlogReplyService} 
+	 */
 	protected final BlogReplyService blogReplyService;
+	
+	/**
+	 * ブログタグサービス 
+	 * {@link BlogTagService} 
+	 */
 	protected final BlogTagService   blogTagService;
+	
+	/** コントローラー */
+	/** --------------------------------------------------------------- */
+	
+	/** 
+	 * ヘッダーサービス 
+	 * {@link HeaderController} 
+	 */
+	protected final HeaderController	headerController;
+	
+	/** --------------------------------------------------------------- */
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService
-	 * @param blogReplyService
-	 * @param blogTagService
+	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogReplyService		{@link BlogReplyService}
+	 * @param blogTagService		{@link BlogTagService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SuperBlogMainController(
-			BlogMainService  blogMainService, 
-			BlogReplyService blogReplyService, 
-			BlogTagService   blogTagService) {
-		this.blogMainService  = blogMainService;
-		this.blogReplyService = blogReplyService;
-		this.blogTagService   = blogTagService;
+			BlogMainService		blogMainService, 
+			BlogReplyService	blogReplyService, 
+			BlogTagService		blogTagService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		this.blogMainService	= blogMainService;
+		this.blogReplyService	= blogReplyService;
+		this.blogTagService		= blogTagService;
+		this.headerController	= new HeaderController(userServiceUse, 
+				sessionLoginUser);
+	}
+	
+	/**
+	 * 共通attribute設定
+	 * @param model {@link Model}
+	 */
+	protected void setCommonAttribute(Model model) {
+		/** ヘッダーの設定 */
+		this.headerController.setHeader(model);
 	}
 	
 	/**
 	 * 一覧attribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setIndexAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,      TITLE_BLOG_INDEX);
@@ -104,8 +147,8 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 追加フォームattribute設定
-	 * @param editor
-	 * @param model
+	 * @param editor	{@link EditorSwitch}
+	 * @param model		{@link Model}
 	 */
 	protected void setAddFormAttribute(
 			EditorSwitch edit, 
@@ -117,9 +160,9 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 編集フォームattribute設定
-	 * @param editor
-	 * @param blogForm
-	 * @param model
+	 * @param editor	{@link EditorSwitch}
+	 * @param blogForm	{@link BlogForm}
+	 * @param model		{@link Model}
 	 */
 	protected void setEditorAttribute(
 			EditorSwitch edit, 
@@ -141,8 +184,8 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 投稿 or 編集確認attribute設定
-	 * @param edit
-	 * @param model
+	 * @param edit		{@link EditorSwitch}
+	 * @param model		{@link Model}
 	 */
 	protected void setConfirmAttribute(
 			EditorSwitch edit, 
@@ -155,7 +198,7 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 投稿成功redirect_attribute設定
-	 * @param redirectAttributes
+	 * @param redirectAttributes {@link RedirectAttributes}
 	 */
 	protected void setAddCompleteAttribute(RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(
@@ -165,10 +208,10 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 編集成功redirect_attribute設定
-	 * @param edit
-	 * @param blogForm
-	 * @param model
-	 * @param redirectAttributes
+	 * @param editor				{@link EditorSwitch}
+	 * @param blogForm				{@link BlogForm}
+	 * @param model					{@link Model}
+	 * @param redirectAttributes	{@link RedirectAttributes}
 	 */
 	protected void setEditCompleteAttribute(
 			EditorSwitch       edit, 
@@ -187,8 +230,8 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 返信フォームattribute設定
-	 * @param blogReplyId
-	 * @param model
+	 * @param blogReplyId	{@link BlogId}
+	 * @param model			{@link Model}
 	 */
 	protected void setReplyFormAttribute(
 			BlogId blogReplyId, 

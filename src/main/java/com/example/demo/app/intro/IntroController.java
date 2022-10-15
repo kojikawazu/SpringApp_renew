@@ -9,7 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.app.service.IntroService;
+import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.intro.IntroService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.entity.ExperienceModel;
@@ -82,24 +86,38 @@ public class IntroController {
 	};
 	
 	/** サービス */
-	private final IntroService introService;
-
+	private final IntroService		introService;
+	
+	/** コントローラー */
+	private final HeaderController	headerController;
+	
 	/**
 	 * コンストラクタ
 	 * @param introService
+	 * @param userServiceUse
+	 * @param sessionLoginUser
 	 */
 	@Autowired
-	public IntroController(IntroService introService) {
-		this.introService = introService;
+	public IntroController(
+			IntroService 		introService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		this.introService		= introService;
+		
+		this.headerController	= new HeaderController(userServiceUse, 
+										sessionLoginUser);
 	}
 	
 	/**
 	 * index
-	 * @param model
-	 * @return
+	 * @param  headerForm
+	 * @param  model
+	 * @return intro/index
 	 */
 	@GetMapping
-	public String index(Model model) {
+	public String index(
+			HeaderForm headerForm,
+			Model model) {
 		
 		IntroJSONModel jsonModel = this.introService.readerIntroData_byJSON(
 				Paths.get(INTRO_JSON_PATH));
@@ -144,6 +162,9 @@ public class IntroController {
 		
 		/** 最後に一言 */
 		this.setWordAttribute(jsonModel, titleList, model);
+		
+		/** ヘッダーの設定 */
+		this.headerController.setHeader(model);
 		
 		return AppConsts.URL_INTRO_INDEX;
 	}

@@ -1,3 +1,7 @@
+INSERT INTO home_user(kind_id, name, email, password, created, updated)
+VALUES(1, 'admin', 'manager@example.com', 'root', '2019-11-12 08:34:19', '2019-11-12 08:34:19');
+
+
 INSERT INTO inquiry(name, email, comment, created)
 VALUES('Ethan', 'sample@example.com', 'Hello', '2019-11-12 08:34:19');
 INSERT INTO inquiry(name, email, comment, created)
@@ -37,7 +41,6 @@ INSERT INTO inquiry(name, email, comment, created)
 VALUES('DEBUGGER', 'debug@example.com', 'テスト中', '2019-12-18 15:10:52');
 INSERT INTO inquiry(name, email, comment, created)
 VALUES('DEBUGGER', 'debug@example.com', 'テスト中', '2019-12-18 15:10:52');
-
 
 INSERT INTO inquiry_reply(inquiry_id, name, email, comment, created)
 VALUES(1, '管理人', 'manager@example.com', 'Hello thank you!', '2019-11-13 08:34:19');

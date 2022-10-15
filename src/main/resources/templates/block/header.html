@@ -52,11 +52,24 @@
 				</li>
 			</ul>
 			
-			<!-- 検索欄(空) -->
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="検索..." aria-label="検索...">
-				<button class="btn btn-secondary my-2 my-sm-0" type="submit">検索</button>
-			</form>
+			<!-- ログインユーザー -->
+			<div th:id="noLoginId">
+				<div  hidden th:text="${noLoginId}"></div>
+				<!-- ログインなし -->
+				<form class="form-inline my-2 my-lg-0" th:id="noLogin" th:object="${headerForm.userLoginForm}" th:action="@{/user/login}" method="post">
+					<input class="form-control mr-sm-2" type="text" name="name"     id="name"     th:value="*{name}" placeholder="ログインユーザー" aria-label="ログインユーザー">
+					<input class="form-control mr-sm-2" type="text" name="password" id="password" th:value="*{password}" placeholder="パスワード" aria-label="パスワード">
+					<button class="btn btn-secondary my-2 my-sm-0" type="submit">ログイン</button>
+				</form>
+			</div >
+			<div th:id="yesLoginId">
+				<div  hidden th:text="${yesLoginId}"></div>
+				<!-- ログイン中 -->
+				<form class="form-inline my-2 my-lg-0"  th:id="yesLogin" th:action="@{/user/logout}" method="post">
+					<input class="form-control mr-sm-2" placeholder="ログインユーザー" aria-label="ログインユーザー">
+					<button class="btn btn-secondary my-2 my-sm-0" type="submit">ログアウト</button>
+				</form>
+			</div  >
 		</div>
 	</nav>
 	

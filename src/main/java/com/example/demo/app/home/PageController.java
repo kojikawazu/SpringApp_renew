@@ -3,8 +3,6 @@ package com.example.demo.app.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.app.entity.InquiryModel;
-
 /**
  * ページコントローラー
  * @author nanai
@@ -29,6 +27,8 @@ public class PageController {
 	
 	/** ページ名前 */
 	private String pageName;
+	
+	/** --------------------------------------------------------------- */
 
 	/**
 	 * コンストラクタ
@@ -39,11 +39,11 @@ public class PageController {
 	
 	/**
 	 * ページ設定
-	 * @param <T>
-	 * @param inputList
-	 * @param currentPageIdx
-	 * @param page1Size
-	 * @return 
+	 * @param  <T>
+	 * @param  inputList
+	 * @param  currentPageIdx
+	 * @param  page1Size
+	 * @return T型リスト
 	 */
 	public <T> List<T> setPaging(List<T> inputList, int currentPageIdx, int page1Size) {
 		List<T> outputList  = new ArrayList<T>();
@@ -68,6 +68,8 @@ public class PageController {
 		return outputList;
 	}
 
+	/** --------------------------------------------------------------- */
+	
 	public int getCurrentID() {
 		return currentID;
 	}

@@ -17,10 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.example.demo.app.entity.SurveyModel;
+import com.example.demo.app.dao.survey.SurveyDao;
+import com.example.demo.app.dao.survey.SurveyDaoSql;
+import com.example.demo.app.entity.survey.SurveyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.SurveyId;
+import com.example.demo.common.id.survey.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
