@@ -15,11 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.example.demo.app.entity.InquiryReplyModel;
+import com.example.demo.app.dao.inquiry.InquiryReplyDao;
+import com.example.demo.app.dao.inquiry.InquiryReplyDaoSql;
+import com.example.demo.app.entity.inquiry.InquiryReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.InquiryId;
-import com.example.demo.common.id.InquiryReplyId;
+import com.example.demo.common.id.inquiry.InquiryId;
+import com.example.demo.common.id.inquiry.InquiryReplyId;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;

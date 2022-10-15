@@ -27,6 +27,9 @@ dependencies {
 	// h2 database
 	runtimeOnly 'com.h2database:h2'
 	
+	// Session
+	implementation 'org.springframework.session:spring-session-core'
+	
 	// Junit
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

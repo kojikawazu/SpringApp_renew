@@ -4,9 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogId;
-import com.example.demo.common.id.BlogReplyId;
+import com.example.demo.common.id.blog.BlogId;
+import com.example.demo.common.id.blog.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
@@ -45,26 +46,6 @@ class BlogReplyModelTest {
 		Assertions.assertEquals(model.getName(),      "");
 		Assertions.assertEquals(model.getComment(),   "");
 		Assertions.assertEquals(model.getThanksCnt(), 0);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-	}
-	
-	/**
-	 * 値設定後のテスト
-	 */
-	@Test
-	public void InitTest1() {
-		model.setId(                1);
-		model.setBlogId(            1);
-		model.setName(              TestConsts.TEST_NAME_NAME);
-		model.setComment(           TestConsts.TEST_COMMENT_NAME);
-		model.setThanksCnt(         1);
-		model.setCreated(           TestConsts.TEST_TIME_01);
-		
-		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getBlogId(),    1);
-		Assertions.assertEquals(model.getName(),      TestConsts.TEST_NAME_NAME);
-		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
-		Assertions.assertEquals(model.getThanksCnt(), 1);
 		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 	}
 	

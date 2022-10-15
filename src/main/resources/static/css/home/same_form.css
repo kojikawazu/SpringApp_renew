@@ -5,3 +5,12 @@ main{
 	margin-bottom: 200px;
 }
 
+.asterisk-cont {
+	color: red;
+}
+
+.asterisk-input {
+	padding-left:		3px;
+	color:				red;
+}
+

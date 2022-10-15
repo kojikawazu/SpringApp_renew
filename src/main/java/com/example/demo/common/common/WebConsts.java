@@ -31,6 +31,9 @@ public class WebConsts {
 	/** SQL[inquiry_id] */
 	public static final String SQL_INQUIRY_ID_NAME       = "inquiry_id";
 	
+	/** SQL[kind_id] */
+	public static final String SQL_KIND_ID_NAME          = "kind_id";
+	
 	/** SQL[title] */
 	public static final String SQL_TITLE_NAME            = "title";
 	
@@ -45,6 +48,9 @@ public class WebConsts {
 	
 	/** SQL[comment] */
 	public static final String SQL_COMMENT_NAME          = "comment";
+	
+	/** SQL[password] */
+	public static final String SQL_PASSWORD_NAME         = "password";
 	
 	/** SQL[thanksCnt] */
 	public static final String SQL_THANKSCNT_NAME        = "thanksCnt";
@@ -190,5 +196,9 @@ public class WebConsts {
 	/** attribute[selectIdx] */
 	public static final String ATTRIBUTE_SELECT_IDX    = "selectIdx";
 	
+	// ---------------------------------------------------------------------------------
+	
+	/** バリデーションエラー(入力なし) */
+	public static final String ERROR_MESSAGE_BLANK     = "を入力してください。";
 
 }

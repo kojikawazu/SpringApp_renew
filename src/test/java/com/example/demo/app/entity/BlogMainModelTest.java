@@ -1,14 +1,15 @@
 package com.example.demo.app.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.entity.blog.BlogMainModel;
+import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.TagWord;
@@ -46,35 +47,11 @@ class BlogMainModelTest {
 	 */
 	@Test
 	public void InitTest0() {
-		Assertions.assertEquals(model.getId(), 0);
-		Assertions.assertEquals(model.getTitle(), "");
-		Assertions.assertEquals(model.getTag(), "");
-		Assertions.assertEquals(model.getComment(), "");
-		Assertions.assertEquals(model.getThanksCnt(), 0);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
-		Assertions.assertNotNull(model.getReplyList());
-	}
-	
-	/**
-	 * 値設定後のテスト
-	 */
-	@Test
-	public void InitTest1() {
-		
-		model.setId(1);
-		model.setTitle(TestConsts.TEST_TITLE_NAME);
-		model.setTag(TestConsts.TEST_TAG_NAME);
-		model.setComment(TestConsts.TEST_COMMENT_NAME);
-		model.setThanksCnt(1);
-		model.setCreated(TestConsts.TEST_TIME_01);
-		model.setUpdated(TestConsts.TEST_TIME_02);
-		
-		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
-		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
-		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
-		Assertions.assertEquals(model.getThanksCnt(), 1);
+		Assertions.assertEquals(model.getId(), 			0);
+		Assertions.assertEquals(model.getTitle(), 		"");
+		Assertions.assertEquals(model.getTag(), 		"");
+		Assertions.assertEquals(model.getComment(), 	"");
+		Assertions.assertEquals(model.getThanksCnt(), 	0);
 		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
 		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
 		Assertions.assertNotNull(model.getReplyList());

@@ -4,13 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.app.entity.InquiryModel;
-import com.example.demo.app.service.InquiryReplyService;
-import com.example.demo.app.service.InquiryService;
+import com.example.demo.app.entity.inquiry.InquiryModel;
+import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.service.inquiry.InquiryReplyService;
+import com.example.demo.app.service.inquiry.InquiryService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.InquiryId;
+import com.example.demo.common.id.inquiry.InquiryId;
 
+/**
+ * スーパー問い合わせコントローラークラス
+ * @author nanai
+ *
+ */
 public class SuperInquiryController {
 	
 	/** 問い合わせページのタイトル */
@@ -48,26 +56,63 @@ public class SuperInquiryController {
 	
 	private static final String MESSAGE_INQUIRY_REPLY_COMPLETE = "投稿しました。";
 	
-	/** サービス　*/
-	protected final InquiryService      inquiryService;
-	protected final InquiryReplyService inquiryReplyService;
+	/** サービス */
+	/** --------------------------------------------------------------- */
+	
+	/** 
+	 * 問い合わせサービス 
+	 * {@link InquiryService} 
+	 */
+	protected final InquiryService		inquiryService;
+	
+	/** 
+	 * 問い合わせ返信サービス 
+	 * {@link InquiryReplyService} 
+	 */
+	protected final InquiryReplyService	inquiryReplyService;
+	
+	/** コントローラー */
+	/** --------------------------------------------------------------- */
+	
+	/** 
+	 * ヘッダーサービス 
+	 * {@link HeaderController} 
+	 */
+	protected final HeaderController	headerController;
+	
+	/** --------------------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
-	 * @param service
-	 * @param inquiryReplyService
+	 * @param inquiryService		{@link InquiryService}
+	 * @param inquiryReplyService	{@link InquiryReplyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SuperInquiryController(
 			InquiryService      inquiryService, 
-			InquiryReplyService inquiryReplyService) {
-		this.inquiryService      = inquiryService;
-		this.inquiryReplyService = inquiryReplyService;
+			InquiryReplyService inquiryReplyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		this.inquiryService			= inquiryService;
+		this.inquiryReplyService	= inquiryReplyService;
+		this.headerController		= new HeaderController(userServiceUse, 
+														sessionLoginUser);
+	}
+	
+	/**
+	 * 共通attribute設定
+	 * @param model {@link Model}
+	 */
+	protected void setCommonAttribute(Model model) {
+		/** ヘッダーの設定 */
+		this.headerController.setHeader(model);
 	}
 	
 	/**
 	 * 問い合わせページattribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setIndexAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_INQUIRY_INDEX);
@@ -76,7 +121,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせフォームattribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setFormAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_INQUIRY_FORM);
@@ -85,7 +130,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ確認attribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setConfirmAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITTLE_INQUIRY_CONFIRM);
@@ -94,7 +139,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ成功 - リダイレクトattribute設定
-	 * @param redirectAttributes
+	 * @param redirectAttributes {@link RedirectAttributes}
 	 */
 	protected void setRedirectCompleteAttribute(RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(WebConsts.ATTRIBUTE_COMPLETE, 
@@ -103,7 +148,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ返信フォームattribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setReplyFormAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITTLE_INQUIRY_REPLY_FORM);
@@ -112,7 +157,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ返信確認attribute設定
-	 * @param model
+	 * @param model {@link Model}
 	 */
 	protected void setReplyConfirmAttribute(Model model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITTLE_INQUIRY_REPLY_CONFIRM);
@@ -121,7 +166,7 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ返信投稿 - リダイレクトattribute設定
-	 * @param redirectAttributes
+	 * @param redirectAttributes {@link RedirectAttributes}
 	 */
 	protected void setReplyCompleteAttribute(
 			InquiryId          inquiryId, 
@@ -135,8 +180,8 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせ返信設定
-	 * @param id
-	 * @param model
+	 * @param id	{@link InquiryId}
+	 * @param model	{@link Model}
 	 */
 	protected void setReply(InquiryId inquiryId, Model model) {
 		InquiryModel inquiryModel = this.inquiryService.select(inquiryId);

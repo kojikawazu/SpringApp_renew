@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.app.service.SurveyService;
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.app.survey.form.SurveyChangeForm;
 import com.example.demo.app.survey.form.SurveySatisForm;
 import com.example.demo.common.common.AppConsts;
@@ -62,25 +65,35 @@ public class SatisReplyController extends SuperSurveyController  {
 	/** 年齢ボタン */
 	private static final String BUTTON_MAIN_AGE   = "main-age-button";
 	
+	/** --------------------------------------------------------------- */
+	
 	/**
 	 * コンストラクタ
-	 * @param service
+	 * @param surveyService			{@link SurveyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SatisReplyController(
-			SurveyService service) {
-		super(service);
+			SurveyService 		surveyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(surveyService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * 調査返信受信
 	 * (非同期通信)
-	 * @param surveyChangeForm
-	 * @return
+	 * @param  headerForm		{@link HeaderForm}
+	 * @param  surveyChangeForm	{@link SurveyChangeForm}
+	 * @return SurveyChangeForm {@link SurveyChangeForm}
 	 */
 	@RequestMapping(AppConsts.REQUEST_MAPPING_SATIS_REPLY)
 	@ResponseBody
 	public SurveyChangeForm satis_reply(
+			HeaderForm	headerForm,
 			@RequestBody SurveyChangeForm surveyChangeForm) {
 		List<SurveySatisForm> list = null;
 		if(surveyChangeForm.getId() == 1) {

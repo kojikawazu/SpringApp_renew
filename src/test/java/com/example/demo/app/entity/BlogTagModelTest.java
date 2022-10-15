@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogTagId;
+import com.example.demo.common.id.blog.BlogTagId;
 import com.example.demo.common.word.TagWord;
 
 /**
@@ -36,19 +37,6 @@ class BlogTagModelTest {
 		
 		Assertions.assertEquals(model.getId(), 0);
 		Assertions.assertEquals(model.getTag(), "");
-	}
-	
-	/**
-	 * 値設定後テスト
-	 */
-	@Test
-	public void InitTest1() {
-		
-		model.setId(1);
-		model.setTag(TestConsts.TEST_TAG_NAME);
-		
-		Assertions.assertEquals(model.getId(),  1);
-		Assertions.assertEquals(model.getTag(), TestConsts.TEST_TAG_NAME);
 	}
 	
 	/**
@@ -89,7 +77,7 @@ class BlogTagModelTest {
 	public void InitTest2() {
 		
 		BlogTagModel test = new BlogTagModel(
-				new TagWord("テストタグ")
+				new TagWord(TestConsts.TEST_TAG_NAME)
 				);
 		
 		model = new BlogTagModel(test);

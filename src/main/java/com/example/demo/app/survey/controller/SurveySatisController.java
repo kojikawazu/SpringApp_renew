@@ -8,7 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.app.service.SurveyService;
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.app.survey.form.SurveySatisForm;
 import com.example.demo.common.common.AppConsts;
 
@@ -23,23 +26,34 @@ public class SurveySatisController extends SuperSurveyController  {
 
 	/**
 	 * コンストラクタ
-	 * @param service
+	 * @param surveyService			{@link SurveyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SurveySatisController(
-			SurveyService service) {
-		super(service);
+			SurveyService 		surveyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(surveyService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * アンケート統計受信
-	 * @param model
-	 * @return アンケート統計URL
+	 * @param  headerForm	{@link HeaderForm}
+	 * @param  model		{@link Model}
+	 * @return {@value AppConsts#URL_SURVEY_SATISTICS}
 	 */
 	@GetMapping(AppConsts.REQUEST_MAPPING_SATIS)
 	public String satisfaction(
-			Model model) {
+			HeaderForm	headerForm,
+			Model		model) {
 		List<SurveySatisForm> list = this.surveyService.countSatisfactionAll();
+		
+		// attribute設定
+		this.setCommonAttribute(model);
 		this.setSatisAttribute(model, list);
 		return AppConsts.URL_SURVEY_SATISTICS;
 	}

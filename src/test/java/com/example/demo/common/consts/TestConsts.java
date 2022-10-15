@@ -38,4 +38,7 @@ public class TestConsts {
 	/** テスト用コメント */
 	public static final String TEST_COMMENT_NAME    = "テストコメント";
 	
+	/** テスト用パスワード */
+	public static final String TEST_PASSWORD_NAME    = "テストパスワード";
+	
 }

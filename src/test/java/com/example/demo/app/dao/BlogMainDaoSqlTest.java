@@ -17,11 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.example.demo.app.entity.BlogMainModel;
-import com.example.demo.app.entity.BlogReplyModel;
+import com.example.demo.app.dao.blog.BlogMainDao;
+import com.example.demo.app.dao.blog.BlogMainDaoSql;
+import com.example.demo.app.entity.blog.BlogMainModel;
+import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.TagWord;

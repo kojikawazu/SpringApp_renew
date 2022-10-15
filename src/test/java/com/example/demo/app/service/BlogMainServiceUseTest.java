@@ -1,7 +1,6 @@
 package com.example.demo.app.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Timestamp;
@@ -16,12 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.example.demo.app.dao.BlogMainDao;
-import com.example.demo.app.dao.BlogMainDaoSql;
-import com.example.demo.app.entity.BlogMainModel;
+import com.example.demo.app.dao.blog.BlogMainDao;
+import com.example.demo.app.dao.blog.BlogMainDaoSql;
+import com.example.demo.app.entity.blog.BlogMainModel;
+import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogMainServiceUse;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.BlogId;
+import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.TagWord;

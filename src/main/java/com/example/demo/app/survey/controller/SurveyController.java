@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.app.entity.SurveyModel;
+import com.example.demo.app.entity.survey.SurveyModel;
+import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.home.PageController;
-import com.example.demo.app.service.SurveyService;
+import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.SessionLoginUser;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.common.AppConsts;
 
@@ -29,27 +32,37 @@ public class SurveyController extends SuperSurveyController {
 	
 	/**
 	 * コンストラクタ
-	 * @param service
+	 * @param surveyService			{@link SurveyService}
+	 * @param userServiceUse		{@link UserServiceUse}
+	 * @param sessionLoginUser		{@link SessionLoginUser}
 	 */
 	@Autowired
 	public SurveyController(
-			SurveyService service) {
-		super(service);
+			SurveyService 		surveyService,
+			UserServiceUse 		userServiceUse,
+			SessionLoginUser	sessionLoginUser) {
+		super(surveyService,
+				userServiceUse,
+				sessionLoginUser);
 	}
 	
 	/**
 	 * 調査一覧受信
-	 * @param pageidx
-	 * @param model
-	 * @return 調査一覧URL
+	 * @param  pageidx
+	 * @param  headerForm	{@link HeaderForm}
+	 * @param  model		{@link Model}
+	 * @return {@value AppConsts#URL_SURVEY_INDEX}
 	 */
 	@GetMapping
 	public String index(
 			@RequestParam(value = WebConsts.ATTRIBUTE_PAGE_IDX, 
 							required = false, defaultValue = "1") int pageidx,
-			Model model) {
-		
+			HeaderForm	headerForm,
+			Model		model) {
 		this.setPaging(pageidx, model);
+		
+		// attribute設定
+		this.setCommonAttribute(model);
 		this.setIndexAttribute(model);
 		return AppConsts.URL_SURVEY_INDEX;
 	}
@@ -57,7 +70,7 @@ public class SurveyController extends SuperSurveyController {
 	/**
 	 * ページング設定
 	 * @param pageidx
-	 * @param model
+	 * @param model		{@link Model}
 	 */
 	private void setPaging(int pageidx, Model model) {
 		List<SurveyModel> list       = this.surveyService.getAll();

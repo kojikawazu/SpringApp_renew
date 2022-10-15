@@ -1,3 +1,29 @@
+/** ユーザーテーブル */
+CREATE TABLE home_user
+(
+   id INT NOT NULL AUTO_INCREMENT,
+   kind_id INT NOT NULL,
+   name VARCHAR(20) NOT NULL,
+   email VARCHAR(20) NOT NULL,
+   password VARCHAR(20) NOT NULL,
+   created DATETIME NOT NULL,
+   updated DATETIME NOT NULL,
+   PRIMARY KEY(id)
+);
+
+/** ログインテーブル */
+CREATE TABLE login_user
+(
+   id INT NOT NULL AUTO_INCREMENT,
+   login_user INT NOT NULL,
+   created DATETIME NOT NULL,
+   updated DATETIME NOT NULL,
+   PRIMARY KEY(id)
+);
+
+/** ----------------------------------------------------------------------------- */
+
+/** 問い合わせテーブル */
 CREATE TABLE inquiry
 (
    id INT NOT NULL AUTO_INCREMENT,
@@ -8,6 +34,7 @@ CREATE TABLE inquiry
    PRIMARY KEY(id)
 );
 
+/** 問い合わせ返信テーブル */
 CREATE TABLE inquiry_reply
 (
    id INT NOT NULL AUTO_INCREMENT,
@@ -19,6 +46,9 @@ CREATE TABLE inquiry_reply
    PRIMARY KEY(id)
 );
 
+/** ----------------------------------------------------------------------------- */
+
+/** 調査テーブル */
 CREATE TABLE survey
 (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -32,6 +62,9 @@ CREATE TABLE survey
 	PRIMARY KEY(id)
 );
 
+/** ----------------------------------------------------------------------------- */
+
+/** ブログテーブル */
 CREATE TABLE blog_main
 (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -44,6 +77,7 @@ CREATE TABLE blog_main
 	PRIMARY KEY(id)
 );
 
+/** ブログ返信テーブル */
 CREATE TABLE blog_reply
 (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -65,9 +99,11 @@ CREATE TABLE blog_dubble_reply
 	PRIMARY KEY(id)
 );
 
+/** ブログタグテーブル */
 CREATE TABLE blog_tag(
 	id INT NOT NULL AUTO_INCREMENT,
 	tag VARCHAR(15) NOT NULL,
 	PRIMARY KEY(id)
 );
 
+/** ----------------------------------------------------------------------------- */

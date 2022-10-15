@@ -4,12 +4,19 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.example.demo.common.common.WebConsts;
+
 /**
  * 問い合わせフォーム
  * @author nanai
  *
  */
 public class InquiryForm {
+	
+	/** ---------------------------------------------------------------------------------------- */
+	
+	/** 名前 */
+	private static final String NAME_NAME        = "名前";
 	
 	/** 名前の最小文字数 */
 	private static final int MIN_NAME_LENGTH     = 1;
@@ -19,6 +26,11 @@ public class InquiryForm {
 	
 	/** 名前のエラーメッセージ */
 	private static final String MAX_NAME_MESSAGE = MAX_NAME_LENGTH + "文字を超えています。";
+	
+	/** ---------------------------------------------------------------------------------------- */
+	
+	/** メールアドレス */
+	private static final String EMAIL_NAME        = "メールアドレス";
 	
 	/** Eメールの最小文字数 */
 	private static final int MIN_EMAIL_LENGTH     = 1;
@@ -32,6 +44,11 @@ public class InquiryForm {
 	/** Eメールアドレス形式エラーメッセージ */
 	private static final String ERROR_EMAIL_MESSAGE = "正しいメールアドレスを入力してください。";
 	
+	/** ---------------------------------------------------------------------------------------- */
+	
+	/** コメント */
+	private static final String COMMENT_NAME        = "コメント";
+	
 	/** コメントの最小文字数 */
 	private static final int MIN_COMMENT_LENGTH     = 1;
 	
@@ -41,15 +58,17 @@ public class InquiryForm {
 	/** コメントのエラーメッセージ */
 	private static final String MAX_COMMENT_MESSAGE = MAX_COMMENT_LENGTH + "文字を超えています。";
 	
+	/** ---------------------------------------------------------------------------------------- */
+	
 	/** 問い合わせ名 */
-	@NotNull
+	@NotNull(message = NAME_NAME + WebConsts.ERROR_MESSAGE_BLANK)
 	@Size(min       = MIN_NAME_LENGTH, 
 			max     = MAX_NAME_LENGTH, 
 			message = MAX_NAME_MESSAGE)
 	private String name;
 	
 	/** 問い合わせメールアドレス */
-	@NotNull
+	@NotNull(message = EMAIL_NAME + WebConsts.ERROR_MESSAGE_BLANK)
 	@Size(min       = MIN_EMAIL_LENGTH, 
 			max     = MAX_EMAIL_LENGTH, 
 			message = MAX_EMAIL_MESSAGE)
@@ -57,11 +76,13 @@ public class InquiryForm {
 	private String email;
 	
 	/** コメント */
-	@NotNull
+	@NotNull(message = COMMENT_NAME + WebConsts.ERROR_MESSAGE_BLANK)
 	@Size(min       = MIN_COMMENT_LENGTH, 
 			max     = MAX_COMMENT_LENGTH, 
 			message = MAX_COMMENT_MESSAGE)
 	private String comment;
+	
+	/** ---------------------------------------------------------------------------------------- */
 	
 	public InquiryForm() {
 		super();
