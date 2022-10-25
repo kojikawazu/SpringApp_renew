@@ -29,6 +29,7 @@ dependencies {
 	
 	// Session
 	implementation 'org.springframework.session:spring-session-core'
+	implementation 'com.innoq:spring-cookie:0.1.0'
 	
 	// Junit
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

@@ -1,5 +1,7 @@
 package com.example.demo.app.blog.main.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,10 +10,12 @@ import com.example.demo.app.blog.main.BlogMainId;
 import com.example.demo.app.service.blog.BlogMainService;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.id.blog.BlogReplyId;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * ブログ返信いいねプッシュコントローラー
@@ -27,20 +31,29 @@ public class BlogReplyThanksController extends SuperBlogMainController {
 	 * @param blogMainService		{@link BlogMainService}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
-	 * @param userServiceUse		{@link UserServiceUse}
-	 * @param sessionLoginUser		{@link SessionLoginUser}
+	 * @param userService			{@link UserServiceUse}
+	 * @param loginService			{@link LoginServiceUse}
+	 * @param sessionModel			{@link SessionModel}
+	 * @param httpSession			{@link HttpSession}
+	 * @param logMessage			{@link LogMessage}
 	 */
 	public BlogReplyThanksController(
 			BlogMainService		blogMainService, 
 			BlogReplyService	blogReplyService, 
 			BlogTagService		blogTagService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
 		super(blogMainService,
 				blogReplyService,
 				blogTagService,
-				userServiceUse,
-				sessionLoginUser);
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
 	
 	/**

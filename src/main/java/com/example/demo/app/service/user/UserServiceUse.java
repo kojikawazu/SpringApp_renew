@@ -20,15 +20,18 @@ import com.example.demo.common.id.user.UserId;
  */
 @Component
 @Service
-public class UserServiceUse implements SuperService<UserModel, UserId> {
+public class UserServiceUse implements SuperService<UserModel, UserId>, UserService {
 	
-	/** Daoクラス */
+	/** 
+	 * Daoクラス
+	 * {@link UserDaoSql}
+	 */
 	@Autowired
 	private final UserDaoSql dao;
 	
 	/**
 	 * コンストラクタ
-	 * @param dao
+	 * @param dao {@link UserDaoSql}
 	 */
 	public UserServiceUse(UserDaoSql dao) {
 		this.dao = dao;
@@ -36,7 +39,7 @@ public class UserServiceUse implements SuperService<UserModel, UserId> {
 
 	/**
 	 * 保存
-	 * @param model
+	 * @param model {@link UserModel}
 	 */
 	@Override
 	public void save(UserModel model) {
@@ -45,29 +48,31 @@ public class UserServiceUse implements SuperService<UserModel, UserId> {
 
 	/**
 	 * 更新
-	 * @param model
+	 * @param  model {@link UserModel}
+	 * @throws {@link WebMvcConfig#SQL_NOT_UPDATE()}
 	 */
 	@Override
 	public void update(UserModel model) {
-		if(this.dao.update(model) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.update(model) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
 	/**
 	 * 削除
-	 * @param id
+	 * @param id {@link UserId}
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
 	 */
 	@Override
 	public void delete(UserId id) {
-		if(this.dao.delete(id) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.delete(id) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
 	/**
 	 * 全て選択
-	 * @return ユーザーモデルリスト
+	 * @return list {@link List}({@link UserModel})
 	 */
 	@Override
 	public List<UserModel> getAll() {
@@ -76,14 +81,54 @@ public class UserServiceUse implements SuperService<UserModel, UserId> {
 
 	/**
 	 * IDによる選択
-	 * @param  id
-	 * @return ユーザーモデルクラス
+	 * @param  id {@link UserId}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return model {@link UserModel}
 	 */
 	@Override
 	public UserModel select(UserId id) {
 		UserModel model = this.dao.select(id);
 		
-		if(model == null) {
+		if (model == null) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return model;
+	}
+
+	/**
+	 * IDは存在する？
+	 * @param id ターゲットID
+	 * @return true 存在する false 存在しない
+	 */
+	@Override
+	public boolean isSelect_byId(int targetID) {
+		return this.dao.isSelect_byId(targetID);
+	}
+
+	/**
+	 * 名前orEメールandパスワードに一致するIDは存在する？
+	 * @param  target
+	 * @param  targetPassword
+	 * @return true 存在する false 存在しない
+	 */
+	@Override
+	public boolean isSelect_byNameOrEmailAndPassword(String target, String targetPassword) {
+		return this.dao.isSelect_byNameOrEmailAndPassword(target, targetPassword);
+	}
+
+	/**
+	 * 名前orEメールandパスワードに一致するモデルを取得
+	 * @param  target 			名前 or メールアドレス
+	 * @param  targetPassword	パスワード
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return {@link UserModel}
+	 */
+	@Override
+	public UserModel select_byNameOrEmailAndPassword(String target, String targetPassword) {
+		UserModel model = this.dao.select_byNameOrEmailAndPassword(target, targetPassword);
+		
+		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 		

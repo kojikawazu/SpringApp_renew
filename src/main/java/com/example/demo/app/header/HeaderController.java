@@ -1,65 +1,150 @@
 package com.example.demo.app.header;
 
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.ui.Model;
 
+import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.CookieLoginUser;
+import com.example.demo.app.session.user.SessionModel;
+import com.example.demo.common.id.user.LoginId;
+import com.example.demo.common.log.LogMessage;
 
-public class HeaderController {
+/**
+ * ヘッダーコントローラー
+ * @author nanai
+ *
+ */
+public class HeaderController extends SuperHeaderController {
 
-	/** サービス */
-	/** --------------------------------------------------------------- */
+	/** ログインなしキーワード */
+	public static final String NO_LOGIN_ID_NAME		= "noLoginId";
 	
-	/** 
-	 * ユーザーサービス 
-	 * {@link UserServiceUse} 
-	 */
-	private final UserServiceUse	userService;
+	/** ログイン中キーワード */
+	public static final String YES_LOGIN_ID_NAME	= "yesLoginId";
 	
-	/** セッション */
-	/** --------------------------------------------------------------- */
+	/** ログイン表示側 */
+	public static final String LOGIN_NOW_WORD		= "yes";
 	
-	/** 
-	 * ログインセッション 
-	 * {@link SessionLoginUser} 
-	 */
-	private SessionLoginUser		sessionLoginUser;
+	/** ログイン非表示側 */
+	public static final String LOGIN_NO_WORD		= "";
 	
-	Logger logger = null;
-	
-	/** --------------------------------------------------------------- */
+	/** -------------------------------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
 	 * @param userService		{@link UserServiceUse}
-	 * @param sessionLoginUser	{@link SessionLoginUser}
+	 * @param loginService		{@link LoginServiceUse}
+	 * @param sessionModel		{@link SessionModel}
+	 * @param httpSession		{@link HttpSession}
+	 * @param logMessage		{@link LogMessage}
 	 */
 	public HeaderController(
 			UserServiceUse		userService,
-			SessionLoginUser	sessionLoginUser) {
-		this.userService 		= userService;
-		this.sessionLoginUser 	= sessionLoginUser;
-		this.logger 			= LoggerFactory.getLogger(HeaderController.class);
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
+		super(userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
+	}
+	
+	/** ----------------------------------------------------------------------------------------- */
+	
+	/**
+	 * Cookieの変化があったかチェック処理
+	 * @param cookieLoginId
+	 * @param cookieUserId
+	 * @param cookieUserName
+	 * @return true 変化なし false 変化あり
+	 */
+	private boolean isChangeCookie(
+			String cookieLoginId,
+			String cookieUserId,
+			String cookieUserName) {
+		int cookieLoginIdValue	= Integer.valueOf(cookieLoginId);
+		int cookieUserIdValue 	= Integer.valueOf(cookieUserId);
+		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
+		
+		// 過去と現在が一致してる？
+		if(cookieLoginUser.getLoginId() != cookieLoginIdValue ||
+				cookieLoginUser.getUserId() != cookieUserIdValue ||
+				!cookieLoginUser.getUserName().equals(cookieUserName)) {
+			// 変化あり
+			
+			// Cookie破棄された?
+			if (cookieLoginUser.getLoginId() > CookieLoginUser.getLoginIdInit() &&
+				cookieLoginIdValue == CookieLoginUser.getLoginIdInit()) {
+				// Cookie破棄
+				
+				// データはまだ保存されてる?
+				if(this.getLoginService().isSelect_byId(
+						cookieLoginUser.getLoginId())) {
+					// 残っているログイン情報削除
+					this.getLoginService().delete(
+							new LoginId(cookieLoginUser.getLoginId()));
+					// 変化あり
+					return false;
+				}
+			}
+		}
+		
+		// 変化なし
+		return true;
+	}
+	
+	/**
+	 * Cookieの設定
+	 * @param loginId
+	 * @param userId
+	 * @param userName
+	 */
+	public void setCookie(
+			String loginId, String userId, String userName) {
+		// Cookie変化チェック
+		isChangeCookie(loginId, userId, userName);
+		
+		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
+		cookieLoginUser.setLoginId(Integer.valueOf(loginId));
+		cookieLoginUser.setUserId(Integer.valueOf(userId));
+		cookieLoginUser.setUserName(userName);
 	}
 	
 	/**
 	 * ヘッダーの設定
-	 * @param model {@link Model}
+	 * @param request		{@link HttpServletRequest}
+	 * @param headerForm	{@link HeaderForm}
+	 * @param model			{@link Model}
 	 */
-	public void setHeader(Model model) {
-		int userId = sessionLoginUser.getUserId();
+	public void setHeader(
+			HttpServletRequest	request,
+			HeaderForm 			headerForm,
+			Model 				model) {
+		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser();
+		int loginId						= cookieLoginUser.getLoginId();
+		String loginUserName			= cookieLoginUser.getUserName();
 		
-		logger.info("[debug]:" + userId);
-		if (userId > 0) {
-			model.addAttribute("noLoginId",  "");
-			model.addAttribute("yesLoginId", "yes");
+		if (loginId > 0) {
+			// ログイン中
+			model.addAttribute(NO_LOGIN_ID_NAME,	LOGIN_NO_WORD);
+			model.addAttribute(YES_LOGIN_ID_NAME,	LOGIN_NOW_WORD);
+			model.addAttribute("loginUserName",	loginUserName);
+			
+			headerForm.getUserLoginForm().setName(loginUserName);
+			headerForm.getUserLogoutForm().setNowLogoutId(loginId);
 		} else {
-			model.addAttribute("noLoginId",  "yes");
-			model.addAttribute("yesLoginId", "");
+			// ログインなし
+			model.addAttribute(NO_LOGIN_ID_NAME,	LOGIN_NOW_WORD);
+			model.addAttribute(YES_LOGIN_ID_NAME,	LOGIN_NO_WORD);
+			
+			headerForm.getUserLoginForm().setName(CookieLoginUser.getUserNameInit());
+			headerForm.getUserLogoutForm().setNowLogoutId(CookieLoginUser.getLoginIdInit());
 		}
 	}
-	
 }

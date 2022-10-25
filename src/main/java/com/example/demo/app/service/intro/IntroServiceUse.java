@@ -16,12 +16,15 @@ import com.example.demo.json.IntroReader;
 @Service
 public class IntroServiceUse implements IntroService {
 
-	/** 自己紹介読取クラス */
+	/** 
+	 * 自己紹介読取クラス 
+	 * {@link IntroReader} 
+	 */
 	private final IntroReader reader;
 	
 	/**
 	 * コンストラクタ
-	 * @param reader
+	 * @param reader {@link IntroReader} 
 	 */
 	@Autowired
 	public IntroServiceUse(IntroReader reader) {
@@ -30,8 +33,8 @@ public class IntroServiceUse implements IntroService {
 	
 	/**
 	 * 自己紹介データをJSONデータから読取
-	 * @param  path
-	 * @return JSON読取モデル
+	 * @param  path {@link Path}
+	 * @return JSON読取モデル {@link IntroJSONModel}
 	 */
 	@Override
 	public IntroJSONModel readerIntroData_byJSON(Path path) {

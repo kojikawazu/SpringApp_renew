@@ -10,6 +10,9 @@ public class AppConsts {
 	// ---------------------------------------------------------------------------------
 	/** request mapping */
 	
+	/** request mapping[/user] */
+	public static final String REQUEST_MAPPING_USER           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_USER;
+	
 	/** request mapping[/home] */
 	public static final String REQUEST_MAPPING_HOME           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_HOME;
 	
@@ -64,6 +67,11 @@ public class AppConsts {
 	/** request mapping[/satis_reply] */
 	public static final String REQUEST_MAPPING_SATIS_REPLY   = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_REPLY_SATIS;
 	
+	/** request mapping[/login] */
+	public static final String REQUEST_MAPPING_LOGIN         = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_LOGIN;
+	
+	/** request mapping[/logout] */
+	public static final String REQUEST_MAPPING_LOGOUT         = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_LOGOUT;
 	
 	// ---------------------------------------------------------------------------------
 	/** return URL */

@@ -3,21 +3,26 @@ package com.example.demo.app.intro;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.app.header.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.intro.IntroService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.entity.ExperienceModel;
 import com.example.demo.common.entity.IntroJSONModel;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * 自己紹介コントローラー
@@ -26,7 +31,7 @@ import com.example.demo.common.entity.IntroJSONModel;
  */
 @Controller
 @RequestMapping(AppConsts.REQUEST_MAPPING_INTRO)
-public class IntroController {
+public class IntroController extends SuperIntroController {
 	
 	/** Jsonパス */
 	private static final String JSON_DIR 				= "src/main/resources/static/json";
@@ -85,42 +90,63 @@ public class IntroController {
 		TITLE, CONT;
 	};
 	
-	/** サービス */
-	private final IntroService		introService;
-	
-	/** コントローラー */
-	private final HeaderController	headerController;
+	/** ---------------------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
-	 * @param introService
-	 * @param userServiceUse
-	 * @param sessionLoginUser
+	 * @param introService		{@link IntroService}
+	 * @param userService		{@link UserServiceUse}
+	 * @param loginService		{@link LoginServiceUse}
+	 * @param sessionModel		{@link SessionModel}
+	 * @param httpSession		{@link HttpSession}
+	 * @param logMessage		{@link LogMessage}
 	 */
 	@Autowired
 	public IntroController(
 			IntroService 		introService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
-		this.introService		= introService;
-		
-		this.headerController	= new HeaderController(userServiceUse, 
-										sessionLoginUser);
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
+		super(introService,
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
 	
 	/**
 	 * index
-	 * @param  headerForm
-	 * @param  model
-	 * @return intro/index
+	 * @param  cookieLoginId	ログインID(Cookie)
+	 * @param  cookieUserId		ユーザーID(Cookie)
+	 * @param  cookieUserName	ユーザー名(Cookie)
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  headerForm		{@link HeaderForm}
+	 * @param  model			{@link Model}
+	 * @return {@value AppConsts#URL_INTRO_INDEX}
 	 */
 	@GetMapping
 	public String index(
-			HeaderForm headerForm,
-			Model model) {
+			@CookieValue(name=WebConsts.COOKIE_LOGIN_ID,
+						required=false, 
+						defaultValue=WebConsts.COOKIE_ZERO)		String cookieLoginId,
+			@CookieValue(name=WebConsts.COOKIE_USER_ID,
+						required=false, 
+						defaultValue=WebConsts.COOKIE_ZERO)		String cookieUserId,
+			@CookieValue(name=WebConsts.COOKIE_USER_NAME,
+						required=false, 
+						defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
+			HttpServletRequest	request,
+			HeaderForm			headerForm,
+			Model				model) {
+		/** Cookieの設定 */
+		this.getHeaderController().setCookie(cookieLoginId, cookieUserId, cookieUserName);
 		
-		IntroJSONModel jsonModel = this.introService.readerIntroData_byJSON(
+		IntroJSONModel jsonModel = this.getIntroService().readerIntroData_byJSON(
 				Paths.get(INTRO_JSON_PATH));
+		
 		/** タイトル */
 		List<String> titleList = jsonModel.getTitleList();
 		
@@ -164,7 +190,7 @@ public class IntroController {
 		this.setWordAttribute(jsonModel, titleList, model);
 		
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 		
 		return AppConsts.URL_INTRO_INDEX;
 	}

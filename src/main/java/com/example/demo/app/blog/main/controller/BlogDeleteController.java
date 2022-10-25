@@ -1,5 +1,8 @@
 package com.example.demo.app.blog.main.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +14,14 @@ import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.blog.BlogMainService;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.exception.SQLNoDeleteException;
 import com.example.demo.common.id.blog.BlogId;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * ブログ削除フォームコントローラー
@@ -32,25 +37,35 @@ public class BlogDeleteController extends SuperBlogMainController {
 	 * @param blogMainService		{@link BlogMainService}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
-	 * @param userServiceUse		{@link UserServiceUse}
-	 * @param sessionLoginUser		{@link SessionLoginUser}
+	 * @param userService			{@link UserServiceUse}
+	 * @param loginService			{@link LoginServiceUse}
+	 * @param sessionModel			{@link SessionModel}
+	 * @param httpSession			{@link HttpSession}
+	 * @param logMessage			{@link LogMessage}
 	 */
 	public BlogDeleteController(
 			BlogMainService		blogMainService, 
 			BlogReplyService	blogReplyService, 
 			BlogTagService		blogTagService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
 		super(blogMainService,
 				blogReplyService,
 				blogTagService,
-				userServiceUse,
-				sessionLoginUser);
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
 	
 	/**
 	 * ブログ削除受信
 	 * @param id
+	 * @param request				{@link HttpServletRequest}
 	 * @param  headerForm			{@link HeaderForm}
 	 * @param model					{@link model}
 	 * @param redirectAttributes	{@link RedirectAttributes}
@@ -59,6 +74,7 @@ public class BlogDeleteController extends SuperBlogMainController {
 	@PostMapping(AppConsts.REQUEST_MAPPING_DELETE)
 	public String delete(
 			@RequestParam(WebConsts.ATTRIBUTE_ID) int id,
+			HttpServletRequest	request,
 			HeaderForm			headerForm,
 			Model				model,
 			RedirectAttributes	redirectAttributes) {

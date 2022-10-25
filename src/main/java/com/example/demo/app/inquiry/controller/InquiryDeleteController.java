@@ -1,5 +1,8 @@
 package com.example.demo.app.inquiry.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,12 +13,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.exception.SQLNoDeleteException;
 import com.example.demo.common.id.inquiry.InquiryId;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * 問い合わせ削除コントローラー
@@ -30,23 +35,33 @@ public class InquiryDeleteController extends SuperInquiryController {
 	 * コンストラクタ
 	 * @param inquiryService		{@link InquiryService}
 	 * @param inquiryReplyService	{@link InquiryReplyService}
-	 * @param userServiceUse		{@link UserServiceUse}
-	 * @param sessionLoginUser		{@link SessionLoginUser}
+	 * @param userService			{@link UserServiceUse}
+	 * @param loginService			{@link LoginServiceUse}
+	 * @param sessionModel			{@link SessionModel}
+	 * @param httpSession			{@link HttpSession}
+	 * @param logMessage			{@link LogMessage}
 	 */
 	public InquiryDeleteController(
-			InquiryService	inquiryService, 
-			InquiryReplyService	inquiryReplyService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
+			InquiryService      inquiryService, 
+			InquiryReplyService inquiryReplyService,
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
 		super(inquiryService, 
 				inquiryReplyService, 
-				userServiceUse, 
-				sessionLoginUser);
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
 	
 	/**
 	 * 削除受信
 	 * @param  id
+	 * @param  request				{@link HttpServletRequest}
 	 * @param  headerForm			{@link HeaderForm}
 	 * @param  model				{@link model}
 	 * @param  redirectAttributes	{@link RedirectAttributes}
@@ -55,6 +70,7 @@ public class InquiryDeleteController extends SuperInquiryController {
 	@PostMapping(AppConsts.REQUEST_MAPPING_DELETE)
 	public String delete(
 			@RequestParam(WebConsts.ATTRIBUTE_ID) int id,
+			HttpServletRequest	request,
 			HeaderForm 			headerForm,
 			Model				model,
 			RedirectAttributes	redirectAttributes) {

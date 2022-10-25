@@ -13,8 +13,8 @@ public interface IntroService {
 
 	/**
 	 * 自己紹介データをJSONデータから読取
-	 * @param  path
-	 * @return JSON読取モデル
+	 * @param  path {@link Path}
+	 * @return JSON読取モデル {@link IntroJSONModel}
 	 */
 	public IntroJSONModel readerIntroData_byJSON(Path path);
 	

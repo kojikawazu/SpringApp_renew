@@ -2,6 +2,9 @@ package com.example.demo.app.survey.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,12 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.survey.SurveyService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.app.survey.form.SurveyChangeForm;
 import com.example.demo.app.survey.form.SurveySatisForm;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * 調査返信コントローラー
@@ -69,23 +74,33 @@ public class SatisReplyController extends SuperSurveyController  {
 	
 	/**
 	 * コンストラクタ
-	 * @param surveyService			{@link SurveyService}
-	 * @param userServiceUse		{@link UserServiceUse}
-	 * @param sessionLoginUser		{@link SessionLoginUser}
+	 * @param surveyService		{@link SurveyService}
+	 * @param userService		{@link UserServiceUse}
+	 * @param loginService		{@link LoginServiceUse}
+	 * @param sessionModel		{@link SessionModel}
+	 * @param httpSession		{@link HttpSession}
+	 * @param logMessage		{@link LogMessage}
 	 */
 	@Autowired
 	public SatisReplyController(
 			SurveyService 		surveyService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
 		super(surveyService,
-				userServiceUse,
-				sessionLoginUser);
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
 	
 	/**
 	 * 調査返信受信
 	 * (非同期通信)
+	 * @param  request			{@link HttpServletRequest}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  surveyChangeForm	{@link SurveyChangeForm}
 	 * @return SurveyChangeForm {@link SurveyChangeForm}
@@ -93,8 +108,9 @@ public class SatisReplyController extends SuperSurveyController  {
 	@RequestMapping(AppConsts.REQUEST_MAPPING_SATIS_REPLY)
 	@ResponseBody
 	public SurveyChangeForm satis_reply(
-			HeaderForm	headerForm,
-			@RequestBody SurveyChangeForm surveyChangeForm) {
+			HttpServletRequest				request,
+			HeaderForm						headerForm,
+			@RequestBody SurveyChangeForm	surveyChangeForm) {
 		List<SurveySatisForm> list = null;
 		if(surveyChangeForm.getId() == 1) {
 			// 満足度集計

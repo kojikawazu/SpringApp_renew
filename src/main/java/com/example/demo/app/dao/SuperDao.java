@@ -45,4 +45,10 @@ public interface SuperDao<T, S> {
 	 */
 	T select(S id);
 	
+	/**
+	 * IDは存在する？
+	 * @param id
+	 * @return true 存在する false 存在しない
+	 */
+	boolean isSelect_byId(int targetID);
 }

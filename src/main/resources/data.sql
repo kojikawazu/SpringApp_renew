@@ -1,6 +1,7 @@
 INSERT INTO home_user(kind_id, name, email, password, created, updated)
 VALUES(1, 'admin', 'manager@example.com', 'root', '2019-11-12 08:34:19', '2019-11-12 08:34:19');
-
+INSERT INTO home_user(kind_id, name, email, password, created, updated)
+VALUES(2, 'ken', 'ken@example.com', 'ken', '2019-11-12 08:34:19', '2019-11-12 08:34:19');
 
 INSERT INTO inquiry(name, email, comment, created)
 VALUES('Ethan', 'sample@example.com', 'Hello', '2019-11-12 08:34:19');

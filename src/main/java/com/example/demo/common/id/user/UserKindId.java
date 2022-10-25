@@ -1,13 +1,13 @@
 package com.example.demo.common.id.user;
 
-import com.example.demo.common.id.intro.IntroId;
+import com.example.demo.common.id.common.SuperId;
 
 /**
  * ユーザー種別クラス
  * @author nanai
  *
  */
-public class UserKindId implements IntroId {
+public class UserKindId implements SuperId {
 
 	/** ID */
 	private int id;

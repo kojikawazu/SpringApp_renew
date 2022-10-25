@@ -9,18 +9,25 @@ import javax.validation.constraints.NotNull;
  */
 public class UserLoginForm {
 
+	/** ユーザー名 */
 	@NotNull
-	private String name;
+	private String 	name;
 	
+	/** パスワード */
 	@NotNull
-	private String password;
+	private String 	password;
+	
+	/** -------------------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
 	 */
 	public UserLoginForm() {
-		
+		this.name		= "";
+		this.password	= "";
 	}
+	
+	/** -------------------------------------------------------------- */
 	
 	public void setName(String name) {
 		this.name = name;
