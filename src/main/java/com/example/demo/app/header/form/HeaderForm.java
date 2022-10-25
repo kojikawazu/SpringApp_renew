@@ -7,21 +7,43 @@ package com.example.demo.app.header.form;
  */
 public class HeaderForm {
 
-	/** ユーザーログインフォーム */
-	private UserLoginForm userLoginForm;
+	/** 
+	 * ユーザーログインフォーム
+	 * {@link UserLoginForm}
+	 */
+	private UserLoginForm	userLoginForm;
+	
+	/** 
+	 * ユーザーログアウトフォーム
+	 * {@link UserLogoutForm}
+	 */
+	private UserLogoutForm	userLogoutForm;
+	
+	/** ----------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
 	 * 
 	 */
 	public HeaderForm() {
-		userLoginForm = new UserLoginForm();
+		if (userLoginForm == null) {
+			userLoginForm	= new UserLoginForm();
+		}
+		if (userLogoutForm == null) {
+			userLogoutForm	= new UserLogoutForm();
+		}
 	}
+	
+	/** ----------------------------------------------------- */
 	
 	/** getter */
 	
 	public UserLoginForm getUserLoginForm() {
 		return this.userLoginForm;
+	}
+	
+	public UserLogoutForm getUserLogoutForm() {
+		return this.userLogoutForm;
 	}
 	
 }

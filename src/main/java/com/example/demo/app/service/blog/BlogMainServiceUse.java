@@ -19,12 +19,15 @@ import com.example.demo.common.id.blog.BlogId;
 @Service
 public class BlogMainServiceUse implements BlogMainService {
 
-	/** Daoクラス */
+	/** 
+	 * Daoクラス
+	 * {@link BlogMainDao}
+	 */
 	private final BlogMainDao dao;
 	
 	/**
 	 * コンストラクタ
-	 * @param dao
+	 * @param dao {@link BlogMainDao}
 	 */
 	@Autowired
 	public BlogMainServiceUse(BlogMainDao dao) {
@@ -33,7 +36,7 @@ public class BlogMainServiceUse implements BlogMainService {
 	
 	/**
 	 * 保存
-	 * @param model
+	 * @param model {@link BlogMainModel}
 	 */
 	@Override
 	public void save(BlogMainModel model) {
@@ -42,29 +45,31 @@ public class BlogMainServiceUse implements BlogMainService {
 
 	/**
 	 * 更新
-	 * @param model
+	 * @param  model {@link BlogMainModel}
+	 * @throws {@link WebMvcConfig#SQL_NOT_UPDATE()}
 	 */
 	@Override
 	public void update(BlogMainModel model) {
-		if(this.dao.updateBlog(model) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.updateBlog(model) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
 	/**
 	 * 削除
-	 * @param id
+	 * @param  id {@link BlogId}
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
 	 */
 	@Override
 	public void delete(BlogId id) {
-		if(this.dao.deleteBlog(id) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.deleteBlog(id) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
 	/**
 	 * 全て選択
-	 * @return ブログメインモデルリスト
+	 * @return ブログメインモデルリスト {@link List}({@link BlogMainModel})
 	 */
 	@Override
 	public List<BlogMainModel> getAll() {
@@ -73,7 +78,8 @@ public class BlogMainServiceUse implements BlogMainService {
 	
 	/**
 	 * 全て選択(ブログ返信モデルリストつき)
-	 * @return ブログメインモデルリスト
+	 * @param  isDesc false 昇順 true 降順
+	 * @return ブログメインモデルリスト {@link List}({@link BlogMainModel})
 	 */
 	@Override
 	public List<BlogMainModel> getAllPlus(boolean isDesc) {
@@ -82,14 +88,15 @@ public class BlogMainServiceUse implements BlogMainService {
 
 	/**
 	 * IDによる選択
-	 * @param  id
-	 * @return ブログメインモデルクラス
+	 * @param  id {@link BlogId}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return ブログメインモデルクラス {@link BlogMainModel}
 	 */
 	@Override
 	public BlogMainModel select(BlogId id) {
 		BlogMainModel model = this.dao.select(id);
 		
-		if(model == null) {
+		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 		
@@ -99,7 +106,7 @@ public class BlogMainServiceUse implements BlogMainService {
 	/**
 	 * タグによる選択
 	 * @param  タグ
-	 * @return ブログメインモデルリスト
+	 * @return ブログメインモデルリスト {@link List}({@link BlogMainModel})
 	 */
 	@Override
 	public List<BlogMainModel> select_byTag(String tag) {
@@ -110,7 +117,7 @@ public class BlogMainServiceUse implements BlogMainService {
 	 * タグによる選択(ブログ返信モデルリストつき)
 	 * @param  タグ
 	 * @param  isDesc false 昇順 true 降順
-	 * @return ブログメインモデルリスト
+	 * @return ブログメインモデルリスト {@link List}({@link BlogMainModel})
 	 */
 	@Override
 	public List<BlogMainModel> select_byTagPlus(String tag, boolean isDesc) {
@@ -119,14 +126,15 @@ public class BlogMainServiceUse implements BlogMainService {
 
 	/**
 	 * いいね数加算
-	 * @param id
+	 * @param  id {@link BlogId}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
 	 * @return いいね数
 	 */
 	@Override
 	public int thanksIncrement(BlogId id) {
 		int number = this.dao.thanksIncrement(id);
 		
-		if(number == WebConsts.ERROR_NUMBER) {
+		if (number == WebConsts.ERROR_NUMBER) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 		

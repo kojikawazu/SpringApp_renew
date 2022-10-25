@@ -23,12 +23,15 @@ public class SurveyServiceUse implements SurveyService {
 	/** 評価最大数 */
 	private static final int MAX_SATIS = 5;
 
-	/** daoクラス */
+	/** 
+	 * daoクラス
+	 * {@link SurveyDao}
+	 */
 	private final SurveyDao dao;
 	
 	/**
 	 * コンストラクタ
-	 * @param dao
+	 * @param dao {@link SurveyDao}
 	 */
 	@Autowired
 	public SurveyServiceUse(SurveyDao dao) {
@@ -37,7 +40,7 @@ public class SurveyServiceUse implements SurveyService {
 	
 	/**
 	 * 保存
-	 * @param model
+	 * @param model {@link SurveyModel}
 	 */
 	@Override
 	public void save(SurveyModel model) {
@@ -46,18 +49,19 @@ public class SurveyServiceUse implements SurveyService {
 
 	/**
 	 * 更新
-	 * @param model
+	 * @param  model {@link SurveyModel}
+	 * @throws {@link WebMvcConfig#SQL_NOT_UPDATE()}
 	 */
 	@Override
 	public void update(SurveyModel model) {
-		if(this.dao.updateSurvey(model) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.updateSurvey(model) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 
 	/**
 	 * 全選択
-	 * @return 調査モデルリスト
+	 * @return 調査モデルリスト {@link List}({@link SurveyModel})
 	 */
 	@Override
 	public List<SurveyModel> getAll() {
@@ -66,13 +70,13 @@ public class SurveyServiceUse implements SurveyService {
 
 	/**
 	 * 全ての評価の数を取得
-	 * @return 評価フォームリスト
+	 * @return 評価フォームリスト {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionAll() {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionAll(idx));
@@ -85,13 +89,13 @@ public class SurveyServiceUse implements SurveyService {
 	/**
 	 * 年齢別評価の数を取得
 	 * @param  age 年齢
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionAge(int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionAge(idx, age));
@@ -104,13 +108,13 @@ public class SurveyServiceUse implements SurveyService {
 	/**
 	 * 性別による評価の数を取得
 	 * @param  ismen 男 or 女
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionSx(int ismen) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSx(idx, ismen));
@@ -123,13 +127,13 @@ public class SurveyServiceUse implements SurveyService {
 	/**
 	 * 職業別評価の数を取得
 	 * @param  prof 職業
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionProf(int prof) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionProf(idx, prof));
@@ -143,13 +147,13 @@ public class SurveyServiceUse implements SurveyService {
 	 * 性別 & 職業別の評価の数を取得
 	 * @param ismen 男 or 女
 	 * @param prof 職業
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionSxProf(int ismen, int prof) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxProf(idx, ismen, prof));
@@ -163,13 +167,13 @@ public class SurveyServiceUse implements SurveyService {
 	 * 職業 & 年齢別の評価の数を取得
 	 * @param  prof 職業
 	 * @param  age  年齢
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionProfAge(int prof, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionProfAge(idx, prof, age));
@@ -183,13 +187,13 @@ public class SurveyServiceUse implements SurveyService {
 	 * 性別 & 年齢別の評価の数を取得
 	 * @param  ismen 男 or 女
 	 * @param  age 年齢
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionSxAge(int ismen, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxAge(idx, ismen, age));
@@ -204,13 +208,13 @@ public class SurveyServiceUse implements SurveyService {
 	 * @param  ismen 男 or 女
 	 * @param  prof  職業
 	 * @param  age   年齢
-	 * @return 評価フォーム
+	 * @return 評価フォーム {@link List}({@link SurveySatisForm})
 	 */
 	@Override
 	public List<SurveySatisForm> countSatisfactionSxProfAge(int ismen, int prof, int age) {
 		List<SurveySatisForm> list = new ArrayList<SurveySatisForm>();
 		
-		for(int idx=MAX_SATIS; idx>0; idx--){
+		for (int idx=MAX_SATIS; idx>0; idx--) {
 			SurveySatisForm form = new SurveySatisForm();
 			form.setId(idx);
 			form.setSatisfaction(this.dao.countSatisfactionSxProfAge(idx, ismen, prof, age));

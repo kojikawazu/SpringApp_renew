@@ -1,13 +1,13 @@
 package com.example.demo.common.id.survey;
 
-import com.example.demo.common.id.intro.IntroId;
+import com.example.demo.common.id.common.SuperId;
 
 /**
  * 調査IDクラス
  * @author nanai
  *
  */
-public class SurveyId implements IntroId {
+public class SurveyId implements SuperId {
 
 	/** ID */
 	private int id;

@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.app.blog.main.BlogMainId;
 import com.example.demo.app.entity.blog.BlogMainModel;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.common.common.WebConsts;

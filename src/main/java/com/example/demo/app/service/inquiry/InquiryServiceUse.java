@@ -19,12 +19,15 @@ import com.example.demo.common.id.inquiry.InquiryId;
 @Service
 public class InquiryServiceUse implements InquiryService {
 	
-	/** Daoクラス */
+	/** 
+	 * Daoクラス
+	 * {@link InquiryDao}
+	 */
 	private final InquiryDao dao;
 
 	/**
 	 * コンストラクタ
-	 * @param dao
+	 * @param dao {@link InquiryDao}
 	 */
 	@Autowired
 	public InquiryServiceUse(InquiryDao dao) {
@@ -33,7 +36,7 @@ public class InquiryServiceUse implements InquiryService {
 	
 	/**
 	 * 保存
-	 * @param model
+	 * @param model {@link InquiryModel}
 	 */
 	@Override
 	public void save(InquiryModel model) {
@@ -42,22 +45,24 @@ public class InquiryServiceUse implements InquiryService {
 
 	/**
 	 * 更新
-	 * @param model
+	 * @param  model {@link InquiryModel}
+	 * @throws {@link WebMvcConfig#SQL_NOT_UPDATE()}
 	 */
 	@Override
 	public void update(InquiryModel model) {
-		if(this.dao.updateInquiry(model) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.updateInquiry(model) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
 	
 	/**
 	 * 削除
-	 * @param id
+	 * @param  id {@link InquiryId}
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
 	 */
 	@Override
 	public void delete(InquiryId id) {
-		if(this.dao.deleteInquiry(id) <= WebConsts.ERROR_DB_STATUS) {
+		if (this.dao.deleteInquiry(id) <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
@@ -65,7 +70,7 @@ public class InquiryServiceUse implements InquiryService {
 	/**
 	 * 全選択
 	 * @param isDesc false 昇順 true 降順
-	 * @return 問い合わせモデルリスト
+	 * @return 問い合わせモデルリスト {@link List}({@link InquiryModel})
 	 */
 	@Override
 	public List<InquiryModel> getAll(boolean isDesc) {
@@ -75,7 +80,7 @@ public class InquiryServiceUse implements InquiryService {
 	/**
 	 * 全選択(問い合わせ返信モデルリストつき)
 	 * @param isDesc false 昇順 true 降順
-	 * @return 問い合わせモデルリスト
+	 * @return 問い合わせモデルリスト {@link List}({@link InquiryModel})
 	 */
 	@Override
 	public List<InquiryModel> getAllPlus(boolean isDesc) {
@@ -84,14 +89,15 @@ public class InquiryServiceUse implements InquiryService {
 	
 	/**
 	 * 選択
-	 * @param  id
-	 * @return 問い合わせモデル
+	 * @param  id {@link InquiryId}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return 問い合わせモデル {@link InquiryModel}
 	 */
 	@Override
 	public InquiryModel select(InquiryId id) {
 		InquiryModel model = this.dao.select(id);
 		
-		if(model == null) {
+		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
 		

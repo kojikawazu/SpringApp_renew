@@ -1,7 +1,6 @@
 package com.example.demo.common.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.example.demo.common.list.IntroList;
 import com.example.demo.common.number.NormalNumber;

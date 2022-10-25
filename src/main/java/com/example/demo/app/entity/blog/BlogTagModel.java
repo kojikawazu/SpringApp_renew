@@ -1,7 +1,6 @@
 package com.example.demo.app.entity.blog;
 
 import com.example.demo.common.id.blog.BlogTagId;
-import com.example.demo.common.word.NameWord;
 import com.example.demo.common.word.TagWord;
 
 /**

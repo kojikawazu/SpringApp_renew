@@ -1,5 +1,9 @@
 package com.example.demo.common.common;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Web定数クラス
  * @author nanai
@@ -8,22 +12,84 @@ package com.example.demo.common.common;
 public class WebConsts {
 	
 	/** エラー番号 */
-	public static final int    ERROR_NUMBER    = -1;
+	public static final int    			ERROR_NUMBER    = -1;
 	
 	/** データなし */
-	public static final int    ERROR_DB_STATUS = 0;
+	public static final int   	 		ERROR_DB_STATUS = 0;
 	
 	/** 0の文字列 */
-	public static final String ZERO_STRING     = "0";
+	public static final String			ZERO_STRING     = "0";
 	
 	/** 0の数字 */
-	public static final int    ZERO_NUMBER     = 0;
+	public static final int    			ZERO_NUMBER     = 0;
+	
+	/** 時間がだいぶ経っている */
+	public static final boolean 		TIME_RUNNING_OUT		= false;
+	
+	/** 時間内 */
+	public static final boolean 		TIME_WITHIN				= true;
+	
+	
+	// ---------------------------------------------------------------------------------
+	/** Ajax response */
+	
+	/** response[OK] */
+	public static final String			RESPONSE_OK			= "OK";
+	
+	/** response[NG] */
+	public static final String			RESPONSE_NG			= "NG";
+	
+	/** response[none] */
+	public static final String			RESPONSE_NONE		= "none";
+	
+	/** response[init] */
+	public static final String			RESPONSE_INIT		= "init";
+	
+	/** response[delete] */
+	public static final String			RESPONSE_DELETE		= "delete";
+	
+	/** response[reload] */
+	public static final String			RESPONSE_RELOAD		= "reload";
+	
+	// ---------------------------------------------------------------------------------
+	
+	/** セッション & Cookie */
+	
+	/** Cookie(0) */
+	public static final String			COOKIE_ZERO			= "0";
+	
+	/** Cookie(none) */
+	public static final String			COOKIE_NONE			= "none";
+	
+	/** Cookie(loginId) */
+	public static final String			COOKIE_LOGIN_ID		= "loginId";
+	
+	/** Cookie(userId) */
+	public static final String			COOKIE_USER_ID		= "userId";
+	
+	/** Cookie(userName) */
+	public static final String			COOKIE_USER_NAME	= "userName";
+	
+	/** Cookieのタイムアウト(1日) */
+	public static final int				COOKIE_TIMEOUT		= 24 * 60 * 60;
+	
+	/** ログインのタイムアウト(時間単位)({@value #LOGIN_TIMEOUT_HOUR}時間) */
+	public static final int				LOGIN_TIMEOUT_HOUR	= 1;
+	
+	/** Cookieキーリスト*/
+	public static final List<String>	COOKIE_KEY_LIST	= new ArrayList<String>(Arrays.asList(
+			COOKIE_LOGIN_ID,
+			COOKIE_USER_ID,
+			COOKIE_USER_NAME));
 	
 	// ---------------------------------------------------------------------------------
 	/** SQL */
 	
 	/** SQL[id] */
 	public static final String SQL_ID_NAME               = "id";
+	
+	/** SQL[user_id] */
+	public static final String SQL_USER_ID_NAME          = "user_id";
 	
 	/** SQL[blog_id] */
 	public static final String SQL_BLOG_ID_NAME          = "blog_id";
@@ -33,6 +99,9 @@ public class WebConsts {
 	
 	/** SQL[kind_id] */
 	public static final String SQL_KIND_ID_NAME          = "kind_id";
+	
+	/** SQL[session_id] */
+	public static final String SQL_SESSION_ID_NAME       = "session_id";
 	
 	/** SQL[title] */
 	public static final String SQL_TITLE_NAME            = "title";
@@ -106,6 +175,9 @@ public class WebConsts {
 	/** URL key[home] */
 	public static final String URL_KEY_INDEX          = "index";
 	
+	/** URL key[user] */
+	public static final String URL_KEY_USER           = "user";
+	
 	/** URL key[home] */
 	public static final String URL_KEY_HOME           = "home";
 	
@@ -150,6 +222,12 @@ public class WebConsts {
 	
 	/** URL key[complete] */
 	public static final String URL_KEY_COMPLETE       = "complete";
+	
+	/** URL key[login] */
+	public static final String URL_KEY_LOGIN          = "login";
+	
+	/** URL key[logout] */
+	public static final String URL_KEY_LOGOUT         = "logout";
 	
 	/** URL key[reply_form] */
 	public static final String URL_KEY_REPLY_FORM     = URL_KEY_REPLY + "_" + URL_KEY_FORM;

@@ -15,7 +15,8 @@ CREATE TABLE home_user
 CREATE TABLE login_user
 (
    id INT NOT NULL AUTO_INCREMENT,
-   login_user INT NOT NULL,
+   user_id INT NOT NULL,
+   session_id VARCHAR(50) NOT NULL,
    created DATETIME NOT NULL,
    updated DATETIME NOT NULL,
    PRIMARY KEY(id)

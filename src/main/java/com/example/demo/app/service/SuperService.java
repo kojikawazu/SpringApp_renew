@@ -2,9 +2,6 @@ package com.example.demo.app.service;
 
 import java.util.List;
 
-import com.example.demo.app.entity.blog.BlogMainModel;
-import com.example.demo.common.id.blog.BlogId;
-
 /**
  * 基本サービスクラス
  * @author nanai
@@ -42,5 +39,12 @@ public interface SuperService<T, S> {
 	 * @return モデルクラス
 	 */
 	T select(S id);
+	
+	/**
+	 * IDは存在する？
+	 * @param id
+	 * @return true 存在する false 存在しない
+	 */
+	boolean isSelect_byId(int targetID);
 
 }

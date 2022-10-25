@@ -2,10 +2,14 @@ package com.example.demo.app.blog.main.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,11 +22,13 @@ import com.example.demo.app.home.PageController;
 import com.example.demo.app.service.blog.BlogMainService;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.SessionLoginUser;
+import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.id.blog.BlogTagId;
+import com.example.demo.common.log.LogMessage;
 
 /**
  * ブログメインコントローラー
@@ -47,21 +53,30 @@ public class BlogMainController extends SuperBlogMainController {
 	 * @param blogMainService		{@link BlogMainService}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
-	 * @param userServiceUse		{@link UserServiceUse}
-	 * @param sessionLoginUser		{@link SessionLoginUser}
+	 * @param userService			{@link UserServiceUse}
+	 * @param loginService			{@link LoginServiceUse}
+	 * @param sessionModel			{@link SessionModel}
+	 * @param httpSession			{@link HttpSession}
+	 * @param logMessage			{@link LogMessage}
 	 */
 	@Autowired
 	public BlogMainController(
 			BlogMainService		blogMainService, 
 			BlogReplyService	blogReplyService, 
 			BlogTagService		blogTagService,
-			UserServiceUse 		userServiceUse,
-			SessionLoginUser	sessionLoginUser) {
+			UserServiceUse 		userService,
+			LoginServiceUse		loginService,
+			SessionModel		sessionModel,
+			HttpSession			httpSession,
+			LogMessage			logMessage) {
 		super(blogMainService,
 				blogReplyService,
 				blogTagService,
-				userServiceUse,
-				sessionLoginUser);
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 		
 		/** ブログメインリストの降順設定 */
 		this.setPageDesc();
@@ -69,7 +84,11 @@ public class BlogMainController extends SuperBlogMainController {
 	
 	/**
 	 * index
+	 * @param  cookieLoginId	ログインID(Cookie)
+	 * @param  cookieUserId		ユーザーID(Cookie)
+	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  pageidx
+	 * @param request			{@link HttpServletRequest}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  blogSelectedForm	{@link BlogSelectedForm}
 	 * @param  model			{@link Model}
@@ -77,17 +96,33 @@ public class BlogMainController extends SuperBlogMainController {
 	 */
 	@GetMapping
 	public String index(
+			@CookieValue(name=WebConsts.COOKIE_LOGIN_ID,
+			required=false, 
+			defaultValue=WebConsts.COOKIE_ZERO)					String cookieLoginId,
+		@CookieValue(name=WebConsts.COOKIE_USER_ID,
+			required=false, 
+			defaultValue=WebConsts.COOKIE_ZERO)					String cookieUserId,
+		@CookieValue(name=WebConsts.COOKIE_USER_NAME,
+			required=false, 
+			defaultValue=WebConsts.COOKIE_NONE)					String cookieUserName,
 			@RequestParam(value = WebConsts.ATTRIBUTE_PAGE_IDX, 
-						required = false, defaultValue = "1") int pageidx,
+						required = false, defaultValue = "1") 	int pageidx,
+			HttpServletRequest			request,
 			HeaderForm					headerForm,
 			@Validated BlogSelectedForm	blogSelectedForm,
 			Model						model) {
+		/** Cookieの設定 */
+		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		
 		List<BlogMainModel> list = setBlogList(blogSelectedForm);
 		this.setPaging(list, pageidx, model);
 		this.setSelectTag(model);
 		
+		/** ヘッダーの設定 */
+		this.headerController.setHeader(request, headerForm, model);
+		
 		// attribute設定
-		this.setCommonAttribute(model);
+		this.setCommonAttribute(request, headerForm, model);
 		this.setIndexAttribute(model);
 		list.clear();
 		return AppConsts.URL_BLOG_MAIN_INDEX;

@@ -1,13 +1,13 @@
 package com.example.demo.common.id.blog;
 
-import com.example.demo.common.id.intro.IntroId;
+import com.example.demo.common.id.common.SuperId;
 
 /**
  * ブログタグIDモデル
  * @author nanai
  *
  */
-public class BlogTagId implements IntroId {
+public class BlogTagId implements SuperId {
 
 	/** ID */
 	private int id;
