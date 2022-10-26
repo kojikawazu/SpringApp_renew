@@ -56,10 +56,10 @@ public class WebConsts {
 	/** セッション & Cookie */
 	
 	/** Cookie(0) */
-	public static final String			COOKIE_ZERO			= "0";
+	public static final String			COOKIE_ZERO			= "wfssM4JI4nk=";
 	
 	/** Cookie(none) */
-	public static final String			COOKIE_NONE			= "none";
+	public static final String			COOKIE_NONE			= "340Zwm6z8hs=";
 	
 	/** Cookie(loginId) */
 	public static final String			COOKIE_LOGIN_ID		= "loginId";

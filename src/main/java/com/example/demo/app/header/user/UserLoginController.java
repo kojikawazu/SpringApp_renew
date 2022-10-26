@@ -25,6 +25,7 @@ import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.common.WebFunctions;
+import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.id.user.LoginId;
 import com.example.demo.common.id.user.SessionId;
 import com.example.demo.common.id.user.UserId;
@@ -188,23 +189,28 @@ public class UserLoginController extends SuperUserController {
 			HttpServletResponse 	response,
 			LoginId					loginId, 
 			UserModel 				userModel) {
+		// 暗号化
+		String encryptedLoginId		= CommonEncrypt.encrypt(loginId.getId());
+		String encryptedUserId		= CommonEncrypt.encrypt(userModel.getId());
+		String encryptedUserName 	= CommonEncrypt.encrypt(userModel.getName());
+		
 		// Cookieの保存
 		WebFunctions.saveCookie(
 				response, 
 				WebConsts.COOKIE_LOGIN_ID, 
-				String.valueOf(loginId.getId()),
+				encryptedLoginId,
 				WebConsts.COOKIE_TIMEOUT);
 		
 		WebFunctions.saveCookie(
 				response, 
 				WebConsts.COOKIE_USER_ID, 
-				String.valueOf(userModel.getId()),
+				encryptedUserId,
 				WebConsts.COOKIE_TIMEOUT);
 		
 		WebFunctions.saveCookie(
 				response, 
 				WebConsts.COOKIE_USER_NAME, 
-				userModel.getName(), 
+				encryptedUserName, 
 				WebConsts.COOKIE_TIMEOUT);
 	}
 	

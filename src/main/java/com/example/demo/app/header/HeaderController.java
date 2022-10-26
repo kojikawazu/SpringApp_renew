@@ -10,6 +10,7 @@ import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.CookieLoginUser;
 import com.example.demo.app.session.user.SessionModel;
+import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.id.user.LoginId;
 import com.example.demo.common.log.LogMessage;
 
@@ -107,13 +108,18 @@ public class HeaderController extends SuperHeaderController {
 	 */
 	public void setCookie(
 			String loginId, String userId, String userName) {
+		// 復号化
+		String decryptedLoginId		= CommonEncrypt.decrypt(loginId);
+		String decryptedUserId 		= CommonEncrypt.decrypt(userId);
+		String decryptedUserName 	= CommonEncrypt.decrypt(userName);
+		
 		// Cookie変化チェック
-		isChangeCookie(loginId, userId, userName);
+		isChangeCookie(decryptedLoginId, decryptedUserId, decryptedUserName);
 		
 		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
-		cookieLoginUser.setLoginId(Integer.valueOf(loginId));
-		cookieLoginUser.setUserId(Integer.valueOf(userId));
-		cookieLoginUser.setUserName(userName);
+		cookieLoginUser.setLoginId(Integer.valueOf(decryptedLoginId));
+		cookieLoginUser.setUserId(Integer.valueOf(decryptedUserId));
+		cookieLoginUser.setUserName(decryptedUserName);
 	}
 	
 	/**
