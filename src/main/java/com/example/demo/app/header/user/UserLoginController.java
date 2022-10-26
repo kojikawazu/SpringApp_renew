@@ -96,7 +96,7 @@ public class UserLoginController extends SuperUserController {
 		
 		// ログイン情報の保存
 		LoginId loginId = this.saveLoginUser(request, userLoginForm, userModel);
-		if (loginId.getId() > 0) {
+		if (loginId.getId() > CookieLoginUser.getLoginIdInit()) {
 			// セッションとCookieの保存
 			this.saveSession(response, loginId, userModel);
 		}

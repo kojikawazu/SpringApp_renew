@@ -74,7 +74,7 @@ public class HeaderController extends SuperHeaderController {
 		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
 		
 		// 過去と現在が一致してる？
-		if(cookieLoginUser.getLoginId() != cookieLoginIdValue ||
+		if (cookieLoginUser.getLoginId() != cookieLoginIdValue ||
 				cookieLoginUser.getUserId() != cookieUserIdValue ||
 				!cookieLoginUser.getUserName().equals(cookieUserName)) {
 			// 変化あり
@@ -85,7 +85,7 @@ public class HeaderController extends SuperHeaderController {
 				// Cookie破棄
 				
 				// データはまだ保存されてる?
-				if(this.getLoginService().isSelect_byId(
+				if (this.getLoginService().isSelect_byId(
 						cookieLoginUser.getLoginId())) {
 					// 残っているログイン情報削除
 					this.getLoginService().delete(
@@ -117,8 +117,8 @@ public class HeaderController extends SuperHeaderController {
 		isChangeCookie(decryptedLoginId, decryptedUserId, decryptedUserName);
 		
 		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
-		cookieLoginUser.setLoginId(Integer.valueOf(decryptedLoginId));
-		cookieLoginUser.setUserId(Integer.valueOf(decryptedUserId));
+		cookieLoginUser.setLoginId(decryptedLoginId);
+		cookieLoginUser.setUserId(decryptedUserId);
 		cookieLoginUser.setUserName(decryptedUserName);
 	}
 	

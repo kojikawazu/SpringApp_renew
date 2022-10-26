@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import com.example.demo.common.log.LogMessage;
 
 /**
- * セッションログインリスナー
+ * セッションログインリスナー<br>
+ * implements {@link HttpSessionListener}
  * @author nanai
  *
  */
@@ -18,6 +19,10 @@ import com.example.demo.common.log.LogMessage;
 @WebListener
 public class SessionLoginListener implements HttpSessionListener  {
 
+	/**
+	 * ログクラス
+	 * {@link LogMessage}
+	 */
 	@Autowired
 	private LogMessage	logMessage;
 	
@@ -27,7 +32,7 @@ public class SessionLoginListener implements HttpSessionListener  {
 	 */
 	@Override
 	public void sessionCreated(HttpSessionEvent event){
-		logMessage.info("add");
+		this.logMessage.info("add");
 	}
 	
 	/**
@@ -36,6 +41,6 @@ public class SessionLoginListener implements HttpSessionListener  {
 	 */
 	@Override
     public void sessionDestroyed(HttpSessionEvent event) {
-		logMessage.info("delete");
+		this.logMessage.info("delete");
     }
 }

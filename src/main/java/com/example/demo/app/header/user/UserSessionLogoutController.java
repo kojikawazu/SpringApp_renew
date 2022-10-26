@@ -58,6 +58,8 @@ public class UserSessionLogoutController extends SuperUserController {
 				logMessage);
 	}
 	
+	/** --------------------------------------------------------------------------------------- */
+	
 	/**
 	 * タイムアウトチェック受信
 	 * @param  cookieLoginId	ログインID(Cookie)
@@ -84,7 +86,7 @@ public class UserSessionLogoutController extends SuperUserController {
 			HttpServletResponse 	response,
 			Model					model) {
 		HttpSession 	session = request.getSession();
-		this.getLog().info("[debug]: sessionID..."  + session.getId());
+		this.getLog().info("sessionID..."  + session.getId());
 		
 		// Cookieモデルの設定
 		this.setCookieModel(cookieLoginId, cookieUserId, cookieUserName);

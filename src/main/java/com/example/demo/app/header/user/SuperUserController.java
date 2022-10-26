@@ -149,8 +149,8 @@ public class SuperUserController {
 		String decryptedUserId		= CommonEncrypt.decrypt(cookieUserId);
 		String decryptedUserName	= CommonEncrypt.decrypt(cookieUserName);
 		
-		this.getCookieLoginUser().setLoginId(Integer.valueOf(decryptedLoginId));
-		this.getCookieLoginUser().setUserId(Integer.valueOf(decryptedUserId));
+		this.getCookieLoginUser().setLoginId(decryptedLoginId);
+		this.getCookieLoginUser().setUserId(decryptedUserId);
 		this.getCookieLoginUser().setUserName(decryptedUserName);
 	}
 	
@@ -167,6 +167,7 @@ public class SuperUserController {
 				return false;
 			}
 			
+			// 削除
 			this.getLoginService().delete(
 					new LoginId(loginId));
 		} catch(Exception ex) {
