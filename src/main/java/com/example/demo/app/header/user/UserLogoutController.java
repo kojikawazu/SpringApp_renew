@@ -118,6 +118,8 @@ public class UserLogoutController extends SuperUserController {
 			// ログイン不可
 			return false;
 		}
+		
+		// チェック
 		boolean isLoginId = this.getLoginService().isSelect_byId(
 								loginId);
 		

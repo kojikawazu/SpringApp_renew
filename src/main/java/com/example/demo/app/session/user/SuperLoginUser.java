@@ -11,13 +11,13 @@ import com.example.demo.common.id.user.UserId;
 public class SuperLoginUser {
 
 	/** ログインID初期化値 */
-	private static final int loginIdInit		= 0;
+	private static final int LOGIN_ID_INIT		= 0;
 	
 	/** ユーザーID初期化値 */
-	private static final int userIdInit			= 0;
+	private static final int USER_ID_INIT		= 0;
 	
 	/** ユーザー名初期化文字列 */
-	private static final String userNameInit	= "";
+	private static final String USER_NAME_INIT	= "";
 	
 	/** 
 	 * ログインID
@@ -55,7 +55,7 @@ public class SuperLoginUser {
 		if (this.loginId == null) {
 			return false;
 		}
-		return (this.loginId.getId() > loginIdInit);
+		return (this.loginId.getId() > LOGIN_ID_INIT);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class SuperLoginUser {
 		if (this.userId == null) {
 			return false;
 		}
-		return (this.userId.getId() > userIdInit);
+		return (this.userId.getId() > USER_ID_INIT);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class SuperLoginUser {
 		if (this.userName == null) {
 			return false;
 		}
-		return (!this.userName.equals(userNameInit));
+		return (!this.userName.equals(USER_NAME_INIT));
 	}
 	
 	/** ----------------------------------------------------- */
@@ -86,27 +86,31 @@ public class SuperLoginUser {
 	 * ログインIDの初期化
 	 */
 	public void initLoginId() {
-		this.setLoginId(loginIdInit);
+		this.setLoginId(LOGIN_ID_INIT);
 	}
 	
 	/**
 	 * ユーザIDの初期化
 	 */
 	public void initUserId() {
-		this.setUserId(userIdInit);
+		this.setUserId(USER_ID_INIT);
 	}
 	
 	/**
 	 * ユーザ名の初期化
 	 */
 	public void initUserName() {
-		this.setUserName(userNameInit);
+		this.setUserName(USER_NAME_INIT);
 	}
 	
 	/** ----------------------------------------------------- */
 	
 	public void setLoginId(int loginId) {
 		this.loginId = new LoginId(loginId);
+	}
+	
+	public void setLoginId(String loginId) {
+		this.loginId = new LoginId(Integer.valueOf(loginId));
 	}
 	
 	public int getLoginId() {
@@ -118,6 +122,10 @@ public class SuperLoginUser {
 	
 	public void setUserId(int userId) {
 		this.userId = new UserId(userId);
+	}
+	
+	public void setUserId(String userId) {
+		this.userId = new UserId(Integer.valueOf(userId));
 	}
 	
 	public int getUserId() {
@@ -138,15 +146,15 @@ public class SuperLoginUser {
 	/** ----------------------------------------------------- */
 	
 	public static int getLoginIdInit() {
-		return loginIdInit;
+		return LOGIN_ID_INIT;
 	}
 	
 	public static int getUserIdInit() {
-		return userIdInit;
+		return USER_ID_INIT;
 	}
 	
 	public static String getUserNameInit() {
-		return userNameInit;
+		return USER_NAME_INIT;
 	}
 	
 	/** ----------------------------------------------------- */
