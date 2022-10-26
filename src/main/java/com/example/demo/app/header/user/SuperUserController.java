@@ -14,6 +14,7 @@ import com.example.demo.app.session.user.CookieLoginUser;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.common.WebFunctions;
+import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.id.user.LoginId;
 import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
@@ -143,9 +144,14 @@ public class SuperUserController {
 			String cookieLoginId,
 			String cookieUserId,
 			String cookieUserName) {
-		this.getCookieLoginUser().setLoginId(Integer.valueOf(cookieLoginId));
-		this.getCookieLoginUser().setUserId(Integer.valueOf(cookieUserId));
-		this.getCookieLoginUser().setUserName(cookieUserName);
+		// 復号化
+		String decryptedLoginId		= CommonEncrypt.decrypt(cookieLoginId);
+		String decryptedUserId		= CommonEncrypt.decrypt(cookieUserId);
+		String decryptedUserName	= CommonEncrypt.decrypt(cookieUserName);
+		
+		this.getCookieLoginUser().setLoginId(Integer.valueOf(decryptedLoginId));
+		this.getCookieLoginUser().setUserId(Integer.valueOf(decryptedUserId));
+		this.getCookieLoginUser().setUserName(decryptedUserName);
 	}
 	
 	/** --------------------------------------------------------------------------- */

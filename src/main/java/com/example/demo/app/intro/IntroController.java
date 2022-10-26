@@ -20,6 +20,7 @@ import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.entity.ExperienceModel;
 import com.example.demo.common.entity.IntroJSONModel;
 import com.example.demo.common.log.LogMessage;
