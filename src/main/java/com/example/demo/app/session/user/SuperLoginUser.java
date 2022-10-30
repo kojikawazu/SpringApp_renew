@@ -19,6 +19,8 @@ public class SuperLoginUser {
 	/** ユーザー名初期化文字列 */
 	private static final String USER_NAME_INIT	= "";
 	
+	/** ---------------------------------------------------------------------------------------------------- */
+	
 	/** 
 	 * ログインID
 	 * {@link LoginId}
@@ -83,6 +85,38 @@ public class SuperLoginUser {
 	/** ----------------------------------------------------- */
 	
 	/**
+	 * 比較したいログインIDと一致している？
+	 * @param targetLoginId
+	 * @return true 一致している false 一致しない or ログインIDがnull
+	 */
+	public boolean equalsLoginId(int targetLoginId) {
+		return (this.loginId != null &&
+				this.loginId.getId() == targetLoginId);
+	}
+	
+	/**
+	 * 比較したいユーザーIDと一致している？
+	 * @param targetUserId
+	 * @return true 一致している false 一致しない or ユーザーIDがnull
+	 */
+	public boolean equalsUserId(int targetUserId) {
+		return (this.userId != null &&
+				this.userId.getId() == targetUserId);
+	}
+	
+	/**
+	 * 比較したいユーザー名と一致している？
+	 * @param targetUserName
+	 * @return true 一致している false 一致しない or ユーザー名がnull
+	 */
+	public boolean equalsUserName(String targetUserName) {
+		return (this.userName != null &&
+				this.userName.equals(targetUserName));
+	}
+	
+	/** ----------------------------------------------------- */
+	
+	/**
 	 * ログインIDの初期化
 	 */
 	public void initLoginId() {
@@ -104,6 +138,7 @@ public class SuperLoginUser {
 	}
 	
 	/** ----------------------------------------------------- */
+	/** setter/getter */
 	
 	public void setLoginId(int loginId) {
 		this.loginId = new LoginId(loginId);
@@ -144,6 +179,7 @@ public class SuperLoginUser {
 	}
 	
 	/** ----------------------------------------------------- */
+	/** 初期化定数のgetter */
 	
 	public static int getLoginIdInit() {
 		return LOGIN_ID_INIT;

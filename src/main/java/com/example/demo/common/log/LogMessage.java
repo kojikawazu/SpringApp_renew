@@ -84,5 +84,19 @@ public class LogMessage {
 		
 		this.logger.error(clsName + "#" + mtd + "() : " + message);
 	}
+	
+	/**
+	 * warning出力
+	 * @param message
+	 */
+	public void warning(String message) {
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		String 		cls		= ste.getClassName();
+		String[]	clsList	= cls.split("\\.");
+		String		clsName = clsList[clsList.length-1];
+		String 		mtd		= ste.getMethodName();
+		
+		this.logger.warn(clsName + "#" + mtd + "() : " + message);
+	}
 
 }

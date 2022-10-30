@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,25 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 					model.getSessionId(),
 					model.getUpdated(),
 					model.getId()
+				);
+	}
+	
+	/**
+	 * ログイン情報の更新日付更新
+	 * @param  loginId ログインID
+	 * @return 0以下 失敗 それ以外 成功
+	 */
+	@Override
+	public int updateTime(LoginId loginId) {
+		if (loginId == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "UPDATE login_user SET "
+				+ "updated = ? "
+				+ "WHERE id = ?";
+		
+		return this.jdbcTemp.update(
+					sql,
+					LocalDateTime.now(),
+					loginId.getId()
 				);
 	}
 

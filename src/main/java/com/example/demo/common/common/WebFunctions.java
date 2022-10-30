@@ -8,6 +8,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.demo.app.entity.user.UserModel;
+import com.example.demo.app.service.SuperService;
+import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 /**
@@ -17,24 +20,7 @@ import com.example.demo.common.log.LogMessage;
  */
 public class WebFunctions {
 	
-	/**
-	 * ロガークラス
-	 * {@link LogMessage}
-	 */
-	private static LogMessage	logger = null;
-	
-	/** ------------------------------------------------------------------------------------- */
-	
-	/**
-	 * ロガークラス取得
-	 * @return {@link LogMessage}
-	 */
-	public static LogMessage getLogger() {
-		if (logger == null) {
-			logger = new LogMessage();
-		}
-		return logger;
-	}
+	/** ------------------------------------------------------------------------ */
 	
 	/**
 	 * 時間、日付のdiffチェック(分単位)
@@ -45,7 +31,8 @@ public class WebFunctions {
 	public static final boolean checkDiffMinutes(
 			LocalDateTime 	targetTime, 
 			int 			minutes) {
-		LocalDateTime now       = LocalDateTime.now();
+		LogMessage		log			= new LogMessage();
+		LocalDateTime 	now       	= LocalDateTime.now();
 		
 		Long diffYears    =  ChronoUnit.YEARS.between(targetTime, now);
 		Long diffMonth    =  ChronoUnit.MONTHS.between(targetTime, now);
@@ -53,7 +40,7 @@ public class WebFunctions {
 		Long diffHour     =  ChronoUnit.HOURS.between(targetTime, now);
 		Long diffMinute   =  ChronoUnit.MINUTES.between(targetTime, now);
 		
-		getLogger().info(
+		log.info(
 				"OK [" + diffYears + "-" + diffMonth + "-" + diffDay + " " 
 				+ diffHour + ":" + diffMinute + "]");
 		
@@ -71,6 +58,8 @@ public class WebFunctions {
 		return WebConsts.TIME_WITHIN;
 	}
 	
+	/** ------------------------------------------------------------------------ */
+	
 	/**
 	 * 時間、日付のdiffチェック(時間単位)
 	 * @param targetTime     チェック日付対象{@link LocalDateTime}
@@ -80,14 +69,15 @@ public class WebFunctions {
 	public static final boolean checkDiffHour(
 			LocalDateTime	targetTime, 
 			int 			hours) {
-		LocalDateTime now       = LocalDateTime.now();
+		LogMessage		log			= new LogMessage();
+		LocalDateTime 	now			= LocalDateTime.now();
 		
 		Long diffYears    =  ChronoUnit.YEARS.between(targetTime, now);
 		Long diffMonth    =  ChronoUnit.MONTHS.between(targetTime, now);
 		Long diffDay      =  ChronoUnit.DAYS.between(targetTime, now);
 		Long diffHour     =  ChronoUnit.HOURS.between(targetTime, now);
 		
-		getLogger().info(
+		log.info(
 				"OK [" + diffYears + "-" + diffMonth + "-" + diffDay + " " 
 				+ diffHour + "]");
 		
@@ -104,6 +94,8 @@ public class WebFunctions {
 		// 日付、時間共に過ぎてないのでOK
 		return WebConsts.TIME_WITHIN;
 	}
+	
+	/** ------------------------------------------------------------------------ */
 	
 	/**
 	 * Cookieの保存
@@ -133,6 +125,8 @@ public class WebFunctions {
 		return true;
 	}
 	
+	/** ------------------------------------------------------------------------ */
+	
 	/**
 	 * Cookieの初期化
 	 * @param request				{@link HttpServletRequest}
@@ -161,4 +155,33 @@ public class WebFunctions {
 		
 		return true;
 	}
+	
+	/** ------------------------------------------------------------------------ */
+	
+	/**
+	 * ユーザーモデルの取得
+	 * @param userService {@link SuperService}({@link UserModel}, {@link UserId})
+	 * @param userId {@link UserId}
+	 * @return {@link UserModel}
+	 */
+	public static final UserModel selectUserModel(
+			SuperService<UserModel, UserId> userService, 
+			UserId userId) {
+		if (userService == null || userId == null) {
+			return null;
+		}
+		
+		LogMessage		log			= new LogMessage();
+		UserModel	 	userModel 	= null;
+		
+		try {
+			userModel = userService.select(userId);
+		} catch(Exception ex) {
+			log.warning(ex.getMessage());
+		}
+		
+		return userModel;
+	}
+	
+	/** ------------------------------------------------------------------------ */
 }

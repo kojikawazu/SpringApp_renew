@@ -31,8 +31,8 @@
 	<main role="main" class="container">
 		<!-- タイトル -->
 		<div class="starter-template">
-	 		<h1 th:text="${title}">example</h1><br>
-	 		<p class="lead" th:text="${cont}">context</p>
+	 		<h1 th:text="${title}"></h1><br>
+	 		<p class="lead" th:text="${cont}"></p>
 	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/inquiry/form}">お問い合わせフォームへ</a>
 	 	</div>
 	 	
@@ -40,26 +40,37 @@
  		<div class="inquirylayout rounded" th:each="inquiry : ${inquiryList}">
 	 		<!-- 名前 -->
 	 		<h3 class="lefter inquiry-name" th:text="${inquiry.name}"></h3>
-	 		<!-- メールアドレス -->
-	 		<div class="lefter inquiry-email" th:text="${inquiry.email}"></div>
+	 		<!-- 管理人専用 -->
+	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 			<!-- メールアドレス -->
+	 			<div class="lefter inquiry-email" th:text="${inquiry.email}"></div>
+	 		</th:block>
+	 		
 	 		<!-- 生成日付 -->
 	 		<div class="lefter inquiry-created" th:text="${inquiry.created}"></div>
-	 		<!-- 削除フォーム -->
-			<form class="lefter inquiry-delete-form" th:action="@{/inquiry/delete}" method="post" onclick="return checkDelete();">
-				<input type="submit" name="delete" class="btn btn-outline-dark" value="✕"  />
-				<input type="hidden" name="id" th:value="${inquiry.id}" />	
-			</form>
+	 		
+	 		<!-- 管理人専用 -->
+	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 			<!-- 削除フォーム -->
+				<form class="lefter inquiry-delete-form" th:action="@{/inquiry/delete}" method="post" onclick="return checkDelete();">
+					<input type="submit" name="delete" class="btn btn-outline-dark" value="✕"  />
+					<input type="hidden" name="id" th:value="${inquiry.id}" />	
+				</form>
+	 		</th:block>
 	 		
 	 		<!-- 問い合わせ内容 -->
 	 		<div class="lefter-clear inquiry-comment" th:text="${inquiry.comment}"></div>
 	 		
-	 		<!-- 返信ボタン -->
-			<form class="inquiry-reply-form" th:action="@{/inquiry/reply}" method="post">
-				<input type="submit" name="delete" class="btn btn-outline-dark" value="返信する"  />
-				<input type="hidden" name="id" th:value="${inquiry.id}" />	
-			</form>
-	 		<div class="lefter-clear"></div>
-	 		
+	 		<!-- 管理人専用 -->
+	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 			<!-- 返信ボタン -->
+				<form class="inquiry-reply-form" th:action="@{/inquiry/reply}" method="post">
+					<input type="submit" name="delete" class="btn btn-outline-dark" value="返信する"  />
+					<input type="hidden" name="id" th:value="${inquiry.id}" />	
+				</form>
+				<div class="lefter-clear"></div>
+	 		</th:block >
+
 	 		<!-- 返信リスト -->
 	 		<div  th:each="inquiry_reply : ${inquiry.replyList}">
 	 			<div class="replylayout rounded" th:if="${inquiry.id} == ${inquiry_reply.inquiry_id}">

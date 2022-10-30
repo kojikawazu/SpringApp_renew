@@ -19,6 +19,13 @@ public interface LoginDao {
 	LoginId insert_returnId(LoginModel model);
 	
 	/**
+	 * ログイン情報の更新日付更新
+	 * @param  loginId ログインID
+	 * @return 0以下 失敗 それ以外 成功
+	 */
+	int updateTime(LoginId loginId);
+	
+	/**
 	 * 選択
 	 * @param  userId {@link UserId}
 	 * @return {@link LoginModel}

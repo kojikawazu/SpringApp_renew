@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.user.UserModel;
@@ -28,6 +29,7 @@ import com.example.demo.common.word.PasswdWord;
  */
 @Component
 @Repository
+@Transactional(readOnly = true)
 public class UserDaoSql implements SuperDao<UserModel, UserId>, UserDao {
 	
 	/** 
@@ -56,6 +58,7 @@ public class UserDaoSql implements SuperDao<UserModel, UserId>, UserDao {
 	 * @param model {@link UserModel}
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public void insert(UserModel model) {
 		if (model == null)	return ;
 		String sql = "INSERT INTO home_user("
@@ -82,6 +85,7 @@ public class UserDaoSql implements SuperDao<UserModel, UserId>, UserDao {
 	 * @return 0以下 失敗 それ以外 成功 
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int update(UserModel model) {
 		if (model == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "UPDATE home_user SET "
@@ -105,6 +109,7 @@ public class UserDaoSql implements SuperDao<UserModel, UserId>, UserDao {
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int delete(UserId id) {
 		if (id == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "DELETE FROM home_user "

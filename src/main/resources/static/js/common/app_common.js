@@ -14,7 +14,7 @@ let YES_LOGIN_CHILD_ID			= "#yesLoginIdChild";
 let NO_LOGIN					= "#noLogin";
 let NO_LOGIN_ID					= "#noLoginId";
 let NO_LOGIN_CHILD_ID			= "#noLoginIdChild";
-let LOGIN_USER_NAME_ID			= "#loginUserName";
+let LOGOUT_USER_NAME_ID			= "#logoutUserName";
 
 let LOGIN_USER_NAME_VALUE_INIT	= "";
 let LOGIN_SHOW_VALUE			= "yes";
@@ -106,10 +106,10 @@ function setUserLoginForm() {
 				if (data.message == RESPONSE_OK) {
 					let changeNoLoginId     = NO_LOGIN_ID;
 					let changeYesLoginId    = YES_LOGIN_ID;
-					let loginUserName		= LOGIN_USER_NAME_ID;
+					let logoutUserName		= LOGOUT_USER_NAME_ID;
 					
 					/** ユーザー名設定 */
-					$(loginUserName).val(data.userName);
+					$(logoutUserName).val(data.userName);
 					
 					/** ログイン/ログアウト表示切替 */
 					$(changeNoLoginId).hide();
@@ -165,10 +165,10 @@ function setUserLogoutForm() {
 				if (data == RESPONSE_OK || data == RESPONSE_INIT) {
 					let changeNoLoginId		= NO_LOGIN_ID;
 					let changeYesLoginId	= YES_LOGIN_ID;
-					let loginUserName		= LOGIN_USER_NAME_ID;
+					let logoutUserName		= LOGOUT_USER_NAME_ID;
 				
 					/** ユーザー名初期化 */
-					$(loginUserName).val(LOGIN_USER_NAME_VALUE_INIT);
+					$(logoutUserName).val(LOGIN_USER_NAME_VALUE_INIT);
 				
 					/** ログイン/ログアウト表示切替 */
 					$(changeNoLoginId).show();
@@ -202,10 +202,10 @@ function setLoginUserInterval(){
 				if (data == RESPONSE_DELETE) {
 					let changeNoLoginId		= NO_LOGIN_ID;
 					let changeYesLoginId	= YES_LOGIN_ID;
-					let loginUserName		= LOGIN_USER_NAME_ID;
+					let logoutUserName		= LOGOUT_USER_NAME_ID;
 					
 					/** ユーザー名初期化 */
-					$(loginUserName).val(LOGIN_USER_NAME_VALUE_INIT);
+					$(logoutUserName).val(LOGIN_USER_NAME_VALUE_INIT);
 				
 					/** ログイン/ログアウト表示切替 */
 					$(changeNoLoginId).show();

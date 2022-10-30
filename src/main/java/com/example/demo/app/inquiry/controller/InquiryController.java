@@ -26,7 +26,8 @@ import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
 
 /**
- * 問い合わせコントローラー
+ * 問い合わせコントローラー<br>
+ * implements {@link SuperInquiryController}
  * @author nanai
  *
  */
@@ -118,9 +119,9 @@ public class InquiryController extends SuperInquiryController {
 	 * @param model {@link Model}
 	 */
 	public void setPaging(int pageidx, Model model) {
-		List<InquiryModel> list        = this.inquiryService.getAllPlus(true);
-		PageController     page        = new PageController();
-		List<InquiryModel> inquiryList = page.setPaging(list, pageidx, INQUIRY_PAGE_MAX);
+		List<InquiryModel> list			= this.inquiryService.getAllPlus(true);
+		PageController     page			= new PageController();
+		List<InquiryModel> inquiryList	= page.setPaging(list, pageidx, INQUIRY_PAGE_MAX);
 		list.clear();
 		
 		// ページング名設定
