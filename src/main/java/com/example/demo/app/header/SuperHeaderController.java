@@ -2,10 +2,16 @@ package com.example.demo.app.header;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.Model;
+
+import com.example.demo.app.entity.user.UserModel;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.CookieModel;
 import com.example.demo.app.session.user.SessionModel;
+import com.example.demo.common.common.ThymeleafConsts;
+import com.example.demo.common.common.WebFunctions;
+import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 public class SuperHeaderController {
@@ -104,5 +110,27 @@ public class SuperHeaderController {
 	public LogMessage getLog() {
 		return this.logMessage;
 	}
+	
+	/** --------------------------------------------------------------- */
+	
+	/**
+	 * ユーザーモデルの取得
+	 * @param userId
+	 * @return {@link UserModel}
+	 */
+	public UserModel selectUserModel(int userId) {
+		if (userId <= 0) {
+			return null;
+		}
+		
+		UserModel model = WebFunctions.selectUserModel(userService, new UserId(userId));
+		
+		return model;
+	}
+	
+	protected void setSameModel(Model model) {
+		model.addAttribute("ThyConsts", new ThymeleafConsts());
+	}
+	
 	
 }

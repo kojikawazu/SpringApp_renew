@@ -15,6 +15,12 @@ public interface LoginService {
 	LoginId save_returnId(LoginModel model);
 	
 	/**
+	 * ログイン情報の更新日付更新
+	 * @param loginId ログインID
+	 */
+	void updateTime(LoginId loginId);
+	
+	/**
 	 * 選択
 	 * @param  userId {@link UserId}
 	 * @throws {@link WebMvcConfig#NOT_FOUND()}

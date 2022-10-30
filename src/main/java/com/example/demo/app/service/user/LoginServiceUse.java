@@ -68,6 +68,17 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
+	
+	/**
+	 * ログイン情報の更新日付更新
+	 * @param loginId ログインID
+	 */
+	@Override
+	public void updateTime(LoginId loginId) {
+		if (this.dao.updateTime(loginId) <= WebConsts.ERROR_DB_STATUS) {
+			throw WebMvcConfig.SQL_NOT_UPDATE();
+		}
+	}
 
 	/**
 	 * 削除
