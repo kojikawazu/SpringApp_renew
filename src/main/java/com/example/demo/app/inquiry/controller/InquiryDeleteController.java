@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -77,11 +78,11 @@ public class InquiryDeleteController extends SuperInquiryController {
 		InquiryId inquiryId = new InquiryId(id);
 		
 		try {
-			this.inquiryReplyService.delete_byInquiry(inquiryId);
+			this.getInquiryReplyService().delete_byInquiry(inquiryId);
 		} catch(SQLNoDeleteException ex) {
 			// 問い合わせ返信なしもある為、OK。
 		}
-		this.inquiryService.delete(inquiryId);
+		this.getInquiryService().delete(inquiryId);
 		
 		// 問い合わせ一覧画面へ
 		return AppConsts.REDIRECT_URL_INQUIRY_INDEX;

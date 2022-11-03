@@ -3,6 +3,7 @@ package com.example.demo.app.blog.main.controller;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -81,6 +82,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 	 * @param  cookieUserName		ユーザー名(Cookie)
 	 * @param  editor
 	 * @param  request				{@link HttpServletRequest}
+	 * @param  response				{@link HttpServletResponse}
 	 * @param  headerForm			{@link HeaderForm}
 	 * @param  blogForm				{@link BlogForm}
 	 * @param  result				{@link BindingResult}
@@ -103,6 +105,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			@RequestParam(WebConsts.ATTRIBUTE_EDITOR)	int editor,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			@Validated BlogForm	blogForm,
 			BindingResult		result,
@@ -114,7 +117,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 			// エラー
 			
 			/** Cookieの設定 */
-			this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+			this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 			/** ヘッダーの設定 */
 			this.headerController.setHeader(request, headerForm, model);
 			

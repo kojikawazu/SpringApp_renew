@@ -1,6 +1,7 @@
 package com.example.demo.app.header;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
@@ -11,6 +12,8 @@ import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.CookieLoginUser;
 import com.example.demo.app.session.user.SessionModel;
+import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.common.WebFunctions;
 import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.id.user.LoginId;
 import com.example.demo.common.log.LogMessage;
@@ -108,14 +111,36 @@ public class HeaderController extends SuperHeaderController {
 		return true;
 	}
 	
+	private boolean isExistsLoginData(
+			String cookieLoginId,
+			String cookieUserId,
+			String cookieUserName) {
+		int cookieLoginIdValue	= Integer.valueOf(cookieLoginId); 
+		
+		if (cookieLoginIdValue > 0) {
+			// データは保存されてる?
+			if (!this.getLoginService().isSelect_byId(cookieLoginIdValue)) {
+				// 保存されてない
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Cookieの設定
-	 * @param loginId
-	 * @param userId
-	 * @param userName
+	 * @param  	request		{@link HttpServletRequest}
+	 * @param 	response	{@link HttpServletResponse}
+	 * @param 	loginId
+	 * @param 	userId
+	 * @param 	userName
 	 */
 	public void setCookie(
-			String loginId, String userId, String userName) {
+			HttpServletRequest		request,
+			HttpServletResponse 	response,
+			String loginId, 
+			String userId, 
+			String userName) {
 		// 復号化
 		String decryptedLoginId		= CommonEncrypt.decrypt(loginId);
 		String decryptedUserId 		= CommonEncrypt.decrypt(userId);
@@ -124,6 +149,16 @@ public class HeaderController extends SuperHeaderController {
 		// Cookie変化チェック
 		this.isChangeCookie(decryptedLoginId, decryptedUserId, decryptedUserName);
 		
+		// Cookieによるログインデータチェック
+		if (!this.isExistsLoginData(decryptedLoginId, decryptedUserId, decryptedUserName)) {
+			// ログインデータがない...
+			WebFunctions.deleteCookie(request, response, WebConsts.COOKIE_KEY_LIST);
+			decryptedLoginId		= CommonEncrypt.decrypt(WebConsts.COOKIE_ZERO);
+			decryptedUserId 		= CommonEncrypt.decrypt(WebConsts.COOKIE_ZERO);
+			decryptedUserName 		= CommonEncrypt.decrypt(WebConsts.COOKIE_NONE);
+		}
+		
+		// Cookieログインユーザーモデルに反映
 		CookieLoginUser cookieLoginUser = this.getCookieModel().getCookieLoginUser(); 
 		cookieLoginUser.setLoginId(decryptedLoginId);
 		cookieLoginUser.setUserId(decryptedUserId);
@@ -148,7 +183,7 @@ public class HeaderController extends SuperHeaderController {
 		if (loginId > 0) {
 			// ログイン中
 			// ユーザーモデルの取得
-			userModel = this.getUserModel(cookieLoginUser.getUserId());
+			userModel = this.selectUserModel(cookieLoginUser.getUserId());
 			// ログイン情報の更新日付の更新
 			this.updateTime_LoginModel(loginId);
 			
@@ -172,19 +207,6 @@ public class HeaderController extends SuperHeaderController {
 		
 		/** model共通反映 */
 		this.setSameModel(model);
-	}
-	
-	/**
-	 * ユーザーモデルの取得
-	 * @param  userId ユーザーID
-	 * @return {@link UserModel}
-	 */
-	private UserModel getUserModel(int userId) {
-		UserModel userModel = this.selectUserModel(userId);
-		if (userModel == null) {
-			userModel = new UserModel(null);
-		}
-		return userModel;
 	}
 	
 	/**

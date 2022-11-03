@@ -3,6 +3,7 @@ package com.example.demo.app.inquiry.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.app.entity.inquiry.InquiryModel;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.home.PageController;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -77,6 +79,7 @@ public class InquiryController extends SuperInquiryController {
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  pageidx
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  model			{@link Model}
 	 * @return {@value AppConsts#URL_INQUIRY_INDEX}
@@ -96,16 +99,17 @@ public class InquiryController extends SuperInquiryController {
 				required = false, 
 				defaultValue = "1") 					int pageidx,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		
 		// ページング設定
 		this.setPaging(pageidx, model);
 		
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 		
 		// attribute設定
 		this.setCommonAttribute(request, headerForm, model);
@@ -119,7 +123,7 @@ public class InquiryController extends SuperInquiryController {
 	 * @param model {@link Model}
 	 */
 	public void setPaging(int pageidx, Model model) {
-		List<InquiryModel> list			= this.inquiryService.getAllPlus(true);
+		List<InquiryModel> list			= this.getInquiryService().getAllPlus(true);
 		PageController     page			= new PageController();
 		List<InquiryModel> inquiryList	= page.setPaging(list, pageidx, INQUIRY_PAGE_MAX);
 		list.clear();

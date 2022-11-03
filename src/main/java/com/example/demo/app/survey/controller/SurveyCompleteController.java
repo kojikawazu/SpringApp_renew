@@ -3,6 +3,7 @@ package com.example.demo.app.survey.controller;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,12 +69,13 @@ public class SurveyCompleteController extends SuperSurveyController {
 	 * @param  cookieLoginId		ログインID(Cookie)
 	 * @param  cookieUserId			ユーザーID(Cookie)
 	 * @param  cookieUserName		ユーザー名(Cookie)
-	 * @param request				{@link HttpServletRequest}
-	 * @param headerForm			{@link HeaderForm}
-	 * @param surveyForm			{@link SurveyForm}
-	 * @param result				{@link BindingResult}
-	 * @param model					{@link Model}
-	 * @param redirectAttributes	{@link RedirectAttributes}
+	 * @param  request				{@link HttpServletRequest}
+	 * @param  response				{@link HttpServletResponse}
+	 * @param  headerForm			{@link HeaderForm}
+	 * @param  surveyForm			{@link SurveyForm}
+	 * @param  result				{@link BindingResult}
+	 * @param  model				{@link Model}
+	 * @param  redirectAttributes	{@link RedirectAttributes}
 	 * @return {@value AppConsts#URL_SURVEY_FORM}
 	 * 			{@value AppConsts#REDIRECT_URL_SURVEY_FORM}
 	 */
@@ -89,6 +91,7 @@ public class SurveyCompleteController extends SuperSurveyController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest		request,
+			HttpServletResponse 	response,
 			HeaderForm				headerForm,
 			@Validated SurveyForm	surveyForm,
 			BindingResult			result,
@@ -100,7 +103,7 @@ public class SurveyCompleteController extends SuperSurveyController {
 			// エラー
 			
 			/** Cookieの設定 */
-			this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+			this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 			/** ヘッダーの設定 */
 			this.headerController.setHeader(request, headerForm, model);
 			

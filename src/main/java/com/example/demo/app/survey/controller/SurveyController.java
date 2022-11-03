@@ -3,6 +3,7 @@ package com.example.demo.app.survey.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,8 @@ public class SurveyController extends SuperSurveyController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  pageidx
-	 * @param request			{@link HttpServletRequest}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  model			{@link Model}
 	 * @return {@value AppConsts#URL_SURVEY_INDEX}
@@ -86,10 +88,11 @@ public class SurveyController extends SuperSurveyController {
 			@RequestParam(value = WebConsts.ATTRIBUTE_PAGE_IDX, 
 							required = false, defaultValue = "1") 	int pageidx,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		
 		// ページ設定
 		this.setPaging(pageidx, model);

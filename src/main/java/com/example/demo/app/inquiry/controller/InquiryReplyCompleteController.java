@@ -3,6 +3,7 @@ package com.example.demo.app.inquiry.controller;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.entity.inquiry.InquiryReplyModel;
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.inquiry.form.InquiryReplyForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
@@ -76,6 +78,7 @@ public class InquiryReplyCompleteController extends SuperInquiryController {
 	 * @param  cookieUserName		ユーザー名(Cookie)
 	 * @param  id
 	 * @param  request				{@link HttpServletRequest}
+	 * @param  response				{@link HttpServletResponse}
 	 * @param  headerForm			{@link HeaderForm}
 	 * @param  inquiryReplyForm		{@link InquiryReplyForm}
 	 * @param  result				{@link BindingResult}
@@ -97,6 +100,7 @@ public class InquiryReplyCompleteController extends SuperInquiryController {
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			@RequestParam(WebConsts.ATTRIBUTE_ID) 		int id,
 			HttpServletRequest			request,
+			HttpServletResponse 		response,
 			HeaderForm 					headerForm,
 			@Validated InquiryReplyForm	inquiryReplyForm,
 			BindingResult				result,
@@ -108,9 +112,9 @@ public class InquiryReplyCompleteController extends SuperInquiryController {
 			// エラー
 			
 			/** Cookieの設定 */
-			this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+			this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 			/** ヘッダーの設定 */
-			this.headerController.setHeader(request, headerForm, model);
+			this.getHeaderController().setHeader(request, headerForm, model);
 			
 			// バリデートエラー、フォーム画面へ
 			this.setReply(inquiryId, model);
@@ -129,7 +133,7 @@ public class InquiryReplyCompleteController extends SuperInquiryController {
 				new CommentWord(inquiryReplyForm.getComment()),
 				LocalDateTime.now()
 				);
-		this.inquiryReplyService.save(inquiry);
+		this.getInquiryReplyService().save(inquiry);
 		
 		// フォーム画面へ
 		this.setReplyCompleteAttribute(inquiryId, redirectAttributes);

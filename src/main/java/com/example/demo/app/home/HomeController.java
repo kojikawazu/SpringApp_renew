@@ -1,6 +1,7 @@
 package com.example.demo.app.home;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,7 @@ public class HomeController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  model			{@link Model}
 	 * @return {@value AppConsts#URL_HOME_INDEX}
@@ -87,10 +89,11 @@ public class HomeController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm 			headerForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		
 		/** attributeの設定 */
 		this.setAttribute(model);

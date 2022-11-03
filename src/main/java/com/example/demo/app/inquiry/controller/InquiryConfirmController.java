@@ -1,6 +1,7 @@
 package com.example.demo.app.inquiry.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
@@ -66,6 +68,7 @@ public class InquiryConfirmController extends SuperInquiryController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  inquiryForm  	{@link InquiryForm}
 	 * @param  result			{@link BindingResult}
@@ -85,20 +88,21 @@ public class InquiryConfirmController extends SuperInquiryController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName, 
 			HttpServletRequest		request,
+			HttpServletResponse 	response,
 			HeaderForm 				headerForm,
 			@Validated InquiryForm	inquiryForm,
 			BindingResult			result,
 			Model					model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 		
 		if(result.hasErrors()) {
 			// バリデートエラー, フォーム画面へ
 			// attribute設定
 			this.setCommonAttribute(request, headerForm, model);
-			this.setFormAttribute(model);
+			this.setFormAttribute(inquiryForm, model);
 			return AppConsts.URL_INQUIRY_FORM;
 		}
 		// バリデートOK 確認画面へ

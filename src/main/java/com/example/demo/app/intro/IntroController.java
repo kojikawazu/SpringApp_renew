@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.entity.ExperienceModel;
 import com.example.demo.common.entity.IntroJSONModel;
 import com.example.demo.common.log.LogMessage;
@@ -124,6 +124,7 @@ public class IntroController extends SuperIntroController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  model			{@link Model}
 	 * @return {@value AppConsts#URL_INTRO_INDEX}
@@ -140,10 +141,11 @@ public class IntroController extends SuperIntroController {
 						required=false, 
 						defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.getHeaderController().setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		
 		IntroJSONModel jsonModel = this.getIntroService().readerIntroData_byJSON(
 				Paths.get(INTRO_JSON_PATH));

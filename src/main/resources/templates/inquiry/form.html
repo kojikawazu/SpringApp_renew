@@ -30,8 +30,8 @@
 	<main role="main" class="container">
 		<!-- タイトル -->
 		<div class="starter-template">
-	 		<h1 th:text="${title}">example</h1><br>
-	 		<p class="lead" th:text="${cont}">context</p>
+	 		<h1 th:text="${title}"></h1><br>
+	 		<p class="lead" th:text="${cont}"></p>
 	 		<p class="asterisk-cont">* 印の入力は必須です。 </p >
 	 	</div>
 	 	
@@ -51,14 +51,14 @@
 	 		
 	 		<!-- 問い合わせメールアドレス -->
 	 		<div class="form-group">
-	 			<label for="email">メールアドレス</label>
+	 			<label for="email">メールアドレス<spac class="asterisk-input">*</span ></label>
 	 			<input type="text" name="email" class="form-control" id="email"  th:value="*{email}">
 	 		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 	 		
 	 		<!-- 問い合わせコメント -->
 	 		<div class="form-group">
-	 			<label for="comment">コメント</label>
+	 			<label for="comment">コメント<spac class="asterisk-input">*</span ></label>
 	 			<textarea name="comment" class="form-control" id="detail" rows="3"  th:value="*{comment}" th:text="*{comment}"></textarea>
 	 		</div>
 	 		<div class="text-danger mb-4" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
