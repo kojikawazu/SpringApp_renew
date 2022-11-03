@@ -1,6 +1,7 @@
 package com.example.demo.app.blog.main.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,8 @@ public class BlogReplyController extends SuperBlogMainController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  replyid
-	 * @param request			{@link HttpServletRequest}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  replyForm		{@link ReplyForm}
 	 * @param  model			{@link Model}
@@ -90,6 +92,7 @@ public class BlogReplyController extends SuperBlogMainController {
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			@RequestParam(WebConsts.ATTRIBUTE_ID)		int replyid,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			ReplyForm			replyForm,
 			Model				model,
@@ -97,7 +100,7 @@ public class BlogReplyController extends SuperBlogMainController {
 		BlogId blogReplyId = new BlogId(replyid);
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		
@@ -114,6 +117,7 @@ public class BlogReplyController extends SuperBlogMainController {
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  replyid
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  replyForm		{@link ReplyForm}
 	 * @param  model			{@link Model}
@@ -133,6 +137,7 @@ public class BlogReplyController extends SuperBlogMainController {
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			@RequestParam(WebConsts.ATTRIBUTE_ID) int replyid,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			ReplyForm			replyForm,
 			Model				model,
@@ -140,7 +145,7 @@ public class BlogReplyController extends SuperBlogMainController {
 		BlogId blogReplyId = new BlogId(replyid);
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		

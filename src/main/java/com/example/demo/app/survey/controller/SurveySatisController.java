@@ -3,6 +3,7 @@ package com.example.demo.app.survey.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,8 @@ public class SurveySatisController extends SuperSurveyController  {
 	 * @param  cookieLoginId	ログインID(Cookie)
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
-	 * @param request			{@link HttpServletRequest}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  model			{@link Model}
 	 * @return {@value AppConsts#URL_SURVEY_SATISTICS}
@@ -78,12 +80,13 @@ public class SurveySatisController extends SuperSurveyController  {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model				model) {
 		List<SurveySatisForm> list = this.surveyService.countSatisfactionAll();
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		

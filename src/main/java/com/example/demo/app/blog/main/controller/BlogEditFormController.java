@@ -1,6 +1,7 @@
 package com.example.demo.app.blog.main.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  editor
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  blogForm			{@link BlogForm}
 	 * @param  model			{@link Model}
@@ -92,6 +94,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 					required     = false, 
 					defaultValue = WebConsts.ZERO_STRING)		 int editor,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			BlogForm			blogForm,
 			Model				model,
@@ -99,7 +102,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 		EditorSwitch edit = new EditorSwitch(editor);
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		
@@ -116,6 +119,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  editor
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  blogForm			{@link BlogForm}
 	 * @param  model			{@link Model}
@@ -137,6 +141,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 					required     = false, 
 					defaultValue = WebConsts.ZERO_STRING)		int editor,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			BlogForm			blogForm,
 			Model				model,
@@ -144,7 +149,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 		EditorSwitch edit = new EditorSwitch(editor);
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		

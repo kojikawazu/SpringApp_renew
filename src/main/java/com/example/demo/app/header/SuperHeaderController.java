@@ -120,7 +120,7 @@ public class SuperHeaderController {
 	 */
 	public UserModel selectUserModel(int userId) {
 		if (userId <= 0) {
-			return null;
+			return new UserModel(null);
 		}
 		
 		UserModel model = WebFunctions.selectUserModel(userService, new UserId(userId));

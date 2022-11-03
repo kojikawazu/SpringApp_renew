@@ -1,6 +1,7 @@
 package com.example.demo.app.inquiry.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
@@ -66,6 +68,7 @@ public class InquiryFormController extends SuperInquiryController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  inquiryForm		{@link InquiryForm}
 	 * @param  model			{@link Model}
@@ -84,18 +87,20 @@ public class InquiryFormController extends SuperInquiryController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			InquiryForm			inquiryForm,
 			Model				model,
 			@ModelAttribute(WebConsts.ATTRIBUTE_COMPLETE) String complete) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 		
-		// attribute設定
+		/** attribute設定 */
 		this.setCommonAttribute(request, headerForm, model);
-		this.setFormAttribute(model);
+		this.setFormAttribute(inquiryForm, model);
+		
 		return AppConsts.URL_INQUIRY_FORM;
 	}
 	
@@ -105,6 +110,7 @@ public class InquiryFormController extends SuperInquiryController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  inquiryForm		{@link InquiryForm}
 	 * @param  model			{@link Model}
@@ -122,17 +128,18 @@ public class InquiryFormController extends SuperInquiryController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			InquiryForm			inquiryForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 		
-		// attribute設定
-		this.setCommonAttribute(request, headerForm, model);
-		this.setFormAttribute(model);
+		/** attribute設定 */
+  		this.setCommonAttribute(request, headerForm, model);
+		this.setFormAttribute(inquiryForm, model);
 		return AppConsts.URL_INQUIRY_FORM;
 	}
 

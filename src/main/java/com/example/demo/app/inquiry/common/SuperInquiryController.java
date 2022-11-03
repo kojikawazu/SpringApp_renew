@@ -1,4 +1,4 @@
-package com.example.demo.app.inquiry.controller;
+package com.example.demo.app.inquiry.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,16 +8,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.entity.inquiry.InquiryModel;
+import com.example.demo.app.entity.user.UserModel;
 import com.example.demo.app.header.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.UserServiceUse;
+import com.example.demo.app.session.user.CookieLoginUser;
+import com.example.demo.app.session.user.CookieModel;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.common.WebFunctions;
 import com.example.demo.common.id.inquiry.InquiryId;
+import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 /**
@@ -25,7 +31,7 @@ import com.example.demo.common.log.LogMessage;
  * @author nanai
  *
  */
-public class SuperInquiryController {
+public class SuperInquiryController extends CommonInquiryController {
 	
 	/** 問い合わせページのタイトル */
 	private static final String TITLE_INQUIRY_INDEX = "お問い合わせ一覧";
@@ -60,33 +66,10 @@ public class SuperInquiryController {
 	/** 問い合わせ返信確認の一言 */
 	private static final String CONT_INQUIRY_REPLY_CONFIRM = "これでよろしいでしょうか？";
 	
+	/** 投稿しました */
 	private static final String MESSAGE_INQUIRY_REPLY_COMPLETE = "投稿しました。";
 	
-	/** サービス */
-	/** --------------------------------------------------------------- */
-	
-	/** 
-	 * 問い合わせサービス 
-	 * {@link InquiryService} 
-	 */
-	protected final InquiryService		inquiryService;
-	
-	/** 
-	 * 問い合わせ返信サービス 
-	 * {@link InquiryReplyService} 
-	 */
-	protected final InquiryReplyService	inquiryReplyService;
-	
-	/** コントローラー */
-	/** --------------------------------------------------------------- */
-	
-	/** 
-	 * ヘッダーサービス 
-	 * {@link HeaderController} 
-	 */
-	protected final HeaderController	headerController;
-	
-	/** --------------------------------------------------------------- */
+	/** ------------------------------------------------------------------------------------ */
 	
 	/**
 	 * コンストラクタ
@@ -100,21 +83,23 @@ public class SuperInquiryController {
 	 */
 	@Autowired
 	public SuperInquiryController(
-			InquiryService      inquiryService, 
+			InquiryService      inquiryService,
 			InquiryReplyService inquiryReplyService,
 			UserServiceUse 		userService,
 			LoginServiceUse		loginService,
 			SessionModel		sessionModel,
 			HttpSession			httpSession,
 			LogMessage			logMessage) {
-		this.inquiryService			= inquiryService;
-		this.inquiryReplyService	= inquiryReplyService;
-		this.headerController		= new HeaderController(userService,
-														loginService,
-														sessionModel,
-														httpSession,
-														logMessage);
+		super(inquiryService,
+				inquiryReplyService,
+				userService,
+				loginService,
+				sessionModel,
+				httpSession,
+				logMessage);
 	}
+	
+	/** --------------------------------------------------------------- */
 	
 	/**
 	 * 共通attribute設定
@@ -127,7 +112,7 @@ public class SuperInquiryController {
 			HeaderForm			headerForm,
 			Model 				model) {
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(request, headerForm, model);
 	}
 	
 	/**
@@ -141,11 +126,32 @@ public class SuperInquiryController {
 	
 	/**
 	 * 問い合わせフォームattribute設定
-	 * @param model {@link Model}
+	 * @param inquiryForm	{@link InquiryForm}
+	 * @param model 		{@link Model}
 	 */
-	protected void setFormAttribute(Model model) {
+	protected void setFormAttribute(
+			InquiryForm 	inquiryForm, 
+			Model 			model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_INQUIRY_FORM);
 		model.addAttribute(WebConsts.ATTRIBUTE_CONT,  CONT_INQUIRY_FORM);
+		
+		CookieLoginUser cookieLoginUser = this.getHeaderController().getCookieModel().getCookieLoginUser();
+		if (cookieLoginUser.isUserId()) {
+			UserModel userModel = WebFunctions.selectUserModel(
+									this.getUserService(),
+									new UserId(cookieLoginUser.getUserId()));
+			
+			if (inquiryForm.getName() == null || 
+					inquiryForm.getName().equals("")) {
+				inquiryForm.setName(userModel.getName());
+			}
+			if (inquiryForm.getEmail() == null ||
+					inquiryForm.getEmail().equals("")) {
+				inquiryForm.setEmail(userModel.getEmail());
+			}
+			
+			
+		}
 	}
 	
 	/**
@@ -204,7 +210,7 @@ public class SuperInquiryController {
 	 * @param model	{@link Model}
 	 */
 	protected void setReply(InquiryId inquiryId, Model model) {
-		InquiryModel inquiryModel = this.inquiryService.select(inquiryId);
+		InquiryModel inquiryModel = this.getInquiryService().select(inquiryId);
 		
 		model.addAttribute(AppConsts.ATTRIBUTE_INQUIRY, inquiryModel);
 		model.addAttribute(WebConsts.ATTRIBUTE_ID,      inquiryId.getId());

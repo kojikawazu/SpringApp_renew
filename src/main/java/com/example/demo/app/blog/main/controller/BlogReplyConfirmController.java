@@ -1,6 +1,7 @@
 package com.example.demo.app.blog.main.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,7 @@ public class BlogReplyConfirmController extends SuperBlogMainController {
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  id
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  replyForm		{@link ReplyForm}
 	 * @param  result			{@link BindingResult}
@@ -91,6 +93,7 @@ public class BlogReplyConfirmController extends SuperBlogMainController {
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			@RequestParam(WebConsts.ATTRIBUTE_ID)		int id,
 			HttpServletRequest		request,
+			HttpServletResponse 	response,
 			HeaderForm				headerForm,
 			@Validated ReplyForm	replyForm,
 			BindingResult			result,
@@ -98,7 +101,7 @@ public class BlogReplyConfirmController extends SuperBlogMainController {
 		BlogId blogReplyId = new BlogId(id);
 		
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		

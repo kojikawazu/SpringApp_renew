@@ -1,6 +1,7 @@
 package com.example.demo.app.survey.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,8 @@ public class SurveyFormController extends SuperSurveyController {
 	 * @param  cookieLoginId	ログインID(Cookie)
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
-	 * @param request			{@link HttpServletRequest}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  surveyForm		{@link SurveyForm}
 	 * @param  model			{@link Model}
@@ -80,12 +82,13 @@ public class SurveyFormController extends SuperSurveyController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			SurveyForm			surveyForm,
 			Model				model,
 			@ModelAttribute(WebConsts.ATTRIBUTE_COMPLETE) String complete) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		
@@ -100,7 +103,8 @@ public class SurveyFormController extends SuperSurveyController {
 	 * @param  cookieLoginId	ログインID(Cookie)
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
-	 * @param request			{@link HttpServletRequest}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  surveyForm		{@link SurveyForm}
 	 * @param  model			{@link Model}
@@ -118,11 +122,12 @@ public class SurveyFormController extends SuperSurveyController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			SurveyForm			surveyForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		

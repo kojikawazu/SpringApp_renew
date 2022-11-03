@@ -3,6 +3,7 @@ package com.example.demo.app.inquiry.controller;
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.entity.inquiry.InquiryModel;
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
@@ -75,6 +77,7 @@ public class InquiryCompleteController extends SuperInquiryController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request				{@link HttpServletRequest}
+	 * @param  response				{@link HttpServletResponse}
 	 * @param  headerForm			{@link HeaderForm}
 	 * @param  inquiryForm			{@link InquiryForm}
 	 * @param  result				{@link BindingResult}
@@ -95,6 +98,7 @@ public class InquiryCompleteController extends SuperInquiryController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest		request,
+			HttpServletResponse 	response,
 			HeaderForm 				headerForm,
 			@Validated InquiryForm	inquiryForm,
 			BindingResult			result,
@@ -104,12 +108,12 @@ public class InquiryCompleteController extends SuperInquiryController {
 			// エラー
 			
 			/** Cookieの設定 */
-			this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+			this.getHeaderController().setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 			/** ヘッダーの設定 */
-			this.headerController.setHeader(request, headerForm, model);
+			this.getHeaderController().setHeader(request, headerForm, model);
 			// attribute設定
 			this.setCommonAttribute(request, headerForm, model);
-			this.setFormAttribute(model);
+			this.setFormAttribute(inquiryForm, model);
 			return AppConsts.URL_INQUIRY_FORM;
 		}
 		
@@ -121,7 +125,7 @@ public class InquiryCompleteController extends SuperInquiryController {
 				);
 		
 		// 問い合わせデータ保存
-		this.inquiryService.save(inquiry);
+		this.getInquiryService().save(inquiry);
 		
 		// redirectAttribute設定
 		this.setRedirectCompleteAttribute(redirectAttributes);

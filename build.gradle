@@ -27,6 +27,9 @@ dependencies {
 	// h2 database
 	runtimeOnly 'com.h2database:h2'
 	
+	// security
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	
 	// Session
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'com.innoq:spring-cookie:0.1.0'

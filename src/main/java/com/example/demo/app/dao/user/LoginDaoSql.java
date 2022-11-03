@@ -18,6 +18,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.user.LoginModel;
@@ -33,6 +34,7 @@ import com.example.demo.common.id.user.UserId;
  */
 @Component
 @Repository
+@Transactional(readOnly = true)
 public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 
 	/** 
@@ -61,6 +63,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @param model {@link LoginModel}
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public void insert(LoginModel model) {
 		if (model == null)	return ;
 		String sql = "INSERT INTO login_user("
@@ -85,6 +88,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @return {@link LoginId}
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public LoginId insert_returnId(LoginModel model) {
 		if (model == null)	new LoginId(0);
 		
@@ -126,6 +130,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @return 0以下 失敗 それ以外 成功 
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int update(LoginModel model) {
 		if (model == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "UPDATE login_user SET "
@@ -147,6 +152,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int updateTime(LoginId loginId) {
 		if (loginId == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "UPDATE login_user SET "
@@ -166,6 +172,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int delete(LoginId id) {
 		if (id == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "DELETE FROM login_user "

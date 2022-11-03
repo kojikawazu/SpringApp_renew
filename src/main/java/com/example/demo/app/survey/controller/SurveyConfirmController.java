@@ -1,6 +1,7 @@
 package com.example.demo.app.survey.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class SurveyConfirmController extends SuperSurveyController {
 	 * @param  cookieUserId		ユーザーID(Cookie)
 	 * @param  cookieUserName	ユーザー名(Cookie)
 	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
 	 * @param  surveyForm		{@link SurveyForm}
 	 * @param  result			{@link BindingResult}
@@ -81,12 +83,13 @@ public class SurveyConfirmController extends SuperSurveyController {
 				required=false, 
 				defaultValue=WebConsts.COOKIE_NONE)		String cookieUserName,
 			HttpServletRequest		request,
+			HttpServletResponse 	response,
 			HeaderForm				headerForm,
 			@Validated SurveyForm	surveyForm,
 			BindingResult			result,
 			Model 					model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(cookieLoginId, cookieUserId, cookieUserName);
+		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
 		/** ヘッダーの設定 */
 		this.headerController.setHeader(request, headerForm, model);
 		
