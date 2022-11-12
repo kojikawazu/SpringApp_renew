@@ -14,8 +14,8 @@ import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.inquiry.common.SuperInquiryController;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
@@ -36,23 +36,23 @@ public class InquiryDeleteController extends SuperInquiryController {
 	 * コンストラクタ
 	 * @param inquiryService		{@link InquiryService}
 	 * @param inquiryReplyService	{@link InquiryReplyService}
-	 * @param userService			{@link UserServiceUse}
+	 * @param secUserService		{@link SecurityUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
 	 * @param logMessage			{@link LogMessage}
 	 */
 	public InquiryDeleteController(
-			InquiryService      inquiryService, 
-			InquiryReplyService inquiryReplyService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			InquiryService      	inquiryService, 
+			InquiryReplyService 	inquiryReplyService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		super(inquiryService, 
 				inquiryReplyService, 
-				userService,
+				secUserService,
 				loginService,
 				sessionModel,
 				httpSession,

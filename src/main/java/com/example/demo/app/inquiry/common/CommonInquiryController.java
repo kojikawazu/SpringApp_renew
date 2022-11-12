@@ -2,11 +2,11 @@ package com.example.demo.app.inquiry.common;
 
 import javax.servlet.http.HttpSession;
 
-import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.log.LogMessage;
 
@@ -22,21 +22,21 @@ public class CommonInquiryController {
 	
 	/** 
 	 * 問い合わせサービス 
-	 * {@link InquiryService} 
+	 * {@link SecurityUserServiceUse} 
 	 */
-	private final InquiryService		inquiryService;
+	private final InquiryService			inquiryService;
 	
 	/** 
 	 * 問い合わせ返信サービス 
 	 * {@link InquiryReplyService} 
 	 */
-	private final InquiryReplyService	inquiryReplyService;
+	private final InquiryReplyService		inquiryReplyService;
 	
 	/** 
 	 * ユーザーサービス 
-	 * {@link UserServiceUse} 
+	 * {@link SecurityUserServiceUse} 
 	 */
-	private final UserServiceUse		userService;
+	private final SecurityUserServiceUse	secUserService;
 	
 	/** コントローラー */
 	/** --------------------------------------------------------------- */
@@ -45,7 +45,7 @@ public class CommonInquiryController {
 	 * ヘッダコントローラー 
 	 * {@link HeaderController} 
 	 */
-	private final HeaderController		headerController;
+	private final HeaderController			headerController;
 	
 	/** ログクラス*/
 	/** --------------------------------------------------------------- */
@@ -54,7 +54,7 @@ public class CommonInquiryController {
 	 * ログクラス
 	 * {@link LogMessage} 
 	 */
-	private final LogMessage			logMessage;
+	private final LogMessage				logMessage;
 	
 	/** --------------------------------------------------------------- */
 	
@@ -62,25 +62,25 @@ public class CommonInquiryController {
 	 * コンストラクタ
 	 * @param inquiryService		{@link InquiryService}
 	 * @param inquiryReplyService	{@link InquiryReplyService}
-	 * @param userService			{@link UserServiceUse}
+	 * @param secUserService		{@link SecurityUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
 	 * @param logMessage			{@link LogMessage}
 	 */
 	public CommonInquiryController(
-			InquiryService      inquiryService, 
-			InquiryReplyService inquiryReplyService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			InquiryService      	inquiryService, 
+			InquiryReplyService 	inquiryReplyService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		this.inquiryService			= inquiryService;
 		this.inquiryReplyService	= inquiryReplyService;
-		this.userService			= userService;
+		this.secUserService			= secUserService;
 		this.logMessage				= logMessage;
-		this.headerController		= new HeaderController(userService,
+		this.headerController		= new HeaderController(secUserService,
 														loginService,
 														sessionModel,
 														httpSession,
@@ -107,10 +107,10 @@ public class CommonInquiryController {
 	
 	/** 
 	 * ユーザーサービスの取得
-	 * {@link UserServiceUse} 
+	 * {@link SecurityUserServiceUse} 
 	 */
-	public UserServiceUse getUserService() {
-		return this.userService;
+	public SecurityUserServiceUse getSecurityUserService() {
+		return this.secUserService;
 	}
 	
 	/** 

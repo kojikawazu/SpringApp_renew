@@ -10,6 +10,9 @@ public class AppConsts {
 	// ---------------------------------------------------------------------------------
 	/** request mapping */
 	
+	/** request mapping[/security] */
+	public static final String REQUEST_MAPPING_SECURITY       = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_SECURITY;
+	
 	/** request mapping[/user] */
 	public static final String REQUEST_MAPPING_USER           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_USER;
 	
@@ -73,8 +76,17 @@ public class AppConsts {
 	/** request mapping[/logout] */
 	public static final String REQUEST_MAPPING_LOGOUT         = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_LOGOUT;
 	
+	/** request mapping[/security/form] */
+	public static final String REQUEST_MAPPING_SECURITY_FORM  = REQUEST_MAPPING_SECURITY + REQUEST_MAPPING_FORM;
+	
+	/** request mapping[/security/logout] */
+	public static final String REQUEST_MAPPING_SECURITY_LOGOUT = REQUEST_MAPPING_SECURITY + REQUEST_MAPPING_LOGOUT;
+	
 	// ---------------------------------------------------------------------------------
 	/** return URL */
+	
+	/** SecurityのURL */
+	public static final String URL_SECURITY_INDEX           = WebConsts.URL_KEY_SECURITY + "/" + WebConsts.URL_KEY_INDEX;
 	
 	/** HomeページのURL */
 	public static final String URL_HOME_INDEX               = WebConsts.URL_KEY_HOME + "/" + WebConsts.URL_KEY_INDEX;

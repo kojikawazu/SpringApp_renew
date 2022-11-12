@@ -3,6 +3,23 @@ VALUES(1, 'admin', 'manager@example.com', 'root', '2019-11-12 08:34:19', '2019-1
 INSERT INTO home_user(kind_id, name, email, password, created, updated)
 VALUES(2, 'ken', 'ken@example.com', 'ken', '2019-11-12 08:34:19', '2019-11-12 08:34:19');
 
+INSERT INTO security_roles(name) VALUES('ROLE_GENERAL');
+INSERT INTO security_roles(name) VALUES('ROLE_ADMIN');
+
+-- password = "general"
+INSERT INTO security_login_user(name, email, password, created, updated) 
+VALUES('一般太郎', 'general@example.com', '$2a$10$6fPXYK.C9rCWUBifuqBIB.GRNU.nQtBpdzkkKis8ETaKVKxNo/ltO', 
+'2019-11-12 08:34:19', '2019-11-12 08:34:19');
+
+-- password = "admin"
+INSERT INTO security_login_user(name, email, password, created, updated) 
+VALUES('管理太郎', 'admin@example.com', '$2a$10$SJTWvNl16fCU7DaXtWC0DeN/A8IOakpCkWWNZ/FKRV2CHvWElQwMS', 
+'2019-11-12 08:34:19', '2019-11-12 08:34:19');
+
+INSERT INTO security_user_role(user_id, role_id) VALUES(1, 1);
+INSERT INTO security_user_role(user_id, role_id) VALUES(2, 1);
+INSERT INTO security_user_role(user_id, role_id) VALUES(2, 2);
+
 INSERT INTO inquiry(name, email, comment, created)
 VALUES('Ethan', 'sample@example.com', 'Hello', '2019-11-12 08:34:19');
 INSERT INTO inquiry(name, email, comment, created)

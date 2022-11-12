@@ -7,19 +7,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.entity.survey.SurveyModel;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.home.PageController;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.survey.SurveyService;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
@@ -40,7 +41,7 @@ public class SurveyController extends SuperSurveyController {
 	/**
 	 * コンストラクタ
 	 * @param surveyService		{@link SurveyService}
-	 * @param userService		{@link UserServiceUse}
+	 * @param secUserService	{@link SecurityUserServiceUse}
 	 * @param loginService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
@@ -48,14 +49,14 @@ public class SurveyController extends SuperSurveyController {
 	 */
 	@Autowired
 	public SurveyController(
-			SurveyService 		surveyService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			SurveyService 			surveyService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		super(surveyService,
-				userService,
+				secUserService,
 				loginService,
 				sessionModel,
 				httpSession,
@@ -64,9 +65,7 @@ public class SurveyController extends SuperSurveyController {
 	
 	/**
 	 * 調査一覧受信
-	 * @param  cookieLoginId	ログインID(Cookie)
-	 * @param  cookieUserId		ユーザーID(Cookie)
-	 * @param  cookieUserName	ユーザー名(Cookie)
+	 * @param  detailUser		{@link SecLoginUserDetails}
 	 * @param  pageidx
 	 * @param  request			{@link HttpServletRequest}
 	 * @param  response			{@link HttpServletResponse}
@@ -76,15 +75,7 @@ public class SurveyController extends SuperSurveyController {
 	 */
 	@GetMapping
 	public String index(
-			@CookieValue(name=WebConsts.COOKIE_LOGIN_ID,
-				required=false, 
-				defaultValue=WebConsts.COOKIE_ZERO)					String cookieLoginId,
-			@CookieValue(name=WebConsts.COOKIE_USER_ID,
-				required=false, 
-				defaultValue=WebConsts.COOKIE_ZERO)					String cookieUserId,
-			@CookieValue(name=WebConsts.COOKIE_USER_NAME,
-				required=false, 
-				defaultValue=WebConsts.COOKIE_NONE)					String cookieUserName,
+			@AuthenticationPrincipal SecLoginUserDetails			detailUser,
 			@RequestParam(value = WebConsts.ATTRIBUTE_PAGE_IDX, 
 							required = false, defaultValue = "1") 	int pageidx,
 			HttpServletRequest	request,
@@ -92,16 +83,13 @@ public class SurveyController extends SuperSurveyController {
 			HeaderForm			headerForm,
 			Model				model) {
 		/** Cookieの設定 */
-		this.headerController.setCookie(request, response, cookieLoginId, cookieUserId, cookieUserName);
+		this.setInclude(detailUser, request, response, headerForm, model);
 		
 		// ページ設定
 		this.setPaging(pageidx, model);
-		
-		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
-		
+				
 		// attribute設定
-		this.setCommonAttribute(request, headerForm, model);
+		this.setCommonAttribute(detailUser, request, response, headerForm, model);
 		this.setIndexAttribute(model);
 		return AppConsts.URL_SURVEY_INDEX;
 	}

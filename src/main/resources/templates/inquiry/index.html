@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--
 	【問い合わせ一覧.html】
 -->
@@ -41,7 +42,7 @@
 	 		<!-- 名前 -->
 	 		<h3 class="lefter inquiry-name" th:text="${inquiry.name}"></h3>
 	 		<!-- 管理人専用 -->
-	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
 	 			<!-- メールアドレス -->
 	 			<div class="lefter inquiry-email" th:text="${inquiry.email}"></div>
 	 		</th:block>
@@ -50,7 +51,7 @@
 	 		<div class="lefter inquiry-created" th:text="${inquiry.created}"></div>
 	 		
 	 		<!-- 管理人専用 -->
-	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
 	 			<!-- 削除フォーム -->
 				<form class="lefter inquiry-delete-form" th:action="@{/inquiry/delete}" method="post" onclick="return checkDelete();">
 					<input type="submit" name="delete" class="btn btn-outline-dark" value="✕"  />
@@ -62,7 +63,7 @@
 	 		<div class="lefter-clear inquiry-comment" th:text="${inquiry.comment}"></div>
 	 		
 	 		<!-- 管理人専用 -->
-	 		<th:block th:if="${loginUserModel.kindId == ThyConsts.THY_USER_KIND_ID_ADMIN}">
+	 		<th:block sec:authorize="hasRole('ROLE_ADMIN')">
 	 			<!-- 返信ボタン -->
 				<form class="inquiry-reply-form" th:action="@{/inquiry/reply}" method="post">
 					<input type="submit" name="delete" class="btn btn-outline-dark" value="返信する"  />

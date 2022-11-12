@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.app.header.form.HeaderForm;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.survey.SurveyService;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.app.survey.form.SurveyChangeForm;
 import com.example.demo.app.survey.form.SurveySatisForm;
@@ -75,7 +75,7 @@ public class SatisReplyController extends SuperSurveyController  {
 	/**
 	 * コンストラクタ
 	 * @param surveyService		{@link SurveyService}
-	 * @param userService		{@link UserServiceUse}
+	 * @param secUserService	{@link SecurityUserServiceUse}
 	 * @param loginService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
@@ -83,14 +83,14 @@ public class SatisReplyController extends SuperSurveyController  {
 	 */
 	@Autowired
 	public SatisReplyController(
-			SurveyService 		surveyService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			SurveyService 			surveyService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		super(surveyService,
-				userService,
+				secUserService,
 				loginService,
 				sessionModel,
 				httpSession,
