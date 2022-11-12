@@ -1,6 +1,7 @@
 package com.example.demo.app.blog.main.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.blog.main.form.BlogForm;
 import com.example.demo.app.entity.blog.BlogMainModel;
-import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.entity.security.SecLoginUserDetails;
+import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.blog.BlogMainService;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
@@ -115,7 +117,7 @@ public class SuperBlogMainController {
 	 * @param blogMainService		{@link BlogMainService}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
-	 * @param userService			{@link UserServiceUse}
+	 * @param secUserService		{@link SecurityUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
@@ -123,20 +125,20 @@ public class SuperBlogMainController {
 	 */
 	@Autowired
 	public SuperBlogMainController(
-			BlogMainService		blogMainService, 
-			BlogReplyService	blogReplyService, 
-			BlogTagService		blogTagService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			BlogMainService			blogMainService, 
+			BlogReplyService		blogReplyService, 
+			BlogTagService			blogTagService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		this.blogMainService	= blogMainService;
 		this.blogReplyService	= blogReplyService;
 		this.blogTagService		= blogTagService;
 		
 		this.headerController	= new HeaderController(
-									userService,
+									secUserService,
 									loginService,
 									sessionModel,
 									httpSession,
@@ -145,16 +147,38 @@ public class SuperBlogMainController {
 	
 	/**
 	 * 共通attribute設定
+	 * @param  detailUser	{@link SecLoginUserDetails}
 	 * @param request		{@link HttpServletRequest}
+	 * @param  response		{@link HttpServletResponse}
+	 * @param headerForm	{@link HeaderForm}
+	 * @param model 		{@link Model}
+	 */
+	protected void setInclude(
+			SecLoginUserDetails	detailUser,
+			HttpServletRequest	request,
+			HttpServletResponse response,
+			HeaderForm			headerForm,
+			Model 				model) {
+		/** ヘッダーの設定 */
+		this.headerController.setCookie(detailUser, request, response);
+	}
+	
+	/**
+	 * 共通attribute設定
+	 * @param  detailUser	{@link SecLoginUserDetails}
+	 * @param request		{@link HttpServletRequest}
+	 * @param  response		{@link HttpServletResponse}
 	 * @param headerForm	{@link HeaderForm}
 	 * @param model 		{@link Model}
 	 */
 	protected void setCommonAttribute(
+			SecLoginUserDetails	detailUser,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model 				model) {
 		/** ヘッダーの設定 */
-		this.headerController.setHeader(request, headerForm, model);
+		this.headerController.setHeader(detailUser, request, headerForm, model);
 	}
 	
 	/**

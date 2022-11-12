@@ -28,7 +28,9 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	
 	// security
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+	
 	
 	// Session
 	implementation 'org.springframework.session:spring-session-core'

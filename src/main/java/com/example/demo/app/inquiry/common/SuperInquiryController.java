@@ -1,6 +1,7 @@
 package com.example.demo.app.inquiry.common;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,22 +9,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.entity.inquiry.InquiryModel;
-import com.example.demo.app.entity.user.UserModel;
-import com.example.demo.app.header.HeaderController;
+import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.inquiry.form.InquiryForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
-import com.example.demo.app.session.user.CookieLoginUser;
-import com.example.demo.app.session.user.CookieModel;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.common.WebFunctions;
 import com.example.demo.common.id.inquiry.InquiryId;
-import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 /**
@@ -75,7 +71,7 @@ public class SuperInquiryController extends CommonInquiryController {
 	 * コンストラクタ
 	 * @param inquiryService		{@link InquiryService}
 	 * @param inquiryReplyService	{@link InquiryReplyService}
-	 * @param userService			{@link UserServiceUse}
+	 * @param secUserService		{@link SecurityUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
@@ -83,16 +79,16 @@ public class SuperInquiryController extends CommonInquiryController {
 	 */
 	@Autowired
 	public SuperInquiryController(
-			InquiryService      inquiryService,
-			InquiryReplyService inquiryReplyService,
-			UserServiceUse 		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
+			InquiryService      	inquiryService,
+			InquiryReplyService 	inquiryReplyService,
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
 		super(inquiryService,
 				inquiryReplyService,
-				userService,
+				secUserService,
 				loginService,
 				sessionModel,
 				httpSession,
@@ -103,16 +99,38 @@ public class SuperInquiryController extends CommonInquiryController {
 	
 	/**
 	 * 共通attribute設定
+	 * @param  detailUser	{@link SecLoginUserDetails}
 	 * @param request		{@link HttpServletRequest}
+	 * @param  response		{@link HttpServletResponse}
+	 * @param headerForm	{@link HeaderForm}
+	 * @param model 		{@link Model}
+	 */
+	protected void setInclude(
+			SecLoginUserDetails	detailUser,
+			HttpServletRequest	request,
+			HttpServletResponse response,
+			HeaderForm			headerForm,
+			Model 				model) {
+		/** Cookieの設定 */
+		this.getHeaderController().setCookie(detailUser, request, response);
+	}
+	
+	/**
+	 * 共通attribute設定
+	 * @param  detailUser	{@link SecLoginUserDetails}
+	 * @param request		{@link HttpServletRequest}
+	 * @param  response		{@link HttpServletResponse}
 	 * @param headerForm	{@link HeaderForm}
 	 * @param model 		{@link Model}
 	 */
 	protected void setCommonAttribute(
+			SecLoginUserDetails	detailUser,
 			HttpServletRequest	request,
+			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model 				model) {
 		/** ヘッダーの設定 */
-		this.getHeaderController().setHeader(request, headerForm, model);
+		this.getHeaderController().setHeader(detailUser, request, headerForm, model);
 	}
 	
 	/**
@@ -135,22 +153,17 @@ public class SuperInquiryController extends CommonInquiryController {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_INQUIRY_FORM);
 		model.addAttribute(WebConsts.ATTRIBUTE_CONT,  CONT_INQUIRY_FORM);
 		
-		CookieLoginUser cookieLoginUser = this.getHeaderController().getCookieModel().getCookieLoginUser();
-		if (cookieLoginUser.isUserId()) {
-			UserModel userModel = WebFunctions.selectUserModel(
-									this.getUserService(),
-									new UserId(cookieLoginUser.getUserId()));
-			
+		
+		SecLoginUserDetails details = this.getHeaderController().getSecLoginUserDetails();
+		if (details != null) {			
 			if (inquiryForm.getName() == null || 
 					inquiryForm.getName().equals("")) {
-				inquiryForm.setName(userModel.getName());
+				inquiryForm.setName(details.getSecUserModel().getName());
 			}
 			if (inquiryForm.getEmail() == null ||
 					inquiryForm.getEmail().equals("")) {
-				inquiryForm.setEmail(userModel.getEmail());
+				inquiryForm.setEmail(details.getSecUserModel().getEmail());
 			}
-			
-			
 		}
 	}
 	

@@ -8,7 +8,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.app.entity.user.UserModel;
 import com.example.demo.app.service.SuperService;
 import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
@@ -154,33 +153,6 @@ public class WebFunctions {
 		}
 		
 		return true;
-	}
-	
-	/** ------------------------------------------------------------------------ */
-	
-	/**
-	 * ユーザーモデルの取得
-	 * @param userService {@link SuperService}({@link UserModel}, {@link UserId})
-	 * @param userId {@link UserId}
-	 * @return {@link UserModel}
-	 */
-	public static final UserModel selectUserModel(
-			SuperService<UserModel, UserId> userService, 
-			UserId userId) {
-		if (userService == null || userId == null) {
-			return null;
-		}
-		
-		LogMessage		log			= new LogMessage();
-		UserModel	 	userModel 	= null;
-		
-		try {
-			userModel = userService.select(userId);
-		} catch(Exception ex) {
-			log.warning(ex.getMessage());
-		}
-		
-		return userModel;
 	}
 	
 	/** ------------------------------------------------------------------------ */

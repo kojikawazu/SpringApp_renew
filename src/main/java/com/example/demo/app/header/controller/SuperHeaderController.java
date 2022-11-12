@@ -1,17 +1,15 @@
-package com.example.demo.app.header;
+package com.example.demo.app.header.controller;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 
-import com.example.demo.app.entity.user.UserModel;
+import com.example.demo.app.entity.security.SecLoginUserDetails;
+import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.app.service.user.UserServiceUse;
 import com.example.demo.app.session.user.CookieModel;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.ThymeleafConsts;
-import com.example.demo.common.common.WebFunctions;
-import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 public class SuperHeaderController {
@@ -21,15 +19,15 @@ public class SuperHeaderController {
 	
 	/** 
 	 * ユーザーサービス 
-	 * {@link UserServiceUse} 
+	 * {@link SecurityUserServiceUse} 
 	 */
-	private final UserServiceUse	userService;
+	private final SecurityUserServiceUse	secUserService;
 	
 	/** 
 	 * ログインサービス 
 	 * {@link LoginServiceUse} 
 	 */
-	private final LoginServiceUse	loginService;
+	private final LoginServiceUse			loginService;
 	
 	/** セッション */
 	/** --------------------------------------------------------------- */
@@ -38,19 +36,26 @@ public class SuperHeaderController {
 	 * ログインセッション 
 	 * {@link SessionModel} 
 	 */
-	private SessionModel			sessionModel;
+	private SessionModel					sessionModel;
 	
 	/** 
 	 * Cookieモデル 
 	 * {@link CookieModel} 
 	 */
-	private CookieModel				cookieModel;
+	private CookieModel						cookieModel;
 	
 	/** 
 	 * HTTPセッション 
 	 * {@link HttpSession} 
 	 */
-	private HttpSession				httpSession;
+	private HttpSession						httpSession;
+	
+	
+	/**
+	 * ログインユーザー
+	 * {@link SecLoginUserDetails}
+	 */
+	private SecLoginUserDetails				secLoginUserDetails;
 	
 	/** ログクラス */
 	/** --------------------------------------------------------------- */
@@ -59,36 +64,37 @@ public class SuperHeaderController {
 	 * ロガー
 	 * {@link LogMessage}
 	 */
-	private final LogMessage		logMessage;
+	private final LogMessage				logMessage;
 	
 	/** --------------------------------------------------------------- */
 	
 	/**
 	 * コンストラクタ
-	 * @param userService		{@link UserServiceUse}
+	 * @param secUserService	{@link SecurityUserServiceUse}
 	 * @param userService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
 	 * @param logMessage		{@link LogMessage}
 	 */
 	public SuperHeaderController(
-			UserServiceUse		userService,
-			LoginServiceUse		loginService,
-			SessionModel		sessionModel,
-			HttpSession			httpSession,
-			LogMessage			logMessage) {
-		this.userService 		= userService;
-		this.loginService		= loginService;
-		this.sessionModel 		= sessionModel;
-		this.httpSession		= httpSession;
-		this.cookieModel		= new CookieModel();
-		this.logMessage 		= logMessage;
+			SecurityUserServiceUse	secUserService,
+			LoginServiceUse			loginService,
+			SessionModel			sessionModel,
+			HttpSession				httpSession,
+			LogMessage				logMessage) {
+		this.secUserService 		= secUserService;
+		this.loginService			= loginService;
+		this.sessionModel 			= sessionModel;
+		this.httpSession			= httpSession;
+		this.cookieModel			= new CookieModel();
+		this.logMessage 			= logMessage;
+		this.secLoginUserDetails	= null;
 	}
 	
 	/** --------------------------------------------------------------- */
 	
-	public UserServiceUse getUserService() {
-		return this.userService;
+	public SecurityUserServiceUse getSecUserService() {
+		return this.secUserService;
 	}
 	
 	public LoginServiceUse getLoginService() {
@@ -107,26 +113,28 @@ public class SuperHeaderController {
 		return this.httpSession;
 	}
 	
+	public SecLoginUserDetails getSecLoginUserDetails() {
+		return this.secLoginUserDetails;
+	}
+	
 	public LogMessage getLog() {
 		return this.logMessage;
 	}
 	
 	/** --------------------------------------------------------------- */
 	
-	/**
-	 * ユーザーモデルの取得
-	 * @param userId
-	 * @return {@link UserModel}
-	 */
-	public UserModel selectUserModel(int userId) {
-		if (userId <= 0) {
-			return new UserModel(null);
+	public void setSecLoginUserDetails(SecLoginUserDetails secLoginUserDetails) {
+		if (secLoginUserDetails == null) {
+			return ;
 		}
-		
-		UserModel model = WebFunctions.selectUserModel(userService, new UserId(userId));
-		
-		return model;
+		this.secLoginUserDetails = secLoginUserDetails;
 	}
+	
+	public void initSecLoginUserDetails() {
+		this.secLoginUserDetails = null;
+	}
+	
+	/** --------------------------------------------------------------- */
 	
 	protected void setSameModel(Model model) {
 		model.addAttribute("ThyConsts", new ThymeleafConsts());

@@ -53,24 +53,18 @@
 			</ul>
 			
 			<!-- ログインユーザー -->
-			<div th:id="noLoginId">
-				<div th:id="noLoginIdChild" hidden th:text="${noLoginId}"></div>
+			<th:block th:if="${noLoginId.equals('yes')}">
 				<!-- ログインなし -->
-				<form class="form-inline my-2 my-lg-0 login-form" th:id="noLogin" th:object="${headerForm.userLoginForm}" th:action="@{/user/login}" method="post">
-					<input class="form-control mr-sm-2" type="text" name="name"     th:id="name"     th:value="*{name}"     placeholder="ログインユーザー" aria-label="ログインユーザー" />
-					<input class="form-control mr-sm-2" type="text" name="password" th:id="password" th:value="*{password}" placeholder="パスワード"     aria-label="パスワード" />
-					<button class="btn btn-secondary my-2 my-sm-0" type="submit">ログイン</button>
-				</form>
-			</div >
-			<div th:id="yesLoginId">
-				<div th:id="yesLoginIdChild" hidden th:text="${yesLoginId}"></div>
+				<a class="btn btn-primary" href="#" role="button" th:href="@{/security/form}">ログイン</a>
+			</th:block >
+			
+			<th:block th:if="${yesLoginId.equals('yes')}">
 				<!-- ログイン中 -->
-				<form class="form-inline my-2 my-lg-0 login-form" th:id="yesLogin" th:object="${headerForm.userLogoutForm}" th:action="@{/user/logout}" method="post">
-					<input class="form-control" type="hidden" name="nowLogoutId" th:id="nowLogoutId" th:value="*{nowLogoutId}" />
+				<form class="form-inline my-2 my-lg-0 login-form" th:id="yesLogin" th:action="@{/security/logout}" method="post">
 					<input class="form-control-plaintext mr-sm-2 form-white-color" type="text" readonly th:id="logoutUserName" th:value="${logoutUserName}">
 					<button class="btn btn-secondary my-2 my-sm-0" type="submit">ログアウト</button>
 				</form>
-			</div  >
+			</th:block>
 		</div>
 	</nav>
 	

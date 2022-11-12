@@ -21,6 +21,34 @@ CREATE TABLE login_user
    updated DATETIME NOT NULL,
    PRIMARY KEY(id)
 );
+/** ----------------------------------------------------------------------------- */
+
+/** セキュリティロール */
+CREATE TABLE security_roles(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  name VARCHAR(32) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+/** セキュリティログインユーザー */
+CREATE TABLE security_login_user(
+   id INTEGER NOT NULL AUTO_INCREMENT,
+   name VARCHAR(128) NOT NULL,
+   email VARCHAR(256) NOT NULL,
+   password VARCHAR(128) NOT NULL,
+   created DATETIME NOT NULL,
+   updated DATETIME NOT NULL,
+   PRIMARY KEY(id)
+);
+
+/** ユーザーとロールの対応付け */
+CREATE TABLE security_user_role(
+    user_id INTEGER,    -- ユーザーのID
+    role_id INTEGER,    -- ロールのID
+    CONSTRAINT pk_user_role PRIMARY KEY (user_id, role_id),
+    CONSTRAINT fk_user_role_user_id FOREIGN KEY (user_id) REFERENCES security_login_user(id),
+    CONSTRAINT fk_user_role_role_id FOREIGN KEY (role_id) REFERENCES security_roles(id)
+);
 
 /** ----------------------------------------------------------------------------- */
 

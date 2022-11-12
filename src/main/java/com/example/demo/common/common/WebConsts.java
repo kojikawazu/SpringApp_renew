@@ -86,83 +86,89 @@ public class WebConsts {
 	/** SQL */
 	
 	/** SQL[id] */
-	public static final String SQL_ID_NAME               = "id";
+	public static final String SQL_ID_NAME					= "id";
 	
 	/** SQL[user_id] */
-	public static final String SQL_USER_ID_NAME          = "user_id";
+	public static final String SQL_USER_ID_NAME				= "user_id";
 	
 	/** SQL[blog_id] */
-	public static final String SQL_BLOG_ID_NAME          = "blog_id";
+	public static final String SQL_BLOG_ID_NAME				= "blog_id";
 	
 	/** SQL[inquiry_id] */
-	public static final String SQL_INQUIRY_ID_NAME       = "inquiry_id";
+	public static final String SQL_INQUIRY_ID_NAME			= "inquiry_id";
 	
 	/** SQL[kind_id] */
-	public static final String SQL_KIND_ID_NAME          = "kind_id";
+	public static final String SQL_KIND_ID_NAME				= "kind_id";
 	
 	/** SQL[session_id] */
-	public static final String SQL_SESSION_ID_NAME       = "session_id";
+	public static final String SQL_SESSION_ID_NAME			= "session_id";
 	
 	/** SQL[title] */
-	public static final String SQL_TITLE_NAME            = "title";
+	public static final String SQL_TITLE_NAME				= "title";
 	
 	/** SQL[name] */
-	public static final String SQL_NAME_NAME             = "name";
+	public static final String SQL_NAME_NAME				= "name";
 	
 	/** SQL[email] */
-	public static final String SQL_EMAIL_NAME            = "email";
+	public static final String SQL_EMAIL_NAME				= "email";
 	
 	/** SQL[tag] */
-	public static final String SQL_TAG_NAME              = "tag";
+	public static final String SQL_TAG_NAME					= "tag";
 	
 	/** SQL[comment] */
-	public static final String SQL_COMMENT_NAME          = "comment";
+	public static final String SQL_COMMENT_NAME				= "comment";
 	
 	/** SQL[password] */
-	public static final String SQL_PASSWORD_NAME         = "password";
+	public static final String SQL_PASSWORD_NAME			= "password";
 	
 	/** SQL[thanksCnt] */
-	public static final String SQL_THANKSCNT_NAME        = "thanksCnt";
+	public static final String SQL_THANKSCNT_NAME			= "thanksCnt";
 	
 	/** SQL[age] */
-	public static final String SQL_AGE_NAME              = "age";
+	public static final String SQL_AGE_NAME					= "age";
 	
 	/** SQL[profession] */
-	public static final String SQL_PROFESSION_NAME       = "profession";
+	public static final String SQL_PROFESSION_NAME			= "profession";
 	
 	/** SQL[ismen] */
-	public static final String SQL_ISMEN_NAME            = "ismen";
+	public static final String SQL_ISMEN_NAME				= "ismen";
 	
 	/** SQL[satisfaction] */
-	public static final String SQL_SATISFACTION_NAME     = "satisfaction";
+	public static final String SQL_SATISFACTION_NAME		= "satisfaction";
 	
 	/** SQL[created] */
-	public static final String SQL_CREATED_NAME          = "created";
+	public static final String SQL_CREATED_NAME				= "created";
 	
 	/** SQL[updated] */
-	public static final String SQL_UPDATED_NAME          = "updated";
+	public static final String SQL_UPDATED_NAME				= "updated";
 	
 	/** SQL[reply_id] */
-	public static final String SQL_REPLY_ID_NAME         = "reply_id";
+	public static final String SQL_REPLY_ID_NAME			= "reply_id";
 	
 	/** SQL[reply_name] */
-	public static final String SQL_REPLY_NAME_NAME       = "reply_name";
+	public static final String SQL_REPLY_NAME_NAME			= "reply_name";
 	
 	/** SQL[reply_email] */
-	public static final String SQL_REPLY_EMAIL_NAME      = "reply_email";
+	public static final String SQL_REPLY_EMAIL_NAME			= "reply_email";
 	
 	/** SQL[reply_comment] */
-	public static final String SQL_REPLY_COMMENT_NAME    = "reply_comment";
+	public static final String SQL_REPLY_COMMENT_NAME		= "reply_comment";
 
 	/** SQL[reply_thankscnt] */
-	public static final String SQL_REPLY_THANKS_CNT_NAME = "reply_thankscnt";
+	public static final String SQL_REPLY_THANKS_CNT_NAME	= "reply_thankscnt";
 	
 	/** SQL[reply_created] */
-	public static final String SQL_REPLY_CREATED_NAME    = "reply_created";
+	public static final String SQL_REPLY_CREATED_NAME		= "reply_created";
 	
 	/** SQL[satis_count] */
-	public static final String SQL_SATIS_COUNT           = "satis_count";
+	public static final String SQL_SATIS_COUNT				= "satis_count";
 	
+	/** SQL[role_name] */
+	public static final String SQL_ROLE_NAME				= "role_name";
+	
+	/** SQL[role_id] */
+	public static final String SQL_ROLE_ID					= "role_id";
+
 	
 	// ---------------------------------------------------------------------------------
 	/** URL key */
@@ -171,6 +177,9 @@ public class WebConsts {
 	
 	/** URL key[root] */
 	public static final String URL_KEY_ROOT           = "/";
+	
+	/** URL key[security] */
+	public static final String URL_KEY_SECURITY       = "security";
 	
 	/** URL key[home] */
 	public static final String URL_KEY_INDEX          = "index";
@@ -249,6 +258,9 @@ public class WebConsts {
 	
 	/** attribute[model] */
 	public static final String ATTRIBUTE_MODEL         = "model";
+	
+	/** attribute[error] */
+	public static final String ATTRIBUTE_ERROR         = "error";
 	
 	/** attribute[title] */
 	public static final String ATTRIBUTE_TITLE         = "title";

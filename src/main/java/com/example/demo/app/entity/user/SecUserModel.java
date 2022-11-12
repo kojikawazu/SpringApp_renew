@@ -1,25 +1,23 @@
 package com.example.demo.app.entity.user;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.example.demo.common.id.user.UserId;
-import com.example.demo.common.id.user.UserKindId;
+import com.example.demo.common.list.WordList;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 import com.example.demo.common.word.PasswdWord;
 
 /**
- * ユーザーモデルクラス
+ * セキュリティユーザーモデル
  * @author nanai
  *
  */
-public class UserModel {
+public class SecUserModel {
 
 	/** ユーザーID */
 	private UserId 			id;
-	
-	/** ユーザー種別 */
-	private UserKindId 		kindId;
 	
 	/** ユーザー名 */
 	private NameWord 		name;
@@ -30,6 +28,9 @@ public class UserModel {
 	/** ユーザーパスワード */
 	private PasswdWord 		password;
 	
+	/** ロールリスト */
+	private WordList		roleList;
+	
 	/** ユーザー生成日 */
 	private LocalDateTime 	created;
 	
@@ -39,28 +40,24 @@ public class UserModel {
 	/**
 	 * コンストラクタ
 	 * @param id
-	 * @param kindId
 	 * @param name
 	 * @param email
 	 * @param password
+	 * @param roleList
 	 * @param created
 	 * @param updated
 	 */
-	public UserModel(
+	public SecUserModel(
 			UserId 			id,
-			UserKindId 		kindId,
 			NameWord 		name,
 			EmailWord 		email,
 			PasswdWord 		password,
+			WordList		roleList,
 			LocalDateTime 	created,
 			LocalDateTime 	updated) {
 		this.id = (id == null ?
 					new UserId(0) :
 					id);
-		
-		this.kindId = (kindId == null ?
-					new UserKindId(0) :
-					kindId);
 		
 		this.name = (name == null ?
 					new NameWord("") :
@@ -74,6 +71,10 @@ public class UserModel {
 					new PasswdWord("") :
 					password);
 		
+		this.roleList = (roleList == null ?
+					new WordList() :
+					roleList);
+		
 		this.created = (created == null ?
 					LocalDateTime.now() :
 					created);
@@ -85,25 +86,70 @@ public class UserModel {
 	
 	/**
 	 * コンストラクタ
-	 * @param kindId
+	 * @param name
+	 * @param email
+	 * @param password
+	 * @param roleList
+	 * @param created
+	 * @param updated
+	 */
+	public SecUserModel(
+			NameWord 		name,
+			EmailWord 		email,
+			PasswdWord 		password,
+			WordList		roleList,
+			LocalDateTime 	created,
+			LocalDateTime 	updated) {
+		this.id = (id == null ?
+				new UserId(0) :
+				id);
+		
+		this.name = (name == null ?
+					new NameWord("") :
+					name);
+		
+		this.email = (email == null ?
+					new EmailWord("") :
+					email);
+		
+		this.password = (password == null ?
+					new PasswdWord("") :
+					password);
+		
+		this.roleList = (roleList == null ?
+				new WordList() :
+				roleList);
+		
+		this.created = (created == null ?
+					LocalDateTime.now() :
+					created);
+		
+		this.updated = (updated == null ?
+					LocalDateTime.now() :
+					updated);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param id
 	 * @param name
 	 * @param email
 	 * @param password
 	 * @param created
 	 * @param updated
 	 */
-	public UserModel(
-			UserKindId 		kindId,
+	public SecUserModel(
+			UserId 			id,
 			NameWord 		name,
 			EmailWord 		email,
 			PasswdWord 		password,
 			LocalDateTime 	created,
 			LocalDateTime 	updated) {
-		this.id = new UserId(0);
+		this.roleList 	= new WordList();
 		
-		this.kindId = (kindId == null ?
-					new UserKindId(0) :
-					kindId);
+		this.id = (id == null ?
+				new UserId(0) :
+				id);
 		
 		this.name = (name == null ?
 					new NameWord("") :
@@ -130,21 +176,21 @@ public class UserModel {
 	 * コンストラクタ
 	 * @param model
 	 */
-	public UserModel(UserModel model) {
+	public SecUserModel(SecUserModel model) {
 		if (model == null) {
 			this.id 		= new UserId(0);
-			this.kindId 	= new UserKindId(0);
 			this.name 		= new NameWord("");
 			this.email 		= new EmailWord("");
 			this.password 	= new PasswdWord("");
+			this.roleList	= new WordList();
 			this.created 	= LocalDateTime.now();
 			this.updated 	= LocalDateTime.now();
 		} else {
 			this.id 		= new UserId(model.getId());
-			this.kindId 	= new UserKindId(model.getKindId());
 			this.name 		= new NameWord(model.getName());
 			this.email 		= new EmailWord(model.getEmail());
 			this.password 	= new PasswdWord(model.getPassword());
+			this.roleList	= new WordList(model.getRoleList());
 			this.created 	= model.getCreated();
 			this.updated 	= model.getUpdated();
 		}
@@ -154,10 +200,6 @@ public class UserModel {
 	
 	public int getId() {
 		return this.id.getId();
-	}
-	
-	public int getKindId() {
-		return this.kindId.getId();
 	}
 	
 	public String getName() {
@@ -170,6 +212,10 @@ public class UserModel {
 	
 	public String getPassword() {
 		return this.password.getWord();
+	}
+	
+	public List<String> getRoleList() {
+		return this.roleList.getList();
 	}
 	
 	public LocalDateTime getCreated() {
