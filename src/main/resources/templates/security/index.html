@@ -10,8 +10,9 @@
 
 <body>
 	<h1>ログインページ</h1>
-	<p th:if="${param.error}" class="error">
-		ユーザー名またはパスワードが違います。
+	<div th:if="${param.error}" class="alert alert-danger">
+		ユーザー名またはパスワードが正しくありません。
+	</div>
         
 	<form method="post" action="index.html" th:action="@{/login}">
 		ユーザー名: <input type="text" name="username" /><br>

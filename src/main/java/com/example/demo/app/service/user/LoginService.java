@@ -21,10 +21,24 @@ public interface LoginService {
 	void updateTime(LoginId loginId);
 	
 	/**
+	 * 削除
+	 * @param  userId {@link UserId}
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
+	 */
+	void delete(UserId userId);
+	
+	/**
 	 * 選択
 	 * @param  userId {@link UserId}
 	 * @throws {@link WebMvcConfig#NOT_FOUND()}
 	 * @return {@link LoginModel}
 	 */
 	LoginModel select(UserId userId);
+	
+	/**
+	 * IDは存在する？
+	 * @param  targetID {@link UserId}
+	 * @return true 存在する false 存在しない
+	 */
+	boolean isSelect_byUserId(UserId targetID);
 }

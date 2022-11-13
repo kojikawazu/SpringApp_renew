@@ -77,7 +77,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Transactional(readOnly = false)
 	public void insert(SecUserModel model) {
 		if (model == null)	return ;
-		String sql = "INSERT INTO " 
+		String sql = WebConsts.SQL_INSERT + " " 
 				+ DB_NAME 
 				+ "("
 				+ PARAM_NAME		+ ", " 
@@ -86,7 +86,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ PARAM_CREATED 	+ ", "
 				+ PARAM_UPDATED 
 				+ ") "
-				+ "VALUES(?,?,?,?,?)";
+				+ WebConsts.SQL_VALUES + "(?,?,?,?,?)";
 		try {
 			this.jdbcTemp.update(
 					sql,
@@ -110,12 +110,12 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Transactional(readOnly = false)
 	public int update(SecUserModel model) {
 		if (model == null)	return WebConsts.ERROR_NUMBER;
-		String sql = "UPDATE " + DB_NAME + " SET "
+		String sql = WebConsts.SQL_UPDATE + " " + DB_NAME + " " + WebConsts.SQL_SET + " "
 				+ PARAM_NAME		+ " = ?, "
 				+ PARAM_EMAIL		+ " = ?, "
 				+ PARAM_PASSWORD	+ " = ?, "
 				+ PARAM_UPDATED 	+ " = ? "
-				+ "WHERE " + PARAM_ID + " = ?";
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 		
 		return this.jdbcTemp.update(
 					sql,
@@ -136,8 +136,8 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Transactional(readOnly = false)
 	public int delete(UserId id) {
 		if (id == null)	return WebConsts.ERROR_NUMBER;
-		String sql = "DELETE FROM " + DB_NAME  + " "
-				+ "WHERE " + PARAM_ID + " = ?";
+		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 		
 		return this.jdbcTemp.update(
 				sql, 
@@ -150,19 +150,19 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	 */
 	@Override
 	public List<SecUserModel> getAll() {
-		String sql = "SELECT "
-				+ DB_NAME + "." + PARAM_ID			+ " AS " + PARAM_ID       + ", "
-				+ DB_NAME + "." + PARAM_NAME		+ " AS " + PARAM_NAME     + ", " 
-				+ DB_NAME + "." + PARAM_EMAIL		+ " AS " + PARAM_EMAIL    + ", " 
-				+ DB_NAME + "." + PARAM_PASSWORD 	+ " AS " + PARAM_PASSWORD + ", " 
-				+ DB_NAME + "." + PARAM_CREATED 	+ " AS " + PARAM_CREATED  + ", "
-				+ DB_NAME + "." + PARAM_UPDATED 	+ " AS " + PARAM_UPDATED  + ", "
-				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " AS " + PARAM_ROLE_NAME + " "
-				+ "FROM " + DB_NAME + " "
-				+ "JOIN " + DB_USER_ROLE_NAME + " "
-				+ "ON " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
-				+ "JOIN " + DB_ROLE_NAME + " "
-				+ "ON " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID;
+		String sql = WebConsts.SQL_SELECT + " "
+				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
+				+ DB_NAME + "." + PARAM_NAME		+ " " + WebConsts.SQL_AS + " " + PARAM_NAME     + ", " 
+				+ DB_NAME + "." + PARAM_EMAIL		+ " " + WebConsts.SQL_AS + " " + PARAM_EMAIL    + ", " 
+				+ DB_NAME + "." + PARAM_PASSWORD 	+ " " + WebConsts.SQL_AS + " " + PARAM_PASSWORD + ", " 
+				+ DB_NAME + "." + PARAM_CREATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_CREATED  + ", "
+				+ DB_NAME + "." + PARAM_UPDATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_UPDATED  + ", "
+				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " " + WebConsts.SQL_AS + " " + PARAM_ROLE_NAME + " "
+				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
+				+ WebConsts.SQL_JOIN + " " + DB_USER_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
+				+ WebConsts.SQL_JOIN + " " + DB_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID;
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
 		
 		try {
@@ -187,20 +187,20 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 		if (id == null)	return null;
 		
 		SecUserModel model = null;
-		String sql = "SELECT "
-				+ DB_NAME + "." + PARAM_ID			+ " AS " + PARAM_ID       + ", "
-				+ DB_NAME + "." + PARAM_NAME		+ " AS " + PARAM_NAME     + ", " 
-				+ DB_NAME + "." + PARAM_EMAIL		+ " AS " + PARAM_EMAIL    + ", " 
-				+ DB_NAME + "." + PARAM_PASSWORD 	+ " AS " + PARAM_PASSWORD + ", " 
-				+ DB_NAME + "." + PARAM_CREATED 	+ " AS " + PARAM_CREATED  + ", "
-				+ DB_NAME + "." + PARAM_UPDATED 	+ " AS " + PARAM_UPDATED  + ", "
-				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " AS " + PARAM_ROLE_NAME + " "
-				+ "FROM " + DB_NAME + " "
-				+ "JOIN " + DB_USER_ROLE_NAME + " "
-				+ "ON " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
-				+ "JOIN " + DB_ROLE_NAME + " "
-				+ "ON " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
-				+ "WHERE " + DB_NAME + "." + PARAM_ID + " = ?";
+		String sql = WebConsts.SQL_SELECT + " "
+				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
+				+ DB_NAME + "." + PARAM_NAME		+ " " + WebConsts.SQL_AS + " " + PARAM_NAME     + ", " 
+				+ DB_NAME + "." + PARAM_EMAIL		+ " " + WebConsts.SQL_AS + " " + PARAM_EMAIL    + ", " 
+				+ DB_NAME + "." + PARAM_PASSWORD 	+ " " + WebConsts.SQL_AS + " " + PARAM_PASSWORD + ", " 
+				+ DB_NAME + "." + PARAM_CREATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_CREATED  + ", "
+				+ DB_NAME + "." + PARAM_UPDATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_UPDATED  + ", "
+				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " " + WebConsts.SQL_AS + " " + PARAM_ROLE_NAME + " "
+				+ WebConsts.SQL_FROM + " "  + DB_NAME + " "
+				+ WebConsts.SQL_JOIN + " "  + DB_USER_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " "  + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
+				+ WebConsts.SQL_JOIN + " "  + DB_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " "  + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
+				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_ID + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
 		
 		try {
@@ -230,20 +230,20 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 		if (email == null)	return null;
 		
 		SecUserModel model = null;
-		String sql = "SELECT "
-				+ DB_NAME + "." + PARAM_ID			+ " AS " + PARAM_ID       + ", "
-				+ DB_NAME + "." + PARAM_NAME		+ " AS " + PARAM_NAME     + ", " 
-				+ DB_NAME + "." + PARAM_EMAIL		+ " AS " + PARAM_EMAIL    + ", " 
-				+ DB_NAME + "." + PARAM_PASSWORD 	+ " AS " + PARAM_PASSWORD + ", " 
-				+ DB_NAME + "." + PARAM_CREATED 	+ " AS " + PARAM_CREATED  + ", "
-				+ DB_NAME + "." + PARAM_UPDATED 	+ " AS " + PARAM_UPDATED  + ", "
-				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " AS " + PARAM_ROLE_NAME + " "
-				+ "FROM " + DB_NAME + " "
-				+ "JOIN " + DB_USER_ROLE_NAME + " "
-				+ "ON " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
-				+ "JOIN " + DB_ROLE_NAME + " "
-				+ "ON " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
-				+ "WHERE " + DB_NAME + "." + PARAM_EMAIL    + " = ?";
+		String sql = WebConsts.SQL_SELECT + " "
+				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
+				+ DB_NAME + "." + PARAM_NAME		+ " " + WebConsts.SQL_AS + " " + PARAM_NAME     + ", " 
+				+ DB_NAME + "." + PARAM_EMAIL		+ " " + WebConsts.SQL_AS + " " + PARAM_EMAIL    + ", " 
+				+ DB_NAME + "." + PARAM_PASSWORD 	+ " " + WebConsts.SQL_AS + " " + PARAM_PASSWORD + ", " 
+				+ DB_NAME + "." + PARAM_CREATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_CREATED  + ", "
+				+ DB_NAME + "." + PARAM_UPDATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_UPDATED  + ", "
+				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " " + WebConsts.SQL_AS + " " + PARAM_ROLE_NAME + " "
+				+ WebConsts.SQL_FROM + " "  + DB_NAME + " "
+				+ WebConsts.SQL_JOIN + " "  + DB_USER_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " "  + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
+				+ WebConsts.SQL_JOIN + " "  + DB_ROLE_NAME + " "
+				+ WebConsts.SQL_ON   + " "  + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
+				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_EMAIL + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
 		
 		try {
@@ -274,21 +274,21 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 		if (email == null || password == null)	return null;
 		
 		SecUserModel model = null;
-		String sql = "SELECT "
-				+ DB_NAME + "." + PARAM_ID			+ " AS " + PARAM_ID       + ", "
-				+ DB_NAME + "." + PARAM_NAME		+ " AS " + PARAM_NAME     + ", " 
-				+ DB_NAME + "." + PARAM_EMAIL		+ " AS " + PARAM_EMAIL    + ", " 
-				+ DB_NAME + "." + PARAM_PASSWORD 	+ " AS " + PARAM_PASSWORD + ", " 
-				+ DB_NAME + "." + PARAM_CREATED 	+ " AS " + PARAM_CREATED  + ", "
-				+ DB_NAME + "." + PARAM_UPDATED 	+ " AS " + PARAM_UPDATED  + ", "
-				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " AS " + PARAM_ROLE_NAME + " "
-				+ "FROM " + DB_NAME + " "
-				+ "JOIN " + DB_USER_ROLE_NAME + " "
-				+ "ON " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
-				+ "JOIN " + DB_ROLE_NAME + " "
-				+ "ON " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
-				+ "WHERE " + DB_NAME + "." + PARAM_EMAIL    + " = ? and "
-				+            DB_NAME + "." + PARAM_PASSWORD + " = ?";
+		String sql = WebConsts.SQL_SELECT + " "
+				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
+				+ DB_NAME + "." + PARAM_NAME		+ " " + WebConsts.SQL_AS + " " + PARAM_NAME     + ", " 
+				+ DB_NAME + "." + PARAM_EMAIL		+ " " + WebConsts.SQL_AS + " " + PARAM_EMAIL    + ", " 
+				+ DB_NAME + "." + PARAM_PASSWORD 	+ " " + WebConsts.SQL_AS + " " + PARAM_PASSWORD + ", " 
+				+ DB_NAME + "." + PARAM_CREATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_CREATED  + ", "
+				+ DB_NAME + "." + PARAM_UPDATED 	+ " " + WebConsts.SQL_AS + " " + PARAM_UPDATED  + ", "
+				+ DB_ROLE_NAME + "."+ PARAM_NAME 	+ " " + WebConsts.SQL_AS + " " + PARAM_ROLE_NAME + " "
+				+ WebConsts.SQL_FROM  + " " + DB_NAME + " "
+				+ WebConsts.SQL_JOIN  + " " + DB_USER_ROLE_NAME + " "
+				+ WebConsts.SQL_ON    + " " + DB_NAME + "." + PARAM_ID + " = " + DB_USER_ROLE_NAME + "." + PARAM_USER_ID + " "
+				+ WebConsts.SQL_JOIN  + " " + DB_ROLE_NAME + " "
+				+ WebConsts.SQL_ON    + " " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
+				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_EMAIL    + " = ? and "
+				+                             DB_NAME + "." + PARAM_PASSWORD + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
 		
 		try {
@@ -316,9 +316,9 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	 */
 	@Override
 	public boolean isSelect_byId(int targetID) {
-		String sql = "SELECT " + PARAM_ID + " "
-				+ "FROM " + DB_NAME + " "
-				+ "WHERE " + PARAM_ID + " = ?";
+		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + " "
+				+    WebConsts.SQL_FROM   + " " + DB_NAME  + " "
+				+    WebConsts.SQL_WHERE  + " " + PARAM_ID + " = ?";
 		
 		boolean isTrue = true;
 		try {

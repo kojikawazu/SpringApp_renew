@@ -108,6 +108,23 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	}
 	
 	/**
+	 * Eメールによる選択
+	 * @param  email 	{@link EmailWord}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return model {@link SecUserModel}
+	 */
+	@Override
+	public SecUserModel select(EmailWord email) {
+		SecUserModel model = this.dao.select(email);
+		
+		if (model == null) {
+			throw WebMvcConfig.NOT_FOUND();
+		}
+		
+		return model;
+	}
+	
+	/**
 	 * Eメール、パスワードによる選択
 	 * @param  email 	{@link EmailWord}
 	 * @param  password	{@link PasswdWord}
@@ -151,5 +168,4 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 		return optional.map(secLoginUserModel -> new SecLoginUserDetails(model))
 				.orElseThrow(() -> new UsernameNotFoundException("not found"));
 	}
-
 }

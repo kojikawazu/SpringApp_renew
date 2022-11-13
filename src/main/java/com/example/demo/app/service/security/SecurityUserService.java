@@ -21,4 +21,11 @@ public interface SecurityUserService {
 	 */
 	SecUserModel select(EmailWord email, PasswdWord password);
 
+	/**
+	 * Eメールによる選択
+	 * @param  email 	{@link EmailWord}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
+	 * @return model {@link SecUserModel}
+	 */
+	SecUserModel select(EmailWord email);
 }

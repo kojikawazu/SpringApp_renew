@@ -8,8 +8,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.app.service.SuperService;
-import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.log.LogMessage;
 
 /**
