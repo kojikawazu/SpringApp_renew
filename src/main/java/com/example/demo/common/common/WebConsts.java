@@ -85,6 +85,44 @@ public class WebConsts {
 	// ---------------------------------------------------------------------------------
 	/** SQL */
 	
+	/** SQL[INSERT INTO] */
+	public static final String SQL_INSERT					= "INSERT INTO";
+	
+	/** SQL[VALUES] */
+	public static final String SQL_VALUES					= "VALUES";
+	
+	/** SQL[UPDATE] */
+	public static final String SQL_UPDATE					= "UPDATE";
+	
+	/** SQL[SET] */
+	public static final String SQL_SET						= "SET";
+	
+	/** SQL[DELETE FROM] */
+	public static final String SQL_DELETE					= "DELETE FROM";
+	
+	/** SQL[SELECT] */
+	public static final String SQL_SELECT					= "SELECT";
+	
+	/** SQL[FROM] */
+	public static final String SQL_FROM						= "FROM";
+	
+	/** SQL[WHERE] */
+	public static final String SQL_WHERE					= "WHERE";
+	
+	/** SQL[JOIN] */
+	public static final String SQL_JOIN						= "JOIN";
+	
+	/** SQL[ON] */
+	public static final String SQL_ON						= "ON";
+	
+	/** SQL[AS] */
+	public static final String SQL_AS						= "AS";
+	
+	/** SQL[?] */
+	public static final String SQL_QUESTION					= "?";
+	
+	// ---------------------------------------------------------------------------------
+	
 	/** SQL[id] */
 	public static final String SQL_ID_NAME					= "id";
 	
@@ -169,7 +207,6 @@ public class WebConsts {
 	/** SQL[role_id] */
 	public static final String SQL_ROLE_ID					= "role_id";
 
-	
 	// ---------------------------------------------------------------------------------
 	/** URL key */
 	
@@ -186,6 +223,9 @@ public class WebConsts {
 	
 	/** URL key[user] */
 	public static final String URL_KEY_USER           = "user";
+	
+	/** URL key[userinterval] */
+	public static final String URL_KEY_USER_INTERVAL  = "userinterval";
 	
 	/** URL key[home] */
 	public static final String URL_KEY_HOME           = "home";

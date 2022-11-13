@@ -16,6 +16,9 @@ public class AppConsts {
 	/** request mapping[/user] */
 	public static final String REQUEST_MAPPING_USER           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_USER;
 	
+	/** request mapping[/userinterval] */
+	public static final String REQUEST_MAPPING_USER_INTERVAL  = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_USER_INTERVAL;
+	
 	/** request mapping[/home] */
 	public static final String REQUEST_MAPPING_HOME           = WebConsts.URL_KEY_ROOT + WebConsts.URL_KEY_HOME;
 	

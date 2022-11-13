@@ -37,6 +37,20 @@ import com.example.demo.common.id.user.UserId;
 @Transactional(readOnly = true)
 public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 
+	/**
+	 * DB名
+	 */
+	private final String DB_NAME = "login_user";
+	
+	/**
+	 * パラム名
+	 */
+	private final String PARAM_ID 			= "id";
+	private final String PARAM_USER_ID 		= "user_id";
+	private final String PARAM_SESSION_ID	= "session_id";
+	private final String PARAM_CREATED		= "created";
+	private final String PARAM_UPDATED		= "updated";
+	
 	/** 
 	 * Jdbcドライバー
 	 * {@link JdbcTemplate} 
@@ -49,6 +63,8 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 */
 	private final Logger  logger;
 	
+	/** ------------------------------------------------------------------------------------- */
+	
 	/**
 	 * コンストラクタ
 	 * @param jdbcTemp {@link JdbcTemplate}
@@ -58,6 +74,11 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		this.logger		= LoggerFactory.getLogger(LoginDaoSql.class);
 	}
 	
+	/** ------------------------------------------------------------------------------------- */
+	
+	
+	
+	
 	/**
 	 * 追加
 	 * @param model {@link LoginModel}
@@ -66,9 +87,14 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	@Transactional(readOnly = false)
 	public void insert(LoginModel model) {
 		if (model == null)	return ;
-		String sql = "INSERT INTO login_user("
-				+ "user_id, session_id, created, updated) "
-				+ "VALUES(?,?,?,?)";
+		String sql = WebConsts.SQL_INSERT + " " + DB_NAME
+				+ "("
+				+ PARAM_USER_ID    + ", "
+				+ PARAM_SESSION_ID + ", "
+				+ PARAM_CREATED    + ", "
+				+ PARAM_UPDATED
+				+ ") "
+				+ WebConsts.SQL_VALUES + "(?,?,?,?)";
 		try {
 			this.jdbcTemp.update(
 					sql,
@@ -93,9 +119,14 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		if (model == null)	new LoginId(0);
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		String sql = "INSERT INTO login_user("
-				+ "user_id, session_id, created, updated) "
-				+ "VALUES(?,?,?,?)";
+		String sql = WebConsts.SQL_INSERT + " " + DB_NAME
+				+ "("
+				+ PARAM_USER_ID    + ", "
+				+ PARAM_SESSION_ID + ", "
+				+ PARAM_CREATED    + ", "
+				+ PARAM_UPDATED
+				+ ") "
+				+ WebConsts.SQL_VALUES + "(?,?,?,?)";
 		int keyId = 0;
 		
 		try {
@@ -123,7 +154,9 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		}
 		return new LoginId(keyId);
 	}
-
+	
+	/** ------------------------------------------------------------------------------------- */
+	
 	/**
 	 * 更新
 	 * @param  model {@link LoginModel}
@@ -133,9 +166,11 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	@Transactional(readOnly = false)
 	public int update(LoginModel model) {
 		if (model == null)	return WebConsts.ERROR_NUMBER;
-		String sql = "UPDATE login_user SET "
-				+ "user_id = ?, session_id = ?, updated = ? "
-				+ "WHERE id = ?";
+		String sql = WebConsts.SQL_UPDATE + " " + DB_NAME + " " + WebConsts.SQL_SET + " "
+				+ PARAM_USER_ID    + " = ?, "
+				+ PARAM_SESSION_ID + " = ?, "
+				+ PARAM_UPDATED    + " = ? "
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 		
 		return this.jdbcTemp.update(
 					sql,
@@ -166,6 +201,8 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 				);
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+	
 	/**
 	 * 削除
 	 * @param  id {@link LoginId}
@@ -182,7 +219,25 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 				sql, 
 				id.getId());
 	}
+	
+	/**
+	 * ユーザIDによる削除
+	 * @param  userId {@link UserId}
+	 * @return 0以下 失敗 それ以外 成功
+	 */
+	@Override
+	public int delete_byUserId(UserId userId) {
+		if (userId == null)	return WebConsts.ERROR_NUMBER;
+		String sql = "DELETE FROM login_user "
+				+ "WHERE user_id = ?";
+		
+		return this.jdbcTemp.update(
+				sql, 
+				userId.getId());
+	}
 
+	/** ------------------------------------------------------------------------------------- */
+	
 	/**
 	 * 全選択
 	 * @return ログインモデルリスト {@link List}({@link LoginModel})
@@ -267,6 +322,8 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		return model;
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+	
 	/**
 	 * IDは存在する？
 	 * @param id
@@ -280,7 +337,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		
 		boolean isTrue = true;
 		try {
-			isTrue = jdbcTemp.query(sql, 
+			isTrue = this.jdbcTemp.query(sql, 
 				new Object[]{ targetID },
 				new int[]{ Types.INTEGER },
 				rs -> {
@@ -293,8 +350,35 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		}
 		return isTrue;
 	}
+	
+	/**
+	 * IDは存在する？
+	 * @param id {@link UserId}
+	 * @return true 存在する false 存在しない
+	 */
+	@Override
+	public boolean isSelect_byUserId(UserId targetID) {
+		String sql = "SELECT id "
+				+ "FROM login_user "
+				+ "WHERE user_id = ?";
+		
+		boolean isTrue = true;
+		try {
+			isTrue = this.jdbcTemp.query(sql, 
+				new Object[]{ targetID.getId() },
+				new int[]{ Types.INTEGER },
+				rs -> {
+					return rs.next() ? true : false;
+				}
+			);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			isTrue = false;
+		}
+		return isTrue;
+	}
 
-/** -------------------------------------------------------------------- */
+	/** -------------------------------------------------------------------- */
 	
 	/**
 	 * SQL結果からログインモデルリストを作成
@@ -342,4 +426,5 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		
 		return model;
 	}
+
 }

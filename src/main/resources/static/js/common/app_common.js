@@ -10,6 +10,8 @@ $(function () {
 	/** 上に戻るボタンの設定 */
 	setBackToTopButton();
 	
+	/** インターバルの設定 */
+	setLoginUserInterval();
 });
 
 /** ------------------------------------------------------- */
@@ -41,3 +43,28 @@ function setBackToTopButton() {
 
 /** ------------------------------------------------------- */
 
+/** インターバル着火時間[1h] */
+let LOGIN_USER_INTERVAL_TIME = 60 * 60 * 1000;
+/** インターバルの設定 */
+function setLoginUserInterval(){
+	setInterval(function(){
+		
+		// ユーザーログイン状態チェック[非同期実行]
+		$.ajax({
+			url:  "/security/userinterval",
+			success: function(data) {
+				// [成功]
+				if (data == "delete") {
+					// タイムアウト発生。自動ログアウト実行
+					let yesLogin = $('#yesLogin');
+					yesLogin.submit();
+				}
+			},
+			error: function() {
+				// [失敗]
+				console.log("frontend interval NG");
+			}
+		});
+		
+	}, LOGIN_USER_INTERVAL_TIME);
+}

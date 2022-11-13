@@ -35,7 +35,7 @@ public class CommonEncrypt {
 		
 		try {
 			// 引数チェック
-			if(decryptString == null || decryptString.isBlank()) {
+			if (decryptString == null || decryptString.isBlank()) {
 				// null, 又はブランク文字は暗号化しない
 				return outputData;
 			}
@@ -90,7 +90,7 @@ public class CommonEncrypt {
 		
 		try {
 			// 引数チェック
-			if(encryptString == null || encryptString.isBlank()) {
+			if (encryptString == null || encryptString.isBlank()) {
 				// null, 又はブランク文字は復号化しない
 				return outputData;
 			}

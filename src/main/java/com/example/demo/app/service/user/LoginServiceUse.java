@@ -91,6 +91,18 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
+	
+	/**
+	 * 削除
+	 * @param  userId {@link UserId}
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
+	 */
+	@Override
+	public void delete(UserId userId) {
+		if (this.dao.delete_byUserId(userId) <= WebConsts.ERROR_DB_STATUS) {
+			throw WebMvcConfig.SQL_NOT_DELETE();
+		}
+	}
 
 	/**
 	 * 全て選択
@@ -100,6 +112,8 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	public List<LoginModel> getAll() {
 		return this.dao.getAll();
 	}
+	
+	
 
 	/**
 	 * IDによる選択
@@ -143,6 +157,16 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	@Override
 	public boolean isSelect_byId(int targetID) {
 		return this.dao.isSelect_byId(targetID);
+	}
+
+	/**
+	 * IDは存在する？
+	 * @param  targetID {@link UserId}
+	 * @return true 存在する false 存在しない
+	 */
+	@Override
+	public boolean isSelect_byUserId(UserId targetID) {
+		return this.dao.isSelect_byUserId(targetID);
 	}
 
 }
