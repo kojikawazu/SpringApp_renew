@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.common.id.inquiry.InquiryId;
+import com.example.demo.app.common.id.inquiry.InquiryReplyId;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.inquiry.InquiryId;
-import com.example.demo.common.id.inquiry.InquiryReplyId;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;

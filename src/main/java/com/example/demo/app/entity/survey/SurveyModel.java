@@ -2,7 +2,7 @@ package com.example.demo.app.entity.survey;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.common.id.survey.SurveyId;
+import com.example.demo.app.common.id.survey.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;

@@ -24,8 +24,8 @@ public class LogMessage {
 	 * コンストラクタ
 	 */
 	public LogMessage() {
-		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		this.logger	= LoggerFactory.getLogger(ste.getClassName());
+		StackTraceElement ste	= Thread.currentThread().getStackTrace()[2];
+		this.logger				= LoggerFactory.getLogger(ste.getClassName());
 	}
 	
 	/** ------------------------------------------------------------------- */
@@ -47,11 +47,11 @@ public class LogMessage {
 	 * 終了出力
 	 */
 	public void end() {
-		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		String 		cls		= ste.getClassName();
-		String[]	clsList	= cls.split("\\.");
-		String		clsName = clsList[clsList.length-1];
-		String 		mtd		= ste.getMethodName();
+		StackTraceElement ste 	= Thread.currentThread().getStackTrace()[2];
+		String 		cls			= ste.getClassName();
+		String[]	clsList		= cls.split("\\.");
+		String		clsName 	= clsList[clsList.length-1];
+		String 		mtd			= ste.getMethodName();
 		
 		this.logger.info(clsName + "#" + mtd + "() : " + "done.");
 	}
@@ -62,11 +62,11 @@ public class LogMessage {
 	 * @param message
 	 */
 	public void info(String message) {
-		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		String 		cls		= ste.getClassName();
-		String[]	clsList	= cls.split("\\.");
-		String		clsName = clsList[clsList.length-1];
-		String 		mtd		= ste.getMethodName();
+		StackTraceElement ste 	= Thread.currentThread().getStackTrace()[2];
+		String 		cls			= ste.getClassName();
+		String[]	clsList		= cls.split("\\.");
+		String		clsName 	= clsList[clsList.length-1];
+		String 		mtd			= ste.getMethodName();
 		
 		this.logger.info(clsName + "#" + mtd + "() : " + message);
 	}
@@ -76,11 +76,11 @@ public class LogMessage {
 	 * @param message
 	 */
 	public void error(String message) {
-		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		String 		cls		= ste.getClassName();
-		String[]	clsList	= cls.split("\\.");
-		String		clsName = clsList[clsList.length-1];
-		String 		mtd		= ste.getMethodName();
+		StackTraceElement ste 	= Thread.currentThread().getStackTrace()[2];
+		String 		cls			= ste.getClassName();
+		String[]	clsList		= cls.split("\\.");
+		String		clsName 	= clsList[clsList.length-1];
+		String 		mtd			= ste.getMethodName();
 		
 		this.logger.error(clsName + "#" + mtd + "() : " + message);
 	}
@@ -91,10 +91,10 @@ public class LogMessage {
 	 */
 	public void warning(String message) {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		String 		cls		= ste.getClassName();
-		String[]	clsList	= cls.split("\\.");
-		String		clsName = clsList[clsList.length-1];
-		String 		mtd		= ste.getMethodName();
+		String 		cls			= ste.getClassName();
+		String[]	clsList		= cls.split("\\.");
+		String		clsName 	= clsList[clsList.length-1];
+		String 		mtd			= ste.getMethodName();
 		
 		this.logger.warn(clsName + "#" + mtd + "() : " + message);
 	}

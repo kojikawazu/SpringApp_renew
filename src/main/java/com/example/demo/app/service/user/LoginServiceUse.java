@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.dao.user.LoginDaoSql;
 import com.example.demo.app.entity.user.LoginModel;
 import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.app.service.SuperService;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.UserId;
 
 /**
  * ログインサービスクラス

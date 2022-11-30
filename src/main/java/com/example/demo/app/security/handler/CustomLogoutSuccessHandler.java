@@ -11,11 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import com.example.demo.app.common.AppConsts;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.app.service.user.LoginServiceUse;
-import com.example.demo.common.common.AppConsts;
-import com.example.demo.common.id.user.UserId;
 
 /**
  * ログアウト成功ハンドラー(カスタム版)

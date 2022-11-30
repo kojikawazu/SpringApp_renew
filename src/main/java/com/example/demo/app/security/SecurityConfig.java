@@ -14,11 +14,11 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.security.handler.CustomAuthenticationFailureHandler;
 import com.example.demo.app.security.handler.CustomAuthenticationSuccessHandler;
 import com.example.demo.app.security.handler.CustomLogoutSuccessHandler;
 import com.example.demo.app.security.provider.AuthenticationProviderImpl;
-import com.example.demo.common.common.AppConsts;
 
 /**
  * セキュリティ設定

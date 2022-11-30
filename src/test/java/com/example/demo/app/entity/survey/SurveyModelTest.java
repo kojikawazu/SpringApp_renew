@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.common.id.survey.SurveyId;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.survey.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;

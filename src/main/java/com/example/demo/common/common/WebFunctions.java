@@ -107,9 +107,9 @@ public class WebFunctions {
 			String 					key,
 			String					value,
 			int 					time) {
-		if (response == null || 
-				key == null || key.equals("") ||
-				value == null || value.equals("") ||
+		if (response == null 	|| 
+				key == null 	|| key.equals("") 	||
+				value == null 	|| value.equals("") ||
 				time == 0) {
 			return false;
 		}
@@ -147,7 +147,6 @@ public class WebFunctions {
 					break;
 				}
 			}
-			
 		}
 		
 		return true;

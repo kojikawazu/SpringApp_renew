@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class WordList implements ListInterface {
 
-	/** スキルリスト */
+	/** ワードリスト */
 	private List<String> list;
 	
 	/**

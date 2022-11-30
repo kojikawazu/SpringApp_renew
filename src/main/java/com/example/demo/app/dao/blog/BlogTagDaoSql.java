@@ -10,9 +10,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.app.common.id.blog.BlogTagId;
 import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.blog.BlogTagId;
 import com.example.demo.common.word.TagWord;
 
 /**

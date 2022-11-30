@@ -10,13 +10,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.dao.security.SecUserDaoSql;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.app.service.SuperService;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.PasswdWord;
 

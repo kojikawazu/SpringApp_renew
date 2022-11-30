@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.common.id.blog.BlogTagId;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.blog.BlogTagId;
 import com.example.demo.common.word.TagWord;
 
 /**

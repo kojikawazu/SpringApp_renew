@@ -11,6 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import com.example.demo.common.log.LogMessage;
+
 /**
  * 暗号化/復号化共通クラス
  * @author nanai
@@ -19,19 +21,20 @@ import org.apache.tomcat.util.codec.binary.Base64;
 public class CommonEncrypt {
 	
 	/** 暗号化/復号化の秘密鍵 */
-	private static final String ENCRYPT_KEY = "al34c871qpl";
+	private static final String ENCRYPT_KEY		= "al34c871qpl";
 	
 	/** 暗号化アルゴリズム */
-	private static final String ALGORITHM = "BLOWFISH";
+	private static final String ALGORITHM		= "BLOWFISH";
 	
 	/**
 	 * 暗号化
-	 * @param inData 暗号化したい文字列
+	 * @param  inData 暗号化したい文字列
 	 * @return 暗号化済文字列
 	 */
 	public static String encrypt(String inData) {
-		final String decryptString = inData;
-		String outputData = "";
+		LogMessage		log			= new LogMessage();
+		final String decryptString	= inData;
+		String outputData 			= "";
 		
 		try {
 			// 引数チェック
@@ -58,7 +61,7 @@ public class CommonEncrypt {
 				| IllegalBlockSizeException
 				| BadPaddingException ex) {
 			// 例外処理
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 			outputData = "";
 		}  
 		return outputData;
@@ -70,8 +73,8 @@ public class CommonEncrypt {
 	 * @return             暗号化済文字列
 	 */
 	public static String encrypt(int inDataNumber) {
-		final String decryptString = String.valueOf(inDataNumber);
-		String outputData = "";
+		final String decryptString	= String.valueOf(inDataNumber);
+		String outputData 			= "";
 		
 		// 暗号化
 		outputData = encrypt(decryptString);
@@ -81,12 +84,13 @@ public class CommonEncrypt {
 	
 	/**
 	 * 復号化
-	 * @param inData 復号化したい文字列
+	 * @param  inData 復号化したい文字列
 	 * @return 復号化済文字列
 	 */
 	public static String decrypt(String inData) {
-		String encryptString = inData;
-		String outputData = "";
+		LogMessage		log		= new LogMessage();
+		String encryptString	= inData;
+		String outputData		= "";
 		
 		try {
 			// 引数チェック
@@ -114,7 +118,7 @@ public class CommonEncrypt {
 				| IllegalBlockSizeException
 				| BadPaddingException ex) {
 			// 例外処理
-			ex.printStackTrace();
+			log.error(ex.getMessage());
 			outputData = "";
 		}
 		return outputData;

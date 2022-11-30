@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
@@ -18,7 +19,6 @@ import com.example.demo.app.service.survey.SurveyService;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.app.survey.form.SurveySatisForm;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
 

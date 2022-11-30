@@ -1,7 +1,7 @@
 package com.example.demo.app.session.user;
 
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.UserId;
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.UserId;
 
 /**
  * スーパーログインユーザークラス

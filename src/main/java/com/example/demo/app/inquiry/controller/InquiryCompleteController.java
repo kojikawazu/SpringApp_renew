@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.entity.inquiry.InquiryModel;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
@@ -26,7 +27,6 @@ import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.log.LogMessage;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.EmailWord;

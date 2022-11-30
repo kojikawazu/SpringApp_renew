@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.user.UserId;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 import com.example.demo.common.word.PasswdWord;

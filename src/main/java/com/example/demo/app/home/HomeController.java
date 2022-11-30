@@ -9,13 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
 

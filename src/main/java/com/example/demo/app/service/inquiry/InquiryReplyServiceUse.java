@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.app.common.id.inquiry.InquiryId;
+import com.example.demo.app.common.id.inquiry.InquiryReplyId;
 import com.example.demo.app.dao.inquiry.InquiryReplyDao;
 import com.example.demo.app.entity.inquiry.InquiryReplyModel;
 import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.inquiry.InquiryId;
-import com.example.demo.common.id.inquiry.InquiryReplyId;
 
 /**
  * 問い合わせ返信サービスクラス

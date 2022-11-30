@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 
-import com.example.demo.common.exception.InquiryNotFoundException;
+import com.example.demo.common.exception.DataNotFoundException;
 
 @ControllerAdvice
 public class WebMvcControllerAdvice {
@@ -24,8 +24,8 @@ public class WebMvcControllerAdvice {
     	return "error/CustomPage";
     }
     
-	@ExceptionHandler(InquiryNotFoundException.class)
-	public String handleException(InquiryNotFoundException e, Model model) {
+	@ExceptionHandler(DataNotFoundException.class)
+	public String handleException(DataNotFoundException e, Model model) {
 		model.addAttribute("message", e);
 		return "error/CustomPage";
 	}

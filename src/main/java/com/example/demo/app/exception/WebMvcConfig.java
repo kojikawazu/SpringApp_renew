@@ -1,6 +1,6 @@
 package com.example.demo.app.exception;
 
-import com.example.demo.common.exception.InquiryNotFoundException;
+import com.example.demo.common.exception.DataNotFoundException;
 import com.example.demo.common.exception.SQLNoDeleteException;
 import com.example.demo.common.exception.SQLNoUpdateException;
 
@@ -24,8 +24,8 @@ public class WebMvcConfig {
 	 * 
 	 * @return
 	 */
-	public static InquiryNotFoundException NOT_FOUND() {
-		return new InquiryNotFoundException(EXCEPTION_NOTFOUND);
+	public static DataNotFoundException NOT_FOUND() {
+		return new DataNotFoundException(EXCEPTION_NOTFOUND);
 	}
 	
 	/**

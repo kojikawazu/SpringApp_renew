@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.survey.SurveyService;
@@ -18,7 +19,6 @@ import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.app.survey.form.SurveyChangeForm;
 import com.example.demo.app.survey.form.SurveySatisForm;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
 

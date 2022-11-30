@@ -2,8 +2,8 @@ package com.example.demo.app.dao.inquiry;
 
 import java.util.List;
 
+import com.example.demo.app.common.id.inquiry.InquiryId;
 import com.example.demo.app.entity.inquiry.InquiryModel;
-import com.example.demo.common.id.inquiry.InquiryId;
 
 /**
  * 問い合わせDaoインターフェース

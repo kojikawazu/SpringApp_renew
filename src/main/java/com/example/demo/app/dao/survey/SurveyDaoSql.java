@@ -10,9 +10,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.app.common.id.survey.SurveyId;
 import com.example.demo.app.entity.survey.SurveyModel;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.survey.SurveyId;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;

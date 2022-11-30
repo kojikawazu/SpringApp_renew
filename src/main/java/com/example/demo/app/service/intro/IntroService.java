@@ -2,7 +2,7 @@ package com.example.demo.app.service.intro;
 
 import java.nio.file.Path;
 
-import com.example.demo.common.entity.IntroJSONModel;
+import com.example.demo.json.model.IntroJSONModel;
 
 /**
  * 自己紹介サービスインターフェース

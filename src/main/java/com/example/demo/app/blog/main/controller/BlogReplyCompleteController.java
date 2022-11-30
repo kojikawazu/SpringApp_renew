@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.blog.main.form.ReplyForm;
+import com.example.demo.app.common.AppConsts;
+import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
@@ -26,9 +28,7 @@ import com.example.demo.app.service.blog.BlogTagService;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.log.LogMessage;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
