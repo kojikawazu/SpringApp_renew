@@ -2,9 +2,9 @@ package com.example.demo.app.entity.user;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.SessionId;
-import com.example.demo.common.id.user.UserId;
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.SessionId;
+import com.example.demo.app.common.id.user.UserId;
 
 /**
  * ログインモデルクラス

@@ -2,8 +2,8 @@ package com.example.demo.app.dao.blog;
 
 import java.util.List;
 
+import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.entity.blog.BlogMainModel;
-import com.example.demo.common.id.blog.BlogId;
 
 /**
  * ブログメインDaoインターフェース

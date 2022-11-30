@@ -14,11 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.example.demo.app.common.id.blog.BlogId;
+import com.example.demo.app.common.id.blog.BlogReplyId;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.blog.BlogId;
-import com.example.demo.common.id.blog.BlogReplyId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;

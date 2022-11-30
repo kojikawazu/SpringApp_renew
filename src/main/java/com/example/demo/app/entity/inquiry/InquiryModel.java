@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.common.id.inquiry.InquiryId;
+import com.example.demo.app.common.id.inquiry.InquiryId;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;

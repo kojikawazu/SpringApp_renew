@@ -1,8 +1,8 @@
 package com.example.demo.app.dao.user;
 
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.entity.user.LoginModel;
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.UserId;
 
 /**
  * ログインDaoインターフェース

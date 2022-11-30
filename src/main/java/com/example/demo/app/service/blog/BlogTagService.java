@@ -2,9 +2,9 @@ package com.example.demo.app.service.blog;
 
 import java.util.List;
 
+import com.example.demo.app.common.id.blog.BlogTagId;
 import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.app.exception.WebMvcConfig;
-import com.example.demo.common.id.blog.BlogTagId;
 
 /**
  * ブログタグサービスインターフェース

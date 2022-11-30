@@ -5,8 +5,8 @@ import java.nio.file.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.common.entity.IntroJSONModel;
-import com.example.demo.json.IntroReader;
+import com.example.demo.json.model.IntroJSONModel;
+import com.example.demo.json.reader.IntroJsonReader;
 
 /**
  * JSON読取サービスクラス
@@ -18,16 +18,16 @@ public class IntroServiceUse implements IntroService {
 
 	/** 
 	 * 自己紹介読取クラス 
-	 * {@link IntroReader} 
+	 * {@link IntroJsonReader} 
 	 */
-	private final IntroReader reader;
+	private final IntroJsonReader reader;
 	
 	/**
 	 * コンストラクタ
-	 * @param reader {@link IntroReader} 
+	 * @param reader {@link IntroJsonReader} 
 	 */
 	@Autowired
-	public IntroServiceUse(IntroReader reader) {
+	public IntroServiceUse(IntroJsonReader reader) {
 		this.reader = reader;
 	}
 	

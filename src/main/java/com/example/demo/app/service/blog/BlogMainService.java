@@ -2,9 +2,9 @@ package com.example.demo.app.service.blog;
 
 import java.util.List;
 
+import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.entity.blog.BlogMainModel;
 import com.example.demo.app.exception.WebMvcConfig;
-import com.example.demo.common.id.blog.BlogId;
 
 /**
  * ブログメインサービスインターフェース

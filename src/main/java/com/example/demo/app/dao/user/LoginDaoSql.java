@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.SessionId;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.user.LoginModel;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.SessionId;
-import com.example.demo.common.id.user.UserId;
 
 /**
  * ログインDaoクラス

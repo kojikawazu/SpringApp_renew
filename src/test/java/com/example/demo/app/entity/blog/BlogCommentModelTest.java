@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.common.id.blog.BlogCommentId;
+import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.blog.BlogCommentId;
-import com.example.demo.common.id.blog.BlogId;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;

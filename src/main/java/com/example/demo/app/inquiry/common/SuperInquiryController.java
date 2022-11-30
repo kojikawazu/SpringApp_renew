@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.app.common.AppConsts;
+import com.example.demo.app.common.id.inquiry.InquiryId;
 import com.example.demo.app.entity.inquiry.InquiryModel;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
@@ -17,9 +19,7 @@ import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
-import com.example.demo.common.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.inquiry.InquiryId;
 import com.example.demo.common.log.LogMessage;
 
 /**

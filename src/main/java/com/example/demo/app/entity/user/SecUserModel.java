@@ -3,7 +3,7 @@ package com.example.demo.app.entity.user;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.example.demo.common.id.user.UserId;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.common.list.WordList;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;

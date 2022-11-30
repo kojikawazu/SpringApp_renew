@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.example.demo.app.common.id.user.LoginId;
+import com.example.demo.app.common.id.user.SessionId;
+import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.common.consts.TestConsts;
-import com.example.demo.common.id.user.LoginId;
-import com.example.demo.common.id.user.SessionId;
-import com.example.demo.common.id.user.UserId;
 
 /**
  * ログインモデルクラステスト

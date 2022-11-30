@@ -1,9 +1,5 @@
 package com.example.demo.common.common;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Web定数クラス
  * @author nanai
@@ -12,16 +8,16 @@ import java.util.List;
 public class WebConsts {
 	
 	/** エラー番号 */
-	public static final int    			ERROR_NUMBER    = -1;
+	public static final int    			ERROR_NUMBER			= -1;
 	
 	/** データなし */
-	public static final int   	 		ERROR_DB_STATUS = 0;
+	public static final int   	 		ERROR_DB_STATUS			= 0;
 	
 	/** 0の文字列 */
-	public static final String			ZERO_STRING     = "0";
+	public static final String			ZERO_STRING				= "0";
 	
 	/** 0の数字 */
-	public static final int    			ZERO_NUMBER     = 0;
+	public static final int    			ZERO_NUMBER     		= 0;
 	
 	/** 時間がだいぶ経っている */
 	public static final boolean 		TIME_RUNNING_OUT		= false;
@@ -75,12 +71,6 @@ public class WebConsts {
 	
 	/** ログインのタイムアウト(時間単位)({@value #LOGIN_TIMEOUT_HOUR}時間) */
 	public static final int				LOGIN_TIMEOUT_HOUR	= 1;
-	
-	/** Cookieキーリスト*/
-	public static final List<String>	COOKIE_KEY_LIST	= new ArrayList<String>(Arrays.asList(
-			COOKIE_LOGIN_ID,
-			COOKIE_USER_ID,
-			COOKIE_USER_NAME));
 	
 	// ---------------------------------------------------------------------------------
 	/** SQL */
@@ -191,7 +181,7 @@ public class WebConsts {
 	
 	/** SQL[reply_comment] */
 	public static final String SQL_REPLY_COMMENT_NAME		= "reply_comment";
-
+	
 	/** SQL[reply_thankscnt] */
 	public static final String SQL_REPLY_THANKS_CNT_NAME	= "reply_thankscnt";
 	
@@ -206,7 +196,7 @@ public class WebConsts {
 	
 	/** SQL[role_id] */
 	public static final String SQL_ROLE_ID					= "role_id";
-
+	
 	// ---------------------------------------------------------------------------------
 	/** URL key */
 	

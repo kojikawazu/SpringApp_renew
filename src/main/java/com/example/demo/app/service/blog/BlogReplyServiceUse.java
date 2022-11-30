@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.app.common.id.blog.BlogId;
+import com.example.demo.app.common.id.blog.BlogReplyId;
 import com.example.demo.app.dao.blog.BlogReplyDao;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.common.common.WebConsts;
-import com.example.demo.common.id.blog.BlogId;
-import com.example.demo.common.id.blog.BlogReplyId;
 
 /**
  * ブログ返信サービスクラス

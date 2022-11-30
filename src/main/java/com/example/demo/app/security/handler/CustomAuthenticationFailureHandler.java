@@ -13,7 +13,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import com.example.demo.common.common.AppConsts;
+import com.example.demo.app.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
 
 /**

@@ -2,10 +2,10 @@ package com.example.demo.app.service.blog;
 
 import java.util.List;
 
+import com.example.demo.app.common.id.blog.BlogId;
+import com.example.demo.app.common.id.blog.BlogReplyId;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.app.exception.WebMvcConfig;
-import com.example.demo.common.id.blog.BlogId;
-import com.example.demo.common.id.blog.BlogReplyId;
 
 /**
  * ブログ返信サービスインターフェース
