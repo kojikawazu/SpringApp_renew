@@ -88,14 +88,14 @@ public class InquiryReplyFormController extends SuperInquiryController {
 			Model											model,
 			@ModelAttribute(WebConsts.ATTRIBUTE_COMPLETE) String complete
 			) {
-		/** Cookieの設定 */
+		// Cookieの設定
 		this.setInclude(detailUser, request, response, headerForm, model);
-		
+		// 返信対象設定
 		this.setReply(new InquiryId(id), model);
-		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setReplyFormAttribute(model);
+		this.setReplyFormAttribute(detailUser, inquiryReplyForm, model);
+		
 		return AppConsts.URL_INQUIRY_REPLY_FORM;
 	}
 	
@@ -122,14 +122,14 @@ public class InquiryReplyFormController extends SuperInquiryController {
 			Model													model,
 			@ModelAttribute(WebConsts.ATTRIBUTE_COMPLETE) String	complete
 			) {
-		/** Cookieの設定 */
+		// Cookieの設定
 		this.setInclude(detailUser, request, response, headerForm, model);
-		
+		// 返信対象設定
 		this.setReply(new InquiryId(id), model);
-		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setReplyFormAttribute(model);
+		this.setReplyFormAttribute(detailUser, inquiryReplyForm, model);
+		
 		return AppConsts.URL_INQUIRY_REPLY_FORM;
 	}
 }

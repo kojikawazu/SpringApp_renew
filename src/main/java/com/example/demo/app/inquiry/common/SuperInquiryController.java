@@ -12,14 +12,17 @@ import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.common.id.inquiry.InquiryId;
 import com.example.demo.app.entity.inquiry.InquiryModel;
 import com.example.demo.app.entity.security.SecLoginUserDetails;
+import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.inquiry.form.InquiryForm;
+import com.example.demo.app.inquiry.form.InquiryReplyForm;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
 import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.common.WebFunctions;
 import com.example.demo.common.log.LogMessage;
 
 /**
@@ -153,7 +156,6 @@ public class SuperInquiryController extends CommonInquiryController {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_INQUIRY_FORM);
 		model.addAttribute(WebConsts.ATTRIBUTE_CONT,  CONT_INQUIRY_FORM);
 		
-		
 		SecLoginUserDetails details = this.getHeaderController().getSecLoginUserDetails();
 		if (details != null) {			
 			if (inquiryForm.getName() == null || 
@@ -187,11 +189,27 @@ public class SuperInquiryController extends CommonInquiryController {
 	
 	/**
 	 * 問い合わせ返信フォームattribute設定
-	 * @param model {@link Model}
+	 * @param detailUser		{@link SecLoginUserDetails}
+	 * @param inquiryReplyForm	{@link InquiryReplyForm}
+	 * @param model				{@link Model}
 	 */
-	protected void setReplyFormAttribute(Model model) {
+	protected void setReplyFormAttribute(
+			SecLoginUserDetails	detailUser,
+			InquiryReplyForm	inquiryReplyForm,
+			Model 				model) {
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITTLE_INQUIRY_REPLY_FORM);
 		model.addAttribute(WebConsts.ATTRIBUTE_CONT,  CONT_INQUIRY_REPLY_FORM);
+		
+		// ログイン中のユーザー名、Eメールアドレスをフォームに反映
+		if (!WebFunctions.isNull(detailUser)) {
+			SecUserModel secUserModel = detailUser.getSecUserModel();
+			if (WebFunctions.isNull(inquiryReplyForm.getName())) {
+				inquiryReplyForm.setName(secUserModel.getName());
+			}
+			if (WebFunctions.isNull(inquiryReplyForm.getEmail())) {
+				inquiryReplyForm.setEmail(secUserModel.getEmail());
+			}
+		}
 	}
 	
 	/**
