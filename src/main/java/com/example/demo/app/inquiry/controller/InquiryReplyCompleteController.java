@@ -100,17 +100,15 @@ public class InquiryReplyCompleteController extends SuperInquiryController {
 		InquiryId inquiryId = new InquiryId(id);
 		
 		if(result.hasErrors()) {
-			// エラー
-			
-			/** Cookieの設定 */
-			this.setInclude(detailUser, request, response, headerForm, model);
-			
 			// バリデートエラー、フォーム画面へ
-			this.setReply(inquiryId, model);
 			
+			// Cookieの設定
+			this.setInclude(detailUser, request, response, headerForm, model);
+			// 返信対象設定
+			this.setReply(inquiryId, model);
 			// attribute設定
 			this.setCommonAttribute(detailUser, request, response, headerForm, model);
-			this.setReplyFormAttribute(model);
+			this.setReplyFormAttribute(detailUser, inquiryReplyForm, model);
 			return AppConsts.URL_INQUIRY_REPLY_FORM;
 		}
 		

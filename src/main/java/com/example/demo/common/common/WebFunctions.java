@@ -20,6 +20,16 @@ public class WebFunctions {
 	/** ------------------------------------------------------------------------ */
 	
 	/**
+	 * nullチェック
+	 * @param <T>
+	 * @param target チェック対象
+	 * @return true null false nullじゃない
+	 */
+	public static final <T> boolean isNull(T target) {
+		return (target == null);
+	}
+	
+	/**
 	 * 時間、日付のdiffチェック(分単位)
 	 * @param targetTime     チェック日付対象{@link LocalDateTime}
 	 * @param minutes        分単位

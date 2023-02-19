@@ -88,15 +88,17 @@ public class InquiryReplyConfirmController extends SuperInquiryController {
 			@Validated InquiryReplyForm						inquiryReplyForm,
 			BindingResult									result,
 			Model											model) {
-		/** Cookieの設定 */
+		// Cookieの設定
 		this.setInclude(detailUser, request, response, headerForm, model);
 		
+		// 返信対象設定
 		this.setReply(new InquiryId(id), model);
+		
 		if(result.hasErrors()) {
 			// バリデートエラー。フォーム画面へ
 			// attribute設定
 			this.setCommonAttribute(detailUser, request, response, headerForm, model);
-			this.setReplyFormAttribute(model);
+			this.setReplyFormAttribute(detailUser, inquiryReplyForm, model);
 			return AppConsts.URL_INQUIRY_REPLY_FORM;
 		}
 
