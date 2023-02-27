@@ -10,7 +10,7 @@ import com.example.demo.json.model.IntroJSONModel;
  *
  */
 public interface SuperJsonReader {
-	
+
 	public IntroJSONModel reader(Path path);
 
 }

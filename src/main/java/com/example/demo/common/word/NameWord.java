@@ -6,10 +6,10 @@ package com.example.demo.common.word;
  *
  */
 public class NameWord implements SuperWord {
-	
+
 	/** 文字列保持 */
 	private String word;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param word
@@ -17,7 +17,7 @@ public class NameWord implements SuperWord {
 	public NameWord(String word) {
 		this.word = word;
 	}
-	
+
 	/**
 	 * getter
 	 * @return 文字列

@@ -9,7 +9,7 @@ public class EmailWord implements SuperWord {
 
 	/** 文字列保持 */
 	private String word;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param word
@@ -17,7 +17,7 @@ public class EmailWord implements SuperWord {
 	public EmailWord(String word) {
 		this.word = word;
 	}
-	
+
 	/**
 	 * getter
 	 * @return 文字列

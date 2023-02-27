@@ -142,7 +142,7 @@ public class IntroController extends SuperIntroController {
 				Paths.get(INTRO_JSON_PATH));
 		
 		/** タイトル */
-		List<String> titleList = jsonModel.getTitleList();
+		List<String> titleList = jsonModel.getTitleList().getList();
 		
 		/** 名前 */
 		this.setNameAttribute(jsonModel, model);
@@ -195,7 +195,7 @@ public class IntroController extends SuperIntroController {
 	 * @param model
 	 */
 	private void setNameAttribute(IntroJSONModel jsonModel, Model model) {
-		List<String> nameList = jsonModel.getNameList();
+		List<String> nameList = jsonModel.getNameList().getList();
 		model.addAttribute(
 				WebConsts.ATTRIBUTE_TITLE, 
 				nameList.get(ATTRIBUTE_ENUM.TITLE.ordinal()));
@@ -216,7 +216,7 @@ public class IntroController extends SuperIntroController {
 				titleList.get(ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()));
 		model.addAttribute(
 				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
-				jsonModel.getIntro());
+				jsonModel.getIntro().getWord());
 	}
 	
 	/**
@@ -226,7 +226,7 @@ public class IntroController extends SuperIntroController {
 	 * @param model
 	 */
 	private void setExperienceAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
-		List<ExperienceModel> experList = jsonModel.getExperienceList();
+		List<ExperienceModel> experList = jsonModel.getExperienceList().getList();
 		model.addAttribute(
 				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
 				titleList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal()));
@@ -247,7 +247,7 @@ public class IntroController extends SuperIntroController {
 				titleList.get(ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()));
 		model.addAttribute(
 				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
-				jsonModel.getAfter());
+				jsonModel.getAfterList().getList());
 	}
 	
 	/**
@@ -352,7 +352,7 @@ public class IntroController extends SuperIntroController {
 				titleList.get(ATTRIBUTE_LIST_ENUM.A_URL.ordinal()));
 		model.addAttribute(
 				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_URL.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
-				jsonModel.getUrl());
+				jsonModel.getUrl().getWord());
 	}
 	
 	/**
@@ -382,6 +382,6 @@ public class IntroController extends SuperIntroController {
 				titleList.get(ATTRIBUTE_LIST_ENUM.A_WORK.ordinal()));
 		model.addAttribute(
 				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_WORK.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
-				jsonModel.getWord());
+				jsonModel.getWord().getWord());
 	}
 }

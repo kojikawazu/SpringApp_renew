@@ -6,7 +6,7 @@ package com.example.demo.common.id;
  *
  */
 public interface SuperId {
-	
+
 	/**
 	 * 取得
 	 * @return int

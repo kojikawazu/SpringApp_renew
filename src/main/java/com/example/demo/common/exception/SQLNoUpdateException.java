@@ -8,7 +8,7 @@ package com.example.demo.common.exception;
 public class SQLNoUpdateException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public SQLNoUpdateException(String message) {
 		super(message);
 	}

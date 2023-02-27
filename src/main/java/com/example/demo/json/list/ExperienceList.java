@@ -11,30 +11,44 @@ import com.example.demo.json.model.ExperienceModel;
  * @author nanai
  *
  */
-public class ExperienceList implements ListInterface {
+public class ExperienceList implements ListInterface<ExperienceModel> {
 
 	/** 経験リスト */
 	private List<ExperienceModel> experienceList;
-	
+
 	/**
 	 * コンストラクタ
 	 */
 	public ExperienceList() {
 		this.experienceList = new ArrayList<ExperienceModel>();
 	}
-	
+
 	/**
 	 * コンストラクタ
 	 * @param 経験リストクラス
 	 */
 	public ExperienceList(List<ExperienceModel> list) {
-		this.experienceList = (list == null ?
-				new ArrayList<ExperienceModel>() :
-				list);
+		this();
+		this.setList(list);
 	}
-	
-	/** getter */
+
+	@Override
 	public List<ExperienceModel> getList(){
 		return experienceList;
+	}
+
+	@Override
+	public void setList(List<ExperienceModel> list) {
+		if (list == null)	return;
+
+		this.experienceList.clear();
+		for (ExperienceModel model : list) {
+			this.experienceList.add(model);
+		}
+	}
+
+	public void setList(ExperienceList obj) {
+		if (obj == null)	return;
+		this.setList(obj.getList());
 	}
 }

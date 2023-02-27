@@ -6,7 +6,9 @@ package com.example.demo.common.number;
  *
  */
 public interface SuperNumber {
-	
+
 	public int getNumber();
+
+	public void setNumber(int number);
 
 }

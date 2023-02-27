@@ -6,7 +6,7 @@ package com.example.demo.common.word;
  *
  */
 public interface SuperWord {
-	
+
 	public String getWord();
 
 }

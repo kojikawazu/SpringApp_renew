@@ -1,13 +1,8 @@
 package com.example.demo.json.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.demo.json.list.AfterList;
+import com.example.demo.common.list.WordList;
+import com.example.demo.common.word.NormalWord;
 import com.example.demo.json.list.ExperienceList;
-import com.example.demo.json.list.IntroList;
-import com.example.demo.json.list.SkillList;
-import com.example.demo.json.word.IntroWord;
 
 /**
  * JSON専用モデル
@@ -15,353 +10,374 @@ import com.example.demo.json.word.IntroWord;
  *
  */
 public class IntroJSONModel {
-	
+
 	/** 名前リスト */
-	private IntroList 			nameList;
-	
+	private WordList 			nameList;
+
 	/** タイトルリスト */
-	private IntroList 			titleList;
-	
+	private WordList 			titleList;
+
 	/** 自己紹介文字列 */
-	private IntroWord 			intro;
-	
+	private NormalWord 			intro;
+
 	/** 経験リスト */
 	private ExperienceList 		experienceList;
-	
+
 	/** 今後の計画文字列 */
-	private AfterList 			afterList;
-	
+	private WordList 			afterList;
+
 	/** スキル(言語)リスト */
-	private SkillList 			skillLanguageList;
+	private WordList 			skillLanguageList;
 	/** スキル(ライブラリ)リスト */
-	private SkillList 			skillLibraryList;
+	private WordList 			skillLibraryList;
 	/** スキル(フレームワーク)リスト */
-	private SkillList 			skillFrameworkList;
+	private WordList 			skillFrameworkList;
 	/** スキル(OS)リスト */
-	private SkillList 			skillOSList;
+	private WordList 			skillOSList;
 	/** スキル(Tool)リスト */
-	private SkillList 			skillToolList;
+	private WordList 			skillToolList;
 	/** スキル(その他)リスト */
-	private SkillList 			skillOtherList;
-	
+	private WordList 			skillOtherList;
+
 	/** URL文字列 */
-	private IntroWord			url;
-	
+	private NormalWord			url;
+
 	/** 趣味リスト */
-	private IntroList 			hobbyList;
-	
+	private WordList 			hobbyList;
+
 	/** 意気込み文字列 */
-	private IntroWord 			word;
+	private NormalWord 			word;
 
 	/**
 	 * コンストラクタ
-	 * @param nameList
-	 * @param titleList
-	 * @param intro
-	 * @param experienceList
-	 * @param after
-	 * @param skillLanguageList
-	 * @param skillLibraryList
-	 * @param skillFrameworkList
-	 * @param skillOSList
-	 * @param skillToolList
-	 * @param skillOtherList
-	 * @param url
-	 * @param hobbyList
-	 * @param word
 	 */
-	public IntroJSONModel(
-			IntroList 		nameList,
-			IntroList 		titleList,
-			IntroWord 		intro,
-			ExperienceList 	experienceList,
-			AfterList 		afterList,
-			SkillList 		skillLanguageList,
-			SkillList 		skillLibraryList,
-			SkillList 		skillFrameworkList,
-			SkillList		skillOSList,
-			SkillList		skillToolList,
-			SkillList 		skillOtherList,
-			IntroWord 		url,
-			IntroList 		hobbyList,
-			IntroWord 		word
-			) {
-		
-		this.nameList = (nameList == null ?
-				new IntroList(new ArrayList<>()) :
-					nameList);
-		
-		this.titleList = (titleList == null ?
-				new IntroList(new ArrayList<>()) :
-					titleList);
-		
-		this.intro = (intro == null ?
-				new IntroWord("") :
-				intro);
-		
-		this.experienceList = (experienceList == null ?
-				new ExperienceList() :
-				experienceList);
-		
-		this.afterList = (afterList == null ?
-				new AfterList() :
-				afterList);
-		
-		this.skillLanguageList = (skillLanguageList == null ?
-				new SkillList(new ArrayList<>()) :
-				skillLanguageList);
-		
-		this.skillLibraryList = (skillLibraryList == null ?
-				new SkillList(new ArrayList<>()) :
-				skillLibraryList);
-		
-		this.skillFrameworkList = (skillFrameworkList == null ?
-				new SkillList(new ArrayList<>()) :
-				skillFrameworkList);
-		
-		this.skillOSList = (skillOSList == null ?
-				new SkillList(new ArrayList<>()) :
-					skillOSList);
-		
-		this.skillToolList = (skillToolList == null ?
-				new SkillList(new ArrayList<>()) :
-					skillToolList);
-		
-		this.skillOtherList = (skillOtherList == null ?
-				new SkillList(new ArrayList<>()) :
-				skillOtherList);
-		
-		this.url = (url == null ?
-				new IntroWord("") :
-				url);
-		
-		this.hobbyList = (hobbyList == null ?
-				new IntroList(new ArrayList<>()) :
-					hobbyList);
-		
-		this.word = (word == null ?
-				new IntroWord("") :
-				word);
+	public IntroJSONModel() {
+		this.nameList			= new WordList();
+		this.titleList			= new WordList();
+		this.intro				= new NormalWord();
+		this.experienceList		= new ExperienceList();
+		this.afterList			= new WordList();
+		this.skillLanguageList	= new WordList();
+		this.skillLibraryList	= new WordList();
+		this.skillFrameworkList	= new WordList();
+		this.skillOSList		= new WordList();
+		this.skillToolList		= new WordList();
+		this.skillOtherList		= new WordList();
+		this.url				= new NormalWord();
+		this.hobbyList			= new WordList();
+		this.word				= new NormalWord();
 	}
 	
 	/**
 	 * コンストラクタ
-	 * @param model
+	 * @param nameList				{@link WordList}		名前リスト
+	 * @param titleList				{@link WordList}		タイトルリスト
+	 * @param intro					{@link NormalWord}		自己紹介文字列
+	 * @param experienceList		{@link ExperienceList}	経験リスト
+	 * @param after					{@link WordList}		今後の計画文字列
+	 * @param skillLanguageList		{@link WordList}		スキル(言語)リスト
+	 * @param skillLibraryList		{@link WordList}		スキル(ライブラリ)リスト
+	 * @param skillFrameworkList	{@link WordList}		スキル(フレームワーク)リスト
+	 * @param skillOSList			{@link WordList}		スキル(OS)リスト
+	 * @param skillToolList			{@link WordList}		スキル(Tool)リスト
+	 * @param skillOtherList		{@link WordList}		スキル(その他)リスト
+	 * @param url					{@link NormalWord}		URL文字列
+	 * @param hobbyList				{@link WordList}		趣味リスト
+	 * @param word					{@link NormalWord}		意気込み文字列
+	 */
+	public IntroJSONModel(
+			WordList 		nameList,
+			WordList 		titleList,
+			NormalWord 		intro,
+			ExperienceList 	experienceList,
+			WordList 		afterList,
+			WordList 		skillLanguageList,
+			WordList 		skillLibraryList,
+			WordList 		skillFrameworkList,
+			WordList		skillOSList,
+			WordList		skillToolList,
+			WordList 		skillOtherList,
+			NormalWord 		url,
+			WordList 		hobbyList,
+			NormalWord 		word
+			) {
+		this();
+		this.setNameList(nameList);
+		this.setTitleList(titleList);
+		this.setIntro(intro);
+		this.setExperienceList(experienceList);
+		this.setAfterList(afterList);
+		this.setSkillLanguageList(skillLanguageList);
+		this.setSkillLibraryList(skillLibraryList);
+		this.setSkillFrameworkList(skillFrameworkList);
+		this.setSkillOSList(skillOSList);
+		this.setSkillToolList(skillToolList);
+		this.setSkillOtherList(skillOtherList);
+		this.setUrl(url);
+		this.setHobbyList(hobbyList);
+		this.setWord(word);
+	}
+
+	/**
+	 * コンストラクタ
+	 * @param model {@link IntroJSONModel}
 	 */
 	public IntroJSONModel(
 			IntroJSONModel model
 			) {
-		if(model == null) {
-			this.nameList			= new IntroList(new ArrayList<>());
-			this.titleList			= new IntroList(new ArrayList<>());
-			this.intro				= new IntroWord("");
-			this.experienceList		= new ExperienceList();
-			this.afterList			= new AfterList();
-			this.skillLanguageList	= new SkillList(new ArrayList<>());
-			this.skillLibraryList	= new SkillList(new ArrayList<>());
-			this.skillFrameworkList	= new SkillList(new ArrayList<>());
-			this.skillOSList		= new SkillList(new ArrayList<>());
-			this.skillOtherList		= new SkillList(new ArrayList<>());
-			this.url				= new IntroWord("");
-			this.hobbyList			= new IntroList(new ArrayList<>());
-			this.word				= new IntroWord("");
-			
-		} else {
-			this.nameList			= new IntroList(model.getNameList());
-			this.titleList			= new IntroList(model.getTitleList());
-			this.intro				= new IntroWord(model.getIntro());
-			this.experienceList		= new ExperienceList(model.getExperienceList());
-			this.afterList			= new AfterList(model.getAfter());
-			this.skillLanguageList	= new SkillList(model.getSkillLanguageList());
-			this.skillLibraryList	= new SkillList(model.getSkillLibraryList());
-			this.skillFrameworkList	= new SkillList(model.getSkillFrameworkList());
-			this.skillOSList		= new SkillList(model.getSkillOSList());
-			this.skillOtherList		= new SkillList(model.getSkillOtherList());
-			this.url				= new IntroWord(model.getUrl());
-			this.hobbyList			= new IntroList(model.getHobbyList());
-			this.word				= new IntroWord(model.getWord());
+		this();
+		if(model != null) {
+			this.nameList.setList(model.getNameList());
+			this.titleList.setList(model.getTitleList());
+			this.intro.setWord(model.getIntro());
+			this.experienceList.setList(model.getExperienceList());
+			this.afterList.setList(model.getAfterList());
+			this.skillLanguageList.setList(model.getSkillLanguageList());
+			this.skillLibraryList.setList(model.getSkillLibraryList());
+			this.skillFrameworkList.setList(model.getSkillFrameworkList());
+			this.skillOSList.setList(model.getSkillOSList());
+			this.skillOtherList.setList(model.getSkillOtherList());
+			this.url.setWord(model.getUrl());
+			this.hobbyList.setList(model.getHobbyList());
+			this.word.setWord(model.getWord());
 		}
 	}
-	
+
 	/** 
 	 * 名前リスト取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getNameList() {
-		return this.nameList.getList();
+	public WordList getNameList() {
+		return this.nameList;
 	}
 
-	protected void setNameList(List<String> nameList) {
+	/**
+	 * 名前リスト設定
+	 * @param nameList {@link WordList}
+	 */
+	public void setNameList(WordList nameList) {
 		if(nameList == null)	return ;
-		this.nameList = new IntroList(nameList);
+		this.nameList.setList(nameList);
 	}
-	
+
 	/** 
 	 * タイトルリスト取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getTitleList() {
-		return this.titleList.getList();
+	public WordList getTitleList() {
+		return this.titleList;
 	}
 
-	protected void setTitleList(List<String> titleList) {
+	/**
+	 * タイトルリスト設定
+	 * @param titleList {@link WordList}
+	 */
+	public void setTitleList(WordList titleList) {
 		if(titleList == null)	return ;
-		this.titleList = new IntroList(titleList);
+		this.titleList.setList(titleList);
 	}
 
 	/** 
 	 * 自己紹介取得
-	 * @return String  
+	 * @return {@link NormalWord}
 	 */
-	public String getIntro() {
-		return this.intro.getWord();
+	public NormalWord getIntro() {
+		return this.intro;
 	}
 
-	protected void setIntro(String intro) {
+	/**
+	 * 自己紹介設定
+	 * @param intro {@link NormalWord}
+	 */
+	public void setIntro(NormalWord intro) {
 		if(intro == null)	return ;
-		this.intro = new IntroWord(intro);
+		this.intro.setWord(intro);
 	}
 
 	/** 
 	 * 経験リスト取得
-	 * @return List<ExperienceModel>  
+	 * @return {@link ExperienceList}
 	 */
-	public List<ExperienceModel> getExperienceList() {
-		return this.experienceList.getList();
+	public ExperienceList getExperienceList() {
+		return this.experienceList;
 	}
 
-	protected void setExperienceList(List<ExperienceModel> experienceList) {
+	/**
+	 * 経験リスト設定
+	 * @param experienceList {@link ExperienceList}
+	 */
+	public void setExperienceList(ExperienceList experienceList) {
 		if(experienceList == null) return ;
-		this.experienceList = new ExperienceList(experienceList);
+		this.experienceList.setList(experienceList);
 	}
 
 	/** 
 	 * 今後やりたいことリスト取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getAfter() {
-		return this.afterList.getList();
+	public WordList getAfterList() {
+		return this.afterList;
 	}
 
-	protected void setAfterList(List<String> afterList) {
+	/**
+	 * 今後やりたいことリスト設定
+	 * @param afterList {@link WordList}
+	 */
+	public void setAfterList(WordList afterList) {
 		if(afterList == null)	return ;
-		this.afterList = new AfterList(afterList);
+		this.afterList.setList(afterList);
 	}
 
 	/** 
 	 * スキル(言語)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillLanguageList() {
-		return this.skillLanguageList.getList();
+	public WordList getSkillLanguageList() {
+		return this.skillLanguageList;
 	}
 
-	protected void setSkillLanguageList(List<String> skillLanguageList) {
+	/**
+	 * スキル(言語)設定
+	 * @param skillLanguageList {@link WordList}
+	 */
+	public void setSkillLanguageList(WordList skillLanguageList) {
 		if(skillLanguageList == null)	return ;
-		this.skillLanguageList = new SkillList(skillLanguageList);
+		this.skillLanguageList.setList(skillLanguageList);
 	}
 
 	/** 
 	 * スキル(ライブラリ)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillLibraryList() {
-		return this.skillLibraryList.getList();
+	public WordList getSkillLibraryList() {
+		return this.skillLibraryList;
 	}
 
-	protected void setSkillLibraryList(List<String> skillLibraryList) {
+	/**
+	 * スキル(ライブラリ)設定
+	 * @param skillLibraryList {@link WordList}
+	 */
+	public void setSkillLibraryList(WordList skillLibraryList) {
 		if(skillLibraryList == null)	return ;
-		this.skillLibraryList = new SkillList(skillLibraryList);
+		this.skillLibraryList.setList(skillLibraryList);
 	}
 
 	/** 
 	 * スキル(フレームワーク)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillFrameworkList() {
-		return this.skillFrameworkList.getList();
+	public WordList getSkillFrameworkList() {
+		return this.skillFrameworkList;
 	}
 
-	protected void setSkill3List(List<String> skillFrameworkList) {
+	/**
+	 * スキル(フレームワーク)設定
+	 * @param skillFrameworkList {@link WordList}
+	 */
+	public void setSkillFrameworkList(WordList skillFrameworkList) {
 		if(skillFrameworkList == null)	return ;
-		this.skillFrameworkList = new SkillList(skillFrameworkList);
+		this.skillFrameworkList.setList(skillFrameworkList);
 	}
 
 	/** 
 	 * スキル(OS)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillOSList() {
-		return this.skillOSList.getList();
+	public WordList getSkillOSList() {
+		return this.skillOSList;
 	}
 
-	protected void setSkillOSList(List<String> skillOSList) {
+	/**
+	 * スキル(OS)設定
+	 * @param skillOSList {@link WordList}
+	 */
+	public void setSkillOSList(WordList skillOSList) {
 		if(skillOSList == null)	return ;
-		this.skillOSList = new SkillList(skillOSList);
+		this.skillOSList.setList(skillOSList);
 	}
 
 	/** 
 	 * スキル(Tool)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillToolList() {
-		return this.skillToolList.getList();
+	public WordList getSkillToolList() {
+		return this.skillToolList;
 	}
 
-	protected void setSkillToolList(List<String> skillToolList) {
+	/**
+	 * スキル(Tool)設定
+	 * @param skillToolList {@link WordList}
+	 */
+	public void setSkillToolList(WordList skillToolList) {
 		if(skillToolList == null)	return ;
-		this.skillToolList = new SkillList(skillToolList);
+		this.skillToolList.setList(skillToolList);
 	}
 
 	/** 
 	 * スキル(その他)取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getSkillOtherList() {
-		return this.skillOtherList.getList();
+	public WordList getSkillOtherList() {
+		return this.skillOtherList;
 	}
 
-	protected void setSkillOtherList(List<String> skillOtherList) {
+	/**
+	 * スキル(その他)設定
+	 * @param skillOtherList {@link WordList}
+	 */
+	public void setSkillOtherList(WordList skillOtherList) {
 		if(skillOtherList == null)	return ;
-		this.skillOtherList = new SkillList(skillOtherList);
+		this.skillOtherList.setList(skillOtherList);
 	}
 
 	/** 
 	 * URL取得
-	 * @return String  
+	 * @return {@link NormalWord}
 	 */
-	public String getUrl() {
-		return this.url.getWord();
+	public NormalWord getUrl() {
+		return this.url;
 	}
 
-	protected void setUrl(String url) {
+	/**
+	 * URL設定
+	 * @param url {@link NormalWord}
+	 */
+	public void setUrl(NormalWord url) {
 		if(url == null)	return ;
-		this.url = new IntroWord(url);
+		this.url.setWord(url);
 	}
 
 	/** 
 	 * 趣味リスト取得
-	 * @return List<String>  
+	 * @return {@link WordList}
 	 */
-	public List<String> getHobbyList() {
-		return this.hobbyList.getList();
+	public WordList getHobbyList() {
+		return this.hobbyList;
 	}
 
-	protected void setHobbyList(List<String> hobbyList) {
+	/**
+	 * 趣味リスト設定
+	 * @param hobbyList {@link WordList}
+	 */
+	public void setHobbyList(WordList hobbyList) {
 		if(hobbyList == null)	return ;
-		this.hobbyList = new IntroList(hobbyList);
+		this.hobbyList.setList(hobbyList);
 	}
 
 	/** 
 	 * 最後に一言取得
-	 * @return String  
+	 * @return {@link NormalWord}
 	 */
-	public String getWord() {
-		return this.word.getWord();
+	public NormalWord getWord() {
+		return this.word;
 	}
 
-	protected void setWord(String word) {
+	/**
+	 * 最後に一言設定
+	 * @param word {@link String}
+	 */
+	public void setWord(NormalWord word) {
 		if(word == null)	return ;
-		this.word = new IntroWord(word);
+		this.word.setWord(word);
 	}
 }
