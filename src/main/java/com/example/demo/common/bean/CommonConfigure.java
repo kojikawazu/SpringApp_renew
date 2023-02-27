@@ -11,7 +11,7 @@ import com.example.demo.common.log.LogMessage;
  */
 @Configuration
 public class CommonConfigure {
-	
+
 	/**
 	 * ログクラス
 	 * @return ログクラス{@link LogMessage}

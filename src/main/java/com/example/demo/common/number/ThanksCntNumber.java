@@ -6,10 +6,10 @@ package com.example.demo.common.number;
  *
  */
 public class ThanksCntNumber implements SuperNumber {
-	
+
 	/** いいね数 */
 	private int           thanksCnt;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param thanksCnt
@@ -27,4 +27,9 @@ public class ThanksCntNumber implements SuperNumber {
 		return this.thanksCnt;
 	}
 
+	@Override
+	public void setNumber(int number) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }

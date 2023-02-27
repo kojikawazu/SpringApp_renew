@@ -41,20 +41,18 @@
 				<h1 th:text="${title}"></h1><br>
 	 			<h2 class="lead" th:text="${cont}"></h2>
 			</div >
-	 		
+
 	 		<!-- 紹介文 -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${introTitle}"></h3>
 	 			<div class="h3-after" th:text="${intro}"></div>
 	 		</div>
-	 		
-	 		
+
 	 		<!-- 経験 -->
 	 		<div class="fadeclass">
 	 			<div th:replace="~{/intro/experience::experienceFragment}"></div>
 	 		</div >
-	 		
-	 		
+
 	 		<!-- 今後やりたいこと -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${afterTitle}"></h3>
@@ -65,56 +63,50 @@
 	 				</div>
 	 			</div>
 	 		</div>
-	 		
-	 		
+
 	 		<!-- スキル(言語) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillLanguageTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillLanguage : ${skillLanguageList}" th:text="${skillLanguage}"></div>
+	 				<div class="div-after" th:each="skillLanguage : ${skillLanguageList.getList()}" th:text="${skillLanguage}"></div>
 	 			</div>
 	 		</div>
-	 		
-	 		
 	 		<!-- スキル(ライブラリ) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillLibraryTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillLibrary : ${skillLibraryList}" th:text="${skillLibrary}"></div>
+	 				<div class="div-after" th:each="skillLibrary : ${skillLibraryList.getList()}" th:text="${skillLibrary}"></div>
 	 			</div>
 	 		</div>
 	 		<!-- スキル(FW) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillFrameworkTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillFramework : ${skillFrameworkList}" th:text="${skillFramework}"></div>
+	 				<div class="div-after" th:each="skillFramework : ${skillFrameworkList.getList()}" th:text="${skillFramework}"></div>
 	 			</div>
 	 		</div>
-	 		
 	 		<!-- スキル(OS) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillOSTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillOS : ${skillOSList}" th:text="${skillOS}"></div>
+	 				<div class="div-after" th:each="skillOS : ${skillOSList.getList()}" th:text="${skillOS}"></div>
 	 			</div>
 	 		</div>
-	 		
 	 		<!-- スキル(Tool) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillToolTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillTool : ${skillToolList}" th:text="${skillTool}"></div>
+	 				<div class="div-after" th:each="skillTool : ${skillToolList.getList()}" th:text="${skillTool}"></div>
 	 			</div>
 	 		</div>
-	 		
 	 		<!-- スキル(その他) -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${skillOtherTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="skillOther : ${skillOtherList}" th:text="${skillOther}"></div>
+	 				<div class="div-after" th:each="skillOther : ${skillOtherList.getList()}" th:text="${skillOther}"></div>
 	 			</div>
 	 		</div>
-	 		
+
 	 		<!-- URL -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${urlTitle}"></h3>
@@ -122,23 +114,23 @@
 	 				<a th:href="${url}" th:text="${url}"></a>
 	 			</div>
 	 		</div>
-	 		
+
 	 		<!-- 趣味 -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${hobbyTitle}"></h3>
 	 			<div class="h3-after" >
-	 				<div class="div-after" th:each="hobby : ${hobbyList}" th:text="${hobby}"></div>
+	 				<div class="div-after" th:each="hobby : ${hobbyList.getList()}" th:text="${hobby}"></div>
 	 			</div>
 	 		</div>
-	 		
+
 	 		<!-- 最後に一言 -->
 	 		<div class="fadeclass">
 	 			<h3 th:text="${wordTitle}"></h3>
 	 			<div class="h3-after" th:text="${word}"></div>
 	 		</div>
-	 	</div>	
+	 	</div>
 	</main>
-	
+
 	<!-- フッター -->
 	<div th:replace="~{/block/footer::footerA}"></div>
 </body>

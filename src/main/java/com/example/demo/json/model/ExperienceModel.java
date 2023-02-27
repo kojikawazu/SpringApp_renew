@@ -2,8 +2,9 @@ package com.example.demo.json.model;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.common.list.WordList;
 import com.example.demo.common.number.NormalNumber;
-import com.example.demo.json.list.IntroList;
+import com.example.demo.common.word.NormalWord;
 
 /**
  * 経験モデル
@@ -14,168 +15,243 @@ public class ExperienceModel {
 
 	/** メインで表示する */
 	/** --------------------------------------------------- */
-	
+
 	/** 経験 */
-	private String 			experience;
-	
+	private NormalWord 		experience;
+
 	/** 開始日付 */
 	private LocalDateTime 	startTime;
-	
+
 	/** 終了日付 */
 	private LocalDateTime 	endTime;
-	
+
 	/** クリックし表示する */
 	/** --------------------------------------------------- */
-	
+
 	/** チームメンバー人数 */
 	private NormalNumber	memberSum;
-	
+
 	/** チームポジション */
-	private String			position;
-	
+	private NormalWord		position;
+
 	/** 概要 */
-	private String			overview;
-	
+	private NormalWord		overview;
+
 	/** 担当業務リスト */
-	private IntroList		personChargeList;
-	
+	private WordList		personChargeList;
+
 	/** 業務ポイント */
-	private String			workPoint;
-	
+	private NormalWord		workPoint;
+
 	/** スキルリスト */
-	private IntroList		techList;
-	
+	private WordList		techList;
+
 	/** --------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 */
 	public ExperienceModel() {
-		this.experience 		= "";
+		this.experience 		= new NormalWord();
 		this.startTime			= LocalDateTime.now();
 		this.endTime			= LocalDateTime.now();
-		this.memberSum			= new NormalNumber(0);
-		this.position			= "";
-		this.overview			= "";
-		this.personChargeList	= new IntroList();
-		this.workPoint			= "";
-		this.techList			= new IntroList();
+		this.memberSum			= new NormalNumber();
+		this.position			= new NormalWord();
+		this.overview			= new NormalWord();
+		this.personChargeList	= new WordList();
+		this.workPoint			= new NormalWord();
+		this.techList			= new WordList();
 	}
-	
+
 	/**
 	 * コンストラクタ
-	 * @param experience
-	 * @param startTime
-	 * @param endTime
-	 * @param memberSum
-	 * @param position
-	 * @param overview
-	 * @param personChargeList
-	 * @param workPoint
-	 * @param techList
+	 * @param experience		{@link NormalWord}		経験
+	 * @param startTime			{@link LocalDateTime}	開始日付
+	 * @param endTime			{@link LocalDateTime}	終了日付
+	 * @param memberSum			{@link NormalNumber}	チームメンバー人数
+	 * @param position			{@link NormalWord}		チームポジション
+	 * @param overview			{@link NormalWord}		概要
+	 * @param personChargeList	{@link WordList}		担当業務リスト
+	 * @param workPoint			{@link NormalWord}		業務ポイント
+	 * @param techList			{@link WordList}		スキルリスト
 	 */
 	public ExperienceModel(
-			String 			experience,
+			NormalWord 		experience,
 			LocalDateTime 	startTime,
 			LocalDateTime 	endTime,
 			NormalNumber	memberSum,
-			String			position,
-			String			overview,
-			IntroList		personChargeList,
-			String			workPoint,
-			IntroList		techList) {
-		this.experience = (experience == null ?
-				"" : experience);
-		this.startTime = (startTime == null ?
-				LocalDateTime.now() : startTime);
-		this.endTime = (endTime == null ?
-				LocalDateTime.now() : endTime);
-		this.memberSum	= (memberSum == null ?
-				new NormalNumber(0) : memberSum);
-		this.position = (position == null ?
-				"" : position);
-		this.overview = (overview == null ?
-				"" : overview);
-		this.personChargeList = (personChargeList == null ?
-				new IntroList() : personChargeList);
-		this.workPoint = (workPoint == null ?
-				"" : workPoint);
-		this.techList = (techList == null ?
-				new IntroList() : techList);
+			NormalWord		position,
+			NormalWord		overview,
+			WordList		personChargeList,
+			NormalWord		workPoint,
+			WordList		techList) {
+		this();
+		this.setExperience(experience);
+		this.setStartTime(startTime);
+		this.setEndTime(endTime);
+		this.setMemberSum(memberSum);
+		this.setPosition(position);
+		this.setOverview(overview);
+		this.setPersonChargeList(personChargeList);
+		this.setWorkPoint(workPoint);
+		this.setWorkPoint(workPoint);
 	}
-	
+
 	// ------------------------------------------------------------------------------------------
 	/** getter */
-	
+
 	/** 
 	 * 経験取得
-	 * @return String
+	 * @return {@link NormalWord}
 	 */
-	public String getExperience() {
+	public NormalWord getExperience() {
 		return this.experience;
 	}
-	
+
+	/**
+	 * 経験設定
+	 * @param experience {@link NormalWord} 経験
+	 */
+	public void setExperience(NormalWord experience) {
+		if (experience == null)	return ;
+		this.experience.setWord(experience);
+	}
+
 	/** 
 	 * 開始日付取得
-	 * @return LocalDateTime
+	 * @return {@link LocalDateTime}
 	 */
 	public LocalDateTime getStartTime() {
 		return this.startTime;
 	}
-	
+
+	/**
+	 * 開始日付設定
+	 * @param startTime {@link LocalDateTime}
+	 */
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = (startTime == null ?
+			LocalDateTime.now() : 
+			startTime);
+	}
+
 	/** 
 	 * 終了日付取得
-	 * @return LocalDateTime
+	 * @return LocalDateTime {@link LocalDateTime}
 	 */
 	public LocalDateTime getEndTime() {
 		return this.endTime;
 	}
-	
+
+	/**
+	 * 終了日付設定
+	 * @param endTime {@link LocalDateTime}
+	 */
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = (endTime == null ?
+			LocalDateTime.now() : 
+			endTime);
+	}
+
 	/** 
 	 * メンバー人数合計取得
-	 * @return NormalNumber
+	 * @return {@link NormalNumber}
 	 */
 	public NormalNumber getMemberSum() {
 		return this.memberSum;
 	}
-	
+
+	/**
+	 * メンバー人数合計設定
+	 * @param memberSum {@link NormalNumber}
+	 */
+	public void setMemberSum(NormalNumber memberSum) {
+		if (memberSum == null) return;
+		this.memberSum.setNumber(memberSum);
+	}
+
 	/** 
 	 * ポジション取得
-	 * @return String
+	 * @return {@link NormalWord}
 	 */
-	public String getPosition() {
+	public NormalWord getPosition() {
 		return this.position;
 	}
-	
+
+	/**
+	 * ポジション設定
+	 * @param position {@link NormalWord}
+	 */
+	public void setPosition(NormalWord position) {
+		if (position == null)	return ;
+		this.position.setWord(position);
+	}
+
 	/** 
 	 * 概要取得
-	 * @return String
+	 * @return {@link NormalWord}
 	 */
-	public String getOverview() {
+	public NormalWord getOverview() {
 		return this.overview;
 	}
-	
-	/** 
-	 * 担当業務取得
-	 * @return IntroList
+
+	/**
+	 * 概要設定
+	 * @param overview {@link NormalWord}
 	 */
-	public IntroList getPersonChargeList() {
+	public void setOverview(NormalWord overview) {
+		if (overview == null)	return;
+		this.overview.setWord(overview);
+	}
+
+	/** 
+	 * 担当業務リスト取得
+	 * @return IntroList {@link WordList}
+	 */
+	public WordList getPersonChargeList() {
 		return this.personChargeList;
 	}
-	
+
+	/**
+	 * 担当業務リスト設定
+	 * @param personChargeList {@link WordList}
+	 */
+	public void setPersonChargeList(WordList personChargeList) {
+		if (personChargeList == null)	return ;
+		this.personChargeList.setList(personChargeList);
+	}
+
 	/** 
 	 * ポイント取得
-	 * @return String
+	 * @return {@link NormalWord}
 	 */
-	public String getWorkPoint() {
+	public NormalWord getWorkPoint() {
 		return this.workPoint;
 	}
-	
+
+	/**
+	 * ポイント設定
+	 * @param workPoint {@link NormalWord}
+	 */
+	public void setWorkPoint(NormalWord workPoint) {
+		if (workPoint == null)	return ;
+		this.workPoint.setWord(workPoint);
+	}
+
 	/** 
 	 * 技術リスト取得
-	 * @return IntroList
+	 * @return IntroList {@link WordList}
 	 */
-	public IntroList getTechList() {
+	public WordList getTechList() {
 		return this.techList;
+	}
+
+	/**
+	 * 技術リスト設定
+	 * @param techList {@link WordList}
+	 */
+	public void setTechList(WordList techList) {
+		if (techList == null) 	return ;
+		this.techList.setList(techList);
 	}
 }

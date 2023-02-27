@@ -9,7 +9,7 @@ public class TagWord implements SuperWord {
 
 	/** 文字列保持 */
 	private String word;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param word
@@ -17,7 +17,7 @@ public class TagWord implements SuperWord {
 	public TagWord(String word) {
 		this.word = word;
 	}
-	
+
 	/**
 	 * getter
 	 * @return 文字列
