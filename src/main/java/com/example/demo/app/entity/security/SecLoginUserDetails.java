@@ -1,7 +1,8 @@
 package com.example.demo.app.entity.security;
 
 import java.util.Collection;
-
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,7 +43,7 @@ public class SecLoginUserDetails implements UserDetails {
 		this.authorities 	= secUserModel.getRoleList()
 				.stream()
 				.map(role -> new SimpleGrantedAuthority(role))
-				.toList();
+				.collect(Collectors.toList());
 	}
 	
 	public SecUserModel getSecUserModel() {

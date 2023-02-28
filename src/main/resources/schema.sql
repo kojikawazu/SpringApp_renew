@@ -6,8 +6,8 @@ CREATE TABLE home_user
    name VARCHAR(20) NOT NULL,
    email VARCHAR(20) NOT NULL,
    password VARCHAR(20) NOT NULL,
-   created DATETIME NOT NULL,
-   updated DATETIME NOT NULL,
+   created TIMESTAMP NOT NULL,
+   updated TIMESTAMP NOT NULL,
    PRIMARY KEY(id)
 );
 
@@ -17,8 +17,8 @@ CREATE TABLE login_user
    id INT NOT NULL AUTO_INCREMENT,
    user_id INT NOT NULL,
    session_id VARCHAR(50) NOT NULL,
-   created DATETIME NOT NULL,
-   updated DATETIME NOT NULL,
+   created TIMESTAMP NOT NULL,
+   updated TIMESTAMP NOT NULL,
    PRIMARY KEY(id)
 );
 /** ----------------------------------------------------------------------------- */
@@ -36,8 +36,8 @@ CREATE TABLE security_login_user(
    name VARCHAR(128) NOT NULL,
    email VARCHAR(256) NOT NULL,
    password VARCHAR(128) NOT NULL,
-   created DATETIME NOT NULL,
-   updated DATETIME NOT NULL,
+   created TIMESTAMP NOT NULL,
+   updated TIMESTAMP NOT NULL,
    PRIMARY KEY(id)
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE inquiry
    name VARCHAR(20) NOT NULL,
    email VARCHAR(50) NOT NULL,
    comment VARCHAR(500) NOT NULL,
-   created DATETIME NOT NULL,
+   created TIMESTAMP NOT NULL,
    PRIMARY KEY(id)
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE inquiry_reply
    name VARCHAR(50) NOT NULL,
    email VARCHAR(50) NOT NULL,
    comment VARCHAR(500) NOT NULL,
-   created DATETIME NOT NULL,
+   created TIMESTAMP NOT NULL,
    PRIMARY KEY(id)
 );
 
@@ -87,7 +87,7 @@ CREATE TABLE survey
 	ismen INT NOT NULL,
 	satisfaction INT NOT NULL,
 	comment VARCHAR(100) NOT NULL,
-	created DATETIME NOT NULL,
+	created TIMESTAMP NOT NULL,
 	PRIMARY KEY(id)
 );
 
@@ -101,8 +101,8 @@ CREATE TABLE blog_main
 	tag VARCHAR(15) NOT NULL,
 	comment VARCHAR(600) NOT NULL,
 	thanksCnt INT NOT NULL,
-	created DATETIME NOT NULL,
-	updated DATETIME NOT NULL,
+	created TIMESTAMP NOT NULL,
+	updated TIMESTAMP NOT NULL,
 	PRIMARY KEY(id)
 );
 
@@ -114,7 +114,7 @@ CREATE TABLE blog_reply
 	name VARCHAR(20) NOT NULL,
 	comment VARCHAR(40) NOT NULL,
 	thanksCnt INT NOT NULL,
-	created DATETIME NOT NULL,
+	created TIMESTAMP NOT NULL,
 	PRIMARY KEY(id)
 );
 
@@ -124,7 +124,7 @@ CREATE TABLE blog_dubble_reply
 	replyid INT NOT NULL,
 	comment VARCHAR(40) NOT NULL,
 	thanksCnt INT NOT NULL,
-	created DATETIME NOT NULL,
+	created TIMESTAMP NOT NULL,
 	PRIMARY KEY(id)
 );
 
