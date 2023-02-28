@@ -12,30 +12,37 @@ repositories {
 	mavenCentral()
 }
 
+apply plugin: 'war'
+
+war {
+    archiveName 'IntroApp_Renew.war'
+}
+
 dependencies {
     // jdbc
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	
+
 	// thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	
+
 	// web
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	
+
 	// h2 database
-	runtimeOnly 'com.h2database:h2'
-	
+	// runtimeOnly 'com.h2database:h2'
+	// MySQL database
+	runtimeOnly 'mysql:mysql-connector-java'
+
 	// security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
-	
-	
+
 	// Session
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'com.innoq:spring-cookie:0.1.0'
-	
+
 	// Junit
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -43,6 +50,9 @@ dependencies {
 	testImplementation "org.junit.jupiter:junit-jupiter:5.5.2"
 	testImplementation "org.mockito:mockito-core:3.6.0"
     testImplementation "org.mockito:mockito-junit-jupiter:3.6.0"
+
+    // war
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
 
 tasks.named('test') {

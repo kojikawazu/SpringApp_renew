@@ -226,6 +226,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
+	@Transactional(readOnly = false)
 	public int delete_byUserId(UserId userId) {
 		if (userId == null)	return WebConsts.ERROR_NUMBER;
 		String sql = "DELETE FROM login_user "
