@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.common.list.WordList;
+import com.example.demo.common.log.JsonLogWriter;
 import com.example.demo.common.number.NormalNumber;
 import com.example.demo.common.word.NormalWord;
 import com.example.demo.json.common.JsonCommonConstants;
@@ -75,7 +76,12 @@ public class IntroJsonReader implements SuperJsonReader {
 	@Override
 	public IntroJSONModel reader(Path path) {
 		// JSON読み取り
-		IntroJSONModel model = null;
+		JsonLogWriter 	jsonLogWriter 	= JsonLogWriter.getInstance();
+		IntroJSONModel 	model 			= null;
+
+		jsonLogWriter.setLogLevelAll();
+		jsonLogWriter.start("");
+		jsonLogWriter.setLogLevelWarning();
 		try {
 			ObjectMapper mapper   = new ObjectMapper();
 			JsonNode rootJsonNode = mapper.readTree(path.toFile());
@@ -157,8 +163,11 @@ public class IntroJsonReader implements SuperJsonReader {
 					);
 
 		} catch(IOException ioe) {
-			ioe.printStackTrace();
+			jsonLogWriter.error(ioe.getMessage());
 		}
+		jsonLogWriter.setLogLevelAll();
+		jsonLogWriter.successed("model isNotNull(): " + (model != null));
+		jsonLogWriter.setLogLevelWarning();
 
 		return model;
 	}
@@ -171,13 +180,16 @@ public class IntroJsonReader implements SuperJsonReader {
 	 */
 	private ExperienceList readExperienceList(JsonNode rootJsonNode, WordList headerList) {
 		if (rootJsonNode == null || headerList == null || headerList.getList().isEmpty())	return new ExperienceList();
-
+		JsonLogWriter 			jsonLogWriter 		= JsonLogWriter.getInstance();
 		ExperienceList 			list 				= new ExperienceList();
 		List<ExperienceModel> 	experList 			= list.getList();
 		List<String> 			headerStringList	= headerList.getList();
 		String					experKeyword		= "";
 		WordList 				experHeaderList		= null;
 
+		jsonLogWriter.setLogLevelAll();
+		jsonLogWriter.start("");
+		jsonLogWriter.setLogLevelWarning();
 		try {
 			// キーワード取得
 			experKeyword = headerStringList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal());
@@ -187,6 +199,7 @@ public class IntroJsonReader implements SuperJsonReader {
 					headerStringList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE_HEADER.ordinal()));
 		} catch(NullPointerException | IndexOutOfBoundsException ex) {
 			// 取得失敗
+			jsonLogWriter.error(ex.getMessage());
 			return list;
 		}
 
@@ -240,8 +253,12 @@ public class IntroJsonReader implements SuperJsonReader {
 				experList.add(model);
 			} catch(NullPointerException | IndexOutOfBoundsException ex) {
 				// 取得失敗
+				jsonLogWriter.error(ex.getMessage());
 			}
 		}
+		jsonLogWriter.setLogLevelAll();
+		jsonLogWriter.successed("list size(): " + list.getList().size());
+		jsonLogWriter.setLogLevelWarning();
 
 		return list;
 	}

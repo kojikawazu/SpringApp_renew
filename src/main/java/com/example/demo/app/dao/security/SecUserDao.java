@@ -18,7 +18,7 @@ public interface SecUserDao {
 	 * @return {@link SecUserModel}
 	 */
 	SecUserModel select(EmailWord email, PasswdWord password);
-	
+
 	/**
 	 * Eメールによる選択
 	 * @param  email	{@link EmailWord}

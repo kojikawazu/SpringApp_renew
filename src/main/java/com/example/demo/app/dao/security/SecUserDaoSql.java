@@ -36,7 +36,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	private final String DB_NAME 			= "security_login_user";
 	private final String DB_ROLE_NAME		= "security_roles";
 	private final String DB_USER_ROLE_NAME	= "security_user_role";
-	
+
 	/**
 	 * パラメータ
 	 */
