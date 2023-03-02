@@ -15,11 +15,15 @@ import org.junit.jupiter.api.Test;
  */
 class WordListTest {
 
+	/** テスト材料 */
 	private static final String TEST_WORD = "a";
-	
-	/** 対象 */
+
+	/** テスト対象 */
 	private WordList test = null;
 
+	/**
+	 * 初期化
+	 */
 	@BeforeEach
 	void init() {
 		test = null;

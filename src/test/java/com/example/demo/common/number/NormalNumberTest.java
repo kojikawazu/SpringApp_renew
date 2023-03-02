@@ -12,11 +12,15 @@ import org.junit.jupiter.api.Test;
  */
 class NormalNumberTest {
 
+	/** テスト材料 */
 	private static final int TEST_VALUE = 1;
-	
-	/** 対象 */
+
+	/** テスト対象 */
 	private NormalNumber test = null;
 
+	/**
+	 * 初期化
+	 */
 	@BeforeEach
 	void init() {
 		this.test = null;

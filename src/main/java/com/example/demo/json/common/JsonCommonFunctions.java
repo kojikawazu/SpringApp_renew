@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.example.demo.common.list.WordList;
+import com.example.demo.common.log.JsonLogWriter;
 import com.example.demo.common.word.NormalWord;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -64,16 +65,19 @@ public class JsonCommonFunctions {
 	 */
 	public static NormalWord readData(JsonNode rootJsonNode, String keyword) {
 		if (rootJsonNode == null || keyword == null || keyword.equals("")) return new NormalWord();
-		NormalWord normalWord = new NormalWord();
+		JsonLogWriter 	jsonLogWriter 	= JsonLogWriter.getInstance();
+		NormalWord 		normalWord 		= new NormalWord();
 
+		jsonLogWriter.start("");
 		try {
 			// JSONキーワードによる取り出し
 			String resultWord = rootJsonNode.get(keyword).get(0).get(JsonCommonConstants.JSON_SECTION_KEYWORD).asText();
 			normalWord.setWord(resultWord);
 		} catch(NullPointerException ex) {
 			// 取得失敗
-			//ex.printStackTrace();
+			jsonLogWriter.error(ex.getMessage());
 		}
+		jsonLogWriter.successed("word: [" + normalWord.getWord() + "]");
 
 		return normalWord;
 	}
@@ -86,19 +90,22 @@ public class JsonCommonFunctions {
 	 */
 	public static NormalWord readDataLongString(JsonNode rootJsonNode, String keyword) {
 		if(rootJsonNode == null || keyword == null || keyword.equals(""))	return new NormalWord();
+		JsonLogWriter 	jsonLogWriter 	= JsonLogWriter.getInstance();
+		String 			resultDataLong 	= "";
 
-		String resultDataLong = "";
+		jsonLogWriter.start("");
 		try {
 			for (JsonNode node : rootJsonNode.get(keyword)) {
 				// JSONキーワードによる取り出し
-				String resultText = node.get(JsonCommonConstants.JSON_SECTION_KEYWORD).asText();
-				resultDataLong = resultDataLong + resultText;
+				String resultText 	= node.get(JsonCommonConstants.JSON_SECTION_KEYWORD).asText();
+				resultDataLong 		= resultDataLong + resultText;
 			}
 		} catch(NullPointerException ex) {
 			// 取得失敗
-			//ex.printStackTrace();
+			jsonLogWriter.error(ex.getMessage());
 		}
 
+		jsonLogWriter.successed("word: [" + resultDataLong + "]");
 		return new NormalWord(resultDataLong);
 	}
 
@@ -110,10 +117,11 @@ public class JsonCommonFunctions {
 	 */
 	public static WordList readData_returnList(JsonNode rootJsonNode, String keyword) {
 		if (rootJsonNode == null || keyword == null || keyword.equals(""))	return new WordList();
-
+		JsonLogWriter jsonLogWriter = JsonLogWriter.getInstance();
 		WordList	 resultWordList	= new WordList();
 		List<String> resultList 	= resultWordList.getList();
 
+		jsonLogWriter.start("");
 		try {
 			// 複数のデータをリスト化
 			for (JsonNode node : rootJsonNode.get(keyword)) {
@@ -123,8 +131,9 @@ public class JsonCommonFunctions {
 			}
 		} catch(NullPointerException ex) {
 			// 取得失敗はスキップ
-			//ex.printStackTrace();
+			jsonLogWriter.error(ex.getMessage());
 		}
+		jsonLogWriter.successed("list.size(): [" + resultList.size() + "]");
 
 		return resultWordList;
 	}
@@ -138,21 +147,24 @@ public class JsonCommonFunctions {
 	 */
 	public static WordList readData_returnList(JsonNode rootJsonNode, WordList headerList, int headerIndex) {
 		if (rootJsonNode == null || headerList == null)	return new WordList();
-
+		JsonLogWriter 			jsonLogWriter 		= JsonLogWriter.getInstance();
 		List<String> 			headerStringList	= headerList.getList();
 		String					Keyword				= "";
 
+		jsonLogWriter.start("");
 		// キーワード取得
 		try {
 			Keyword = headerStringList.get(headerIndex);
 			if (Keyword == null || Keyword.equals("")) 	return new WordList();
 		} catch(NullPointerException | IndexOutOfBoundsException ex) {
 			// 取得失敗
+			jsonLogWriter.error(ex.getMessage());
 			return new WordList();
 		}
 
 		// キーワードによるデータの取得
 		WordList resultWordList = JsonCommonFunctions.readData_returnList(rootJsonNode, Keyword);
+		jsonLogWriter.successed("list.size(): [" + resultWordList.getList().size() + "]");
 		return resultWordList;
 	}
 }
