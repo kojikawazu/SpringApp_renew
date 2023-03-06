@@ -25,7 +25,7 @@ public class ExperienceList implements ListInterface<ExperienceModel> {
 
 	/**
 	 * コンストラクタ
-	 * @param 経験リストクラス
+	 * @param 経験リストクラス {@link List}<{@link ExperienceModel}>
 	 */
 	public ExperienceList(List<ExperienceModel> list) {
 		this();
@@ -47,6 +47,10 @@ public class ExperienceList implements ListInterface<ExperienceModel> {
 		}
 	}
 
+	/**
+	 * setter
+	 * @param obj {@link ExperienceList}
+	 */
 	public void setList(ExperienceList obj) {
 		if (obj == null)	return;
 		this.setList(obj.getList());

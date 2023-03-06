@@ -1,6 +1,12 @@
 {
 	"header": [
 		{
+			"name": "attrKeyHeader"
+		},
+		{
+			"name": "attrKey"
+		},
+		{
 			"name": "name"
 		},
 		{
@@ -10,13 +16,19 @@
 			"name": "intro"
 		},
 		{
+			"name": "experienceTitleHeader"
+		},
+		{
+			"name": "experienceTitle"
+		},
+		{
 			"name": "experienceHeader"
 		},
 		{
 			"name": "experience"
 		},
 		{
-			"name": "after"
+			"name": "future_plan"
 		},
 		{
 			"name": "skill_language"
@@ -43,7 +55,95 @@
 			"name": "hobby"
 		},
 		{
-			"name": "word"
+			"name": "one_last"
+		}
+	],
+	"attrKeyHeader": [
+		{
+			"name": "titleKey"
+		},
+		{
+			"name": "bodyKey"
+		}
+	],
+	"attrKey": [
+		{
+			"titleKey": [
+				{
+					"name": "introTitle"
+				},
+				{
+					"name": "experTitle"
+				},
+				{
+					"name": "futurePlanTitle"
+				},
+				{
+					"name": "skillLanguageTitle"
+				},
+				{
+					"name": "skillLibraryTitle"
+				},
+				{
+					"name": "skillFrameworkTitle"
+				},
+				{
+					"name": "skillOSTitle"
+				},
+				{
+					"name": "skillToolTitle"
+				},
+				{
+					"name": "skillOtherTitle"
+				},
+				{
+					"name": "urlTitle"
+				},
+				{
+					"name": "hobbyTitle"
+				},
+				{
+					"name": "oneLastTitle"
+				}
+			],
+			"bodyKey": [
+				{
+					"name": "intro"
+				},
+				{
+					"name": "experList"
+				},
+				{
+					"name": "futurePlanList"
+				},
+				{
+					"name": "skillLanguageList"
+				},
+				{
+					"name": "skillLibraryList"
+				},
+				{
+					"name": "skillFrameworkList"
+				},
+				{
+					"name": "skillOSList"
+				},
+				{
+					"name": "skillToolList"
+				},
+				{
+					"name": "skillOtherList"
+				},
+				{
+					"name": "url"
+				},
+				{
+					"name": "hobbyList"
+				},
+				{
+					"name": "oneLast"
+				}
+			]
 		}
 	],
 	"name": [
@@ -95,6 +195,58 @@
 	"intro": [
 		{
 			"name": "福岡でシステム開発を行うエンジニアです。主にLinux上アプリ、Webアプリを携わっており、設計～実装～テストフェーズを担当しております。現在の保有技術を強化しつつ、新しい技術にも幅を広げてます。"
+		}
+	],
+	"experienceTitleHeader": [
+		{
+			"name": "experienceTitleKey"
+		},
+		{
+			"name": "experienceTitleBody"
+		}
+	],
+	"experienceTitle": [
+		{
+			"experienceTitleKey": [
+				{
+					"name": "membersumTitle"
+				},
+				{
+					"name": "positionTitle"
+				},
+				{
+					"name": "overviewTitle"
+				},
+				{
+					"name": "personChargeTitle"
+				},
+				{
+					"name": "workPointTitle"
+				},
+				{
+					"name": "techTitle"
+				}
+			],
+			"experienceTitleBody": [
+				{
+					"name": "チーム人数"
+				},
+				{
+					"name": "ポジション"
+				},
+				{
+					"name": "概要"
+				},
+				{
+					"name": "担当業務"
+				},
+				{
+					"name": "業務ポイント"
+				},
+				{
+					"name": "技術"
+				}
+			]
 		}
 	],
 	"experienceHeader" : [
@@ -395,7 +547,7 @@
 			]
 		}
 	],
-	"after": [
+	"future_plan": [
 		{
 			"name": "Linux分野、Java分野の特化(RHEL7、RHEL8、Spring Framework等)"
 		},
@@ -533,7 +685,7 @@
 			"name": "ジム"
 		}
 	], 
-	"word" : [
+	"one_last" : [
 		{
 			"name" : "システム開発に携わる方と交流を深めていきたいです。よろしくお願いします。"
 		}

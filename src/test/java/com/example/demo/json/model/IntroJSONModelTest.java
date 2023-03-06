@@ -35,11 +35,13 @@ class IntroJSONModelTest {
 	void constractorTest() {
 		test = new IntroJSONModel();
 
+		assertNotNull(test.getAttributeKeyModel());
 		assertNotNull(test.getNameList());
 		assertNotNull(test.getTitleList());
 		assertNotNull(test.getIntro());
+		assertNotNull(test.getExperienceTitleModel());
 		assertNotNull(test.getExperienceList());
-		assertNotNull(test.getAfterList());
+		assertNotNull(test.getFuturePlanList());
 		assertNotNull(test.getSkillLanguageList());
 		assertNotNull(test.getSkillLibraryList());
 		assertNotNull(test.getSkillFrameworkList());
@@ -48,23 +50,27 @@ class IntroJSONModelTest {
 		assertNotNull(test.getSkillOtherList());
 		assertNotNull(test.getUrl());
 		assertNotNull(test.getHobbyList());
-		assertNotNull(test.getWord());
+		assertNotNull(test.getOneLast());
 
-		assertEquals(test.getNameList().getList().size(), 0);
-		assertEquals(test.getTitleList().getList().size(), 0);
-		assertEquals(test.getExperienceList().getList().size(), 0);
-		assertEquals(test.getAfterList().getList().size(), 0);
-		assertEquals(test.getSkillLanguageList().getList().size(), 0);
-		assertEquals(test.getSkillLibraryList().getList().size(), 0);
-		assertEquals(test.getSkillFrameworkList().getList().size(), 0);
-		assertEquals(test.getSkillOSList().getList().size(), 0);
-		assertEquals(test.getSkillToolList().getList().size(), 0);
-		assertEquals(test.getSkillOtherList().getList().size(), 0);
-		assertEquals(test.getHobbyList().getList().size(), 0);
+		assertEquals(0, test.getAttributeKeyModel().getTitleKeyList().getList().size());
+		assertEquals(0, test.getAttributeKeyModel().getBodyKeyList().getList().size());
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleKeyList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleBodyList().getList().size());
+		assertEquals(0, test.getExperienceList().getList().size());
+		assertEquals(0, test.getFuturePlanList().getList().size());
+		assertEquals(0, test.getSkillLanguageList().getList().size());
+		assertEquals(0, test.getSkillLibraryList().getList().size());
+		assertEquals(0, test.getSkillFrameworkList().getList().size());
+		assertEquals(0, test.getSkillOSList().getList().size());
+		assertEquals(0, test.getSkillToolList().getList().size());
+		assertEquals(0, test.getSkillOtherList().getList().size());
+		assertEquals(0, test.getHobbyList().getList().size());
 
-		assertEquals(test.getIntro().getWord(), "");
-		assertEquals(test.getUrl().getWord(), "");
-		assertEquals(test.getWord().getWord(), "");
+		assertEquals("", test.getIntro().getWord());
+		assertEquals("", test.getUrl().getWord());
+		assertEquals("", test.getOneLast().getWord());
 	}
 
 	/**
@@ -86,13 +92,17 @@ class IntroJSONModelTest {
 				null,
 				null,
 				null,
+				null,
+				null,
 				null);
 
+		assertNotNull(test.getAttributeKeyModel());
 		assertNotNull(test.getNameList());
 		assertNotNull(test.getTitleList());
 		assertNotNull(test.getIntro());
+		assertNotNull(test.getExperienceTitleModel());
 		assertNotNull(test.getExperienceList());
-		assertNotNull(test.getAfterList());
+		assertNotNull(test.getFuturePlanList());
 		assertNotNull(test.getSkillLanguageList());
 		assertNotNull(test.getSkillLibraryList());
 		assertNotNull(test.getSkillFrameworkList());
@@ -101,23 +111,27 @@ class IntroJSONModelTest {
 		assertNotNull(test.getSkillOtherList());
 		assertNotNull(test.getUrl());
 		assertNotNull(test.getHobbyList());
-		assertNotNull(test.getWord());
+		assertNotNull(test.getOneLast());
 
-		assertEquals(test.getNameList().getList().size(), 0);
-		assertEquals(test.getTitleList().getList().size(), 0);
-		assertEquals(test.getExperienceList().getList().size(), 0);
-		assertEquals(test.getAfterList().getList().size(), 0);
-		assertEquals(test.getSkillLanguageList().getList().size(), 0);
-		assertEquals(test.getSkillLibraryList().getList().size(), 0);
-		assertEquals(test.getSkillFrameworkList().getList().size(), 0);
-		assertEquals(test.getSkillOSList().getList().size(), 0);
-		assertEquals(test.getSkillToolList().getList().size(), 0);
-		assertEquals(test.getSkillOtherList().getList().size(), 0);
-		assertEquals(test.getHobbyList().getList().size(), 0);
+		assertEquals(0, test.getAttributeKeyModel().getTitleKeyList().getList().size());
+		assertEquals(0, test.getAttributeKeyModel().getBodyKeyList().getList().size());
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleKeyList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleBodyList().getList().size());
+		assertEquals(0, test.getExperienceList().getList().size());
+		assertEquals(0, test.getFuturePlanList().getList().size());
+		assertEquals(0, test.getSkillLanguageList().getList().size());
+		assertEquals(0, test.getSkillLibraryList().getList().size());
+		assertEquals(0, test.getSkillFrameworkList().getList().size());
+		assertEquals(0, test.getSkillOSList().getList().size());
+		assertEquals(0, test.getSkillToolList().getList().size());
+		assertEquals(0, test.getSkillOtherList().getList().size());
+		assertEquals(0, test.getHobbyList().getList().size());
 
-		assertEquals(test.getIntro().getWord(), "");
-		assertEquals(test.getUrl().getWord(), "");
-		assertEquals(test.getWord().getWord(), "");
+		assertEquals("", test.getIntro().getWord());
+		assertEquals("", test.getUrl().getWord());
+		assertEquals("", test.getOneLast().getWord());
 	}
 	
 	/**
@@ -126,9 +140,11 @@ class IntroJSONModelTest {
 	@Test
 	void constractorObjTest() {
 		test = new IntroJSONModel(
+				new AttributeKeyModel(),
 				new WordList(),
 				new WordList(),
 				new NormalWord(),
+				new ExperienceTitleModel(),
 				new ExperienceList(),
 				new WordList(),
 				new WordList(),
@@ -141,11 +157,13 @@ class IntroJSONModelTest {
 				new WordList(),
 				new NormalWord());
 
+		assertNotNull(test.getAttributeKeyModel());
 		assertNotNull(test.getNameList());
 		assertNotNull(test.getTitleList());
 		assertNotNull(test.getIntro());
+		assertNotNull(test.getExperienceTitleModel());
 		assertNotNull(test.getExperienceList());
-		assertNotNull(test.getAfterList());
+		assertNotNull(test.getFuturePlanList());
 		assertNotNull(test.getSkillLanguageList());
 		assertNotNull(test.getSkillLibraryList());
 		assertNotNull(test.getSkillFrameworkList());
@@ -154,23 +172,27 @@ class IntroJSONModelTest {
 		assertNotNull(test.getSkillOtherList());
 		assertNotNull(test.getUrl());
 		assertNotNull(test.getHobbyList());
-		assertNotNull(test.getWord());
+		assertNotNull(test.getOneLast());
 
-		assertEquals(test.getNameList().getList().size(), 0);
-		assertEquals(test.getTitleList().getList().size(), 0);
-		assertEquals(test.getExperienceList().getList().size(), 0);
-		assertEquals(test.getAfterList().getList().size(), 0);
-		assertEquals(test.getSkillLanguageList().getList().size(), 0);
-		assertEquals(test.getSkillLibraryList().getList().size(), 0);
-		assertEquals(test.getSkillFrameworkList().getList().size(), 0);
-		assertEquals(test.getSkillOSList().getList().size(), 0);
-		assertEquals(test.getSkillToolList().getList().size(), 0);
-		assertEquals(test.getSkillOtherList().getList().size(), 0);
-		assertEquals(test.getHobbyList().getList().size(), 0);
+		assertEquals(0, test.getAttributeKeyModel().getTitleKeyList().getList().size());
+		assertEquals(0, test.getAttributeKeyModel().getBodyKeyList().getList().size());
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleKeyList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleBodyList().getList().size());
+		assertEquals(0, test.getExperienceList().getList().size());
+		assertEquals(0, test.getFuturePlanList().getList().size());
+		assertEquals(0, test.getSkillLanguageList().getList().size());
+		assertEquals(0, test.getSkillLibraryList().getList().size());
+		assertEquals(0, test.getSkillFrameworkList().getList().size());
+		assertEquals(0, test.getSkillOSList().getList().size());
+		assertEquals(0, test.getSkillToolList().getList().size());
+		assertEquals(0, test.getSkillOtherList().getList().size());
+		assertEquals(0, test.getHobbyList().getList().size());
 
-		assertEquals(test.getIntro().getWord(), "");
-		assertEquals(test.getUrl().getWord(), "");
-		assertEquals(test.getWord().getWord(), "");
+		assertEquals("", test.getIntro().getWord());
+		assertEquals("", test.getUrl().getWord());
+		assertEquals("", test.getOneLast().getWord());
 	}
 
 	/**
@@ -184,8 +206,9 @@ class IntroJSONModelTest {
 		assertNotNull(test.getNameList());
 		assertNotNull(test.getTitleList());
 		assertNotNull(test.getIntro());
+		assertNotNull(test.getExperienceTitleModel());
 		assertNotNull(test.getExperienceList());
-		assertNotNull(test.getAfterList());
+		assertNotNull(test.getFuturePlanList());
 		assertNotNull(test.getSkillLanguageList());
 		assertNotNull(test.getSkillLibraryList());
 		assertNotNull(test.getSkillFrameworkList());
@@ -194,23 +217,25 @@ class IntroJSONModelTest {
 		assertNotNull(test.getSkillOtherList());
 		assertNotNull(test.getUrl());
 		assertNotNull(test.getHobbyList());
-		assertNotNull(test.getWord());
+		assertNotNull(test.getOneLast());
 
-		assertEquals(test.getNameList().getList().size(), 0);
-		assertEquals(test.getTitleList().getList().size(), 0);
-		assertEquals(test.getExperienceList().getList().size(), 0);
-		assertEquals(test.getAfterList().getList().size(), 0);
-		assertEquals(test.getSkillLanguageList().getList().size(), 0);
-		assertEquals(test.getSkillLibraryList().getList().size(), 0);
-		assertEquals(test.getSkillFrameworkList().getList().size(), 0);
-		assertEquals(test.getSkillOSList().getList().size(), 0);
-		assertEquals(test.getSkillToolList().getList().size(), 0);
-		assertEquals(test.getSkillOtherList().getList().size(), 0);
-		assertEquals(test.getHobbyList().getList().size(), 0);
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleKeyList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleBodyList().getList().size());
+		assertEquals(0, test.getExperienceList().getList().size());
+		assertEquals(0, test.getFuturePlanList().getList().size());
+		assertEquals(0, test.getSkillLanguageList().getList().size());
+		assertEquals(0, test.getSkillLibraryList().getList().size());
+		assertEquals(0, test.getSkillFrameworkList().getList().size());
+		assertEquals(0, test.getSkillOSList().getList().size());
+		assertEquals(0, test.getSkillToolList().getList().size());
+		assertEquals(0, test.getSkillOtherList().getList().size());
+		assertEquals(0, test.getHobbyList().getList().size());
 
-		assertEquals(test.getIntro().getWord(), "");
-		assertEquals(test.getUrl().getWord(), "");
-		assertEquals(test.getWord().getWord(), "");
+		assertEquals("", test.getIntro().getWord());
+		assertEquals("", test.getUrl().getWord());
+		assertEquals("", test.getOneLast().getWord());
 	}
 
 	/**
@@ -219,9 +244,11 @@ class IntroJSONModelTest {
 	@Test
 	void constractorMyObjTest() {
 		IntroJSONModel model = new IntroJSONModel(
+				new AttributeKeyModel(),
 				new WordList(),
 				new WordList(),
 				new NormalWord(),
+				new ExperienceTitleModel(),
 				new ExperienceList(),
 				new WordList(),
 				new WordList(),
@@ -238,10 +265,12 @@ class IntroJSONModelTest {
 				model);
 
 		assertNotNull(test.getNameList());
+		assertNotNull(test.getNameList());
 		assertNotNull(test.getTitleList());
 		assertNotNull(test.getIntro());
+		assertNotNull(test.getExperienceTitleModel());
 		assertNotNull(test.getExperienceList());
-		assertNotNull(test.getAfterList());
+		assertNotNull(test.getFuturePlanList());
 		assertNotNull(test.getSkillLanguageList());
 		assertNotNull(test.getSkillLibraryList());
 		assertNotNull(test.getSkillFrameworkList());
@@ -250,31 +279,39 @@ class IntroJSONModelTest {
 		assertNotNull(test.getSkillOtherList());
 		assertNotNull(test.getUrl());
 		assertNotNull(test.getHobbyList());
-		assertNotNull(test.getWord());
+		assertNotNull(test.getOneLast());
 
-		assertEquals(test.getNameList().getList().size(), 0);
-		assertEquals(test.getTitleList().getList().size(), 0);
-		assertEquals(test.getExperienceList().getList().size(), 0);
-		assertEquals(test.getAfterList().getList().size(), 0);
-		assertEquals(test.getSkillLanguageList().getList().size(), 0);
-		assertEquals(test.getSkillLibraryList().getList().size(), 0);
-		assertEquals(test.getSkillFrameworkList().getList().size(), 0);
-		assertEquals(test.getSkillOSList().getList().size(), 0);
-		assertEquals(test.getSkillToolList().getList().size(), 0);
-		assertEquals(test.getSkillOtherList().getList().size(), 0);
-		assertEquals(test.getHobbyList().getList().size(), 0);
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getNameList().getList().size());
+		assertEquals(0, test.getTitleList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleKeyList().getList().size());
+		assertEquals(0, test.getExperienceTitleModel().getExperienceTitleBodyList().getList().size());
+		assertEquals(0, test.getExperienceList().getList().size());
+		assertEquals(0, test.getFuturePlanList().getList().size());
+		assertEquals(0, test.getSkillLanguageList().getList().size());
+		assertEquals(0, test.getSkillLibraryList().getList().size());
+		assertEquals(0, test.getSkillFrameworkList().getList().size());
+		assertEquals(0, test.getSkillOSList().getList().size());
+		assertEquals(0, test.getSkillToolList().getList().size());
+		assertEquals(0, test.getSkillOtherList().getList().size());
+		assertEquals(0, test.getHobbyList().getList().size());
 
-		assertEquals(test.getIntro().getWord(), "");
-		assertEquals(test.getUrl().getWord(), "");
-		assertEquals(test.getWord().getWord(), "");
+		assertEquals("", test.getIntro().getWord());
+		assertEquals("", test.getUrl().getWord());
+		assertEquals("", test.getOneLast().getWord());
 	}
 
 	@AfterEach
 	void release() {
+		test.getAttributeKeyModel().getTitleKeyList().getList().clear();
+		test.getAttributeKeyModel().getBodyKeyList().getList().clear();
 		test.getNameList().getList().clear();
 		test.getTitleList().getList().clear();
+		test.getExperienceTitleModel().getExperienceTitleKeyList().getList().clear();
+		test.getExperienceTitleModel().getExperienceTitleBodyList().getList().clear();
 		test.getExperienceList().getList().clear();
-		test.getAfterList().getList().clear();
+		test.getFuturePlanList().getList().clear();
 		test.getSkillLanguageList().getList().clear();
 		test.getSkillLibraryList().getList().clear();
 		test.getSkillFrameworkList().getList().clear();

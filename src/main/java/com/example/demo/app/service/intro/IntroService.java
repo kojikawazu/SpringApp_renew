@@ -17,5 +17,4 @@ public interface IntroService {
 	 * @return JSON読取モデル {@link IntroJSONModel}
 	 */
 	public IntroJSONModel readerIntroData_byJSON(Path path);
-	
 }

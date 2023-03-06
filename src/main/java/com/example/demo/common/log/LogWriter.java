@@ -39,8 +39,6 @@ public class LogWriter implements SuperLogWriter {
 	/** OS名(Windows) */
 	protected static final String OS_WINDOWS_NAME = "windows";
 
-	/** Lock用Object */
-	private final Object LOCK_OBJECT_LOG_WRITE = new Object();
 	// -------------------------------------------------------------------------------------------------------------------------
 
 	/** ログ名 */
@@ -84,7 +82,7 @@ public class LogWriter implements SuperLogWriter {
 	 */
 	@Override
 	public void init() {
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			if (this.logger == null) {
 				this.logFileName = this.logName + ".%u.%g" + EXTENSION_LOG;
 				this.logger      = Logger.getLogger(this.logName);
@@ -143,7 +141,7 @@ public class LogWriter implements SuperLogWriter {
 	 */
 	protected void setLogName(String logName) {
 		if (logName.equals(""))	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			this.logName = logName;
 		}
 	}
@@ -154,7 +152,7 @@ public class LogWriter implements SuperLogWriter {
 	 */
 	protected void setLogLevel(Level level) {
 		if (level == null)	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			this.logLevel = level;
 			if (this.logger != null) {
 				// ログレベルの変更
@@ -222,7 +220,7 @@ public class LogWriter implements SuperLogWriter {
 	@Override
 	public void start(String log) {
 		if (!this.isSetting())	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			String calledFromString = this.calledFrom();
 			this.logger.info(calledFromString + ":[start] " + log);
 		}
@@ -235,7 +233,7 @@ public class LogWriter implements SuperLogWriter {
 	@Override
 	public void successed(String log) {
 		if (!this.isSetting())	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			String calledFromString = this.calledFrom();
 			this.logger.info(calledFromString + ":[successed] " + log);
 		}
@@ -248,7 +246,7 @@ public class LogWriter implements SuperLogWriter {
 	@Override
 	public void info(String log) {
 		if (!this.isSetting())	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			String calledFromString = this.calledFrom();
 			this.logger.info(calledFromString + " " + log);
 		}
@@ -261,7 +259,7 @@ public class LogWriter implements SuperLogWriter {
 	@Override
 	public void warning(String log) {
 		if (!this.isSetting())	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			String calledFromString = this.calledFrom();
 			this.logger.warning(calledFromString + ":[warning] " + log);
 		}
@@ -274,7 +272,7 @@ public class LogWriter implements SuperLogWriter {
 	@Override
 	public void error(String log) {
 		if (!this.isSetting())	return ;
-		synchronized (LOCK_OBJECT_LOG_WRITE) {
+		synchronized (this.getClass()) {
 			String calledFromString = this.calledFrom();
 			this.logger.severe(calledFromString + ":[error] " + log);
 		}

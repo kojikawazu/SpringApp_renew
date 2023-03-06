@@ -47,13 +47,13 @@ class ExperienceModelTest {
 		assertNotNull(test.getWorkPoint());
 		assertNotNull(test.getTechList());
 
-		assertEquals(test.getExperience().getWord(), "");
-		assertEquals(test.getMemberSum().getNumber(), 0);
-		assertEquals(test.getPosition().getWord(), "");
-		assertEquals(test.getOverview().getWord(), "");
-		assertEquals(test.getPersonChargeList().getList().size(), 0);
-		assertEquals(test.getWorkPoint().getWord(), "");
-		assertEquals(test.getTechList().getList().size(), 0);
+		assertEquals("", test.getExperience().getWord());
+		assertEquals(0, test.getMemberSum().getNumber());
+		assertEquals("", test.getPosition().getWord());
+		assertEquals("", test.getOverview().getWord());
+		assertEquals(0, test.getPersonChargeList().getList().size());
+		assertEquals("", test.getWorkPoint().getWord());
+		assertEquals(0, test.getTechList().getList().size());
 	}
 
 	/**
@@ -82,13 +82,13 @@ class ExperienceModelTest {
 		assertNotNull(test.getWorkPoint());
 		assertNotNull(test.getTechList());
 
-		assertEquals(test.getExperience().getWord(), "");
-		assertEquals(test.getMemberSum().getNumber(), 0);
-		assertEquals(test.getPosition().getWord(), "");
-		assertEquals(test.getOverview().getWord(), "");
-		assertEquals(test.getPersonChargeList().getList().size(), 0);
-		assertEquals(test.getWorkPoint().getWord(), "");
-		assertEquals(test.getTechList().getList().size(), 0);
+		assertEquals("", test.getExperience().getWord());
+		assertEquals(0, test.getMemberSum().getNumber());
+		assertEquals("", test.getPosition().getWord());
+		assertEquals("", test.getOverview().getWord());
+		assertEquals(0, test.getPersonChargeList().getList().size());
+		assertEquals("", test.getWorkPoint().getWord());
+		assertEquals(0, test.getTechList().getList().size());
 	}
 	
 	@Test
@@ -114,13 +114,13 @@ class ExperienceModelTest {
 		assertNotNull(test.getWorkPoint());
 		assertNotNull(test.getTechList());
 
-		assertEquals(test.getExperience().getWord(), "");
-		assertEquals(test.getMemberSum().getNumber(), 0);
-		assertEquals(test.getPosition().getWord(), "");
-		assertEquals(test.getOverview().getWord(), "");
-		assertEquals(test.getPersonChargeList().getList().size(), 0);
-		assertEquals(test.getWorkPoint().getWord(), "");
-		assertEquals(test.getTechList().getList().size(), 0);
+		assertEquals("", test.getExperience().getWord());
+		assertEquals(0, test.getMemberSum().getNumber());
+		assertEquals("", test.getPosition().getWord());
+		assertEquals("", test.getOverview().getWord());
+		assertEquals(0, test.getPersonChargeList().getList().size());
+		assertEquals("", test.getWorkPoint().getWord());
+		assertEquals(0, test.getTechList().getList().size());
 	}
 
 	/**
