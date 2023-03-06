@@ -77,9 +77,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -90,9 +90,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime(null);
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -103,9 +103,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("a");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -116,9 +116,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("202010");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -129,9 +129,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("2020/0");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -142,9 +142,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("2020/00");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -155,9 +155,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime("202a/10");
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -168,9 +168,9 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime(TEST_NOW_KEYWORD);
 
 		assertNotNull(test);
-		assertEquals(test.getYear(), standardDateTime.getYear());
-		assertEquals(test.getMonthValue(), standardDateTime.getMonthValue());
-		assertEquals(test.getDayOfMonth(), standardDateTime.getDayOfMonth());
+		assertEquals(standardDateTime.getYear(), test.getYear());
+		assertEquals(standardDateTime.getMonthValue(), test.getMonthValue());
+		assertEquals(standardDateTime.getDayOfMonth(), test.getDayOfMonth());
 	}
 
 	/**
@@ -182,7 +182,7 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime(testData);
 
 		assertNotNull(test);
-		assertEquals(test.toString(), TestConsts.TEST_TIME_01.toString());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), test.toString());
 	}
 
 	/**
@@ -194,7 +194,7 @@ class JsonCommonFunctionsTest {
 		LocalDateTime test = JsonCommonFunctions.changeLocalDateTime(testData);
 
 		assertNotNull(test);
-		assertEquals(test.toString(), TestConsts.TEST_TIME_01.toString());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), test.toString());
 	}
 
 	// [test] readData(JsonNode rootJsonNode, String keyword)
@@ -208,7 +208,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readData(null, null);
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -219,7 +219,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readData(rootJsonNode, null);
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -230,7 +230,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readData(rootJsonNode, "intr");
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -241,7 +241,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readData(rootJsonNode, TEST_INTRO_SECTION);
 
 		assertNotNull(test);
-		assertNotEquals(test.getWord(), "");
+		assertNotEquals("", test.getWord());
 	}
 
 	// [test] readDataLongString(JsonNode rootJsonNode, String keyword)
@@ -255,7 +255,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readDataLongString(null, null);
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -266,7 +266,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readDataLongString(rootJsonNode, null);
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -277,7 +277,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readDataLongString(rootJsonNode, "workPoin");
 
 		assertNotNull(test);
-		assertEquals(test.getWord(), "");
+		assertEquals("", test.getWord());
 	}
 
 	/**
@@ -290,7 +290,7 @@ class JsonCommonFunctionsTest {
 		NormalWord test = JsonCommonFunctions.readDataLongString(node2, TEST_WORKPOINT_SECTION);
 
 		assertNotNull(test);
-		assertNotEquals(test.getWord(), "");
+		assertNotEquals("", test.getWord());
 	}
 
 	// [test] readData_returnList(JsonNode rootJsonNode, String keyword)
@@ -303,7 +303,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(null, null);
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -314,7 +314,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(rootJsonNode, null);
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -325,7 +325,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(rootJsonNode, "nam");
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -336,7 +336,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(rootJsonNode, TEST_NAME_SECTION);
 
 		assertNotNull(testList);
-		assertNotEquals(testList.getList().size(), 0);
+		assertEquals(2, testList.getList().size());
 
 		testList.getList().clear();
 	}
@@ -351,7 +351,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(null, null, 0);
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -362,7 +362,7 @@ class JsonCommonFunctionsTest {
 		WordList testList = JsonCommonFunctions.readData_returnList(rootJsonNode, null, 0);
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -374,7 +374,7 @@ class JsonCommonFunctionsTest {
 		WordList 		testList			= JsonCommonFunctions.readData_returnList(rootJsonNode, headerList, 99);
 
 		assertNotNull(testList);
-		assertEquals(testList.getList().size(), 0);
+		assertEquals(0, testList.getList().size());
 	}
 
 	/**
@@ -386,7 +386,7 @@ class JsonCommonFunctionsTest {
 		WordList 		testList			= JsonCommonFunctions.readData_returnList(rootJsonNode, headerList, 0);
 
 		assertNotNull(testList);
-		assertNotEquals(testList.getList().size(), 0);
+		assertNotEquals(0, testList.getList().size());
 
 		headerList.getList().clear();
 		testList.getList().clear();

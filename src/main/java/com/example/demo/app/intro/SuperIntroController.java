@@ -21,21 +21,21 @@ public class SuperIntroController {
 	 * {@link IntroService}
 	 */
 	private final IntroService		introService;
-	
+
 	/** 
 	 * コントローラー 
 	 * {@link HeaderController}
 	 */
 	private final HeaderController	headerController;
-	
+
 	/**
 	 * ログ
 	 * {@link LogMessage}
 	 */
 	private final LogMessage		logMessage;
-	
+
 	/** --------------------------------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 * @param introService		{@link IntroService}
@@ -54,7 +54,7 @@ public class SuperIntroController {
 			LogMessage				logMessage) {
 		this.introService		= introService;
 		this.logMessage			= logMessage;
-		
+
 		this.headerController	= new HeaderController(
 										secUserService,
 										loginService,
@@ -62,19 +62,30 @@ public class SuperIntroController {
 										httpSession,
 										logMessage);
 	}
-	
+
 	/** --------------------------------------------------------------------------- */
-	
+
+	/**
+	 * getter
+	 * @return {@link IntroService}
+	 */
 	public IntroService getIntroService() {
 		return this.introService;
 	}
-	
+
+	/**
+	 * getter
+	 * @return {@link HeaderController}
+	 */
 	public HeaderController getHeaderController() {
 		return this.headerController;
 	}
-	
+
+	/**
+	 * getter
+	 * @return {@link LogMessage}
+	 */
 	public LogMessage getLogMessage() {
 		return this.logMessage;
 	}
-	
 }

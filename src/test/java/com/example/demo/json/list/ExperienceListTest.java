@@ -41,7 +41,7 @@ class ExperienceListTest {
 		test = new ExperienceList();
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 0);
+		assertEquals(0, test.getList().size());
 	}
 
 	/**
@@ -52,7 +52,7 @@ class ExperienceListTest {
 		test = new ExperienceList(null);
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 0);
+		assertEquals(0, test.getList().size());
 	}
 
 	/**
@@ -74,8 +74,8 @@ class ExperienceListTest {
 		preConstractorObjectTest();
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 1);
-		assertEquals(test.getList().get(0).getExperience().getWord(), TEST_WORD);
+		assertEquals(1, test.getList().size());
+		assertEquals(TEST_WORD, test.getList().get(0).getExperience().getWord());
 	}
 
 	/**
@@ -99,8 +99,8 @@ class ExperienceListTest {
 		this.test.setList(list);
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 1);
-		assertEquals(test.getList().get(0).getExperience().getWord(), TEST_WORD);
+		assertEquals(1, test.getList().size());
+		assertEquals(TEST_WORD, test.getList().get(0).getExperience().getWord());
 	}
 
 	/**

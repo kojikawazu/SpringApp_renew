@@ -11,102 +11,115 @@ import com.example.demo.json.list.ExperienceList;
  */
 public class IntroJSONModel {
 
+	/** attributeキーモデル */
+	private AttributeKeyModel		attributeKeyModel;
+
 	/** 名前リスト */
-	private WordList 			nameList;
+	private WordList 				nameList;
 
 	/** タイトルリスト */
-	private WordList 			titleList;
+	private WordList 				titleList;
 
 	/** 自己紹介文字列 */
-	private NormalWord 			intro;
+	private NormalWord 				intro;
 
+	/** 経験タイトルモデル */
+	private ExperienceTitleModel	experienceTitleModel;
 	/** 経験リスト */
-	private ExperienceList 		experienceList;
+	private ExperienceList 			experienceList;
 
 	/** 今後の計画文字列 */
-	private WordList 			afterList;
+	private WordList 				futurePlanList;
 
 	/** スキル(言語)リスト */
-	private WordList 			skillLanguageList;
+	private WordList 				skillLanguageList;
 	/** スキル(ライブラリ)リスト */
-	private WordList 			skillLibraryList;
+	private WordList 				skillLibraryList;
 	/** スキル(フレームワーク)リスト */
-	private WordList 			skillFrameworkList;
+	private WordList 				skillFrameworkList;
 	/** スキル(OS)リスト */
-	private WordList 			skillOSList;
+	private WordList 				skillOSList;
 	/** スキル(Tool)リスト */
-	private WordList 			skillToolList;
+	private WordList 				skillToolList;
 	/** スキル(その他)リスト */
-	private WordList 			skillOtherList;
+	private WordList 				skillOtherList;
 
 	/** URL文字列 */
-	private NormalWord			url;
+	private NormalWord				url;
 
 	/** 趣味リスト */
-	private WordList 			hobbyList;
+	private WordList 				hobbyList;
 
 	/** 意気込み文字列 */
-	private NormalWord 			word;
+	private NormalWord 				oneLast;
 
 	/**
 	 * コンストラクタ
 	 */
 	public IntroJSONModel() {
-		this.nameList			= new WordList();
-		this.titleList			= new WordList();
-		this.intro				= new NormalWord();
-		this.experienceList		= new ExperienceList();
-		this.afterList			= new WordList();
-		this.skillLanguageList	= new WordList();
-		this.skillLibraryList	= new WordList();
-		this.skillFrameworkList	= new WordList();
-		this.skillOSList		= new WordList();
-		this.skillToolList		= new WordList();
-		this.skillOtherList		= new WordList();
-		this.url				= new NormalWord();
-		this.hobbyList			= new WordList();
-		this.word				= new NormalWord();
+		this.attributeKeyModel		= new AttributeKeyModel();
+		this.nameList				= new WordList();
+		this.titleList				= new WordList();
+		this.intro					= new NormalWord();
+		this.experienceTitleModel	= new ExperienceTitleModel();
+		this.experienceList			= new ExperienceList();
+		this.futurePlanList			= new WordList();
+		this.skillLanguageList		= new WordList();
+		this.skillLibraryList		= new WordList();
+		this.skillFrameworkList		= new WordList();
+		this.skillOSList			= new WordList();
+		this.skillToolList			= new WordList();
+		this.skillOtherList			= new WordList();
+		this.url					= new NormalWord();
+		this.hobbyList				= new WordList();
+		this.oneLast				= new NormalWord();
 	}
-	
+
 	/**
 	 * コンストラクタ
-	 * @param nameList				{@link WordList}		名前リスト
-	 * @param titleList				{@link WordList}		タイトルリスト
-	 * @param intro					{@link NormalWord}		自己紹介文字列
-	 * @param experienceList		{@link ExperienceList}	経験リスト
-	 * @param after					{@link WordList}		今後の計画文字列
-	 * @param skillLanguageList		{@link WordList}		スキル(言語)リスト
-	 * @param skillLibraryList		{@link WordList}		スキル(ライブラリ)リスト
-	 * @param skillFrameworkList	{@link WordList}		スキル(フレームワーク)リスト
-	 * @param skillOSList			{@link WordList}		スキル(OS)リスト
-	 * @param skillToolList			{@link WordList}		スキル(Tool)リスト
-	 * @param skillOtherList		{@link WordList}		スキル(その他)リスト
-	 * @param url					{@link NormalWord}		URL文字列
-	 * @param hobbyList				{@link WordList}		趣味リスト
-	 * @param word					{@link NormalWord}		意気込み文字列
+	 * @param attributeKeyModel		{@link AttributeKeyModel}		attributeキーモデル
+	 * @param nameList				{@link WordList}				名前リスト
+	 * @param titleList				{@link WordList}				タイトルリスト
+	 * @param intro					{@link NormalWord}				自己紹介文字列
+	 * @param experienceTitleModel	{@link ExperienceTitleModel}	経験タイトルモデル
+	 * @param experienceList		{@link ExperienceList}			経験リスト
+	 * @param futurePlanList		{@link WordList}				今後の計画文字列
+	 * @param skillLanguageList		{@link WordList}				スキル(言語)リスト
+	 * @param skillLibraryList		{@link WordList}				スキル(ライブラリ)リスト
+	 * @param skillFrameworkList	{@link WordList}				スキル(フレームワーク)リスト
+	 * @param skillOSList			{@link WordList}				スキル(OS)リスト
+	 * @param skillToolList			{@link WordList}				スキル(Tool)リスト
+	 * @param skillOtherList		{@link WordList}				スキル(その他)リスト
+	 * @param url					{@link NormalWord}				URL文字列
+	 * @param hobbyList				{@link WordList}				趣味リスト
+	 * @param oneLast				{@link NormalWord}				意気込み文字列
 	 */
 	public IntroJSONModel(
-			WordList 		nameList,
-			WordList 		titleList,
-			NormalWord 		intro,
-			ExperienceList 	experienceList,
-			WordList 		afterList,
-			WordList 		skillLanguageList,
-			WordList 		skillLibraryList,
-			WordList 		skillFrameworkList,
-			WordList		skillOSList,
-			WordList		skillToolList,
-			WordList 		skillOtherList,
-			NormalWord 		url,
-			WordList 		hobbyList,
-			NormalWord 		word
+			AttributeKeyModel		attributeKeyModel,
+			WordList 				nameList,
+			WordList 				titleList,
+			NormalWord 				intro,
+			ExperienceTitleModel	experienceTitleModel,
+			ExperienceList 			experienceList,
+			WordList 				futurePlanList,
+			WordList 				skillLanguageList,
+			WordList 				skillLibraryList,
+			WordList 				skillFrameworkList,
+			WordList				skillOSList,
+			WordList				skillToolList,
+			WordList 				skillOtherList,
+			NormalWord 				url,
+			WordList 				hobbyList,
+			NormalWord 				oneLast
 			) {
 		this();
+		this.setAttributeKeyModel(attributeKeyModel);
 		this.setNameList(nameList);
 		this.setTitleList(titleList);
 		this.setIntro(intro);
+		this.setExperienceTitleModel(experienceTitleModel);
 		this.setExperienceList(experienceList);
-		this.setAfterList(afterList);
+		this.setFuturePlanList(futurePlanList);
 		this.setSkillLanguageList(skillLanguageList);
 		this.setSkillLibraryList(skillLibraryList);
 		this.setSkillFrameworkList(skillFrameworkList);
@@ -115,7 +128,7 @@ public class IntroJSONModel {
 		this.setSkillOtherList(skillOtherList);
 		this.setUrl(url);
 		this.setHobbyList(hobbyList);
-		this.setWord(word);
+		this.setOneLast(oneLast);
 	}
 
 	/**
@@ -127,20 +140,39 @@ public class IntroJSONModel {
 			) {
 		this();
 		if(model != null) {
-			this.nameList.setList(model.getNameList());
-			this.titleList.setList(model.getTitleList());
-			this.intro.setWord(model.getIntro());
-			this.experienceList.setList(model.getExperienceList());
-			this.afterList.setList(model.getAfterList());
-			this.skillLanguageList.setList(model.getSkillLanguageList());
-			this.skillLibraryList.setList(model.getSkillLibraryList());
-			this.skillFrameworkList.setList(model.getSkillFrameworkList());
-			this.skillOSList.setList(model.getSkillOSList());
-			this.skillOtherList.setList(model.getSkillOtherList());
-			this.url.setWord(model.getUrl());
-			this.hobbyList.setList(model.getHobbyList());
-			this.word.setWord(model.getWord());
+			this.setAttributeKeyModel(model.getAttributeKeyModel());
+			this.setNameList(model.getNameList());
+			this.setTitleList(model.getTitleList());
+			this.setIntro(model.getIntro());
+			this.setExperienceTitleModel(model.getExperienceTitleModel());
+			this.setExperienceList(model.getExperienceList());
+			this.setFuturePlanList(model.getFuturePlanList());
+			this.setSkillLanguageList(model.getSkillLanguageList());
+			this.setSkillLibraryList(model.getSkillLibraryList());
+			this.setSkillFrameworkList(model.getSkillFrameworkList());
+			this.setSkillOSList(model.getSkillOSList());
+			this.setSkillToolList(model.getSkillOtherList());
+			this.setUrl(model.getUrl());
+			this.setHobbyList(model.getHobbyList());
+			this.setOneLast(model.getOneLast());
 		}
+	}
+
+	/** 
+	 * 名前リスト取得
+	 * @return {@link AttributeKeyModel}
+	 */
+	public AttributeKeyModel getAttributeKeyModel() {
+		return this.attributeKeyModel;
+	}
+
+	/**
+	 * 名前リスト設定
+	 * @param attributeKeyModel {@link AttributeKeyModel}
+	 */
+	public void setAttributeKeyModel(AttributeKeyModel attributeKeyModel) {
+		if(attributeKeyModel == null)	return ;
+		this.attributeKeyModel.setAttributeKeyModel(attributeKeyModel);
 	}
 
 	/** 
@@ -194,6 +226,23 @@ public class IntroJSONModel {
 		this.intro.setWord(intro);
 	}
 
+	/**
+	 * 経験タイトルモデル取得
+	 * @return {@link ExperienceTitleModel}
+	 */
+	public ExperienceTitleModel getExperienceTitleModel() {
+		return this.experienceTitleModel;
+	}
+
+	/**
+	 * 経験タイトルモデル設定
+	 * @param experienceTitleModel {@link ExperienceTitleModel}
+	 */
+	public void setExperienceTitleModel(ExperienceTitleModel experienceTitleModel) {
+		if (experienceTitleModel == null)	return;
+		this.experienceTitleModel.setExperienceTitleModel(experienceTitleModel);
+	}
+
 	/** 
 	 * 経験リスト取得
 	 * @return {@link ExperienceList}
@@ -215,17 +264,17 @@ public class IntroJSONModel {
 	 * 今後やりたいことリスト取得
 	 * @return {@link WordList}
 	 */
-	public WordList getAfterList() {
-		return this.afterList;
+	public WordList getFuturePlanList() {
+		return this.futurePlanList;
 	}
 
 	/**
 	 * 今後やりたいことリスト設定
-	 * @param afterList {@link WordList}
+	 * @param futurePlanList {@link WordList}
 	 */
-	public void setAfterList(WordList afterList) {
-		if(afterList == null)	return ;
-		this.afterList.setList(afterList);
+	public void setFuturePlanList(WordList futurePlanList) {
+		if(futurePlanList == null)	return ;
+		this.futurePlanList.setList(futurePlanList);
 	}
 
 	/** 
@@ -368,16 +417,16 @@ public class IntroJSONModel {
 	 * 最後に一言取得
 	 * @return {@link NormalWord}
 	 */
-	public NormalWord getWord() {
-		return this.word;
+	public NormalWord getOneLast() {
+		return this.oneLast;
 	}
 
 	/**
 	 * 最後に一言設定
-	 * @param word {@link String}
+	 * @param oneLast {@link String}
 	 */
-	public void setWord(NormalWord word) {
-		if(word == null)	return ;
-		this.word.setWord(word);
+	public void setOneLast(NormalWord oneLast) {
+		if(oneLast == null)	return ;
+		this.oneLast.setWord(oneLast);
 	}
 }

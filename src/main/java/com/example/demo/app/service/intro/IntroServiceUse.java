@@ -21,7 +21,7 @@ public class IntroServiceUse implements IntroService {
 	 * {@link IntroJsonReader} 
 	 */
 	private final IntroJsonReader reader;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param reader {@link IntroJsonReader} 
@@ -30,7 +30,7 @@ public class IntroServiceUse implements IntroService {
 	public IntroServiceUse(IntroJsonReader reader) {
 		this.reader = reader;
 	}
-	
+
 	/**
 	 * 自己紹介データをJSONデータから読取
 	 * @param  path {@link Path}
@@ -40,5 +40,4 @@ public class IntroServiceUse implements IntroService {
 	public IntroJSONModel readerIntroData_byJSON(Path path) {
 		return this.reader.reader(path);
 	}
-
 }

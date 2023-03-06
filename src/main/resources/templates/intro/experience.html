@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <!--
 	【経験.html】
 -->
@@ -9,7 +10,7 @@
 
 	<!-- 経験タイトル -->
 	<h3 th:text="${experTitle}"></h3>
-	
+
 	<!-- 経験リスト -->
 	<div class="h3-after exper-after" th:each="exper, experStat : ${experList}">
 		<!-- 最初から表示する側 -->
@@ -21,55 +22,55 @@
 			<div th:text="${#temporals.format(exper.endTime, 'yyyy年MM月dd日')}"></div>
 			<div th:text="："></div>
 			<!-- 案件名 -->
-			<div th:text="${exper.experience}"></div>
+			<div th:text="${exper.experience.getWord()}"></div>
 		</div>
-		
+
 		<!-- 表示・非表示にする側 -->
 		<div class="exper-detail-after">
 			<!-- チーム人数 -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">チーム人数：</div >
+				<div class="exper-detail-tittle" th:text="${membersumTitle}"></div >
 				<div class="exper-detail-list">
-					<div th:text="${exper.memberSum.getNumber}"></div>
+					<div th:text="${exper.memberSum.getNumber()}"></div>
 					<div>名</div >
 				</div >
 			</div >
-			
+
 			<!-- ポジション -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">ポジション：</div>
-				<div class="exper-detail-list" th:text="${exper.position}"></div>
+				<div class="exper-detail-tittle"  th:text="${positionTitle}"></div>
+				<div class="exper-detail-list" th:text="${exper.position.getWord()}"></div>
 			</div>
-			
+
 			<!-- 概要 -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">概要：</div >
+				<div class="exper-detail-tittle" th:text="${overviewTitle}"></div >
 				<div class="exper-detail-overview-list">
-					<div class="exper-detail-overview-parts" th:text="${exper.overview}"></div>
+					<div class="exper-detail-overview-parts" th:text="${exper.overview.getWord()}"></div>
 				</div >
 			</div >
-			
+
 			<!-- 担当業務リスト -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">担当業務：</div >
+				<div class="exper-detail-tittle"  th:text="${personChargeTitle}"></div >
 				<div class="exper-detail-person-list">
-					<div class="exper-detail-person-parts" th:each="personCharge : ${exper.personChargeList.getList}" th:text="${personCharge}"></div> 
+					<div class="exper-detail-person-parts" th:each="personCharge : ${exper.personChargeList.getList()}" th:text="${personCharge}"></div> 
 				</div >
 			</div >
-			
+
 			<!-- 業務ポイント -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">業務ポイント：</div >	
+				<div class="exper-detail-tittle"  th:text="${workPointTitle}"></div >
 				<div class="exper-detail-workpoint-list">
-					<div class="exper-detail-workpoint-parts" th:text="${exper.workPoint}"></div>
+					<div class="exper-detail-workpoint-parts" th:text="${exper.workPoint.getWord()}"></div>
 				</div>
 			</div>
-			
+
 			<!-- 技術リスト -->
 			<div class="exper-detail-parts">
-				<div class="exper-detail-tittle">技術：</div  >
+				<div class="exper-detail-tittle"  th:text="${techTitle}"></div  >
 				<div class="exper-detail-tech-list">
-					<div class="exper-detail-tech-parts" th:each="tech : ${exper.techList.getList}" th:text="${tech}"></div>
+					<div class="exper-detail-tech-parts" th:each="tech : ${exper.techList.getList()}" th:text="${tech}"></div>
 				</div >
 			</div>
 		</div  >

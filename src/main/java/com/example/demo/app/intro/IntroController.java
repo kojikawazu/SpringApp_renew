@@ -23,6 +23,7 @@ import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
+import com.example.demo.common.word.NormalWord;
 import com.example.demo.json.model.ExperienceModel;
 import com.example.demo.json.model.IntroJSONModel;
 
@@ -34,48 +35,24 @@ import com.example.demo.json.model.IntroJSONModel;
 @Controller
 @RequestMapping(AppConsts.REQUEST_MAPPING_INTRO)
 public class IntroController extends SuperIntroController {
-	
+
+	/** SuccessedのURL */
+	private static final String RETUEN_SUCCESSED_URL 	= AppConsts.URL_INTRO_INDEX;
+	/** HOMEへリダイレクトするURL */
+	private static final String REDIRECT_HOME_URL		= AppConsts. REDIRECT_URL_HOME;
+
 	/** Jsonパス */
 	private static final String JSON_DIR 				= "src/main/resources/static/json";
 	/** 自己紹介ファイル */
 	private static final String INTRO_JSON_FILE 		= "intro.json";
 	/** Jsonパス */
 	private static final String INTRO_JSON_PATH 		= JSON_DIR + "/" + INTRO_JSON_FILE;
-	
-	/** タイトルキーワード(配列) */
-	private static final String[][] ATTRIBUTE_LIST = 
-		{
-			/** 自己紹介タイトル */
-			{"introTitle", 			"intro"},
-			/** 経験タイトル */
-			{"experTitle", 			"experList"},
-			/** 今後やりたいこと */
-			{"afterTitle", 			"afterList"},
-			/** スキル(言語) */
-			{"skillLanguageTitle", 	"skillLanguageList"},
-			/** スキル(ライブラリ) */
-			{"skillLibraryTitle", 	"skillLibraryList"},
-			/** スキル(フレームワーク) */
-			{"skillFrameworkTitle", "skillFrameworkList"},
-			/** スキル(OS) */
-			{"skillOSTitle", 		"skillOSList"},
-			/** スキル(Tool) */
-			{"skillToolTitle", 		"skillToolList"},
-			/** スキル(その他) */
-			{"skillOtherTitle", 	"skillOtherList"},
-			/** URL */
-			{"urlTitle", 			"url"},
-			/** 趣味 */
-			{"hobbyTitle", 			"hobbyList"},
-			/** 最後に一言 */
-			{"wordTitle", 			"word"},
-		};
-	
-	/** タイトル番号 */
+
+	/** attributeリスト番号 */
 	private static enum ATTRIBUTE_LIST_ENUM {
 		A_INTRO, 
 		A_EXPERIENCE, 
-		A_AFTER, 
+		A_FUTURE_PLAN, 
 		A_SKILL_LANGUAGE, 
 		A_SKILL_LIBRARY,
 		A_SKILL_FRAMEWORK,
@@ -84,16 +61,16 @@ public class IntroController extends SuperIntroController {
 		A_SKILL_OTHER,
 		A_URL,
 		A_HOBBY,
-		A_WORK
+		A_ONE_LAST
 	};
-	
-	/** タイトル番号2 */
+
+	/** attribute番号 */
 	private static enum ATTRIBUTE_ENUM  {
 		TITLE, CONT;
 	};
-	
+
 	/** ---------------------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 * @param introService		{@link IntroService}
@@ -118,7 +95,7 @@ public class IntroController extends SuperIntroController {
 				httpSession,
 				logMessage);
 	}
-	
+
 	/**
 	 * index
 	 * @param  detailUser	{@link SecLoginUserDetails}
@@ -137,65 +114,57 @@ public class IntroController extends SuperIntroController {
 			Model											model) {
 		/** Cookieの設定 */
 		this.getHeaderController().setCookie(detailUser, request, response);
-		
+
+		/** jsonデータの読み込み */
 		IntroJSONModel jsonModel = this.getIntroService().readerIntroData_byJSON(
-				Paths.get(INTRO_JSON_PATH));
-		
-		/** タイトル */
-		List<String> titleList = jsonModel.getTitleList().getList();
-		
+									Paths.get(INTRO_JSON_PATH));
+		if (jsonModel == null) {
+			// jsonデータの読み込みに失敗した為、homeへリダイレクト
+			return REDIRECT_HOME_URL;
+		}
+
 		/** 名前 */
 		this.setNameAttribute(jsonModel, model);
-		
 		/** 紹介文 */
-		this.setIntroAttribute(jsonModel, titleList, model);
-		
+		this.setIntroAttribute(jsonModel, model);
+		/** 経験タイトル */
+		this.setExperienceTitleAttribute(jsonModel, model);
 		/** 経験 */
-		this.setExperienceAttribute(jsonModel, titleList, model);
-		
+		this.setExperienceAttribute(jsonModel,  model);
 		/** 今後やりたいこと */
-		this.setAfterAttribute(jsonModel, titleList, model);
-		
+		this.setFuturePlanAttribute(jsonModel,  model);
 		/** スキル言語 */
-		this.setSkillLanguageAttribute(jsonModel, titleList, model);
-		
+		this.setSkillLanguageAttribute(jsonModel,  model);
 		/** スキルライブラリ */
-		this.setSkillLibraryAttribute(jsonModel, titleList, model);
-		
+		this.setSkillLibraryAttribute(jsonModel,  model);
 		/** スキルフレームワーク */
-		this.setSkillFrameworkAttribute(jsonModel, titleList, model);
-		
+		this.setSkillFrameworkAttribute(jsonModel,  model);
 		/** スキルOS */
-		this.setSkillOSAttribute(jsonModel, titleList, model);
-		
+		this.setSkillOSAttribute(jsonModel,  model);
 		/** スキルTool */
-		this.setSkillToolAttribute(jsonModel, titleList, model);
-		
+		this.setSkillToolAttribute(jsonModel, model);
 		/** スキルその他 */
-		this.setSkillOtherAttribute(jsonModel, titleList, model);
-		
+		this.setSkillOtherAttribute(jsonModel, model);
 		/** URL */
-		this.setURLAttribute(jsonModel, titleList, model);
-		
+		this.setURLAttribute(jsonModel, model);
 		/** 趣味 */
-		this.setHobbyAttribute(jsonModel, titleList, model);
-		
+		this.setHobbyAttribute(jsonModel, model);
 		/** 最後に一言 */
-		this.setWordAttribute(jsonModel, titleList, model);
-		
+		this.setOneLastAttribute(jsonModel, model);
 		/** ヘッダーの設定 */
 		this.getHeaderController().setHeader(detailUser, request, headerForm, model);
-		
-		return AppConsts.URL_INTRO_INDEX;
+
+		return RETUEN_SUCCESSED_URL;
 	}
-	
+
 	/**
 	 * タイトルattribute設定
-	 * @param jsonModel
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
 	private void setNameAttribute(IntroJSONModel jsonModel, Model model) {
 		List<String> nameList = jsonModel.getNameList().getList();
+
 		model.addAttribute(
 				WebConsts.ATTRIBUTE_TITLE, 
 				nameList.get(ATTRIBUTE_ENUM.TITLE.ordinal()));
@@ -203,185 +172,251 @@ public class IntroController extends SuperIntroController {
 				WebConsts.ATTRIBUTE_CONT,  
 				nameList.get(ATTRIBUTE_ENUM.CONT.ordinal()));
 	}
-	
+
 	/**
 	 * 紹介文attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setIntroAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setIntroAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_INTRO.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
+				bodyKeyList.get(index),
 				jsonModel.getIntro().getWord());
 	}
-	
+
+	/**
+	 * 経験タイトルattribute設定
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
+	 */
+	private void setExperienceTitleAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> experTittleKeyList      = jsonModel.getExperienceTitleModel().getExperienceTitleKeyList().getList();
+		List<String> experTitleBodyList      = jsonModel.getExperienceTitleModel().getExperienceTitleBodyList().getList();
+		int index = 0;
+
+		for (String experTittleKey : experTittleKeyList) {
+			model.addAttribute(experTittleKey, experTitleBodyList.get(index) + " :");
+			index++;
+		}
+	}
+
 	/**
 	 * 経験attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setExperienceAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setExperienceAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal();
 		List<ExperienceModel> experList = jsonModel.getExperienceList().getList();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_EXPERIENCE.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],  
+				bodyKeyList.get(index),
 				experList);
 	}
-	
+
 	/**
 	 * 今後やりたいことattribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setAfterAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setFuturePlanAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_FUTURE_PLAN.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_AFTER.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
-				jsonModel.getAfterList().getList());
+				bodyKeyList.get(index),
+				jsonModel.getFuturePlanList().getList());
 	}
-	
+
 	/**
 	 * 言語attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillLanguageAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillLanguageAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_LANGUAGE.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],  
+				bodyKeyList.get(index),
 				jsonModel.getSkillLanguageList());
 	}
-	
+
 	/**
 	 * ライブラリatttribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillLibraryAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillLibraryAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_LIBRARY.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
+				bodyKeyList.get(index),
 				jsonModel.getSkillLibraryList());
 	}
-	
+
 	/**
 	 * フレームワークattribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillFrameworkAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillFrameworkAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_FRAMEWORK.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
+				bodyKeyList.get(index),
 				jsonModel.getSkillFrameworkList());
 	}
-	
+
 	/**
 	 * OSattribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillOSAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillOSAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_OS.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_OS.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_OS.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_OS.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
+				bodyKeyList.get(index),
 				jsonModel.getSkillOSList());
 	}
-	
+
 	/**
 	 * Toolattribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillToolAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillToolAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_TOOL.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_TOOL.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_TOOL.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_TOOL.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()],
+				bodyKeyList.get(index),
 				jsonModel.getSkillToolList());
 	}
-	
+
 	/**
 	 * その他attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setSkillOtherAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setSkillOtherAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_SKILL_OTHER.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
+				bodyKeyList.get(index),
 				jsonModel.getSkillOtherList());
 	}
-	
+
 	/**
 	 * URLattribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setURLAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setURLAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		NormalWord   url			= jsonModel.getUrl();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_URL.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_URL.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_URL.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_URL.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
-				jsonModel.getUrl().getWord());
+				bodyKeyList.get(index),
+				url.getWord());
 	}
-	
+
 	/**
 	 * 趣味attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model		{@link Model}
 	 */
-	private void setHobbyAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setHobbyAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_HOBBY.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_HOBBY.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_HOBBY.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_HOBBY.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
+				bodyKeyList.get(index),
 				jsonModel.getHobbyList());
 	}
-	
+
 	/**
 	 * 最後に一言attribute設定
-	 * @param jsonModel
-	 * @param titleList
-	 * @param model
+	 * @param jsonModel {@link IntroJSONModel}
+	 * @param model     {@link Model}
 	 */
-	private void setWordAttribute(IntroJSONModel jsonModel, List<String> titleList, Model model) {
+	private void setOneLastAttribute(IntroJSONModel jsonModel, Model model) {
+		List<String> titleKeyList 	= jsonModel.getAttributeKeyModel().getTitleKeyList().getList();
+		List<String> bodyKeyList  	= jsonModel.getAttributeKeyModel().getBodyKeyList().getList();
+		List<String> titleList 		= jsonModel.getTitleList().getList();
+		NormalWord   oneLast		= jsonModel.getOneLast();
+		int          index			= ATTRIBUTE_LIST_ENUM.A_ONE_LAST.ordinal();
+
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_WORK.ordinal()][ATTRIBUTE_ENUM.TITLE.ordinal()], 
-				titleList.get(ATTRIBUTE_LIST_ENUM.A_WORK.ordinal()));
+				titleKeyList.get(index),
+				titleList.get(index));
 		model.addAttribute(
-				ATTRIBUTE_LIST[ATTRIBUTE_LIST_ENUM.A_WORK.ordinal()][ATTRIBUTE_ENUM.CONT.ordinal()], 
-				jsonModel.getWord().getWord());
+				bodyKeyList.get(index),
+				oneLast.getWord());
 	}
 }
