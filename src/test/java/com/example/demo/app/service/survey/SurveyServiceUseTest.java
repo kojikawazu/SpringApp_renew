@@ -92,6 +92,8 @@ class SurveyServiceUseTest {
 				TestConsts.TEST_TIME_01);
 	}
 	
+	/** ------------------------------------------------------------------------------------------------------------- */
+	
 	/**
 	 * 更新テストの準備
 	 */
@@ -133,7 +135,7 @@ class SurveyServiceUseTest {
 	@Test
 	public void UpdateTest() {
 		InitUpdate();
-		
+
 		assertDoesNotThrow(
 			() -> this.service.update(new SurveyModel(
 					new SurveyId(1),
@@ -154,7 +156,7 @@ class SurveyServiceUseTest {
 	@Test
 	public void UpdateTest_Error() {
 		InitUpdate();
-				
+
 		assertThrows(RuntimeException.class,
 			() -> this.service.update(new SurveyModel(
 					new SurveyId(2),

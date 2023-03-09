@@ -13,20 +13,26 @@ public interface LoginService {
 	 * @return {@link LoginId}
 	 */
 	LoginId save_returnId(LoginModel model);
-	
+
 	/**
 	 * ログイン情報の更新日付更新
 	 * @param loginId ログインID
 	 */
 	void updateTime(LoginId loginId);
-	
+
 	/**
 	 * 削除
 	 * @param  userId {@link UserId}
 	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
 	 */
 	void delete(UserId userId);
-	
+
+	/**
+	 * 全削除
+	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
+	 */
+	void deleteAll();
+
 	/**
 	 * 選択
 	 * @param  userId {@link UserId}
@@ -34,7 +40,7 @@ public interface LoginService {
 	 * @return {@link LoginModel}
 	 */
 	LoginModel select(UserId userId);
-	
+
 	/**
 	 * IDは存在する？
 	 * @param  targetID {@link UserId}

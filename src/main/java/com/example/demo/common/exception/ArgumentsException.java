@@ -1,15 +1,15 @@
 package com.example.demo.common.exception;
 
 /**
- * SQL更新エラーexception
+ * 引数エラーexception
  * @author nanai
  *
  */
-public class SQLNoUpdateException extends RuntimeException {
+public class ArgumentsException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-
-	public SQLNoUpdateException(String message) {
+	
+	public ArgumentsException(String message) {
 		super(message);
 	}
 }
