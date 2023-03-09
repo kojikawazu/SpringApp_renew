@@ -151,6 +151,7 @@ public class IntroController extends SuperIntroController {
 		this.setHobbyAttribute(jsonModel, model);
 		/** 最後に一言 */
 		this.setOneLastAttribute(jsonModel, model);
+
 		/** ヘッダーの設定 */
 		this.getHeaderController().setHeader(detailUser, request, headerForm, model);
 

@@ -17,34 +17,38 @@ public interface LoginDao {
 	 * @return {@link LoginId}
 	 */
 	LoginId insert_returnId(LoginModel model);
-	
+
 	/**
 	 * ログイン情報の更新日付更新
-	 * @param  loginId ログインID
+	 * @param  loginId {@link LoginId} ログインID
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	int updateTime(LoginId loginId);
-	
+
 	/**
 	 * ユーザIDによる削除
 	 * @param  userId {@link UserId}
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	int delete_byUserId(UserId userId);
-	
-	
+
+	/**
+	 * 全削除
+	 * @return 0以下 失敗 それ以外 成功
+	 */
+	int deleteAll();
+
 	/**
 	 * 選択
 	 * @param  userId {@link UserId}
 	 * @return {@link LoginModel}
 	 */
 	LoginModel select(UserId userId);
-	
+
 	/**
 	 * IDは存在する？
 	 * @param id {@link UserId}
 	 * @return true 存在する false 存在しない
 	 */
 	boolean isSelect_byUserId(UserId targetID);
-	
 }

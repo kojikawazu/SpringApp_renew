@@ -35,9 +35,9 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Autowired
 	private final SecUserDaoSql dao;
-	
+
 	/** ----------------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 * @param dao {@link SecUserDaoSql}
@@ -45,9 +45,9 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	public SecurityUserServiceUse(SecUserDaoSql dao) {
 		this.dao = dao;
 	}
-	
+
 	/** ----------------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * 保存
 	 * @param model {@link SecUserModel}
@@ -99,14 +99,14 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	@Override
 	public SecUserModel select(UserId id) {
 		SecUserModel model = this.dao.select(id);
-		
+	
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return model;
 	}
-	
+
 	/**
 	 * Eメールによる選択
 	 * @param  email 	{@link EmailWord}
@@ -116,14 +116,14 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	@Override
 	public SecUserModel select(EmailWord email) {
 		SecUserModel model = this.dao.select(email);
-		
+
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return model;
 	}
-	
+
 	/**
 	 * Eメール、パスワードによる選択
 	 * @param  email 	{@link EmailWord}
@@ -134,11 +134,11 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	@Override
 	public SecUserModel select(EmailWord email, PasswdWord password) {
 		SecUserModel model = this.dao.select(email, password);
-		
+
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return model;
 	}
 
@@ -153,7 +153,7 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	}
 
 	/** ----------------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * 入力文字からセキュリティユーザーモデルの取得
 	 * @param  username
@@ -164,7 +164,7 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		SecUserModel model = this.dao.select(new EmailWord(username));
 		Optional<SecUserModel> optional = Optional.ofNullable(model);
-		
+
 		return optional.map(secLoginUserModel -> new SecLoginUserDetails(model))
 				.orElseThrow(() -> new UsernameNotFoundException("not found"));
 	}

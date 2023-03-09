@@ -14,28 +14,28 @@ public interface SuperDao<T, S> {
 	 * @param model
 	 */
 	void insert(T model);
-	
+
 	/**
 	 * 更新
 	 * @param model
 	 * @return 0以下 失敗 それ以外 成功 
 	 */
 	int update(T model);
-	
+
 	/**
 	 * 削除
 	 * @param  id
 	 * @return 0以下 失敗 それ以外 成功 
 	 */
 	int delete(S id);
-	
+
 	/**
 	 * 全選択
 	 * @param <T>
 	 * @return <T>リスト
 	 */
 	List<T> getAll();
-	
+
 	/**
 	 * IDによる選択
 	 * @param <T>
@@ -44,7 +44,7 @@ public interface SuperDao<T, S> {
 	 * @return
 	 */
 	T select(S id);
-	
+
 	/**
 	 * IDは存在する？
 	 * @param id

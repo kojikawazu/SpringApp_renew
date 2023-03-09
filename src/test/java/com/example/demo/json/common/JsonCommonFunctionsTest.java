@@ -60,7 +60,7 @@ class JsonCommonFunctionsTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@BeforeEach
 	void initEach() {
 		
@@ -391,6 +391,4 @@ class JsonCommonFunctionsTest {
 		headerList.getList().clear();
 		testList.getList().clear();
 	}
-	
-	
 }

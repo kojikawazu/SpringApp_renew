@@ -15,14 +15,14 @@ public interface SecUserDao {
 	 * Eメール、パスワードによる選択
 	 * @param  email	{@link EmailWord}
 	 * @param  password	{@link PasswdWord}
-	 * @return {@link SecUserModel}
+	 * @return 			{@link SecUserModel}
 	 */
 	SecUserModel select(EmailWord email, PasswdWord password);
 
 	/**
 	 * Eメールによる選択
 	 * @param  email	{@link EmailWord}
-	 * @return {@link SecUserModel}
+	 * @return 			{@link SecUserModel}
 	 */
 	SecUserModel select(EmailWord email);
 }
