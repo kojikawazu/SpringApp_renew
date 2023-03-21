@@ -1,31 +1,38 @@
 package com.example.demo.app.common.id.user;
 
-import com.example.demo.common.id.SuperId;
+import com.example.demo.common.id.NormalId;
 
 /**
  * ユーザー種別クラス
+ * <br>
+ * extends {@link NormalId}
  * @author nanai
  *
  */
-public class UserKindId implements SuperId {
+public class UserKindId extends NormalId {
 
-	/** ID */
-	private int id;
-	
+	/**
+	 * コンストラクタ
+	 */
+	public UserKindId() {
+		super();
+	}
+
 	/**
 	 * コンストラクタ
 	 * @param id
 	 */
 	public UserKindId(int id) {
+		super();
 		this.id = id;
 	}
 
 	/**
-	 * getter
-	 * @return id
+	 * setter
+	 * @param id {@link UserKindId}
 	 */
-	@Override
-	public int getId() {
-		return this.id;
+	public void setId(UserKindId id) {
+		if (id == null)	return;
+		this.id = id.getId();
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.demo.app.service.security;
+package com.example.demo.app.service.user;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,23 +11,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.app.common.id.user.UserId;
-import com.example.demo.app.dao.security.SecUserDaoSql;
-import com.example.demo.app.entity.security.SecLoginUserDetails;
+import com.example.demo.app.dao.user.SecUserDaoSql;
+import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.app.service.SuperService;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.PasswdWord;
 
 /**
  * セキュリティユーザーサービスクラス
+ * <br>
+ * implements 	{@link UserDetailsService}<br>
+ * 				{@link SuperService}<{@link SecUserModel}, {@link UserId}><br>
+ * 				{@link SecUserService}
  * @author nanai
  *
  */
 @Component
 @Service
-public class SecurityUserServiceUse implements UserDetailsService, SuperService<SecUserModel, UserId>, SecurityUserService {
+public class SecUserServiceUse implements UserDetailsService, SuperService<SecUserModel, UserId>, SecUserService {
 
 	/** 
 	 * Daoクラス
@@ -36,14 +41,21 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	@Autowired
 	private final SecUserDaoSql dao;
 
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter;
+
 	/** ----------------------------------------------------------------------------------------------- */
 
 	/**
 	 * コンストラクタ
 	 * @param dao {@link SecUserDaoSql}
 	 */
-	public SecurityUserServiceUse(SecUserDaoSql dao) {
-		this.dao = dao;
+	public SecUserServiceUse(SecUserDaoSql dao) {
+		this.dao 		= dao;
+		this.logWriter	= IntroAppLogWriter.getInstance();
 	}
 
 	/** ----------------------------------------------------------------------------------------------- */
@@ -54,8 +66,14 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public void save(SecUserModel model) {
-		this.dao.insert(model);
+		try {
+			this.dao.insert(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+		}
 	}
+
+	/** ----------------------------------------------------------------------------------------------- */
 
 	/**
 	 * 更新
@@ -64,10 +82,21 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public void update(SecUserModel model) {
-		if (this.dao.update(model) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.update(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_UPDATE();
+		}
+
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
+
+	/** ----------------------------------------------------------------------------------------------- */
 
 	/**
 	 * 削除
@@ -76,10 +105,21 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public void delete(UserId id) {
-		if (this.dao.delete(id) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.delete(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_DELETE();
+		}
+
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
+
+	/** ----------------------------------------------------------------------------------------------- */
 
 	/**
 	 * 全て選択
@@ -98,8 +138,16 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public SecUserModel select(UserId id) {
-		SecUserModel model = this.dao.select(id);
-	
+		if (id == null)	throw WebMvcConfig.NOT_FOUND();
+		SecUserModel model = null;
+
+		try {
+			model = this.dao.select(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
+
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
@@ -115,7 +163,15 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public SecUserModel select(EmailWord email) {
-		SecUserModel model = this.dao.select(email);
+		if (email == null) throw WebMvcConfig.NOT_FOUND();
+		SecUserModel model = null;
+
+		try {
+			model = this.dao.select(email);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
@@ -133,7 +189,15 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public SecUserModel select(EmailWord email, PasswdWord password) {
-		SecUserModel model = this.dao.select(email, password);
+		if (email == null || password == null)	throw WebMvcConfig.NOT_FOUND();
+		SecUserModel model = null;
+
+		try {
+			model = this.dao.select(email, password);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
@@ -162,10 +226,12 @@ public class SecurityUserServiceUse implements UserDetailsService, SuperService<
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		if (username == null) throw new UsernameNotFoundException("ユーザーが存在しません");
+
 		SecUserModel model = this.dao.select(new EmailWord(username));
 		Optional<SecUserModel> optional = Optional.ofNullable(model);
 
 		return optional.map(secLoginUserModel -> new SecLoginUserDetails(model))
-				.orElseThrow(() -> new UsernameNotFoundException("not found"));
+				.orElseThrow(() -> new UsernameNotFoundException("ユーザーが一致しません"));
 	}
 }

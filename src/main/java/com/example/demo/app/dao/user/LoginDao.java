@@ -47,7 +47,7 @@ public interface LoginDao {
 
 	/**
 	 * IDは存在する？
-	 * @param id {@link UserId}
+	 * @param targetID {@link UserId}
 	 * @return true 存在する false 存在しない
 	 */
 	boolean isSelect_byUserId(UserId targetID);

@@ -1,4 +1,4 @@
-package com.example.demo.app.dao.security;
+package com.example.demo.app.dao.user;
 
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -15,13 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.user.SecUserModel;
+import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 import com.example.demo.common.word.EmailWord;
 import com.example.demo.common.word.NameWord;
 import com.example.demo.common.word.PasswdWord;
 
 /**
  * セキュリティユーザーDaoクラス
+ * <br>
+ * implements {@link SuperDao}<{@link SecUserModel}, {@link UserId}><br>
+ *            {@link SecUserDao}
  * @author nanai
  *
  */
@@ -49,17 +54,23 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	private final String PARAM_ROLE_NAME	= WebConsts.SQL_ROLE_NAME;
 	private final String PARAM_ROLE_ID		= WebConsts.SQL_ROLE_ID;
 	private final String PARAM_USER_ID		= WebConsts.SQL_USER_ID_NAME;
-	
+
 	/** ------------------------------------------------------------------------- */
-	
+
 	/** 
 	 * Jdbcドライバー
 	 * {@link JdbcTemplate} 
 	 */
 	private final JdbcTemplate jdbcTemp;
-	
+
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter;
+
 	/** ------------------------------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 * @param jdbcTemp	{@link JdbcTemplate}
@@ -67,16 +78,20 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	public SecUserDaoSql(
 			JdbcTemplate	jdbcTemp) {
 		this.jdbcTemp	= jdbcTemp;
+		this.logWriter	= IntroAppLogWriter.getInstance();
 	}
-	
+
+	/** ------------------------------------------------------------------------- */
+
 	/**
 	 * 追加
 	 * @param model {@link SecUserModel}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 */
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void insert(SecUserModel model) {
-		if (model == null)	return ;
+		if (model == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		String sql = WebConsts.SQL_INSERT + " " 
 				+ DB_NAME 
 				+ "("
@@ -87,62 +102,79 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ PARAM_UPDATED 
 				+ ") "
 				+ WebConsts.SQL_VALUES + "(?,?,?,?,?)";
-		try {
+
+		synchronized (SecUserModel.class) {
 			this.jdbcTemp.update(
-					sql,
-					model.getName(),
-					model.getEmail(),
-					model.getPassword(),
-					model.getCreated(),
-					model.getUpdated()
-					);
-		} catch(Exception ex) {
-			ex.printStackTrace();
+				sql,
+				model.getName(),
+				model.getEmail(),
+				model.getPassword(),
+				model.getCreated(),
+				model.getUpdated()
+			);
 		}
 	}
+
+	/** ------------------------------------------------------------------------- */
 
 	/**
 	 * 更新
 	 * @param  model {@link SecUserModel}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 * @return 0以下 失敗 それ以外 成功 
 	 */
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public int update(SecUserModel model) {
-		if (model == null)	return WebConsts.ERROR_NUMBER;
+		if (model == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		String sql = WebConsts.SQL_UPDATE + " " + DB_NAME + " " + WebConsts.SQL_SET + " "
 				+ PARAM_NAME		+ " = ?, "
 				+ PARAM_EMAIL		+ " = ?, "
 				+ PARAM_PASSWORD	+ " = ?, "
 				+ PARAM_UPDATED 	+ " = ? "
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
-		
-		return this.jdbcTemp.update(
-					sql,
-					model.getName(),
-					model.getEmail(),
-					model.getPassword(),
-					model.getUpdated(),
-					model.getId()
-				);
+		int result = 0;
+
+		synchronized (SecUserModel.class) {
+			result = this.jdbcTemp.update(
+				sql,
+				model.getName(),
+				model.getEmail(),
+				model.getPassword(),
+				model.getUpdated(),
+				model.getId().getId()
+			);
+		}
+
+		return result;
 	}
+
+	/** ------------------------------------------------------------------------- */
 
 	/**
 	 * 削除
 	 * @param  id {@link UserId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public int delete(UserId id) {
-		if (id == null)	return WebConsts.ERROR_NUMBER;
+		if (id == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
-		
-		return this.jdbcTemp.update(
-				sql, 
-				id.getId());
+		int result = 0;
+
+		synchronized (SecUserModel.class) {
+			result = this.jdbcTemp.update(
+					sql, 
+					id.getId());
+		}
+
+		return result;
 	}
+
+	/** ------------------------------------------------------------------------- */
 
 	/**
 	 * 全選択
@@ -164,16 +196,15 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ WebConsts.SQL_JOIN + " " + DB_ROLE_NAME + " "
 				+ WebConsts.SQL_ON   + " " + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID;
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
-		
+
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
-			
 			list = this.setSecUserModelList(resultList);
 		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 		}
-		
+
 		return list;
 	}
 
@@ -185,7 +216,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Override
 	public SecUserModel select(UserId id) {
 		if (id == null)	return null;
-		
+
 		SecUserModel model = null;
 		String sql = WebConsts.SQL_SELECT + " "
 				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
@@ -202,21 +233,23 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ WebConsts.SQL_ON   + " "  + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
 				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_ID + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
-		
+
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(
 					sql,
 					id.getId());
-			
+
 			list = this.setSecUserModelList(resultList);
+			if (list.size() == 0)	return null;
+
 			model = list.get(0);
 			list.clear();
 		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 			model = null;
 		}
-		
+
 		return model;
 	}
 	
@@ -228,7 +261,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Override
 	public SecUserModel select(EmailWord email) {
 		if (email == null)	return null;
-		
+
 		SecUserModel model = null;
 		String sql = WebConsts.SQL_SELECT + " "
 				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
@@ -245,21 +278,23 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ WebConsts.SQL_ON   + " "  + DB_USER_ROLE_NAME + "." + PARAM_ROLE_ID + " = " + DB_ROLE_NAME + "." + PARAM_ID + " "
 				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_EMAIL + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
-		
+
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(
 					sql,
 					email.getWord());
-			
+
 			list = this.setSecUserModelList(resultList);
+			if (list.size() == 0)	return null;
+
 			model = list.get(0);
 			list.clear();
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 			model = null;
 		}
-		
+
 		return model;
 	}
 	
@@ -272,7 +307,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	@Override
 	public SecUserModel select(EmailWord email, PasswdWord password) {
 		if (email == null || password == null)	return null;
-		
+
 		SecUserModel model = null;
 		String sql = WebConsts.SQL_SELECT + " "
 				+ DB_NAME + "." + PARAM_ID			+ " " + WebConsts.SQL_AS + " " + PARAM_ID       + ", "
@@ -290,22 +325,24 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+ WebConsts.SQL_WHERE + " " + DB_NAME + "." + PARAM_EMAIL    + " = ? and "
 				+                             DB_NAME + "." + PARAM_PASSWORD + " = ?";
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
-		
+
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(
 					sql,
 					email.getWord(),
 					password.getWord());
-			
+
 			list = this.setSecUserModelList(resultList);
+			if (list.size() == 0)	return null;
+
 			model = list.get(0);
 			list.clear();
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 			model = null;
 		}
-		
+
 		return model;
 	}
 
@@ -319,7 +356,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + " "
 				+    WebConsts.SQL_FROM   + " " + DB_NAME  + " "
 				+    WebConsts.SQL_WHERE  + " " + PARAM_ID + " = ?";
-		
+
 		boolean isTrue = true;
 		try {
 			isTrue = jdbcTemp.query(sql, 
@@ -330,9 +367,10 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				}
 			);
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			this.logWriter.error(ex.getMessage());
 			isTrue = false;
 		}
+
 		return isTrue;
 	}
 
@@ -343,24 +381,25 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	 * @param  resultList				{@link List}({@link Map}({@link String}, {@link Object}))
 	 * @return セキュリティユーザーモデルリスト 	{@link List}({@link SecUserModel})
 	 */
-	private List<SecUserModel> setSecUserModelList(List<Map<String, Object>> resultList){
+	private List<SecUserModel> setSecUserModelList(List<Map<String, Object>> resultList) {
 		List<SecUserModel> list = new ArrayList<SecUserModel>();
-		
+		if (resultList == null)	return list;
+
 		for (int idx=0, len=resultList.size(); idx<len; idx++) {
 			Map<String, Object> result 	= resultList.get(idx);
 			SecUserModel 		model 	= this.makeSecUserModel(result);
 			if (model == null)		continue;
 			list.add(model);
-			
+
 			String role = this.makeRole(result);
 			if (role.equals(""))	continue;
-			
-			List<String> roleList = model.getRoleList();
+
+			List<String> roleList = model.getRoleList().getList();
 			roleList.add(role);
 			int skipCnt = this.setRoleList(resultList, idx, model);
 			idx += skipCnt;
 		}
-		
+
 		return list;
 	}
 	
@@ -375,27 +414,29 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 			List<Map<String, Object>> resultList,
 			int                       idx,
 			SecUserModel             model) {
-		List<String> 	roleList 	= model.getRoleList();
-		int				userMainId	= model.getId();
+		if (resultList == null || model == null) return 0;
+
+		List<String> 	roleList 	= model.getRoleList().getList();
+		int				userMainId	= model.getId().getId();
 		int				skipCnt		= 0;
-		
+
 		for (int roleIdx=1, len=resultList.size(); idx+roleIdx<len; roleIdx++) {
 			Map<String, Object>	resultRole	= resultList.get(idx+roleIdx);
 			int					userDiffId	= (int)resultRole.get(WebConsts.SQL_ID_NAME);
-			
+
 			// 違うIDだったら終了
 			if (userMainId != userDiffId)	break;
-			
+
 			String role	= this.makeRole(resultRole);
 			// ロールなかったら終了
 			if (role.equals(""))			break;
 			roleList.add(role);
 			skipCnt++;
 		}
-		
+
 		return skipCnt;
 	}
-	
+
 	/**
 	 * モデル生成
 	 * @param  result マップ	{@link Map}({@link String}, {@link Object})
@@ -404,9 +445,8 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	private SecUserModel makeSecUserModel(Map<String, Object> result) {
 		if (result == null)	return null;
 		SecUserModel model = null;
-		
+
 		try {
-			
 			model = new SecUserModel(
 				new UserId((int)result.get(
 						WebConsts.SQL_ID_NAME)),
@@ -421,14 +461,14 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				((Timestamp)result.get(
 						WebConsts.SQL_UPDATED_NAME)).toLocalDateTime()
 				);
-			
 		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			model = null;
 		}
-		
+
 		return model;
 	}
-	
+
 	/**
 	 * ロール生成
 	 * @param  result マップ	{@link Map}({@link String}, {@link Object})
@@ -437,15 +477,17 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	private String makeRole(Map<String, Object> result) {
 		if (result == null)	return "";
 		String roleWord = "";
-		
+
 		try {
 			roleWord = (String)result.get(
 					WebConsts.SQL_ROLE_NAME);
+
+			if(roleWord == null)	roleWord = "";
 		} catch(NullPointerException ex) {
+			this.logWriter.error(ex.getMessage());
 			roleWord = "";
 		}
-		
+
 		return roleWord;
 	}
-
 }

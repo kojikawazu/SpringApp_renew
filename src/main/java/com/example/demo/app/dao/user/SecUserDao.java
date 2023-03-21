@@ -1,4 +1,4 @@
-package com.example.demo.app.dao.security;
+package com.example.demo.app.dao.user;
 
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.common.word.EmailWord;

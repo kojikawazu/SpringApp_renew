@@ -5,6 +5,11 @@ import com.example.demo.app.common.id.user.UserId;
 import com.example.demo.app.entity.user.LoginModel;
 import com.example.demo.app.exception.WebMvcConfig;
 
+/**
+ * ログインサービスインターフェース
+ * @author nanai
+ *
+ */
 public interface LoginService {
 
 	/**
@@ -16,7 +21,7 @@ public interface LoginService {
 
 	/**
 	 * ログイン情報の更新日付更新
-	 * @param loginId ログインID
+	 * @param loginId ログインID {@link LoginId}
 	 */
 	void updateTime(LoginId loginId);
 

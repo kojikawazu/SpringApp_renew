@@ -3,8 +3,8 @@ package com.example.demo.app.home;
 import javax.servlet.http.HttpSession;
 
 import com.example.demo.app.header.controller.HeaderController;
-import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
+import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.log.LogMessage;
 
@@ -28,14 +28,14 @@ public class SuperHomeController {
 
 	/**
 	 * コンストラクタ
-	 * @param secUserService	{@link SecurityUserServiceUse}
+	 * @param secUserService	{@link SecUserServiceUse}
 	 * @param loginService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
 	 * @param logMessage		{@link LogMessage}
 	 */
 	public SuperHomeController(
-			SecurityUserServiceUse	secUserService,
+			SecUserServiceUse	secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,

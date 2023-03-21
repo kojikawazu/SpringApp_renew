@@ -30,13 +30,13 @@ public class SecurityConfig {
 
 	/**
 	 * セキュリティ
-	 * @param http
-	 * @return
+	 * @param http {@link HttpSecurity}
+	 * @return {@link SecurityFilterChain}
 	 * @throws Exception
 	 */
 	@Bean
 	public SecurityFilterChain securityFilerChain(HttpSecurity http) throws Exception {
-		
+
 		http.formLogin(login -> login
 				// ログインの設定記述開始
 				// -----------------------------------------------------------
@@ -79,21 +79,21 @@ public class SecurityConfig {
                 // -----------------------------------------------------------
                 // /generalはROLE_GENERALのみアクセス可能
                 .mvcMatchers("/general")
-                	.hasRole("GENERAL")
+                	.hasRole(AppConsts.ROLE_GENERAL)
                 // -----------------------------------------------------------
                 // /adminはROLE_ADMINのみアクセス可能
                 .mvcMatchers("/admin")
-                	.hasRole("ADMIN")
+                	.hasRole(AppConsts.ROLE_ADMIN)
                 // -----------------------------------------------------------
                 // 他のURLはログイン後のみアクセス可能
                 .anyRequest().authenticated()
 		);
-		
+
 		return http.build();
 	}
-	
+
 	/** -------------------------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * 認証設定の内部クラス
 	 * extends {@link GlobalAuthenticationConfigurerAdapter}
@@ -116,9 +116,9 @@ public class SecurityConfig {
         	auth.authenticationProvider(authenticationProvider);
         }
     }
-	
+
 	/** -------------------------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * ログイン成功ハンドラークラスBean登録
 	 * @return {@link AuthenticationSuccessHandler}
@@ -127,7 +127,7 @@ public class SecurityConfig {
 	public AuthenticationSuccessHandler loginSuccessHandler() {
 	    return new CustomAuthenticationSuccessHandler();
 	}
-	
+
 	/**
 	 * ログイン失敗ハンドラークラスBean登録
 	 * @return {@link AuthenticationFailureHandler}
@@ -136,7 +136,7 @@ public class SecurityConfig {
 	public AuthenticationFailureHandler loginFailureHandler() {
 		return new CustomAuthenticationFailureHandler();
 	}
-	
+
 	/**
 	 * ログアウトハンドラークラスBean登録
 	 * @return {@link LogoutSuccessHandler}
@@ -145,7 +145,7 @@ public class SecurityConfig {
 	public LogoutSuccessHandler logoutSuccessHandler() {
 		return new CustomLogoutSuccessHandler();
 	}
-	
+
 	/**
 	 * パスワード暗号化Bean登録
 	 * @return {@link PasswordEncoder}
@@ -154,6 +154,6 @@ public class SecurityConfig {
 	 public PasswordEncoder passwordEncoder() {
 		 return new BCryptPasswordEncoder();
 	 }
-	 
+
 	 /** -------------------------------------------------------------------------------------------------------- */
 }

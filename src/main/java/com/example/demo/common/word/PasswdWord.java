@@ -2,28 +2,34 @@ package com.example.demo.common.word;
 
 /**
  * パスワード文字列クラス
+ * <br>
+ * extends {@link NameWord}
  * @author nanai
  *
  */
-public class PasswdWord implements SuperWord {
-
-	/** 文字列保持 */
-	private String word;
+public class PasswdWord extends NameWord {
 
 	/**
 	 * コンストラクタ
-	 * @param word
+	 */
+	public PasswdWord() {
+		super();
+	}
+
+	/**
+	 * コンストラクタ
+	 * @param word {@link String}
 	 */
 	public PasswdWord(String word) {
 		this.word = word;
 	}
 
 	/**
-	 * getter
-	 * @return 文字列
+	 * setter
+	 * @param passwdWord {@link PasswdWord}
 	 */
-	@Override
-	public String getWord() {
-		return this.word;
+	public void setWord(PasswdWord passwdWord) {
+		if (passwdWord == null)	return ;
+		this.word = passwdWord.getWord();
 	}
 }

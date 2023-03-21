@@ -5,8 +5,8 @@ import javax.servlet.http.HttpSession;
 import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.service.inquiry.InquiryReplyService;
 import com.example.demo.app.service.inquiry.InquiryService;
-import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
+import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.log.LogMessage;
 
@@ -22,7 +22,7 @@ public class CommonInquiryController {
 	
 	/** 
 	 * 問い合わせサービス 
-	 * {@link SecurityUserServiceUse} 
+	 * {@link SecUserServiceUse} 
 	 */
 	private final InquiryService			inquiryService;
 	
@@ -34,9 +34,9 @@ public class CommonInquiryController {
 	
 	/** 
 	 * ユーザーサービス 
-	 * {@link SecurityUserServiceUse} 
+	 * {@link SecUserServiceUse} 
 	 */
-	private final SecurityUserServiceUse	secUserService;
+	private final SecUserServiceUse	secUserService;
 	
 	/** コントローラー */
 	/** --------------------------------------------------------------- */
@@ -62,7 +62,7 @@ public class CommonInquiryController {
 	 * コンストラクタ
 	 * @param inquiryService		{@link InquiryService}
 	 * @param inquiryReplyService	{@link InquiryReplyService}
-	 * @param secUserService		{@link SecurityUserServiceUse}
+	 * @param secUserService		{@link SecUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
@@ -71,7 +71,7 @@ public class CommonInquiryController {
 	public CommonInquiryController(
 			InquiryService      	inquiryService, 
 			InquiryReplyService 	inquiryReplyService,
-			SecurityUserServiceUse	secUserService,
+			SecUserServiceUse	secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,
@@ -107,9 +107,9 @@ public class CommonInquiryController {
 	
 	/** 
 	 * ユーザーサービスの取得
-	 * {@link SecurityUserServiceUse} 
+	 * {@link SecUserServiceUse} 
 	 */
-	public SecurityUserServiceUse getSecurityUserService() {
+	public SecUserServiceUse getSecurityUserService() {
 		return this.secUserService;
 	}
 	

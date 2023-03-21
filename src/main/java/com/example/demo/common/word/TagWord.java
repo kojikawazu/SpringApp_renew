@@ -2,28 +2,34 @@ package com.example.demo.common.word;
 
 /**
  * タグ文字列クラス
+ * <br>
+ * extends {@link NormalWord}
  * @author nanai
  *
  */
-public class TagWord implements SuperWord {
-
-	/** 文字列保持 */
-	private String word;
+public class TagWord extends NormalWord {
 
 	/**
 	 * コンストラクタ
-	 * @param word
+	 */
+	public TagWord() {
+		super();
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param word {@link String}
 	 */
 	public TagWord(String word) {
-		this.word = word;
+		super(word);
 	}
 
 	/**
-	 * getter
-	 * @return 文字列
+	 * setter
+	 * @param word {@link TagWord}
 	 */
-	@Override
-	public String getWord() {
-		return this.word;
+	public void setWord(TagWord word) {
+		if (word == null)	return;
+		this.word = word.getWord();
 	}
 }

@@ -13,7 +13,8 @@ import com.example.demo.common.common.WebConsts;
  */
 public class AppConsts {
 
-	// ---------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+
 	/** request mapping */
 
 	/** request mapping[/security] */
@@ -91,7 +92,8 @@ public class AppConsts {
 	/** request mapping[/security/logout] */
 	public static final String REQUEST_MAPPING_SECURITY_LOGOUT = REQUEST_MAPPING_SECURITY + REQUEST_MAPPING_LOGOUT;
 
-	// ---------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+
 	/** return URL */
 
 	/** SecurityのURL */
@@ -203,6 +205,14 @@ public class AppConsts {
 
 	/** attribute[surveyList] */
 	public static final String ATTRIBUTE_SURVEY_LIST      = "surveyList";
+
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+	/** 一般のロール */
+	public static final String ROLE_GENERAL					= "GENERAL";
+
+	/** adminのロール */
+	public static final String ROLE_ADMIN					= "ADMIN";
 
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------
 

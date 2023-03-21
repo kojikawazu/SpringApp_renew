@@ -1,14 +1,11 @@
-package com.example.demo.app.entity.security;
+package com.example.demo.app.entity.user;
 
 import java.util.Collection;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.example.demo.app.entity.user.SecUserModel;
 
 /**
  * Details用セキュリティユーザークラス
@@ -27,12 +24,14 @@ public class SecLoginUserDetails implements UserDetails {
 	 * {@link SecUserModel}
 	 */
 	private final SecUserModel secUserModel;
-	
+
 	/**
 	 * 権限
 	 */
 	private final Collection<? extends GrantedAuthority> authorities;
-	
+
+	/** -------------------------------------------------------------------------------------------------- */
+
 	/**
 	 * コンストラクタ
 	 * @param secUserModel {@link SecUserModel}
@@ -40,16 +39,16 @@ public class SecLoginUserDetails implements UserDetails {
 	public SecLoginUserDetails(
 			SecUserModel secUserModel) {
 		this.secUserModel 	= secUserModel;
-		this.authorities 	= secUserModel.getRoleList()
+		this.authorities 	= secUserModel.getRoleList().getList()
 				.stream()
 				.map(role -> new SimpleGrantedAuthority(role))
 				.collect(Collectors.toList());
 	}
-	
+
 	public SecUserModel getSecUserModel() {
 		return this.secUserModel;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;
@@ -84,5 +83,4 @@ public class SecLoginUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
 }

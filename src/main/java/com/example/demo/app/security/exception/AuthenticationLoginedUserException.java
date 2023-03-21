@@ -15,7 +15,7 @@ public class AuthenticationLoginedUserException extends AuthenticationException 
 
 	/**
 	 * コンストラクタ
-	 * @param msg
+	 * @param msg {@link String}
 	 */
 	public AuthenticationLoginedUserException(String msg) {
 		super(msg);
@@ -23,8 +23,8 @@ public class AuthenticationLoginedUserException extends AuthenticationException 
 
 	/**
 	 * コンストラクタ
-	 * @param msg
-	 * @param cause
+	 * @param msg 		{@link String}
+	 * @param cause 	{@link Throwable}
 	 */
 	public AuthenticationLoginedUserException(String msg, Throwable cause) {
 		super(msg, cause);

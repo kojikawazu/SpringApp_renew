@@ -7,6 +7,15 @@ package com.example.demo.common.word;
  */
 public interface SuperWord {
 
+	/**
+	 * getter
+	 * @return {@link String}
+	 */
 	public String getWord();
 
+	/**
+	 * setter
+	 * @param word {@link String}
+	 */
+	void setWord(String word);
 }
