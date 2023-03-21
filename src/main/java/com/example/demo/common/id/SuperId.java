@@ -8,9 +8,14 @@ package com.example.demo.common.id;
 public interface SuperId {
 
 	/**
-	 * 取得
+	 * getter
 	 * @return int
 	 */
 	public int getId();
 
+	/**
+	 * setter
+	 * @param id
+	 */
+	void setId(int id);
 }

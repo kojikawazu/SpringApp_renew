@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -29,6 +30,9 @@ import com.example.demo.common.log.IntroAppLogWriter;
 
 /**
  * ログインDaoクラス
+ * <br>
+ * implements 	{@link SuperDao}<{@link LoginModel}, {@link LoginId}>
+ * 				{@link LoginDao}
  * @author nanai
  *
  */
@@ -69,6 +73,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 * コンストラクタ
 	 * @param jdbcTemp {@link JdbcTemplate}
 	 */
+	@Autowired
 	public LoginDaoSql(JdbcTemplate jdbcTemp) {
 		this.jdbcTemp	= jdbcTemp;
 		this.logWriter	= IntroAppLogWriter.getInstance();
@@ -169,7 +174,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 				+ PARAM_SESSION_ID + " = ?, "
 				+ PARAM_UPDATED    + " = ? "
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
-		
+
 		synchronized (LoginDaoSql.class) {
 			result = this.jdbcTemp.update(
 					sql,
@@ -194,9 +199,9 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	public int updateTime(LoginId loginId) {
 		if (loginId == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		int result = 0;
-		String sql = "UPDATE " + DB_NAME + " SET "
+		String sql = WebConsts.SQL_UPDATE + " " + DB_NAME + " " + WebConsts.SQL_SET + " "
 				+ PARAM_UPDATED + " = ? "
-				+ "WHERE " + PARAM_ID + " = ?";
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		synchronized (LoginDaoSql.class) {
 			result = this.jdbcTemp.update(
@@ -223,7 +228,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		if (id == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		int result = 0;
 		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
-				+ "WHERE " + PARAM_ID + " = ?";
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		synchronized (LoginDaoSql.class) {
 			result = this.jdbcTemp.update(
@@ -247,7 +252,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		if (userId == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		int result = 0;
 		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
-				+ "WHERE " + PARAM_USER_ID + " = ?";
+				+ WebConsts.SQL_WHERE + " " + PARAM_USER_ID + " = ?";
 
 		synchronized (LoginDaoSql.class) {
 			result = this.jdbcTemp.update(
@@ -285,12 +290,12 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 */
 	@Override
 	public List<LoginModel> getAll() {
-		String sql = "SELECT " + PARAM_ID + ", "
+		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + ", "
 				+ PARAM_USER_ID    + ", "
 				+ PARAM_SESSION_ID + ", "
 				+ PARAM_CREATED    + ", "
 				+ PARAM_UPDATED    + " "
-				+ "FROM " + DB_NAME;
+				+ WebConsts.SQL_FROM + " " + DB_NAME;
 		List<LoginModel> list = new ArrayList<LoginModel>();
 
 		try {
@@ -315,13 +320,13 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		if (id == null) return null;
 
 		LoginModel model = null;
-		String sql = "SELECT " + PARAM_ID + ", "
+		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + ", "
 				+ PARAM_USER_ID    + ", "
 				+ PARAM_SESSION_ID + ", "
 				+ PARAM_CREATED    + ", "
 				+ PARAM_UPDATED    + " "
-				+ "FROM " + DB_NAME + " "
-				+ "WHERE " + PARAM_ID + " = ?";
+				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		try {
 			Map<String, Object> result = this.jdbcTemp.queryForMap(
@@ -348,13 +353,13 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 		if (userId == null) return null;
 		
 		LoginModel model = null;
-		String sql = "SELECT " + PARAM_ID + ", "
+		String sql = WebConsts.SQL_SELECT + " " +  PARAM_ID + ", "
 				+ PARAM_USER_ID    + ", "
 				+ PARAM_SESSION_ID + ", "
 				+ PARAM_CREATED    + ", "
 				+ PARAM_UPDATED    + " "
-				+ "FROM " + DB_NAME + " "
-				+ "WHERE " + PARAM_USER_ID + " = ?";
+				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_USER_ID + " = ?";
 
 		try {
 			Map<String, Object> result = this.jdbcTemp.queryForMap(
@@ -375,14 +380,14 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 
 	/**
 	 * IDは存在する？
-	 * @param id
+	 * @param targetID
 	 * @return true 存在する false 存在しない
 	 */
 	@Override
 	public boolean isSelect_byId(int targetID) {
-		String sql = "SELECT " + PARAM_ID + " "
-				+ "FROM " + DB_NAME + " "
-				+ "WHERE " + PARAM_ID + " = ?";
+		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + " "
+				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		boolean isTrue = true;
 		try {
@@ -397,19 +402,21 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 			this.logWriter.error(ex.getMessage());
 			isTrue = false;
 		}
+
 		return isTrue;
 	}
 
 	/**
 	 * IDは存在する？
-	 * @param id {@link UserId}
+	 * @param targetID {@link UserId}
 	 * @return true 存在する false 存在しない
 	 */
 	@Override
 	public boolean isSelect_byUserId(UserId targetID) {
-		String sql = "SELECT " + PARAM_ID + " "
-				+ "FROM " + DB_NAME + " "
-				+ "WHERE " + PARAM_USER_ID + " = ?";
+		if (targetID == null)	return false;
+		String sql = WebConsts.SQL_SELECT + " " + PARAM_ID + " "
+				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_USER_ID + " = ?";
 
 		boolean isTrue = true;
 		try {
@@ -424,6 +431,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 			this.logWriter.error(ex.getMessage());
 			isTrue = false;
 		}
+
 		return isTrue;
 	}
 
@@ -436,6 +444,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 	 */
 	private List<LoginModel> setLoginModelList(List<Map<String, Object>> resultList) {
 		List<LoginModel> list = new ArrayList<LoginModel>();
+		if (resultList == null)	return list;
 
 		for (Map<String, Object> result : resultList) {
 			LoginModel model = this.makeLoginModel(result);
@@ -470,6 +479,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 						WebConsts.SQL_UPDATED_NAME)).toLocalDateTime()
 				);
 		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			model = null;
 		}
 

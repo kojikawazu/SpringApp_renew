@@ -101,6 +101,9 @@ class LoginServiceUseTest {
 		}
 	}
 
+	/**
+	 * Mock設定
+	 */
 	public void setMock() {
 		// Mock化
 		this.jdbcTemp  = mock(JdbcTemplate.class);
@@ -258,7 +261,7 @@ class LoginServiceUseTest {
 				TestConsts.TEST_TIME_01
 				);
 
-		assertThrows(SQLNoUpdateException.class, () -> service.update(model));
+		assertThrows(SQLNoUpdateException.class, () -> this.service.update(model));
 	}
 
 	/**
@@ -268,7 +271,7 @@ class LoginServiceUseTest {
 	public void updateTest_null() {
 		initUpdate();
 
-		assertThrows(SQLNoUpdateException.class, () -> service.update(null));
+		assertThrows(SQLNoUpdateException.class, () -> this.service.update(null));
 	}
 
 	/** ------------------------------------------------------------------------------------------------------------- */

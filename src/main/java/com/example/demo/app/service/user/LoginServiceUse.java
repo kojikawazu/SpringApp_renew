@@ -17,6 +17,9 @@ import com.example.demo.common.log.IntroAppLogWriter;
 
 /**
  * ログインサービスクラス
+ * <br>
+ * implements	{@link SuperService}<{@link LoginModel}, {@link LoginId}>
+ * 				{@link LoginService}
  * @author nanai
  *
  */
@@ -28,7 +31,6 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	 * daoクラス
 	 * {@link LoginDaoSql}
 	 */
-	@Autowired
 	private final LoginDaoSql dao;
 
 	/**
@@ -43,6 +45,7 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	 * コンストラクタ
 	 * @param dao {@link LoginDaoSql}
 	 */
+	@Autowired
 	public LoginServiceUse(LoginDaoSql dao) {
 		this.dao 		= dao;
 		this.logWriter	= IntroAppLogWriter.getInstance();
@@ -235,7 +238,7 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 
 	/**
 	 * IDは存在する？
-	 * @param id ターゲットID
+	 * @param targetID ターゲットID
 	 * @return true 存在する false 存在しない
 	 */
 	@Override

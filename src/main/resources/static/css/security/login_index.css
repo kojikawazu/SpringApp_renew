@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/**
+  * 【login_index.css】
+  */
+
+/** ----------------------------------------------------------------------- */
+
+/** 全体共通部 */
+@import url("../common/app_common.css");
+
+/** ----------------------------------------------------------------------- */
+
+body {
+	/** 背景画像上部の隙間をなくす */
+	padding-top: 0px;
+}
+
+/** 背景画像 */
+#home_back img {
+	width: 100%;
+	height: 500px;
+	object-fit: cover;
+	object-position: 10% 100%
+}
+
+/** フォームタイトル */
+h1 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+/** フォーム入力 */
+.form-input-original {
+	width: 50%;
+	margin: 0 auto;
+}

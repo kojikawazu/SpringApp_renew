@@ -1,4 +1,4 @@
-package com.example.demo.app.service.security;
+package com.example.demo.app.service.user;
 
 import com.example.demo.app.entity.user.SecUserModel;
 import com.example.demo.app.exception.WebMvcConfig;
@@ -10,8 +10,8 @@ import com.example.demo.common.word.PasswdWord;
  * @author nanai
  *
  */
-public interface SecurityUserService {
-	
+public interface SecUserService {
+
 	/**
 	 * Eメール、パスワードによる選択
 	 * @param  email 	{@link EmailWord}

@@ -1,14 +1,16 @@
 package com.example.demo.common.word;
 
 /**
- * イントロ使用文字列
+ * 文字列ラッパークラス
+ * <br>
+ * implements {@link SuperWord}
  * @author nanai
  *
  */
 public class NormalWord implements SuperWord {
 
 	/** 文字列保持 */
-	private String word;
+	protected String word;
 
 	/**
 	 * コンストラクタ
@@ -22,7 +24,8 @@ public class NormalWord implements SuperWord {
 	 * @param word
 	 */
 	public NormalWord(String word) {
-		this.word = word;
+		this();
+		this.setWord(word);
 	}
 
 	/**
@@ -34,11 +37,22 @@ public class NormalWord implements SuperWord {
 		return this.word;
 	}
 
+	/**
+	 * setter
+	 * @param word {@link String}
+	 */
+	@Override
 	public void setWord(String word) {
+		if (word == null)	return;
 		this.word = word;
 	}
 
-	public void setWord(NormalWord obj) {
-		this.word = obj.getWord();
+	/**
+	 * setter
+	 * @param word {@link NormalWord}
+	 */
+	public void setWord(NormalWord word) {
+		if (word == null)	return;
+		this.word = word.getWord();
 	}
 }

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.app.common.AppConsts;
-import com.example.demo.app.entity.security.SecLoginUserDetails;
 import com.example.demo.app.entity.survey.SurveyModel;
+import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.home.PageController;
-import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.survey.SurveyService;
 import com.example.demo.app.service.user.LoginServiceUse;
+import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
@@ -41,7 +41,7 @@ public class SurveyController extends SuperSurveyController {
 	/**
 	 * コンストラクタ
 	 * @param surveyService		{@link SurveyService}
-	 * @param secUserService	{@link SecurityUserServiceUse}
+	 * @param secUserService	{@link SecUserServiceUse}
 	 * @param loginService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
@@ -50,7 +50,7 @@ public class SurveyController extends SuperSurveyController {
 	@Autowired
 	public SurveyController(
 			SurveyService 			surveyService,
-			SecurityUserServiceUse	secUserService,
+			SecUserServiceUse	secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,

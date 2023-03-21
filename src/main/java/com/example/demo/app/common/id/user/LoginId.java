@@ -1,26 +1,21 @@
 package com.example.demo.app.common.id.user;
 
-import com.example.demo.common.id.SuperId;
+import com.example.demo.common.id.NormalId;
 
 /**
  * ログインIDクラス
+ * <br>
+ * extends {@link NormalId}
  * @author nanai
  *
  */
-public class LoginId implements SuperId {
-
-	/** デフォルトのIDの値 */
-	private static final int DEFAULT_ID_NUMBER = 0;
-
-	/** ID */
-	private int id;
+public class LoginId extends NormalId {
 
 	/**
 	 * コンストラクタ
-	 * @param id
 	 */
 	public LoginId() {
-		this.setId(DEFAULT_ID_NUMBER);
+		super();
 	}
 
 	/**
@@ -28,23 +23,7 @@ public class LoginId implements SuperId {
 	 * @param id
 	 */
 	public LoginId(int id) {
-		this.setId(id);
-	}
-
-	/**
-	 * getter
-	 * @return id
-	 */
-	@Override
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * setter
-	 * @param id
-	 */
-	public void setId(int id) {
+		super();
 		this.id = id;
 	}
 

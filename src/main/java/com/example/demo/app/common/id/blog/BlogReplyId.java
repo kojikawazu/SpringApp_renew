@@ -1,31 +1,38 @@
 package com.example.demo.app.common.id.blog;
 
-import com.example.demo.common.id.SuperId;
+import com.example.demo.common.id.NormalId;
 
 /**
  * ブログリプライIDクラス
+ * <br>
+ * extends {@link NormalId}
  * @author nanai
  *
  */
-public class BlogReplyId implements SuperId {
+public class BlogReplyId extends NormalId {
 
-	/** ID */
-	private int id;
-	
+	/**
+	 * コンストラクタ
+	 */
+	public BlogReplyId() {
+		super();
+	}
+
 	/**
 	 * コンストラクタ
 	 * @param id
 	 */
 	public BlogReplyId(int id) {
+		super();
 		this.id = id;
 	}
 
 	/**
-	 * getter
-	 * @return id
+	 * setter
+	 * @param id {@link BlogReplyId}
 	 */
-	@Override
-	public int getId() {
-		return this.id;
+	public void setId(BlogReplyId id) {
+		if (id == null)	return;
+		this.id = id.getId();
 	}
 }

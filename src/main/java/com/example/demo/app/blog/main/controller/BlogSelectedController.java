@@ -16,8 +16,8 @@ import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.blog.BlogMainService;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
-import com.example.demo.app.service.security.SecurityUserServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
+import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
@@ -36,7 +36,7 @@ public class BlogSelectedController extends SuperBlogMainController {
 	 * @param blogMainService		{@link BlogMainService}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
-	 * @param secUserService		{@link SecurityUserServiceUse}
+	 * @param secUserService		{@link SecUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
 	 * @param httpSession			{@link HttpSession}
@@ -46,7 +46,7 @@ public class BlogSelectedController extends SuperBlogMainController {
 			BlogMainService			blogMainService, 
 			BlogReplyService		blogReplyService, 
 			BlogTagService			blogTagService,
-			SecurityUserServiceUse	secUserService,
+			SecUserServiceUse	secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,

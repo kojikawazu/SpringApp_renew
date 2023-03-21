@@ -1,12 +1,16 @@
 package com.example.demo.app.dao.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -191,7 +194,7 @@ class LoginDaoSqlTest {
 				);
 
 		int ret = this.dao.update(model);
-		Assertions.assertEquals(WebConsts.ERROR_DB_STATUS, ret);
+		assertEquals(WebConsts.ERROR_DB_STATUS, ret);
 	}
 
 	/**
@@ -204,6 +207,25 @@ class LoginDaoSqlTest {
 		assertThrows(ArgumentsException.class, () -> this.dao.update(null));
 	}
 
+	/** ------------------------------------------------------------------ */
+
+	/**
+	 * 更新テスト(更新日付)の準備
+	 */
+	private void initUpdateTime() {
+		this.setDao();
+	}
+
+	/**
+	 * 更新テスト(更新日付)(異常系)(Null)
+	 */
+	@Test
+	public void updateTimeTest() {
+		this.initUpdateTime();
+
+		assertThrows(ArgumentsException.class, () -> this.dao.updateTime(null));
+	}
+	
 	/** ------------------------------------------------------------------ */
 
 	/**
@@ -229,7 +251,7 @@ class LoginDaoSqlTest {
 		initDelete();
 
 		int ret = this.dao.delete(new LoginId(1));
-		Assertions.assertEquals(TestConsts.RESULT_NUMBER_OK, ret);
+		assertEquals(TestConsts.RESULT_NUMBER_OK, ret);
 	}
 
 	/**
@@ -240,7 +262,7 @@ class LoginDaoSqlTest {
 		initDelete();
 
 		int ret = this.dao.delete(new LoginId(2));
-		Assertions.assertEquals(WebConsts.ERROR_DB_STATUS, ret);
+		assertEquals(WebConsts.ERROR_DB_STATUS, ret);
 	 }
 
 	/**
@@ -278,7 +300,7 @@ class LoginDaoSqlTest {
 		initDeleteByUserId();
 
 		int ret = this.dao.delete_byUserId(new UserId(1));
-		Assertions.assertEquals(TestConsts.RESULT_NUMBER_OK, ret);
+		assertEquals(TestConsts.RESULT_NUMBER_OK, ret);
 	}
 
 	/**
@@ -289,7 +311,7 @@ class LoginDaoSqlTest {
 		initDeleteByUserId();
 
 		int ret = this.dao.delete_byUserId(new UserId(2));
-		Assertions.assertEquals(WebConsts.ERROR_DB_STATUS, ret);
+		assertEquals(WebConsts.ERROR_DB_STATUS, ret);
 	 }
 
 	/**
@@ -360,13 +382,13 @@ class LoginDaoSqlTest {
 
 		List<LoginModel> list = this.dao.getAll();
 
-		Assertions.assertEquals(1, 		list.size());
-		Assertions.assertEquals(1, 		list.get(0).getId());
-		Assertions.assertEquals(1, 		list.get(0).getUserId());
-		Assertions.assertEquals("1111", list.get(0).getSessionId());
-		Assertions.assertEquals(TestConsts.TEST_TIME_01.toString(),
+		assertEquals(1, 		list.size());
+		assertEquals(1, 		list.get(0).getId());
+		assertEquals(1, 		list.get(0).getUserId());
+		assertEquals("1111", list.get(0).getSessionId());
+		assertEquals(TestConsts.TEST_TIME_01.toString(),
 				list.get(0).getCreated().toString());
-		Assertions.assertEquals(TestConsts.TEST_TIME_02.toString(),
+		assertEquals(TestConsts.TEST_TIME_02.toString(),
 				list.get(0).getUpdated().toString());
 
 		list.clear();
@@ -396,8 +418,8 @@ class LoginDaoSqlTest {
 
 		List<LoginModel> list = this.dao.getAll();
 
-		Assertions.assertNotNull(list);
-		Assertions.assertEquals(0, list.size());
+		assertNotNull(list);
+		assertEquals(0, list.size());
 	}
 
 	/** ------------------------------------------------------------------ */
@@ -434,12 +456,12 @@ class LoginDaoSqlTest {
 
 		LoginModel model = this.dao.select(new LoginId(1));
 
-		Assertions.assertEquals(1, 		model.getId());
-		Assertions.assertEquals(1, 		model.getUserId());
-		Assertions.assertEquals("1111", model.getSessionId());
-		Assertions.assertEquals(TestConsts.TEST_TIME_01.toString(),
+		assertEquals(1, 		model.getId());
+		assertEquals(1, 		model.getUserId());
+		assertEquals("1111", model.getSessionId());
+		assertEquals(TestConsts.TEST_TIME_01.toString(),
 				model.getCreated().toString());
-		Assertions.assertEquals(TestConsts.TEST_TIME_02.toString(),
+		assertEquals(TestConsts.TEST_TIME_02.toString(),
 				model.getUpdated().toString());
 	}
 
@@ -451,7 +473,7 @@ class LoginDaoSqlTest {
 		initSelect_byId();
 
 		LoginModel model = this.dao.select(new LoginId(2));
-		Assertions.assertNull(model);
+		assertNull(model);
 	}
 
 	/**
@@ -462,7 +484,253 @@ class LoginDaoSqlTest {
 		initSelect_byId();
 
 		LoginModel model = this.dao.select((LoginId)null);
-		Assertions.assertNull(model);
+		assertNull(model);
+	}
+
+	/** ------------------------------------------------------------------ */
+
+	/**
+	 * ユーザーIDによるデータ取得の準備
+	 */
+	private void initSelect_byUserId() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String sql = "SELECT id, user_id, session_id, created, updated "
+				+ "FROM login_user "
+				+ "WHERE user_id = ?";
+
+		map.put(WebConsts.SQL_ID_NAME,			1);
+		map.put(WebConsts.SQL_USER_ID_NAME,		1);
+		map.put(WebConsts.SQL_SESSION_ID_NAME,	"1111");
+		map.put(WebConsts.SQL_CREATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map.put(WebConsts.SQL_UPDATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_02));
+
+		when(this.jdbcTemp.queryForMap(sql, 1))
+			.thenReturn(map);
+		when(this.jdbcTemp.queryForMap(sql, 2))
+			.thenReturn(null);
+
+		this.setDao();
+	}
+
+	/**
+	 * ユーザーIDによるデータ取得のテスト(正常系)
+	 */
+	@Test
+	public void select_byUserIdTest() {
+		initSelect_byUserId();
+
+		LoginModel model = this.dao.select(new UserId(1));
+
+		assertEquals(1, 		model.getId());
+		assertEquals(1, 		model.getUserId());
+		assertEquals("1111", model.getSessionId());
+		assertEquals(TestConsts.TEST_TIME_01.toString(),
+				model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(),
+				model.getUpdated().toString());
+	}
+
+	/**
+	 * ユーザーIDによるデータ取得のテスト(異常系)
+	 */
+	@Test
+	public void select_byUserIdTest_Error() {
+		initSelect_byUserId();
+
+		LoginModel model = this.dao.select(new UserId(2));
+		assertNull(model);
+	}
+
+	/**
+	 * ユーザーIDによるデータ取得のテスト(異常系)
+	 */
+	@Test
+	public void select_byUserIdTest_ErrorNull() {
+		initSelect_byUserId();
+
+		LoginModel model = this.dao.select((UserId)null);
+		assertNull(model);
+	}
+
+	/** ------------------------------------------------------------------ */
+
+	/**
+	 * makeLoginModelテスト
+	 */
+	@Test
+	public void makeLoginModelTest() {
+		this.setDao();
+
+		try {
+			Method method = this.dao.getClass().getDeclaredMethod("makeLoginModel", Map.class);
+			method.setAccessible(true);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put(WebConsts.SQL_ID_NAME,			1);
+			map.put(WebConsts.SQL_USER_ID_NAME,		1);
+			map.put(WebConsts.SQL_SESSION_ID_NAME,	"1111");
+			map.put(WebConsts.SQL_CREATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map.put(WebConsts.SQL_UPDATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_02));
+
+			LoginModel model = (LoginModel)method.invoke(this.dao, map);
+
+			assertEquals(1, 		model.getId());
+			assertEquals(1, 		model.getUserId());
+			assertEquals("1111", model.getSessionId());
+			assertEquals(TestConsts.TEST_TIME_01.toString(),
+					model.getCreated().toString());
+			assertEquals(TestConsts.TEST_TIME_02.toString(),
+					model.getUpdated().toString());
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * makeLoginModelテスト(NoSuch)
+	 */
+	@Test
+	public void makeLoginModelTest_NoSuch() {
+		this.setDao();
+
+		try {
+			Method method = this.dao.getClass().getDeclaredMethod("makeLoginModel", Map.class);
+			method.setAccessible(true);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			LoginModel model = (LoginModel)method.invoke(this.dao, map);
+
+			assertNull(model);
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * makeLoginModelテスト(null)
+	 */
+	@Test
+	public void makeLoginModelTest_Null() {
+		this.setDao();
+
+		try {
+			Method method = LoginDaoSql.class.getDeclaredMethod("makeLoginModel", Map.class);
+			method.setAccessible(true);
+
+			LoginModel model = (LoginModel)method.invoke(this.dao, (Map<String, Object>)null);
+
+			assertNull(model);
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/** ------------------------------------------------------------------ */
+
+	/**
+	 * setLoginModelListテスト
+	 */
+	@Test
+	public void setLoginModelListTest() {
+		this.setDao();
+
+		try {
+			Method method = this.dao.getClass().getDeclaredMethod("setLoginModelList", List.class);
+			method.setAccessible(true);
+
+			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+			for (int i=0; i<3; i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put(WebConsts.SQL_ID_NAME,			i+1);
+				map.put(WebConsts.SQL_USER_ID_NAME,		i+1);
+				map.put(WebConsts.SQL_SESSION_ID_NAME,	"1111");
+				map.put(WebConsts.SQL_CREATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_01));
+				map.put(WebConsts.SQL_UPDATED_NAME,		Timestamp.valueOf(TestConsts.TEST_TIME_02));
+				mapList.add(map);
+			}
+
+			@SuppressWarnings("unchecked")
+			List<LoginModel> modelList = (List<LoginModel>)method.invoke(this.dao, mapList);
+
+			for (int i=0; i<3; i++) {
+				assertEquals(i+1, 		modelList.get(i).getId());
+				assertEquals(i+1, 		modelList.get(i).getUserId());
+				assertEquals("1111", 	modelList.get(i).getSessionId());
+				assertEquals(TestConsts.TEST_TIME_01.toString(),
+						modelList.get(i).getCreated().toString());
+				assertEquals(TestConsts.TEST_TIME_02.toString(),
+						modelList.get(i).getUpdated().toString());
+			}
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * setLoginModelListテスト(NoSuch)
+	 */
+	@Test
+	public void setLoginModelListTest_NoSuch() {
+		this.setDao();
+
+		try {
+			Method method = this.dao.getClass().getDeclaredMethod("setLoginModelList", List.class);
+			method.setAccessible(true);
+
+			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+			@SuppressWarnings("unchecked")
+			List<LoginModel> modelList = (List<LoginModel>)method.invoke(this.dao, mapList);
+
+			assertNotNull(modelList);
+			assertEquals(0, modelList.size());
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * setLoginModelListテスト(null)
+	 */
+	@Test
+	public void setLoginModelListTest_Null() {
+		this.setDao();
+
+		try {
+			Method method = this.dao.getClass().getDeclaredMethod("setLoginModelList", List.class);
+			method.setAccessible(true);
+
+			@SuppressWarnings("unchecked")
+			List<LoginModel> modelList = (List<LoginModel>)method.invoke(this.dao, (List<Map<String, Object>>)null);
+
+			assertNotNull(modelList);
+			assertEquals(0, modelList.size());
+		} catch (NoSuchMethodException 
+				| SecurityException 
+				| IllegalAccessException 
+				| IllegalArgumentException 
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/** ------------------------------------------------------------------ */

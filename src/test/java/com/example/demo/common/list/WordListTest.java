@@ -37,7 +37,7 @@ class WordListTest {
 		test = new WordList();
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 0);
+		assertEquals(0, test.getList().size());
 	}
 
 	/**
@@ -48,7 +48,7 @@ class WordListTest {
 		test = new WordList(null);
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 0);
+		assertEquals(0, test.getList().size());
 	}
 
 	/**
@@ -69,9 +69,9 @@ class WordListTest {
 		preConstractorObjectTest();
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 1);
+		assertEquals(1, test.getList().size());
 		resultString = test.getList().get(0);
-		assertEquals(resultString, TEST_WORD);
+		assertEquals(TEST_WORD, resultString);
 	}
 
 	/**
@@ -94,9 +94,9 @@ class WordListTest {
 		this.test.setList(list);
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 1);
+		assertEquals(1, test.getList().size());
 		resultString = test.getList().get(0);
-		assertEquals(resultString, TEST_WORD);
+		assertEquals(TEST_WORD, resultString);
 	}
 
 	/**
@@ -121,8 +121,8 @@ class WordListTest {
 		this.test.setList(obj);
 
 		assertNotNull(test.getList());
-		assertEquals(test.getList().size(), 1);
+		assertEquals(1, test.getList().size());
 		resultString = test.getList().get(0);
-		assertEquals(resultString, TEST_WORD);
+		assertEquals(TEST_WORD, resultString);
 	}
 }

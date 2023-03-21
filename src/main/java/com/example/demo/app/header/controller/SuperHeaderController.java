@@ -4,9 +4,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 
-import com.example.demo.app.entity.security.SecLoginUserDetails;
-import com.example.demo.app.service.security.SecurityUserServiceUse;
+import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.service.user.LoginServiceUse;
+import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.CookieModel;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.ThymeleafConsts;
@@ -19,9 +19,9 @@ public class SuperHeaderController {
 	
 	/** 
 	 * ユーザーサービス 
-	 * {@link SecurityUserServiceUse} 
+	 * {@link SecUserServiceUse} 
 	 */
-	private final SecurityUserServiceUse	secUserService;
+	private final SecUserServiceUse	secUserService;
 	
 	/** 
 	 * ログインサービス 
@@ -70,14 +70,14 @@ public class SuperHeaderController {
 	
 	/**
 	 * コンストラクタ
-	 * @param secUserService	{@link SecurityUserServiceUse}
+	 * @param secUserService	{@link SecUserServiceUse}
 	 * @param userService		{@link LoginServiceUse}
 	 * @param sessionModel		{@link SessionModel}
 	 * @param httpSession		{@link HttpSession}
 	 * @param logMessage		{@link LogMessage}
 	 */
 	public SuperHeaderController(
-			SecurityUserServiceUse	secUserService,
+			SecUserServiceUse	secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,
@@ -93,7 +93,7 @@ public class SuperHeaderController {
 	
 	/** --------------------------------------------------------------- */
 	
-	public SecurityUserServiceUse getSecUserService() {
+	public SecUserServiceUse getSecUserService() {
 		return this.secUserService;
 	}
 	

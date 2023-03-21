@@ -1,31 +1,38 @@
 package com.example.demo.app.common.id.inquiry;
 
-import com.example.demo.common.id.SuperId;
+import com.example.demo.common.id.NormalId;
 
 /**
  * 問い合わせ返信IDクラス
+ * <br>
+ * extends {@link NormalId}
  * @author nanai
  *
  */
-public class InquiryReplyId implements SuperId {
+public class InquiryReplyId extends NormalId {
 
-	/** ID */
-	private int id;
-	
+	/**
+	 * コンストラクタ
+	 */
+	public InquiryReplyId() {
+		super();
+	}
+
 	/**
 	 * コンストラクタ
 	 * @param id
 	 */
 	public InquiryReplyId(int id) {
+		super();
 		this.id = id;
 	}
 
 	/**
-	 * getter
-	 * @return id
+	 * setter
+	 * @param id {@link InquiryReplyId}
 	 */
-	@Override
-	public int getId() {
-		return this.id;
+	public void setId(InquiryReplyId id) {
+		if (id == null)	return;
+		this.id = id.getId();
 	}
 }

@@ -15,11 +15,12 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 
 import com.example.demo.app.common.AppConsts;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 
 /**
  * 認証失敗ハンドラー(カスタム版)
- * 	extends			{@link SimpleUrlAuthenticationFailureHandler}
- *  implements		{@link AuthenticationFailureHandler}
+ * 	<br>extends			{@link SimpleUrlAuthenticationFailureHandler}
+ *  <br>implements		{@link AuthenticationFailureHandler}
  * @author nanai
  *
  */
@@ -29,27 +30,42 @@ public class CustomAuthenticationFailureHandler
 
 	/** 失敗URL */
 	private final String FAILURE_URL =  AppConsts.REQUEST_MAPPING_SECURITY_FORM + "?" + WebConsts.ATTRIBUTE_ERROR;
-	
+
 	/** 
 	 * リダイレクトストラテジ
 	 * {@link RedirectStrategy} 
 	 */
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	
+
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter = IntroAppLogWriter.getInstance();
+
 	/** -------------------------------------------------------------------------------------------------------- */
-	
+
+	/**
+	 * 認証失敗
+	 * <br>
+	 */
 	@Override
 	public void onAuthenticationFailure(
 			HttpServletRequest 		request, 
 			HttpServletResponse 	response,
 			AuthenticationException exception) throws IOException, ServletException {
+		this.logWriter.start("");
+
+		// レスポンス設定
 		this.setResponse(request, response, exception);
+
+		this.logWriter.successed("");
 	}
 
 	/**
 	 * レスポンス設定
-	 * @param request
-	 * @param response
+	 * @param request 	{@link HttpServletRequest}
+	 * @param response	{@link HttpServletResponse}
 	 * @throws IOException
 	 * @throws ServletException
 	 */
@@ -58,7 +74,6 @@ public class CustomAuthenticationFailureHandler
 			HttpServletResponse 	response,
 			AuthenticationException exception) throws IOException, ServletException {
 		response.setStatus(HttpStatus.OK.value());
-		
 		super.saveException(request, exception);
 		this.redirectStrategy.sendRedirect(request, response, FAILURE_URL);
 	}
