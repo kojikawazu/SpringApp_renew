@@ -1,8 +1,9 @@
 package com.example.demo.app.entity.blog;
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,47 +20,43 @@ import com.example.demo.common.word.TittleWord;
  *
  */
 class BlogMainModelTest {
-	
+
 	/** モデル */
 	BlogMainModel model = null;
-	
+
 	/**
 	 * 初期化
 	 */
 	@BeforeEach
 	public void Init() {
-		model = new BlogMainModel(
-				new BlogId(0),
-				new TittleWord(""),
-				new TagWord(""),
-				new CommentWord(""),
-				new ThanksCntNumber(0),
-				TestConsts.TEST_TIME_01,
-				TestConsts.TEST_TIME_02,
-				new ArrayList<BlogReplyModel>()
-				);
+		model = new BlogMainModel();
+		model.setCreated(TestConsts.TEST_TIME_01);
+		model.setUpdated(TestConsts.TEST_TIME_02);
 	}
+ 
+	/** ------------------------------------------------------------------------------------------------------------- */
 
 	/**
 	 * コンストラクタのテスト
 	 */
 	@Test
-	public void InitTest0() {
-		Assertions.assertEquals(model.getId(), 			0);
-		Assertions.assertEquals(model.getTitle(), 		"");
-		Assertions.assertEquals(model.getTag(), 		"");
-		Assertions.assertEquals(model.getComment(), 	"");
-		Assertions.assertEquals(model.getThanksCnt(), 	0);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
-		Assertions.assertNotNull(model.getReplyList());
+	public void constractorTest() {
+		assertEquals(0, 	model.getId());
+		assertEquals("", 	model.getTitle());
+		assertEquals("", 	model.getTag());
+		assertEquals("", 	model.getComment());
+		assertEquals(0, 	model.getThanksCnt());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(), model.getUpdated().toString());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
 	}
-	
+
 	/**
-	 * コンストラクタテスト(null渡し)
+	 * コンストラクタテスト(引数 - 8つ - Null)
 	 */
 	@Test
-	public void InitNull() {
+	public void constractorTest_8_Null() {
 		model = new BlogMainModel(
 				null,
 				null,
@@ -70,22 +67,170 @@ class BlogMainModelTest {
 				null,
 				null
 				);
-		
-		Assertions.assertNotNull(model.getId());
-		Assertions.assertNotNull(model.getTitle());
-		Assertions.assertNotNull(model.getTag());
-		Assertions.assertNotNull(model.getComment());
-		Assertions.assertNotNull(model.getThanksCnt());
-		Assertions.assertNotNull(model.getCreated());
-		Assertions.assertNotNull(model.getUpdated());
-		Assertions.assertNotNull(model.getReplyList());
+
+		assertEquals(0, 	model.getId());
+		assertEquals("", 	model.getTitle());
+		assertEquals("", 	model.getTag());
+		assertEquals("", 	model.getComment());
+		assertEquals(0, 	model.getThanksCnt());
+		assertNotNull(model.getCreated());
+		assertNotNull(model.getUpdated());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
 	}
-	
+
+	/**
+	 * コンストラクタテスト(引数 - 8つ)
+	 */
+	@Test
+	public void constractorTest_8() {
+		model = new BlogMainModel(
+				new BlogId(1),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				new ThanksCntNumber(1),
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02,
+				new BlogReplyModelList()
+				);
+
+		assertEquals(1, 							model.getId());
+		assertEquals(TestConsts.TEST_TITLE_NAME, 	model.getTitle());
+		assertEquals(TestConsts.TEST_TAG_NAME, 		model.getTag());
+		assertEquals(TestConsts.TEST_COMMENT_NAME, 	model.getComment());
+		assertEquals(1, 							model.getThanksCnt());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(), model.getUpdated().toString());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
+	/**
+	 * コンストラクタテスト(引数 - 7つ - Null)
+	 */
+	@Test
+	public void constractorTest_7_Null() {
+		model = new BlogMainModel(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+				);
+
+		assertEquals(0, 	model.getId());
+		assertEquals("", 	model.getTitle());
+		assertEquals("", 	model.getTag());
+		assertEquals("", 	model.getComment());
+		assertEquals(0, 	model.getThanksCnt());
+		assertNotNull(model.getCreated());
+		assertNotNull(model.getUpdated());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
+	/**
+	 * コンストラクタテスト(引数 - 7つ)
+	 */
+	@Test
+	public void constractorTest_7() {
+		model = new BlogMainModel(
+				new BlogId(1),
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				new ThanksCntNumber(1),
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02
+				);
+
+		assertEquals(1,								model.getId());
+		assertEquals(TestConsts.TEST_TITLE_NAME, 	model.getTitle());
+		assertEquals(TestConsts.TEST_TAG_NAME, 		model.getTag());
+		assertEquals(TestConsts.TEST_COMMENT_NAME, 	model.getComment());
+		assertEquals(1, 							model.getThanksCnt());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(), model.getUpdated().toString());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
+	/**
+	 * コンストラクタテスト(引数 - 6つ - Null)
+	 */
+	@Test
+	public void constractorTest_6_Null() {
+		model = new BlogMainModel(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+				);
+
+		assertEquals(0, 	model.getId());
+		assertEquals("", 	model.getTitle());
+		assertEquals("", 	model.getTag());
+		assertEquals("", 	model.getComment());
+		assertEquals(0, 	model.getThanksCnt());
+		assertNotNull(model.getCreated());
+		assertNotNull(model.getUpdated());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
+	/**
+	 * コンストラクタテスト(引数 - 6つ)
+	 */
+	@Test
+	public void constractorTest_6() {
+		model = new BlogMainModel(
+				new TittleWord(TestConsts.TEST_TITLE_NAME),
+				new TagWord(TestConsts.TEST_TAG_NAME),
+				new CommentWord(TestConsts.TEST_COMMENT_NAME),
+				new ThanksCntNumber(1),
+				TestConsts.TEST_TIME_01,
+				TestConsts.TEST_TIME_02
+				);
+
+		assertEquals(0, 							model.getId());
+		assertEquals(TestConsts.TEST_TITLE_NAME, 	model.getTitle());
+		assertEquals(TestConsts.TEST_TAG_NAME, 		model.getTag());
+		assertEquals(TestConsts.TEST_COMMENT_NAME, 	model.getComment());
+		assertEquals(1, 							model.getThanksCnt());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(), model.getUpdated().toString());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
 	/**
 	 * コンストラクタテスト(モデル渡し)
 	 */
 	@Test
-	public void InitModel() {
+	public void constractorTest_Model_Null() {
+		model = new BlogMainModel(null);
+
+		assertEquals(0, 	model.getId());
+		assertEquals("", 	model.getTitle());
+		assertEquals("", 	model.getTag());
+		assertEquals("", 	model.getComment());
+		assertEquals(0, 	model.getThanksCnt());
+		assertNotNull(model.getCreated());
+		assertNotNull(model.getUpdated());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
+	}
+
+	/**
+	 * コンストラクタテスト(モデル渡し)
+	 */
+	@Test
+	public void constractorTest_Model() {
 		BlogMainModel test = new BlogMainModel(
 				new BlogId(1),
 				new TittleWord(TestConsts.TEST_TITLE_NAME),
@@ -94,68 +239,30 @@ class BlogMainModelTest {
 				new ThanksCntNumber(1),
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02,
-				new ArrayList<BlogReplyModel>()
+				new BlogReplyModelList()
 				);
-		
+
 		model = new BlogMainModel(test);
-		
-		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
-		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
-		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
-		Assertions.assertEquals(model.getThanksCnt(), 1);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
-		Assertions.assertNotNull(model.getReplyList());
-	}
-	
-	/**
-	 * コンストラクタテスト
-	 */
-	@Test
-	public void InitTest2() {
-		model = new BlogMainModel(
-				new BlogId(1),
-				new TittleWord(TestConsts.TEST_TITLE_NAME),
-				new TagWord(TestConsts.TEST_TAG_NAME),
-				new CommentWord(TestConsts.TEST_COMMENT_NAME),
-				new ThanksCntNumber(1),
-				TestConsts.TEST_TIME_01,
-				TestConsts.TEST_TIME_02
-				);
-		
-		Assertions.assertEquals(model.getId(),        1);
-		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
-		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
-		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
-		Assertions.assertEquals(model.getThanksCnt(), 1);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
-		Assertions.assertNotNull(model.getReplyList());
-	}
-	
-	/**
-	 * コンストラクタテスト
-	 */
-	@Test
-	public void InitTest3() {
-		model = new BlogMainModel(
-				new TittleWord(TestConsts.TEST_TITLE_NAME),
-				new TagWord(TestConsts.TEST_TAG_NAME),
-				new CommentWord(TestConsts.TEST_COMMENT_NAME),
-				new ThanksCntNumber(1),
-				TestConsts.TEST_TIME_01,
-				TestConsts.TEST_TIME_02
-				);
-		
-		Assertions.assertEquals(model.getId(),        0);
-		Assertions.assertEquals(model.getTitle(),     TestConsts.TEST_TITLE_NAME);
-		Assertions.assertEquals(model.getTag(),       TestConsts.TEST_TAG_NAME);
-		Assertions.assertEquals(model.getComment(),   TestConsts.TEST_COMMENT_NAME);
-		Assertions.assertEquals(model.getThanksCnt(), 1);
-		Assertions.assertEquals(model.getCreated().toString(), TestConsts.TEST_TIME_01.toString());
-		Assertions.assertEquals(model.getUpdated().toString(), TestConsts.TEST_TIME_02.toString());
-		Assertions.assertNotNull(model.getReplyList());
+
+		assertEquals(1, 							model.getId());
+		assertEquals(TestConsts.TEST_TITLE_NAME, 	model.getTitle());
+		assertEquals(TestConsts.TEST_TAG_NAME, 		model.getTag());
+		assertEquals(TestConsts.TEST_COMMENT_NAME, 	model.getComment());
+		assertEquals(1, 							model.getThanksCnt());
+		assertEquals(TestConsts.TEST_TIME_01.toString(), model.getCreated().toString());
+		assertEquals(TestConsts.TEST_TIME_02.toString(), model.getUpdated().toString());
+		assertNotNull(model.getReplyList());
+		assertEquals(0, model.getReplyList().size());
 	}
 
+	/** ------------------------------------------------------------------------------------------------------------- */
+
+	/**
+	 * 後処理
+	 */
+	@AfterEach
+	void release() {
+		model.getReplyList().clear();
+		model = null;
+	}
 }

@@ -2,34 +2,43 @@ package com.example.demo.common.number;
 
 /**
  * いいね数クラス
+ * <br>
+ * extends {@link NormalNumber}
  * @author nanai
  *
  */
-public class ThanksCntNumber implements SuperNumber {
+public class ThanksCntNumber extends NormalNumber {
 
-	/** いいね数 */
-	private int           thanksCnt;
+	/**
+	 * コンストラクタ
+	 */
+	public ThanksCntNumber() {
+		super();
+	}
 
 	/**
 	 * コンストラクタ
 	 * @param thanksCnt
 	 */
 	public ThanksCntNumber(int thanksCnt) {
-		this.thanksCnt = thanksCnt;
+		super(thanksCnt);
 	}
 
 	/**
-	 * getter
-	 * @return thanksCnt
+	 * コンストラクタ
+	 * @param thanksCnt {@link ThanksCntNumber}
 	 */
-	@Override
-	public int getNumber() {
-		return this.thanksCnt;
+	public ThanksCntNumber(ThanksCntNumber thanksCnt) {
+		super();
+		this.setNumber(thanksCnt);
 	}
 
-	@Override
-	public void setNumber(int number) {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	/**
+	 * setter
+	 * @param thanksCnt {@link ThanksCntNumber}
+	 */
+	public void setNumber(ThanksCntNumber thanksCnt) {
+		if (thanksCnt == null)	return;
+		this.setNumber(thanksCnt.getNumber());
 	}
 }

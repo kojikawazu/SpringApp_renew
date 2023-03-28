@@ -151,7 +151,6 @@ public class SecUserServiceUse implements UserDetailsService, SuperService<SecUs
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-
 		return model;
 	}
 
@@ -176,7 +175,6 @@ public class SecUserServiceUse implements UserDetailsService, SuperService<SecUs
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-
 		return model;
 	}
 
@@ -202,7 +200,6 @@ public class SecUserServiceUse implements UserDetailsService, SuperService<SecUs
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-
 		return model;
 	}
 
@@ -220,7 +217,7 @@ public class SecUserServiceUse implements UserDetailsService, SuperService<SecUs
 
 	/**
 	 * 入力文字からセキュリティユーザーモデルの取得
-	 * @param  username
+	 * @param  username {@link String}
 	 * @throws {@link UsernameNotFoundException}
 	 * @return {@link UserDetails}
 	 */

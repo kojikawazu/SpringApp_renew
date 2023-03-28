@@ -24,7 +24,7 @@ import com.example.demo.app.entity.blog.BlogMainModel;
 import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
-import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogMainServiceUse;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -48,7 +48,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogMainService		{@link BlogMainServiceUse}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
 	 * @param secUserService		{@link SecUserServiceUse}
@@ -58,7 +58,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 	 * @param logMessage			{@link LogMessage}
 	 */
 	public BlogCompleteController(
-			BlogMainService			blogMainService, 
+			BlogMainServiceUse		blogMainService, 
 			BlogReplyService		blogReplyService, 
 			BlogTagService			blogTagService,
 			SecUserServiceUse	secUserService,

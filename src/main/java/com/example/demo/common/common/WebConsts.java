@@ -101,11 +101,23 @@ public class WebConsts {
 	/** SQL[JOIN] */
 	public static final String SQL_JOIN						= "JOIN";
 
+	/** SQL[LEFT OUTER JOIN] */
+	public static final String SQL_LEFT_OUTER_JOIN			= "LEFT OUTER JOIN";
+
 	/** SQL[ON] */
 	public static final String SQL_ON						= "ON";
 
 	/** SQL[AS] */
 	public static final String SQL_AS						= "AS";
+
+	/** SQL[ORDER BY] */
+	public static final String SQL_ORDER_BY					= "ORDER BY";
+
+	/** SQL[ASC] */
+	public static final String SQL_ASC						= "ASC";
+
+	/** SQL[DESC] */
+	public static final String SQL_DESC						= "DESC";
 
 	/** SQL[?] */
 	public static final String SQL_QUESTION					= "?";

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.entity.user.SecLoginUserDetails;
-import com.example.demo.app.header.controller.HeaderController;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.SecUserServiceUse;
@@ -22,6 +21,8 @@ import com.example.demo.common.log.LogMessage;
 
 /**
  * ホームコントローラー
+ * <br>
+ * extends {@link SuperHomeController}
  * @author nanai
  *
  */
@@ -57,6 +58,14 @@ public class HomeController extends SuperHomeController {
 	private static final String INQUIRY_ICON_TITLE_BODY		= "お問い合わせ";
 
 	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  		logWriter;
+
+	/** ------------------------------------------------------------------------------------------------------------- */
+
+	/**
 	 * コンストラクタ
 	 * @param secUserService	{@link SecUserServiceUse}
 	 * @param loginService		{@link LoginServiceUse}
@@ -65,7 +74,7 @@ public class HomeController extends SuperHomeController {
 	 * @param logMessage		{@link LogMessage}
 	 */
 	public HomeController(
-			SecUserServiceUse	secUserService,
+			SecUserServiceUse		secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,
@@ -75,6 +84,7 @@ public class HomeController extends SuperHomeController {
 				sessionModel,
 				httpSession,
 				logMessage);
+		logWriter = IntroAppLogWriter.getInstance();
 	}
 
 	/**
@@ -114,7 +124,6 @@ public class HomeController extends SuperHomeController {
 	 * @param model {@link Model}
 	 */
 	private void setAttribute(Model model) {
-		IntroAppLogWriter logWriter = IntroAppLogWriter.getInstance();
 		logWriter.start("");
 
 		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, TITLE_HOME);

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.app.blog.main.form.BlogSelectedForm;
 import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.header.form.HeaderForm;
-import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogMainServiceUse;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -33,7 +33,7 @@ public class BlogSelectedController extends SuperBlogMainController {
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogMainService		{@link BlogMainServiceUse}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
 	 * @param secUserService		{@link SecUserServiceUse}
@@ -43,7 +43,7 @@ public class BlogSelectedController extends SuperBlogMainController {
 	 * @param logMessage			{@link LogMessage}
 	 */
 	public BlogSelectedController(
-			BlogMainService			blogMainService, 
+			BlogMainServiceUse		blogMainService, 
 			BlogReplyService		blogReplyService, 
 			BlogTagService			blogTagService,
 			SecUserServiceUse	secUserService,

@@ -2,6 +2,8 @@ package com.example.demo.common.log;
 
 /**
  * Json用ログ出力クラス
+ * <br>
+ * extends {@link LogWriter}
  * @author nanai
  *
  */

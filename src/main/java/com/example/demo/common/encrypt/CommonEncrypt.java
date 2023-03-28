@@ -11,7 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import com.example.demo.common.log.LogMessage;
+import com.example.demo.common.log.CommonLogWriter;
 
 /**
  * 暗号化/復号化共通クラス
@@ -26,13 +26,15 @@ public class CommonEncrypt {
 	/** 暗号化アルゴリズム */
 	private static final String ALGORITHM		= "BLOWFISH";
 
+	/** Common用ログ出力クラス */
+	private static final CommonLogWriter log	= CommonLogWriter.getInstance();
+
 	/**
 	 * 暗号化
-	 * @param  inData 暗号化したい文字列
-	 * @return 暗号化済文字列
+	 * @param  inData 暗号化したい文字列 {@link String}
+	 * @return 暗号化済文字列 {@link String}
 	 */
 	public static String encrypt(String inData) {
-		LogMessage		log			= new LogMessage();
 		final String decryptString	= inData;
 		String outputData 			= "";
 
@@ -40,6 +42,7 @@ public class CommonEncrypt {
 			// 引数チェック
 			if (decryptString == null || decryptString.isBlank()) {
 				// null, 又はブランク文字は暗号化しない
+				log.error("引数エラー: " + decryptString);
 				return outputData;
 			}
 
@@ -88,7 +91,6 @@ public class CommonEncrypt {
 	 * @return 復号化済文字列
 	 */
 	public static String decrypt(String inData) {
-		LogMessage		log		= new LogMessage();
 		String encryptString	= inData;
 		String outputData		= "";
 
@@ -96,6 +98,7 @@ public class CommonEncrypt {
 			// 引数チェック
 			if (encryptString == null || encryptString.isBlank()) {
 				// null, 又はブランク文字は復号化しない
+				log.error("引数エラー: " + encryptString);
 				return outputData;
 			}
 

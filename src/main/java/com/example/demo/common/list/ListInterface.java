@@ -21,5 +21,4 @@ public interface ListInterface<T> {
 	 * @param list {@link List}
 	 */
 	public void setList(List<T> list);
-
 }

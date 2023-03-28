@@ -24,24 +24,24 @@ public class HeaderController extends SuperHeaderController {
 
 	/** ログインなしキーワード */
 	public static final String NO_LOGIN_ID_NAME		= "noLoginId";
-	
+
 	/** ログイン中キーワード */
 	public static final String YES_LOGIN_ID_NAME	= "yesLoginId";
-	
+
 	/** ログイン中のユーザー名 */
 	public static final String LOGOUT_USER_NAME		= "logoutUserName";
-	
+
 	/** ログインユーザーモデル */
 	public static final String LOGIN_USER_MODEL		= "loginUserModel";
-	
+
 	/** ログイン表示側 */
 	public static final String LOGIN_NOW_WORD		= "yes";
-	
+
 	/** ログイン非表示側 */
 	public static final String LOGIN_NO_WORD		= "";
-	
+
 	/** -------------------------------------------------------------------------- */
-	
+
 	/**
 	 * コンストラクタ
 	 * @param secUserService	{@link SecUserServiceUse}
@@ -62,9 +62,9 @@ public class HeaderController extends SuperHeaderController {
 				httpSession,
 				logMessage);
 	}
-	
+
 	/** ----------------------------------------------------------------------------------------- */
-	
+
 	/**
 	 * Cookieの設定
 	 * @param 	secLoginUserDetails	{@link SecLoginUserDetails}
@@ -77,7 +77,7 @@ public class HeaderController extends SuperHeaderController {
 			HttpServletResponse 	response) {
 		this.setSecLoginUserDetails(secLoginUserDetails);
 	}
-	
+
 	/**
 	 * ヘッダーの設定
 	 * @param secLoginUserDetails	{@link SecLoginUserDetails}
@@ -92,23 +92,22 @@ public class HeaderController extends SuperHeaderController {
 			Model 				model) {
 		if (secLoginUserDetails != null) {
 			// ログイン中
-			
+
 			model.addAttribute(NO_LOGIN_ID_NAME,	LOGIN_NO_WORD);
 			model.addAttribute(YES_LOGIN_ID_NAME,	LOGIN_NOW_WORD);
 			model.addAttribute(LOGOUT_USER_NAME,	secLoginUserDetails.getUsername());
 			//model.addAttribute(LOGIN_USER_MODEL,    userModel);
-			
 		} else {
 			// ログインなし
 			model.addAttribute(NO_LOGIN_ID_NAME,	LOGIN_NOW_WORD);
 			model.addAttribute(YES_LOGIN_ID_NAME,	LOGIN_NO_WORD);
 			model.addAttribute(LOGOUT_USER_NAME,	"");
 		}
-		
+
 		/** model共通反映 */
 		this.setSameModel(model);
 	}
-	
+
 	/**
 	 * ログイン情報の更新日付の更新
 	 * @param loginId ログインID

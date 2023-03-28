@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.example.demo.common.log.LogMessage;
+import com.mysql.cj.jdbc.admin.MiniAdmin;
 
 /**
  * Web共通メソッド群
@@ -38,6 +39,8 @@ public class WebFunctions {
 	public static final boolean checkDiffMinutes(
 			LocalDateTime 	targetTime, 
 			int 			minutes) {
+		if (targetTime == null) return false;
+
 		LogMessage		log			= new LogMessage();
 		LocalDateTime 	now       	= LocalDateTime.now();
 
@@ -70,12 +73,14 @@ public class WebFunctions {
 	/**
 	 * 時間、日付のdiffチェック(時間単位)
 	 * @param targetTime     チェック日付対象{@link LocalDateTime}
-	 * @param minutes        分単位
+	 * @param hours          時間単位
 	 * @return  true 日付過ぎてる false 日付過ぎてない
 	 */
 	public static final boolean checkDiffHour(
 			LocalDateTime	targetTime, 
 			int 			hours) {
+		if (targetTime == null) return false;
+
 		LogMessage		log			= new LogMessage();
 		LocalDateTime 	now			= LocalDateTime.now();
 

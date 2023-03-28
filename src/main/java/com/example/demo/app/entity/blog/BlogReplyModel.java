@@ -14,22 +14,22 @@ import com.example.demo.common.word.NameWord;
  *
  */
 public class BlogReplyModel {
-	
+
 	/** ブログ返信ID */
 	private BlogReplyId     id;
-	
+
 	/** ブログID */
 	private BlogId          blogId;
-	
+
 	/** 名前 */
 	private NameWord        name;
-	
+
 	/** コメント */
 	private CommentWord     comment;
-	
+
 	/** いいね数 */
 	private ThanksCntNumber thanksCnt;
-	
+
 	/** 生成日付 */
 	private LocalDateTime   created;
 
