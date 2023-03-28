@@ -302,6 +302,7 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 
 			list = this.setLoginModelList(resultList);
+			resultList.clear();
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
 			list.clear();
@@ -389,9 +390,9 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
-		boolean isTrue = true;
+		boolean result = true;
 		try {
-			isTrue = this.jdbcTemp.query(sql, 
+			result = this.jdbcTemp.query(sql, 
 				new Object[]{ targetID },
 				new int[]{ Types.INTEGER },
 				rs -> {
@@ -400,10 +401,10 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 			);
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
-			isTrue = false;
+			result = false;
 		}
 
-		return isTrue;
+		return result;
 	}
 
 	/**
@@ -418,9 +419,9 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 				+ WebConsts.SQL_FROM + " " + DB_NAME + " "
 				+ WebConsts.SQL_WHERE + " " + PARAM_USER_ID + " = ?";
 
-		boolean isTrue = true;
+		boolean result = true;
 		try {
-			isTrue = this.jdbcTemp.query(sql, 
+			result = this.jdbcTemp.query(sql, 
 				new Object[]{ targetID.getId() },
 				new int[]{ Types.INTEGER },
 				rs -> {
@@ -429,10 +430,10 @@ public class LoginDaoSql implements SuperDao<LoginModel, LoginId>, LoginDao {
 			);
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
-			isTrue = false;
+			result = false;
 		}
 
-		return isTrue;
+		return result;
 	}
 
 	/** -------------------------------------------------------------------- */

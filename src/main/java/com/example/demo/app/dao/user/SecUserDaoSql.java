@@ -200,6 +200,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
 			list = this.setSecUserModelList(resultList);
+			resultList.clear();
 		} catch(DataAccessException ex) {
 			this.logWriter.error(ex.getMessage());
 			list.clear();
@@ -244,6 +245,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 
 			model = list.get(0);
 			list.clear();
+			resultList.clear();
 		} catch(DataAccessException ex) {
 			this.logWriter.error(ex.getMessage());
 			list.clear();
@@ -289,6 +291,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 
 			model = list.get(0);
 			list.clear();
+			resultList.clear();
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
 			list.clear();
@@ -337,6 +340,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 
 			model = list.get(0);
 			list.clear();
+			resultList.clear();
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
 			list.clear();
@@ -357,9 +361,9 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 				+    WebConsts.SQL_FROM   + " " + DB_NAME  + " "
 				+    WebConsts.SQL_WHERE  + " " + PARAM_ID + " = ?";
 
-		boolean isTrue = true;
+		boolean result = true;
 		try {
-			isTrue = jdbcTemp.query(sql, 
+			result = jdbcTemp.query(sql, 
 				new Object[]{ targetID },
 				new int[]{ Types.INTEGER },
 				rs -> {
@@ -368,10 +372,10 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 			);
 		} catch(Exception ex) {
 			this.logWriter.error(ex.getMessage());
-			isTrue = false;
+			result = false;
 		}
 
-		return isTrue;
+		return result;
 	}
 
 	/** -------------------------------------------------------------------- */
@@ -472,7 +476,7 @@ public class SecUserDaoSql implements SuperDao<SecUserModel, UserId>, SecUserDao
 	/**
 	 * ロール生成
 	 * @param  result マップ	{@link Map}({@link String}, {@link Object})
-	 * @return ロール名
+	 * @return ロール名{@link String}
 	 */
 	private String makeRole(Map<String, Object> result) {
 		if (result == null)	return "";

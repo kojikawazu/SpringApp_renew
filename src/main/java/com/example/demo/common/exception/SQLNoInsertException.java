@@ -1,13 +1,13 @@
 package com.example.demo.common.exception;
 
 /**
- * 引数エラーexception
+ * SQL追加エラーexception
  * <br>
  * extends {@link RuntimeException}
  * @author nanai
  *
  */
-public class ArgumentsException extends RuntimeException {
+public class SQLNoInsertException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class ArgumentsException extends RuntimeException {
 	 * コンストラクタ
 	 * @param message {@link String}
 	 */
-	public ArgumentsException(String message) {
+	public SQLNoInsertException(String message) {
 		super(message);
 	}
 }

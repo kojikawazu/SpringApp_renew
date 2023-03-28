@@ -193,6 +193,8 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 		}
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * 全て選択
 	 * @return list {@link List}({@link LoginModel})
@@ -202,6 +204,8 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 		return this.dao.getAll();
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * IDによる選択
 	 * @param  id {@link LoginId}
@@ -210,14 +214,22 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	 */
 	@Override
 	public LoginModel select(LoginId id) {
-		LoginModel model = this.dao.select(id);
+		LoginModel model = null;
+
+		try {
+			model = this.dao.select(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-
 		return model;
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 選択
@@ -227,14 +239,22 @@ public class LoginServiceUse implements SuperService<LoginModel, LoginId>, Login
 	 */
 	@Override
 	public LoginModel select(UserId userId) {
-		LoginModel model = this.dao.select(userId);
+		LoginModel model = null;
+
+		try {
+			model = this.dao.select(userId);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-
 		return model;
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * IDは存在する？

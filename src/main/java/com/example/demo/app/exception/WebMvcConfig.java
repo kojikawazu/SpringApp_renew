@@ -3,6 +3,7 @@ package com.example.demo.app.exception;
 import com.example.demo.common.exception.ArgumentsException;
 import com.example.demo.common.exception.DataNotFoundException;
 import com.example.demo.common.exception.SQLNoDeleteException;
+import com.example.demo.common.exception.SQLNoInsertException;
 import com.example.demo.common.exception.SQLNoUpdateException;
 
 /**
@@ -12,16 +13,19 @@ import com.example.demo.common.exception.SQLNoUpdateException;
  */
 public class WebMvcConfig {
 
-	public static String EXCEPTION_NOTFOUND = "Can't find the same ID";
+	public static String EXCEPTION_NOTFOUND 			= "Can't find the same ID";
 
 	/** 引数エラーメッセージ */
-	private static String EXCEPTION_ARGUMENTS_ERROR = "Arguments error...";
+	private static String EXCEPTION_ARGUMENTS_ERROR 	= "Arguments error...";
+
+	/** SQL追加できなかった時のメッセージ */
+	private static String EXCEPTION_SQL_NO_INSERT 		= "SQL data not insert...";
 
 	/** SQL更新できなかった時のメッセージ */
-	private static String EXCEPTION_SQL_NO_UPDATE = "SQL data not update...";
+	private static String EXCEPTION_SQL_NO_UPDATE 		= "SQL data not update...";
 
 	/** SQL削除できなかった時のメッセージ */
-	private static String EXCEPTION_SQL_NO_DELETE = "SQL data not delete...";
+	private static String EXCEPTION_SQL_NO_DELETE 		= "SQL data not delete...";
 
 	/**
 	 * なしexception
@@ -37,6 +41,14 @@ public class WebMvcConfig {
 	 */
 	public static ArgumentsException ARGUMENTS_ERROR() {
 		return new ArgumentsException(EXCEPTION_ARGUMENTS_ERROR);
+	}
+
+	/**
+	 * SQL追加エラーexception
+	 * @return {@link SQLNoInsertException}
+	 */
+	public static SQLNoInsertException SQL_NOT_INSERT() {
+		return new SQLNoInsertException(EXCEPTION_SQL_NO_INSERT);
 	}
 
 	/**

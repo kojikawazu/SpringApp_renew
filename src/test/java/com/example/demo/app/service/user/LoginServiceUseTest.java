@@ -1,5 +1,6 @@
 package com.example.demo.app.service.user;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -20,6 +21,7 @@ import com.example.demo.app.dao.user.LoginDaoSql;
 import com.example.demo.app.entity.user.LoginModel;
 import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
+import com.example.demo.common.exception.SQLNoDeleteException;
 import com.example.demo.common.exception.SQLNoUpdateException;
 import com.example.demo.common.log.IntroAppLogWriter;
 
@@ -125,7 +127,6 @@ class LoginServiceUseTest {
 				TestConsts.TEST_TIME_01,
 				TestConsts.TEST_TIME_02
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
-
 		when(this.jdbcTemp.update(
 				SQL_INSERT, 
 				2,
@@ -210,7 +211,6 @@ class LoginServiceUseTest {
 				TestConsts.TEST_TIME_01,
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
-
 		when(this.jdbcTemp.update(
 				SQL_UPDATE, 
 				2,
@@ -237,7 +237,7 @@ class LoginServiceUseTest {
 				TestConsts.TEST_TIME_01
 				);
 
-		this.service.update(model);
+		assertDoesNotThrow(() -> this.service.update(model));
 		verify(this.jdbcTemp, times(1)).update(
 				SQL_UPDATE, 
 				2,
@@ -262,6 +262,7 @@ class LoginServiceUseTest {
 				);
 
 		assertThrows(SQLNoUpdateException.class, () -> this.service.update(model));
+		verify(this.logWriter, times(1)).error(null);
 	}
 
 	/**
@@ -270,8 +271,8 @@ class LoginServiceUseTest {
 	@Test
 	public void updateTest_null() {
 		initUpdate();
-
 		assertThrows(SQLNoUpdateException.class, () -> this.service.update(null));
+		verify(this.jdbcTemp, times(0)).update(SQL_DELETE, 1);
 	}
 
 	/** ------------------------------------------------------------------------------------------------------------- */
@@ -286,7 +287,6 @@ class LoginServiceUseTest {
 				SQL_DELETE, 
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
-
 		when(this.jdbcTemp.update(
 				SQL_DELETE, 
 				2
@@ -303,7 +303,7 @@ class LoginServiceUseTest {
 		initDelete();
 
 		LoginId loginId = new LoginId(1);
-		this.service.delete(loginId);
+		assertDoesNotThrow(() -> this.service.delete(loginId));
 		verify(this.jdbcTemp, times(1)).update(SQL_DELETE, 1);
 	}
 	
@@ -315,7 +315,7 @@ class LoginServiceUseTest {
 		initDelete();
 
 		LoginId loginId = new LoginId(2);
-		this.service.delete(loginId);
+		assertThrows(SQLNoDeleteException.class, () -> this.service.delete(loginId));
 		verify(this.logWriter, times(1)).error(null);
 	}
 
@@ -326,7 +326,7 @@ class LoginServiceUseTest {
 	public void deleteTest_null() {
 		initDelete();
 
-		this.service.delete((LoginId)null);
+		assertThrows(SQLNoDeleteException.class, () -> this.service.delete((LoginId)null));
 		verify(this.jdbcTemp, times(0)).update(SQL_DELETE, 1);
 	}
 
@@ -342,7 +342,6 @@ class LoginServiceUseTest {
 				SQL_DELETE_WHERE_USER_ID, 
 				1
 				)).thenReturn(TestConsts.RESULT_NUMBER_OK);
-
 		when(this.jdbcTemp.update(
 				SQL_DELETE_WHERE_USER_ID, 
 				2
@@ -359,8 +358,8 @@ class LoginServiceUseTest {
 		initDeleteUserId();
 
 		UserId userId = new UserId(1);
-		this.service.delete(userId);
-		verify(this.jdbcTemp, times(1)).update(SQL_DELETE, 1);
+		assertDoesNotThrow(() -> this.service.delete(userId));
+		verify(this.jdbcTemp, times(1)).update(SQL_DELETE_WHERE_USER_ID, 1);
 	}
 	
 	/**
@@ -370,8 +369,8 @@ class LoginServiceUseTest {
 	public void deleteUserIdTest_error() {
 		initDeleteUserId();
 
-		UserId userId = new UserId(1);
-		this.service.delete(userId);
+		UserId userId = new UserId(2);
+		assertThrows(SQLNoDeleteException.class, () -> this.service.delete(userId));
 		verify(this.logWriter, times(1)).error(null);
 	}
 
@@ -382,8 +381,8 @@ class LoginServiceUseTest {
 	public void deleteUserIdTest_null() {
 		initDeleteUserId();
 
-		this.service.delete((UserId)null);
-		verify(this.jdbcTemp, times(0)).update(SQL_DELETE, 1);
+		assertThrows(SQLNoDeleteException.class, () -> this.service.delete((UserId)null));
+		verify(this.jdbcTemp, times(0)).update(SQL_DELETE_WHERE_USER_ID, 1);
 	}
 
 	/** ------------------------------------------------------------------------------------------------------------- */
@@ -401,6 +400,9 @@ class LoginServiceUseTest {
 		this.setService();
 	}
 
+	/**
+	 * 全削除テスト
+	 */
 	@Test
 	public void deleteAllTest() {
 		initDeleteAll();

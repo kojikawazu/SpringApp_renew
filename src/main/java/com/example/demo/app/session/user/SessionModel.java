@@ -7,6 +7,8 @@ import org.springframework.web.context.annotation.SessionScope;
 
 /**
  * セッションログインユーザークラス
+ * <br>
+ * implements {@link Serializable}
  * @author nanai
  *
  */
@@ -24,5 +26,4 @@ public class SessionModel implements Serializable  {
 	public SessionModel() {
 		super();
 	}
-	
 }

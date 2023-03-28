@@ -2,6 +2,8 @@ package com.example.demo.common.number;
 
 /**
  * 通常数値クラス
+ * <br>
+ * implements {@link SuperNumber}
  * @author nanai
  *
  */
@@ -45,14 +47,21 @@ public class NormalNumber implements SuperNumber {
 		return this.number;
 	}
 
+	/**
+	 * setter
+	 * @param number
+	 */
 	@Override
 	public void setNumber(int number) {
 		this.number = number;
 	}
 
+	/**
+	 * setter
+	 * @param number {@link NormalNumber}
+	 */
 	public void setNumber(NormalNumber obj) {
 		if (obj == null)	return ;
-
 		this.number = obj.getNumber();
 	}
 }

@@ -23,7 +23,7 @@ import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.home.PageController;
-import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogMainServiceUse;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -34,6 +34,8 @@ import com.example.demo.common.log.LogMessage;
 
 /**
  * ブログメインコントローラー
+ * <br>
+ * extends {@link SuperBlogMainController}
  * @author nanai
  *
  */
@@ -43,16 +45,16 @@ public class BlogMainController extends SuperBlogMainController {
 
 	/** ブログ一覧ページの最大数 */
 	private static final int BLOG_PAGE_MAX = 5;
-	
+
 	/** 
 	 * ブログ並び順
 	 * false 昇順 true 降順
 	 */
 	private boolean descFlg = false;
-	
+
 	/**
 	 * コンストラクタ
-	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogMainService		{@link BlogMainServiceUse}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
 	 * @param secUserService		{@link SecUserServiceUse}
@@ -63,7 +65,7 @@ public class BlogMainController extends SuperBlogMainController {
 	 */
 	@Autowired
 	public BlogMainController(
-			BlogMainService			blogMainService, 
+			BlogMainServiceUse		blogMainService, 
 			BlogReplyService		blogReplyService, 
 			BlogTagService			blogTagService,
 			SecUserServiceUse	secUserService,
@@ -79,11 +81,11 @@ public class BlogMainController extends SuperBlogMainController {
 				sessionModel,
 				httpSession,
 				logMessage);
-		
-		/** ブログメインリストの降順設定 */
+
+		// ブログメインリストの降順設定
 		this.setPageDesc();
 	}
-	
+
 	/**
 	 * index
 	 * @param  detailUser		{@link SecLoginUserDetails}
@@ -105,22 +107,22 @@ public class BlogMainController extends SuperBlogMainController {
 			HeaderForm					headerForm,
 			@Validated BlogSelectedForm	blogSelectedForm,
 			Model						model) {
-		/** Cookieの設定 */
+		/// Cookieの設定
 		this.setInclude(detailUser, request, response, headerForm, model);
-		
+
 		List<BlogMainModel> list = setBlogList(blogSelectedForm);
 		this.setPaging(list, pageidx, model);
 		this.setSelectTag(model);
-				
+
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
 		this.setIndexAttribute(model);
 		list.clear();
 		return AppConsts.URL_BLOG_MAIN_INDEX;
 	}
-	
+
 	// -----------------------------------------------------------------------------------------
-	
+
 	/**
 	 * ブログリストの取得
 	 * @param  blogSelectedForm {@link BlogSelectedForm}
@@ -141,7 +143,7 @@ public class BlogMainController extends SuperBlogMainController {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * ページング設定
 	 * @param list		List({@link BlogMainModel})
@@ -154,13 +156,13 @@ public class BlogMainController extends SuperBlogMainController {
 			Model model) {
 		PageController      page         = new PageController();
 		List<BlogMainModel> blogpageList = page.setPaging(list, pageidx, BLOG_PAGE_MAX);
-		
+
 		page.setPageName(AppConsts.REQUEST_MAPPING_BLOG);
-		
+
 		model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN_LIST, blogpageList);
 		model.addAttribute(WebConsts.ATTRIBUTE_PAGING,         page);
 	}
-	
+
 	/**
 	 * タグリストの設定
 	 * @param model	{@link Model}
@@ -169,14 +171,14 @@ public class BlogMainController extends SuperBlogMainController {
 		List<BlogTagModel> list = this.blogTagService.getAll();
 		model.addAttribute(AppConsts.ATTRIBUTE_TAG_LIST, list);
 	}
-	
+
 	/**
 	 * 並び順を降順に設定
 	 */
 	private void setPageDesc() {
 		this.descFlg = true;
 	}
-	
+
 	/**
 	 * 並び順を昇順に設定
 	 */

@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * ワードリストクラス
+ * <br>
+ * implements {@link ListInterface}<{@link String}>
  * @author nanai
  *
  */
@@ -29,11 +31,19 @@ public class WordList implements ListInterface<String> {
 		this.setList(list);
 	}
 
+	/**
+	 * getter
+	 * @return {@link List}<{@link String}>
+	 */
 	@Override
 	public List<String> getList(){
 		return this.list;
 	}
 
+	/**
+	 * setter
+	 * @param {@link List}<{@link String}>
+	 */
 	@Override
 	public void setList(List<String> list) {
 		if (list == null)	return ;
@@ -44,6 +54,10 @@ public class WordList implements ListInterface<String> {
 		}
 	}
 
+	/**
+	 * setter
+	 * @param {@link WordList}
+	 */
 	public void setList(WordList obj) {
 		if (obj == null)	return ;
 

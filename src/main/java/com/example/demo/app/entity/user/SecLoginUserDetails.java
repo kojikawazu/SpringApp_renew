@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Details用セキュリティユーザークラス
+ * <br>
+ * implements {@link UserDetails}
  * @author nanai
  *
  */

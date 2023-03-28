@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.app.blog.main.BlogMainId;
 import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.common.id.blog.BlogReplyId;
-import com.example.demo.app.service.blog.BlogMainService;
+import com.example.demo.app.service.blog.BlogMainServiceUse;
 import com.example.demo.app.service.blog.BlogReplyService;
 import com.example.demo.app.service.blog.BlogTagService;
 import com.example.demo.app.service.user.LoginServiceUse;
@@ -28,7 +28,7 @@ public class BlogReplyThanksController extends SuperBlogMainController {
 
 	/**
 	 * コンストラクタ
-	 * @param blogMainService		{@link BlogMainService}
+	 * @param blogMainService		{@link BlogMainServiceUse}
 	 * @param blogReplyService		{@link BlogReplyService}
 	 * @param blogTagService		{@link BlogTagService}
 	 * @param secUserService		{@link SecUserServiceUse}
@@ -38,7 +38,7 @@ public class BlogReplyThanksController extends SuperBlogMainController {
 	 * @param logMessage			{@link LogMessage}
 	 */
 	public BlogReplyThanksController(
-			BlogMainService			blogMainService, 
+			BlogMainServiceUse		blogMainService, 
 			BlogReplyService		blogReplyService, 
 			BlogTagService			blogTagService,
 			SecUserServiceUse	secUserService,

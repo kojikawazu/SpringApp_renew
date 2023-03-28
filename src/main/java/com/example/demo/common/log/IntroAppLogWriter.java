@@ -2,6 +2,8 @@ package com.example.demo.common.log;
 
 /**
  * IntroApp用ファイル出力クラス
+ * <br>
+ * extends {@link LogWriter}
  * @author nanai
  *
  */
