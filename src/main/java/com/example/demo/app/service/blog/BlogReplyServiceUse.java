@@ -7,33 +7,49 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.common.id.blog.BlogReplyId;
-import com.example.demo.app.dao.blog.BlogReplyDao;
+import com.example.demo.app.dao.blog.BlogReplyDaoSql;
 import com.example.demo.app.entity.blog.BlogReplyModel;
 import com.example.demo.app.exception.WebMvcConfig;
+import com.example.demo.app.service.SuperService;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 
 /**
  * ブログ返信サービスクラス
+ * <br>
+ * implements {@link SuperService}<{@link BlogReplyModel}, {@link BlogReplyId}><br>
+ *            {@link BlogReplyService}
  * @author nanai
  *
  */
 @Service
-public class BlogReplyServiceUse implements BlogReplyService {
-	
+public class BlogReplyServiceUse implements SuperService<BlogReplyModel, BlogReplyId>, BlogReplyService {
+
 	/** 
 	 * Daoクラス
-	 * {@link BlogReplyDao}
+	 * {@link BlogReplyDaoSql}
 	 */
-	private final BlogReplyDao dao;
-	
+	private final BlogReplyDaoSql dao;
+
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter;
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * コンストラクタ
-	 * @param dao {@link BlogReplyDao}
+	 * @param dao {@link BlogReplyDaoSql}
 	 */
 	@Autowired
-	public BlogReplyServiceUse(BlogReplyDao dao) {
-		this.dao = dao;
+	public BlogReplyServiceUse(BlogReplyDaoSql dao) {
+		this.dao 		= dao;
+		this.logWriter	= IntroAppLogWriter.getInstance();
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 保存
@@ -41,8 +57,14 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public void save(BlogReplyModel model) {
-		this.dao.insertReply(model);
+		try {
+			this.dao.insert(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+		}
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 削除
@@ -51,7 +73,15 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public void delete(BlogReplyId id) {
-		if (this.dao.deleteReply(id) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.delete(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_DELETE();
+		}
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
@@ -63,27 +93,32 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public void delete_byBlogid(BlogId blogid) {
-		if (this.dao.deleteReply_byBlog(blogid) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.delete_byBlogId(blogid);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_DELETE();
+		}
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * 全て選択
-	 * @throws {@link WebMvcConfig#NOT_FOUND()}
 	 * @return ブログ返信モデルリスト {@link List}({@link BlogReplyModel})
 	 */
 	@Override
 	public List<BlogReplyModel> getAll() {
-		List<BlogReplyModel> list = this.dao.getAll();
-		
-		if (list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.getAll();
 	}
-	
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * ブログIDによる選択
 	 * @param  id {@link BlogId}
@@ -92,12 +127,15 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public List<BlogReplyModel> select_byBlogId(BlogId id) {
-		List<BlogReplyModel> list = this.dao.select_blogId(id);
-		
-		if (list.isEmpty()) {
+		List<BlogReplyModel> list = null;
+
+		try {
+			list = this.dao.select_byBlogId(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return list;
 	}
 
@@ -109,14 +147,22 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public BlogReplyModel select(BlogReplyId id) {
-		BlogReplyModel model = this.dao.select(id);
-		
+		BlogReplyModel model = null;
+
+		try {
+			model = this.dao.select(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return model;
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * いいね数加算
@@ -126,12 +172,30 @@ public class BlogReplyServiceUse implements BlogReplyService {
 	 */
 	@Override
 	public int thanksIncrement(BlogReplyId id) {
-		int number = this.dao.thanksIncrement(id);
-		
+		int number = 0;
+
+		try {
+			number = this.dao.thanksIncrement(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
 		if (number == WebConsts.ERROR_NUMBER) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
+
 		return number;
+	}
+
+	/** ------------------------------------------------------------------------------------- */
+
+	@Override
+	public void update(BlogReplyModel model) {
+		
+	}
+
+	@Override
+	public boolean isSelect_byId(int targetID) {
+		return false;
 	}
 }

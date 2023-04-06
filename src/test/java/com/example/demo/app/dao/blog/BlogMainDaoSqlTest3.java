@@ -23,7 +23,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.entity.blog.BlogMainModel;
 import com.example.demo.app.entity.blog.BlogReplyModel;
-import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.consts.TestConsts;
 import com.example.demo.common.log.IntroAppLogWriter;
 import com.example.demo.common.number.ThanksCntNumber;
@@ -37,6 +36,24 @@ import com.example.demo.common.word.TittleWord;
  *
  */
 public class BlogMainDaoSqlTest3 {
+
+	/**
+	 * パラム名
+	 */
+	private final String PARAM_ID 			= "id";
+	private final String PARAM_TITLE 		= "title";
+	private final String PARAM_TAG			= "tag";
+	private final String PARAM_COMMENT		= "comment";
+	private final String PARAM_THANKSCNT	= "thanksCnt";
+	private final String PARAM_CREATED		= "created";
+	private final String PARAM_UPDATED		= "updated";
+
+	private final String PARAM_REPLY_ID				= "id";
+	private final String PARAM_AS_REPLY_ID			= "reply_id";
+	private final String PARAM_AS_REPLY_NAME		= "reply_name";
+	private final String PARAM_AS_REPLY_COMMENT		= "reply_comment";
+	private final String PARAM_AS_REPLY_THANKSCNT	= "reply_thanksCnt";
+	private final String PARAM_AS_REPLY_CREATED		= "reply_created";
 
 	/**
 	 * 文字列
@@ -119,13 +136,13 @@ public class BlogMainDaoSqlTest3 {
 		try {
 			List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 			Map<String, Object>       map     = new HashMap<String, Object>();
-			map.put(WebConsts.SQL_ID_NAME,        1);
-			map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
-			map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
-			map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
-			map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
-			map.put(WebConsts.SQL_CREATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_01));
-			map.put(WebConsts.SQL_UPDATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_02));
+			map.put(PARAM_ID,        1);
+			map.put(PARAM_TITLE,     TestConsts.TEST_TITLE_NAME);
+			map.put(PARAM_TAG,       TestConsts.TEST_TAG_NAME);
+			map.put(PARAM_COMMENT,   TestConsts.TEST_COMMENT_NAME);
+			map.put(PARAM_THANKSCNT, 1);
+			map.put(PARAM_CREATED,   Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map.put(PARAM_UPDATED,   Timestamp.valueOf(TestConsts.TEST_TIME_02));
 			mapList.add(map);
 
 			@SuppressWarnings("unchecked")
@@ -226,30 +243,30 @@ public class BlogMainDaoSqlTest3 {
 			int cnter=1;
 			for (int idx=1; idx<=2; idx++) {
 				Map<String, Object> map01 = new HashMap<String, Object>();
-				map01.put(WebConsts.SQL_ID_NAME,               cnter);
-				map01.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME   + cnter);
-				map01.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME     + cnter);
-				map01.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-				map01.put(WebConsts.SQL_THANKSCNT_NAME,        cnter);
-				map01.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-				map01.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
-				map01.put(WebConsts.SQL_REPLY_ID_NAME,         idx);
-				map01.put(WebConsts.SQL_REPLY_NAME_NAME,       TEST_REPLY_NAME    + idx);
-				map01.put(WebConsts.SQL_REPLY_COMMENT_NAME,    TEST_REPLY_COMMENT + idx);
-				map01.put(WebConsts.SQL_REPLY_THANKS_CNT_NAME, 1);
-				map01.put(WebConsts.SQL_REPLY_CREATED_NAME,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
+				map01.put(PARAM_ID,               cnter);
+				map01.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME   + cnter);
+				map01.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME     + cnter);
+				map01.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+				map01.put(PARAM_THANKSCNT,        cnter);
+				map01.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+				map01.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+				map01.put(PARAM_AS_REPLY_ID,         idx);
+				map01.put(PARAM_AS_REPLY_NAME,       TEST_REPLY_NAME    + idx);
+				map01.put(PARAM_AS_REPLY_COMMENT,    TEST_REPLY_COMMENT + idx);
+				map01.put(PARAM_AS_REPLY_THANKSCNT, 1);
+				map01.put(PARAM_AS_REPLY_CREATED,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
 				mapList.add(map01);
 			}
 
 			cnter++;
 			Map<String, Object> map02 = new HashMap<String, Object>();
-			map02.put(WebConsts.SQL_ID_NAME,               2);
-			map02.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME + cnter);
-			map02.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME   + cnter);
-			map02.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-			map02.put(WebConsts.SQL_THANKSCNT_NAME,        1);
-			map02.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-			map02.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+			map02.put(PARAM_ID,               2);
+			map02.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME + cnter);
+			map02.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME   + cnter);
+			map02.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+			map02.put(PARAM_THANKSCNT,        1);
+			map02.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map02.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
 			mapList.add(map02);
 
 			@SuppressWarnings("unchecked")
@@ -387,30 +404,30 @@ public class BlogMainDaoSqlTest3 {
 			int cnter=1;
 			for (int idx=1; idx<=4; idx++) {
 				Map<String, Object> map01 = new HashMap<String, Object>();
-				map01.put(WebConsts.SQL_ID_NAME,               cnter);
-				map01.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME   + cnter);
-				map01.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME     + cnter);
-				map01.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-				map01.put(WebConsts.SQL_THANKSCNT_NAME,        cnter);
-				map01.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-				map01.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
-				map01.put(WebConsts.SQL_REPLY_ID_NAME,         idx);
-				map01.put(WebConsts.SQL_REPLY_NAME_NAME,       TEST_REPLY_NAME    + idx);
-				map01.put(WebConsts.SQL_REPLY_COMMENT_NAME,    TEST_REPLY_COMMENT + idx);
-				map01.put(WebConsts.SQL_REPLY_THANKS_CNT_NAME, 1);
-				map01.put(WebConsts.SQL_REPLY_CREATED_NAME,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
+				map01.put(PARAM_ID,               cnter);
+				map01.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME   + cnter);
+				map01.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME     + cnter);
+				map01.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+				map01.put(PARAM_THANKSCNT,        cnter);
+				map01.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+				map01.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+				map01.put(PARAM_AS_REPLY_ID,         idx);
+				map01.put(PARAM_AS_REPLY_NAME,       TEST_REPLY_NAME    + idx);
+				map01.put(PARAM_AS_REPLY_COMMENT,    TEST_REPLY_COMMENT + idx);
+				map01.put(PARAM_AS_REPLY_THANKSCNT,  1);
+				map01.put(PARAM_AS_REPLY_CREATED,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
 				mapList.add(map01);
 			}
 
 			cnter++;
 			Map<String, Object> map02 = new HashMap<String, Object>();
-			map02.put(WebConsts.SQL_ID_NAME,               2);
-			map02.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME + cnter);
-			map02.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME   + cnter);
-			map02.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-			map02.put(WebConsts.SQL_THANKSCNT_NAME,        1);
-			map02.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-			map02.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+			map02.put(PARAM_ID,               2);
+			map02.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME + cnter);
+			map02.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME   + cnter);
+			map02.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+			map02.put(PARAM_THANKSCNT,        1);
+			map02.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map02.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
 			mapList.add(map02);
 
 			BlogMainModel model = new BlogMainModel(
@@ -513,7 +530,7 @@ public class BlogMainDaoSqlTest3 {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(WebConsts.SQL_REPLY_ID_NAME, 1);
+			map.put(PARAM_AS_REPLY_ID, 1);
 
 			boolean result = (boolean)method.invoke(this.dao, map);
 			assertEquals(true, result);
@@ -553,7 +570,7 @@ public class BlogMainDaoSqlTest3 {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(WebConsts.SQL_REPLY_ID_NAME, null);
+			map.put(PARAM_AS_REPLY_ID, null);
 			boolean result = (boolean)method.invoke(this.dao, map);
 			assertEquals(false, result);
 		} catch (SecurityException 
@@ -609,13 +626,13 @@ public class BlogMainDaoSqlTest3 {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(WebConsts.SQL_ID_NAME,        1);
-			map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
-			map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
-			map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
-			map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
-			map.put(WebConsts.SQL_CREATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_01));
-			map.put(WebConsts.SQL_UPDATED_NAME,   Timestamp.valueOf(TestConsts.TEST_TIME_02));
+			map.put(PARAM_ID,        1);
+			map.put(PARAM_TITLE,     TestConsts.TEST_TITLE_NAME);
+			map.put(PARAM_TAG,       TestConsts.TEST_TAG_NAME);
+			map.put(PARAM_COMMENT,   TestConsts.TEST_COMMENT_NAME);
+			map.put(PARAM_THANKSCNT, 1);
+			map.put(PARAM_CREATED,   Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map.put(PARAM_UPDATED,   Timestamp.valueOf(TestConsts.TEST_TIME_02));
 
 			BlogMainModel resultModel = (BlogMainModel)method.invoke(this.dao, map);
 			assertNotNull(resultModel);
@@ -698,12 +715,12 @@ public class BlogMainDaoSqlTest3 {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(WebConsts.SQL_ID_NAME,               1);
-			map.put(WebConsts.SQL_REPLY_ID_NAME,         1);
-			map.put(WebConsts.SQL_REPLY_NAME_NAME,       TEST_REPLY_NAME);
-			map.put(WebConsts.SQL_REPLY_COMMENT_NAME,    TEST_REPLY_COMMENT);
-			map.put(WebConsts.SQL_REPLY_THANKS_CNT_NAME, 1);
-			map.put(WebConsts.SQL_REPLY_CREATED_NAME,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map.put(PARAM_REPLY_ID,            1);
+			map.put(PARAM_AS_REPLY_ID,         1);
+			map.put(PARAM_AS_REPLY_NAME,       TEST_REPLY_NAME);
+			map.put(PARAM_AS_REPLY_COMMENT,    TEST_REPLY_COMMENT);
+			map.put(PARAM_AS_REPLY_THANKSCNT, 1);
+			map.put(PARAM_AS_REPLY_CREATED,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
 
 			BlogReplyModel resultModel = (BlogReplyModel)method.invoke(this.dao, map);
 

@@ -15,7 +15,7 @@ public class TagWord extends NormalWord {
 	public TagWord() {
 		super();
 	}
-	
+
 	/**
 	 * コンストラクタ
 	 * @param word {@link String}

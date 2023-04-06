@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.example.demo.common.log.LogMessage;
-import com.mysql.cj.jdbc.admin.MiniAdmin;
 
 /**
  * Web共通メソッド群

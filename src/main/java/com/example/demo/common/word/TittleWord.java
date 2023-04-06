@@ -15,7 +15,7 @@ public class TittleWord extends NormalWord {
 	public TittleWord() {
 		super();
 	}
-	
+
 	/**
 	 * コンストラクタ
 	 * @param word {@link String}

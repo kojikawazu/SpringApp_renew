@@ -56,13 +56,13 @@ public class BlogMainDaoSql implements SuperDao<BlogMainModel, BlogId>, BlogMain
 	private final String PARAM_REPLY_BLOG_ID		= "blog_id";
 	private final String PARAM_REPLY_NAME			= "name";
 	private final String PARAM_REPLY_COMMENT		= "comment";
-	private final String PARAM_REPLY_THANTKSCNT		= "thankscnt";
+	private final String PARAM_REPLY_THANTKSCNT		= "thanksCnt";
 	private final String PARAM_REPLY_CREATED		= "created";
 
 	private final String PARAM_AS_REPLY_ID			= "reply_id";
 	private final String PARAM_AS_REPLY_NAME		= "reply_name";
 	private final String PARAM_AS_REPLY_COMMENT		= "reply_comment";
-	private final String PARAM_AS_REPLY_THANKSCNT	= "reply_thankscnt";
+	private final String PARAM_AS_REPLY_THANKSCNT	= "reply_thanksCnt";
 	private final String PARAM_AS_REPLY_CREATED		= "reply_created";
 
 	/** 

@@ -342,13 +342,13 @@ class BlogMainServiceUseTest {
 		Map<String, Object> map           = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 
-		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
-		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
-		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
-		map.put(WebConsts.SQL_CREATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		map.put(WebConsts.SQL_UPDATED_NAME, Timestamp.valueOf(TestConsts.TEST_TIME_02));
+		map.put(PARAM_ID,        1);
+		map.put(PARAM_TITLE,     TestConsts.TEST_TITLE_NAME);
+		map.put(PARAM_TAG,       TestConsts.TEST_TAG_NAME);
+		map.put(PARAM_COMMENT,   TestConsts.TEST_COMMENT_NAME);
+		map.put(PARAM_THANKSCNT, 1);
+		map.put(PARAM_CREATED, Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map.put(PARAM_UPDATED, Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map);
 
 		when(this.jdbcTemp.queryForList(SQL_SELECT_ALL)).thenReturn(mapList);
@@ -414,14 +414,14 @@ class BlogMainServiceUseTest {
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
-		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
-		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
-		map.put(WebConsts.SQL_CREATED_NAME, 
+		map.put(PARAM_ID,        1);
+		map.put(PARAM_TITLE,     TestConsts.TEST_TITLE_NAME);
+		map.put(PARAM_TAG,       TestConsts.TEST_TAG_NAME);
+		map.put(PARAM_COMMENT,   TestConsts.TEST_COMMENT_NAME);
+		map.put(PARAM_THANKSCNT, 1);
+		map.put(PARAM_CREATED, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		map.put(WebConsts.SQL_UPDATED_NAME, 
+		map.put(PARAM_UPDATED, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_02));
 
 		// 正常系
@@ -491,14 +491,14 @@ class BlogMainServiceUseTest {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> mapList2 = new ArrayList<Map<String, Object>>();
-		map.put(WebConsts.SQL_ID_NAME,        1);
-		map.put(WebConsts.SQL_TITLE_NAME,     TestConsts.TEST_TITLE_NAME);
-		map.put(WebConsts.SQL_TAG_NAME,       TestConsts.TEST_TAG_NAME);
-		map.put(WebConsts.SQL_COMMENT_NAME,   TestConsts.TEST_COMMENT_NAME);
-		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
-		map.put(WebConsts.SQL_CREATED_NAME, 
+		map.put(PARAM_ID,        1);
+		map.put(PARAM_TITLE,     TestConsts.TEST_TITLE_NAME);
+		map.put(PARAM_TAG,       TestConsts.TEST_TAG_NAME);
+		map.put(PARAM_COMMENT,   TestConsts.TEST_COMMENT_NAME);
+		map.put(PARAM_THANKSCNT, 1);
+		map.put(PARAM_CREATED, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		map.put(WebConsts.SQL_UPDATED_NAME, 
+		map.put(PARAM_UPDATED, 
 				Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map);
 
@@ -571,7 +571,7 @@ class BlogMainServiceUseTest {
 				+ WebConsts.SQL_WHERE + " " + PARAM_ID + " = ?";
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(WebConsts.SQL_THANKSCNT_NAME, 1);
+		map.put(PARAM_THANKSCNT, 1);
 
 		// 正常系
 		when(this.jdbcTemp.queryForMap(sql, 1))
