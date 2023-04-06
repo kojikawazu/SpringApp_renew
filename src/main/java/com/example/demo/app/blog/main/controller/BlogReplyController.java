@@ -19,8 +19,8 @@ import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.entity.user.SecLoginUserDetails;
 import com.example.demo.app.header.form.HeaderForm;
 import com.example.demo.app.service.blog.BlogMainServiceUse;
-import com.example.demo.app.service.blog.BlogReplyService;
-import com.example.demo.app.service.blog.BlogTagService;
+import com.example.demo.app.service.blog.BlogReplyServiceUse;
+import com.example.demo.app.service.blog.BlogTagServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
@@ -39,8 +39,8 @@ public class BlogReplyController extends SuperBlogMainController {
 	/**
 	 * コンストラクタ
 	 * @param blogMainService		{@link BlogMainServiceUse}
-	 * @param blogReplyService		{@link BlogReplyService}
-	 * @param blogTagService		{@link BlogTagService}
+	 * @param blogReplyService		{@link BlogReplyServiceUse}
+	 * @param blogTagService		{@link BlogTagServiceUse}
 	 * @param secUserService		{@link SecUserServiceUse}
 	 * @param loginService			{@link LoginServiceUse}
 	 * @param sessionModel			{@link SessionModel}
@@ -49,9 +49,9 @@ public class BlogReplyController extends SuperBlogMainController {
 	 */
 	public BlogReplyController(
 			BlogMainServiceUse		blogMainService, 
-			BlogReplyService		blogReplyService, 
-			BlogTagService			blogTagService,
-			SecUserServiceUse	secUserService,
+			BlogReplyServiceUse		blogReplyService, 
+			BlogTagServiceUse		blogTagService,
+			SecUserServiceUse		secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
 			HttpSession				httpSession,

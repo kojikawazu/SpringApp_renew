@@ -13,34 +13,14 @@ import com.example.demo.app.exception.WebMvcConfig;
  *
  */
 public interface BlogReplyService {
-	
-	/**
-	 * 保存
-	 * @param model {@link BlogReplyModel}
-	 */
-	void save(BlogReplyModel model);
-	
-	/**
-	 * 削除
-	 * @patam id {@link BlogReplyId}
-	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
-	 */
-	void delete(BlogReplyId id);
-	
+
 	/**
 	 * ブログIDによる削除
 	 * @param blogid {@link BlogId}
 	 * @throws {@link WebMvcConfig#SQL_NOT_DELETE()}
 	 */
 	void delete_byBlogid(BlogId blogid);
-	
-	/**
-	 * 全て選択
-	 * @throws {@link WebMvcConfig#NOT_FOUND()}
-	 * @return ブログ返信モデルリスト {@link List}({@link BlogReplyModel})
-	 */
-	List<BlogReplyModel> getAll();
-	
+
 	/**
 	 * ブログIDによる選択
 	 * @param  id {@link BlogId}

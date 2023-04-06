@@ -58,13 +58,13 @@ class BlogMainDaoSqlTest {
 	private final String PARAM_REPLY_BLOG_ID		= "blog_id";
 	private final String PARAM_REPLY_NAME			= "name";
 	private final String PARAM_REPLY_COMMENT		= "comment";
-	private final String PARAM_REPLY_THANTKSCNT		= "thankscnt";
+	private final String PARAM_REPLY_THANTKSCNT		= "thanksCnt";
 	private final String PARAM_REPLY_CREATED		= "created";
 
 	private final String PARAM_AS_REPLY_ID			= "reply_id";
 	private final String PARAM_AS_REPLY_NAME		= "reply_name";
 	private final String PARAM_AS_REPLY_COMMENT		= "reply_comment";
-	private final String PARAM_AS_REPLY_THANKSCNT	= "reply_thankscnt";
+	private final String PARAM_AS_REPLY_THANKSCNT	= "reply_thanksCnt";
 	private final String PARAM_AS_REPLY_CREATED		= "reply_created";
 
 	/** SQL文(追加) */
@@ -331,34 +331,33 @@ class BlogMainDaoSqlTest {
 		int cnter=1;
 		for (int idx=1; idx<=2; idx++) {
 			Map<String, Object> map01 = new HashMap<String, Object>();
-			map01.put(WebConsts.SQL_ID_NAME,               cnter);
-			map01.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME   + cnter);
-			map01.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME     + cnter);
-			map01.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-			map01.put(WebConsts.SQL_THANKSCNT_NAME,        cnter);
-			map01.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-			map01.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
-			map01.put(WebConsts.SQL_REPLY_ID_NAME,         idx);
-			map01.put(WebConsts.SQL_REPLY_NAME_NAME,       TEST_REPLY_NAME    + idx);
-			map01.put(WebConsts.SQL_REPLY_COMMENT_NAME,    TEST_REPLY_COMMENT + idx);
-			map01.put(WebConsts.SQL_REPLY_THANKS_CNT_NAME, 1);
-			map01.put(WebConsts.SQL_REPLY_CREATED_NAME,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map01.put(PARAM_ID,               cnter);
+			map01.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME   + cnter);
+			map01.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME     + cnter);
+			map01.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+			map01.put(PARAM_THANKSCNT,        cnter);
+			map01.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+			map01.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+			map01.put(PARAM_AS_REPLY_ID,         idx);
+			map01.put(PARAM_AS_REPLY_NAME,       TEST_REPLY_NAME    + idx);
+			map01.put(PARAM_AS_REPLY_COMMENT,    TEST_REPLY_COMMENT + idx);
+			map01.put(PARAM_AS_REPLY_THANKSCNT,  1);
+			map01.put(PARAM_AS_REPLY_CREATED,    Timestamp.valueOf(TestConsts.TEST_TIME_01));
 			mapList.add(map01);
 		}
 
 		cnter++;
 		Map<String, Object> map02 = new HashMap<String, Object>();
-		map02.put(WebConsts.SQL_ID_NAME,               2);
-		map02.put(WebConsts.SQL_TITLE_NAME,            TestConsts.TEST_TITLE_NAME + cnter);
-		map02.put(WebConsts.SQL_TAG_NAME,              TestConsts.TEST_TAG_NAME   + cnter);
-		map02.put(WebConsts.SQL_COMMENT_NAME,          TestConsts.TEST_COMMENT_NAME + cnter);
-		map02.put(WebConsts.SQL_THANKSCNT_NAME,        1);
-		map02.put(WebConsts.SQL_CREATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
-		map02.put(WebConsts.SQL_UPDATED_NAME,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
+		map02.put(PARAM_ID,               2);
+		map02.put(PARAM_TITLE,            TestConsts.TEST_TITLE_NAME + cnter);
+		map02.put(PARAM_TAG,              TestConsts.TEST_TAG_NAME   + cnter);
+		map02.put(PARAM_COMMENT,          TestConsts.TEST_COMMENT_NAME + cnter);
+		map02.put(PARAM_THANKSCNT,        1);
+		map02.put(PARAM_CREATED,          Timestamp.valueOf(TestConsts.TEST_TIME_01));
+		map02.put(PARAM_UPDATED,          Timestamp.valueOf(TestConsts.TEST_TIME_02));
 		mapList.add(map02);
 
-		when(this.jdbcTemp.queryForList(sql))
-			.thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql)).thenReturn(mapList);
 	}
 
 	/**
@@ -429,8 +428,7 @@ class BlogMainDaoSqlTest {
 		sql += (isDesc ? WebConsts.SQL_DESC : WebConsts.SQL_ASC);
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 
-		when(this.jdbcTemp.queryForList(sql))
-			.thenReturn(mapList);
+		when(this.jdbcTemp.queryForList(sql)).thenReturn(mapList);
 	}
 
 	/**

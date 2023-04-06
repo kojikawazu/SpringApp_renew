@@ -6,33 +6,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.app.common.id.blog.BlogTagId;
-import com.example.demo.app.dao.blog.BlogTagDao;
+import com.example.demo.app.dao.blog.BlogTagDaoSql;
 import com.example.demo.app.entity.blog.BlogTagModel;
 import com.example.demo.app.exception.WebMvcConfig;
+import com.example.demo.app.service.SuperService;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 
 /**
  * ブログタグサービスクラス
+ * <br>
+ * implements {@link SuperService}<{@link BlogTagModel}, {@link BlogTagId}><br>
+ *            {@link BlogTagService}
  * @author nanai
  *
  */
 @Service
-public class BlogTagServiceUse implements BlogTagService {
-	
+public class BlogTagServiceUse implements SuperService<BlogTagModel, BlogTagId>, BlogTagService {
+
 	/** 
 	 * Daoクラス
-	 * {@link BlogTagDao}
+	 * {@link BlogTagDaoSql}
 	 */
-	private final BlogTagDao dao;
-	
+	private final BlogTagDaoSql dao;
+
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter;
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * コンストラクタ
-	 * @param dao {@link BlogTagDao}
+	 * @param dao {@link BlogTagDaoSql}
 	 */
 	@Autowired
-	public BlogTagServiceUse(BlogTagDao dao) {
-		this.dao = dao;
+	public BlogTagServiceUse(BlogTagDaoSql dao) {
+		this.dao 		= dao;
+		this.logWriter	= IntroAppLogWriter.getInstance();
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 保存
@@ -40,8 +56,32 @@ public class BlogTagServiceUse implements BlogTagService {
 	 */
 	@Override
 	public void save(BlogTagModel model) {
-		this.dao.insertTag(model);
+		try {
+			this.dao.insert(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+		}
 	}
+
+	/**
+	 * 保存
+	 * @param model {@link BlogTagModel}
+	 * @return id
+	 */
+	@Override
+	public int save_returnId(BlogTagModel model) {
+		int id = 0;
+
+		try {
+			id = this.dao.insert_returnId(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+		}
+
+		return id;
+	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 更新
@@ -50,10 +90,21 @@ public class BlogTagServiceUse implements BlogTagService {
 	 */
 	@Override
 	public void update(BlogTagModel model) {
-		if (this.dao.updateTag(model) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.update(model);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_UPDATE();
+		}
+
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_UPDATE();
 		}
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 削除
@@ -62,27 +113,33 @@ public class BlogTagServiceUse implements BlogTagService {
 	 */
 	@Override
 	public void delete(BlogTagId id) {
-		if (this.dao.deleteTag(id) <= WebConsts.ERROR_DB_STATUS) {
+		int result = 0;
+
+		try {
+			result = this.dao.delete(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.SQL_NOT_DELETE();
+		}
+
+		if (result <= WebConsts.ERROR_DB_STATUS) {
 			throw WebMvcConfig.SQL_NOT_DELETE();
 		}
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * 全選択
-	 * @throws {@link WebMvcConfig#NOT_FOUND()}
 	 * @return ブログタグモデルリスト {@link List}({@link BlogTagModel})
 	 */
 	@Override
 	public List<BlogTagModel> getAll() {
-		List<BlogTagModel> list = this.dao.getAll();
-		
-		if (list.isEmpty()) {
-			throw WebMvcConfig.NOT_FOUND();
-		}
-		
-		return list;
+		return this.dao.getAll();
 	}
-	
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * 選択
 	 * @param  id {@link BlogTagId}
@@ -91,22 +148,47 @@ public class BlogTagServiceUse implements BlogTagService {
 	 */
 	@Override
 	public BlogTagModel select(BlogTagId id) {
-		BlogTagModel model = this.dao.select(id);
-		
+		BlogTagModel model = null;
+
+		try {
+			model = this.dao.select(id);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
+
 		if (model == null) {
 			throw WebMvcConfig.NOT_FOUND();
 		}
-		
 		return model;
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * タグがあるかどうかチェック
-	 * @param tag
+	 * @param tag {@link String}
+	 * @throws {@link WebMvcConfig#NOT_FOUND()}
 	 * @return true 存在する false 存在しない
 	 */
 	@Override
 	public boolean isSelect_byTag(String tag) {
-		return this.dao.isSelect_byTag(tag);
+		boolean exists = false;
+
+		try {
+			exists = this.dao.isSelect_byTag(tag);
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			throw WebMvcConfig.NOT_FOUND();
+		}
+
+		return exists;
+	}
+
+	/** ------------------------------------------------------------------------------------- */
+
+	@Override
+	public boolean isSelect_byId(int targetID) {
+		return false;
 	}
 }

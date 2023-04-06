@@ -6,242 +6,349 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.common.id.blog.BlogReplyId;
+import com.example.demo.app.dao.SuperDao;
 import com.example.demo.app.entity.blog.BlogReplyModel;
+import com.example.demo.app.exception.WebMvcConfig;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.log.IntroAppLogWriter;
 import com.example.demo.common.number.ThanksCntNumber;
 import com.example.demo.common.word.CommentWord;
 import com.example.demo.common.word.NameWord;
 
 /**
  * ブログ返信Daoクラス
+ * <br>
+ * implements {@link SuperDao}<{@link BlogReplyModel}, {@link BlogReplyId}><br>
+ *            {@link BlogReplyDao}
  * @author nanai
  *
  */
 @Repository
-public class BlogReplyDaoSql implements BlogReplyDao {
-	
-	/** jdbcドライバー */
+@Transactional(readOnly = true)
+public class BlogReplyDaoSql implements SuperDao<BlogReplyModel, BlogReplyId>, BlogReplyDao {
+
+	/** DB名 */
+	private final String DB_NAME = "blog_reply";
+
+	/** パラム */
+	private final String PARAM_REPLY_ID				= "id";
+	private final String PARAM_REPLY_BLOG_ID		= "blog_id";
+	private final String PARAM_REPLY_NAME			= "name";
+	private final String PARAM_REPLY_COMMENT		= "comment";
+	private final String PARAM_REPLY_THANTKSCNT		= "thankscnt";
+	private final String PARAM_REPLY_CREATED		= "created";
+
+	/** 
+	 * Jdbcドライバー 
+	 * {@link JdbcTemplate}
+	 */
 	private JdbcTemplate jdbcTemp;
-	
+
+	/**
+	 * デバッグログ
+	 * {@link IntroAppLogWriter}
+	 */
+	private final IntroAppLogWriter  logWriter;
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * コンストラクタ
-	 * @param jdbcTemp
+	 * @param jdbcTemp {@link JdbcTemplate}
 	 */
 	@Autowired
 	public BlogReplyDaoSql(JdbcTemplate jdbcTemp) {
-		this.jdbcTemp = jdbcTemp;
+		this.jdbcTemp 	= jdbcTemp;
+		this.logWriter	= IntroAppLogWriter.getInstance();
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 追加
-	 * @param モデル
+	 * @param モデル {@link BlogReplyModel}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 */
 	@Override
-	public void insertReply(BlogReplyModel model) {
-		if(model == null)	return ;
-		String sql = "INSERT INTO blog_reply("
-				+ "blog_id, name, comment, thanksCnt, created) "
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public void insert(BlogReplyModel model) {
+		if (model == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
+		String sql =  WebConsts.SQL_INSERT + " " + DB_NAME
+				+ "("
+				+ PARAM_REPLY_BLOG_ID 		+ ", "
+				+ PARAM_REPLY_NAME 			+ ", "
+				+ PARAM_REPLY_COMMENT 		+ ", "
+				+ PARAM_REPLY_THANTKSCNT 	+ ", "
+				+ PARAM_REPLY_CREATED
+				+ ") "
 				+ "VALUES(?,?,?,?,?)";
-		
-		try {
-			this.jdbcTemp.update(sql,
-					model.getBlogId(),
-					model.getName(),
-					model.getComment(),
-					model.getThanksCnt(),
-					model.getCreated()
-					);
-		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+
+		synchronized (BlogReplyDaoSql.class) {
+			this.jdbcTemp.update(
+				sql,
+				model.getBlogId(),
+				model.getName(),
+				model.getComment(),
+				model.getThanksCnt(),
+				model.getCreated()
+				);
 		}
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * 削除
-	 * @param id
+	 * @param id {@link BlogReplyId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 * @return 0以下 失敗 それ以外 成功
 	 * 
 	 */
 	@Override
-	public int deleteReply(BlogReplyId id) {
-		if(id == null)	return WebConsts.ERROR_NUMBER;
-		String sql = "DELETE FROM blog_reply "
-				+ "WHERE id = ?";
-		
-		return this.jdbcTemp.update(
-				sql, 
-				id.getId());
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public int delete(BlogReplyId id) {
+		if (id == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
+		int result = 0;
+		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
+					+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_ID + " = ?";
+
+		synchronized (BlogReplyDaoSql.class) {
+			result = this.jdbcTemp.update(
+					sql, 
+					id.getId());
+		}
+
+		return result;
 	}
-	
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * ブログIDによる削除
-	 * @param blogid
-	 * @return
+	 * @param blogid {@link BlogId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
+	 * @return 0以下 失敗 それ以外 成功
 	 */
 	@Override
-	public int deleteReply_byBlog(BlogId blogid) {
-		if(blogid == null)	return WebConsts.ERROR_NUMBER;
-		String sql = "DELETE FROM blog_reply "
-				+ "WHERE blog_id = ?";
-		
-		return this.jdbcTemp.update(
-				sql,
-				blogid.getId());
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public int delete_byBlogId(BlogId blogid) {
+		if (blogid == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
+		int result = 0;
+		String sql = WebConsts.SQL_DELETE + " " + DB_NAME + " "
+					+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_BLOG_ID + " = ?";
+
+		synchronized (BlogReplyDaoSql.class) {
+			result = this.jdbcTemp.update(
+					sql,
+					blogid.getId());
+		}
+
+		return result;
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * 全て選択
-	 * @return ブログ返信モデルリスト
+	 * @return ブログ返信モデルリスト {@link List}<{@link BlogReplyModel}>
 	 */
 	@Override
 	public List<BlogReplyModel> getAll() {
-		String sql = "SELECT * FROM blog_reply";
+		String sql = WebConsts.SQL_SELECT + " "
+					+ PARAM_REPLY_ID 			+ ", "
+					+ PARAM_REPLY_BLOG_ID 		+ ", "
+					+ PARAM_REPLY_NAME 			+ ", "
+					+ PARAM_REPLY_COMMENT 		+ ", "
+					+ PARAM_REPLY_THANTKSCNT 	+ ", "
+					+ PARAM_REPLY_CREATED 		+ " "
+					+ WebConsts.SQL_FROM + " " + DB_NAME;
 		List<BlogReplyModel> list = new ArrayList<BlogReplyModel>();
-		
+
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql);
-			
-			for( Map<String, Object> result : resultList ) {
+			if (resultList == null)	return list;
+
+			for (Map<String, Object> result : resultList) {
 				BlogReplyModel model = this.makeModel(result);
 				if(model == null)	continue;
-				
 				list.add(model);
 			}
-		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 		}
-		
+
 		return list;
 	}
-	
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * ブログIDによる選択
-	 * @param  blogid
-	 * @return ブログ返信モデルリスト
+	 * @param  blogid {@link BlogId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
+	 * @return ブログ返信モデルリスト {@link List}<{@link BlogReplyModel}>
 	 */
 	@Override
-	public List<BlogReplyModel> select_blogId(BlogId blogid) {
+	public List<BlogReplyModel> select_byBlogId(BlogId blogid) {
+		if (blogid == null) throw WebMvcConfig.ARGUMENTS_ERROR();
+		String sql = WebConsts.SQL_SELECT + " "
+				+ PARAM_REPLY_ID 			+ ", "
+				+ PARAM_REPLY_BLOG_ID 		+ ", "
+				+ PARAM_REPLY_NAME 			+ ", "
+				+ PARAM_REPLY_COMMENT 		+ ", "
+				+ PARAM_REPLY_THANTKSCNT 	+ ", "
+				+ PARAM_REPLY_CREATED 		+ " "
+				+ WebConsts.SQL_FROM  + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_BLOG_ID + " = ?";
 		List<BlogReplyModel> list = new ArrayList<BlogReplyModel>();
-		if(blogid == null)	return list;
+
 		
-		String sql = "SELECT * "
-				+ "FROM blog_reply "
-				+ "WHERE blog_id = ?";
 		try {
 			List<Map<String, Object>> resultList = this.jdbcTemp.queryForList(sql, blogid.getId());
-			
-			for( Map<String, Object> result : resultList ) {
+			if (resultList == null)	return list;
+
+			for (Map<String, Object> result : resultList) {
 				BlogReplyModel model = this.makeModel(result);
 				if(model == null)	continue;
-				
 				list.add(model);
 			}
-		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			list.clear();
 		}
-		
+
 		return list;
 	}
+
+	/** ------------------------------------------------------------------------------------- */
 
 	/**
 	 * ブログ返信IDによる選択
-	 * @param  id
-	 * @return ブログ返信モデル
+	 * @param  id {@link BlogReplyId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
+	 * @return ブログ返信モデル {@link BlogReplyModel}
 	 */
 	@Override
 	public BlogReplyModel select(BlogReplyId id) {
-		if(id == null)	return null;
-		
-		String sql = "SELECT * "
-				+ "FROM blog_reply "
-				+ "WHERE id = ?";
+		if (id == null) throw WebMvcConfig.ARGUMENTS_ERROR();
+		String sql = WebConsts.SQL_SELECT + " "
+				+ PARAM_REPLY_ID 			+ ", "
+				+ PARAM_REPLY_BLOG_ID 		+ ", "
+				+ PARAM_REPLY_NAME 			+ ", "
+				+ PARAM_REPLY_COMMENT 		+ ", "
+				+ PARAM_REPLY_THANTKSCNT 	+ ", "
+				+ PARAM_REPLY_CREATED 		+ " "
+				+ WebConsts.SQL_FROM  + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_ID + " = ?";
 		BlogReplyModel model = null;
+
 		try {
 			Map<String, Object> result = this.jdbcTemp.queryForMap(sql, id.getId());
 			if(result == null) return null;
-			
 			model = this.makeModel(result);
-		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			model = null;
 		}
-		
+
 		return model;
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * いいね数加算
-	 * @param  id
+	 * @param  id {@link BlogReplyId}
+	 * @throws {@link WebMvcConfig#ARGUMENTS_ERROR()}
 	 * @return いいね数
 	 */
 	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public int thanksIncrement(BlogReplyId id) {
-		if(id == null)	return WebConsts.ERROR_NUMBER;
+		if (id == null)	throw WebMvcConfig.ARGUMENTS_ERROR();
 		int thanksCnter = 0;
 		int ret = 0;
-		
-		String sql = "SELECT thanksCnt "
-				+ "FROM blog_reply "
-				+ "WHERE id = ?";
-		
-		String sql_update = "UPDATE blog_reply "
-				+ "SET thanksCnt = ? "
-				+ "WHERE id = ?"
-				;
-		
+
+		// select文
+		String sql = WebConsts.SQL_SELECT 	+ " "
+				+ PARAM_REPLY_THANTKSCNT 	+ " "
+				+ WebConsts.SQL_FROM  + " " + DB_NAME + " "
+				+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_ID + " = ?";
+		// update文
+		String sql_update = WebConsts.SQL_UPDATE + " " + DB_NAME + " " + WebConsts.SQL_SET + " "
+				+ PARAM_REPLY_THANTKSCNT + " = ? "
+				+ WebConsts.SQL_WHERE + " " + PARAM_REPLY_ID + " = ?";
+
 		try {
+			// いいね数取得
 			Map<String, Object> result = this.jdbcTemp.queryForMap(
 					sql, 
 					id.getId());
 			if(result == null)	return WebConsts.ERROR_NUMBER; 
-			
-			thanksCnter = (int)result.get(WebConsts.SQL_THANKSCNT_NAME);
+
+			// 加算
+			thanksCnter = (int)result.get(PARAM_REPLY_THANTKSCNT);
 			thanksCnter++;
-			
+
+			// いいね数更新
 			ret = this.jdbcTemp.update(
 					sql_update,
 					thanksCnter,
 					id.getId());
-			
-			if(ret <= WebConsts.ERROR_DB_STATUS) {
-				thanksCnter = WebConsts.ERROR_NUMBER;
-			}
-			
-		} catch(DataAccessException ex) {
-			ex.printStackTrace();
+			if (ret <= WebConsts.ERROR_DB_STATUS) thanksCnter = WebConsts.ERROR_NUMBER;
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
 			thanksCnter = WebConsts.ERROR_NUMBER;
 		}
-		
+
 		return thanksCnter;
 	}
-	
+
+	/** ------------------------------------------------------------------------------------- */
+
 	/**
 	 * モデル生成
-	 * @param  result マップ
-	 * @return ブログ返信モデル
+	 * @param  result マップ {@link Map}<{@link String}, {@link Object}>
+	 * @return ブログ返信モデル {@link BlogReplyModel}
 	 */
 	private BlogReplyModel makeModel(Map<String, Object> result) {
-		if(result == null)	return null;
-		
-		BlogReplyModel model = new BlogReplyModel(
-				new BlogReplyId((int)result.get(WebConsts.SQL_ID_NAME)),
-				new BlogId((int)result.get(WebConsts.SQL_BLOG_ID_NAME)),
-				new NameWord((String)result.get(WebConsts.SQL_NAME_NAME)),
-				new CommentWord((String)result.get(WebConsts.SQL_COMMENT_NAME)),
-				new ThanksCntNumber((int)result.get(WebConsts.SQL_THANKSCNT_NAME)),
-				((Timestamp)result.get(WebConsts.SQL_CREATED_NAME))
+		BlogReplyModel model = null;
+		if(result == null)	return model;
+
+		try {
+			model = new BlogReplyModel(
+				new BlogReplyId((int)result.get(PARAM_REPLY_ID)),
+				new BlogId((int)result.get(PARAM_REPLY_BLOG_ID)),
+				new NameWord((String)result.get(PARAM_REPLY_NAME)),
+				new CommentWord((String)result.get(PARAM_REPLY_COMMENT)),
+				new ThanksCntNumber((int)result.get(PARAM_REPLY_THANTKSCNT)),
+				((Timestamp)result.get(PARAM_REPLY_CREATED))
 					.toLocalDateTime()
 				);
-		
+		} catch(Exception ex) {
+			this.logWriter.error(ex.getMessage());
+			model = null;
+		}
+
 		return model;
 	}
 
+	/** ------------------------------------------------------------------------------------- */
+
+	@Override
+	public int update(BlogReplyModel model) {
+		return 0;
+	}
+
+	@Override
+	public boolean isSelect_byId(int targetID) {
+		return false;
+	}
 }
