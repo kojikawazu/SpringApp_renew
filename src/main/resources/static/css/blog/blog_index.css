@@ -13,7 +13,7 @@
 /** ----------------------------------------------------------------------- */
 
 /** ブログリストレイアウト */
-.bloglayout{
+.bloglayout {
 	margin: 10px auto;
 	padding: 10px;
 	background-color: #dddddd;
@@ -22,7 +22,7 @@
 }
 
 /** 返信リストレイアウト */
-.replylayout{
+.replylayout {
 	margin: 10px 10px auto 100px;
 	padding: 10px;
 	background-color: #ededed;
@@ -34,41 +34,41 @@
 }
 
 /** ブログタイトル */
-.blog-title{
+.blog-title {
 	padding: 20px;
 }
 
 /** 削除ボタン */
-.blog-delete{
+.blog-delete {
 	margin-right: 5px;
 	margin-top: 5px;
 }
 
 /** ブログ日付 */
-.blog-date{
+.blog-date {
 	padding-right: 5px;
 }
 
 /** いいね欄 / タグ欄 */
-.cnt_tag{
+.cnt_tag {
 	margin-top: 20px;
 }
 
 /** いいねボタン */
-.thanks{
+.thanks {
 	padding-left: 30px;
 	padding-right: 30px;
 	margin-right: 10px;
 }
 
 /** タグ */
-.tag{
+.tag {
 	padding-left: 20px;
 	padding-right: 20px;
 }
 
 /** ブログ内容 */
-.comment{
+.comment {
 	padding: 20px;
 	margin-top: 60px;
 	margin-bottom: 20px;
@@ -76,20 +76,20 @@
 	box-shadow:2px 2px 7px;
 }
 
-.form-edit-delete{
+.form-edit-delete {
 	width: 120px;
 	margin-left: auto;
 	overflow: hidden;
 }
 
 /** 編集フォーム */
-.form-editor{
+.form-editor {
 	float: right;
 	margin-bottom: 20px;
 }
 
 /** 境界線 */
-.blog-lines{
+.blog-lines {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	
@@ -99,7 +99,7 @@
 }
 
 /** 返信タイトルレイアウト */
-.reply-title-layout{
+.reply-title-layout {
 	margin-left: 100px;
 }
 
@@ -110,12 +110,12 @@
 }
 
 /** 返信日付 */
-.reply-date{
+.reply-date {
 	padding-right: 5px;
 }
 
 /** 返信コメント */
-.reply-comment{
+.reply-comment {
 	padding: 20px;
 	margin-top: 10px;
 	margin-bottom: 10px;

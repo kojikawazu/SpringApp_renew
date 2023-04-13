@@ -1,5 +1,6 @@
 package com.example.demo.app.blog.main.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,11 +47,7 @@ public class BlogMainController extends SuperBlogMainController {
 	/** ブログ一覧ページの最大数 */
 	private static final int BLOG_PAGE_MAX = 5;
 
-	/** 
-	 * ブログ並び順
-	 * false 昇順 true 降順
-	 */
-	private boolean descFlg = false;
+	// --------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * コンストラクタ
@@ -81,10 +78,9 @@ public class BlogMainController extends SuperBlogMainController {
 				sessionModel,
 				httpSession,
 				logMessage);
-
-		// ブログメインリストの降順設定
-		this.setPageDesc();
 	}
+
+	// --------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * index
@@ -107,82 +103,94 @@ public class BlogMainController extends SuperBlogMainController {
 			HeaderForm					headerForm,
 			@Validated BlogSelectedForm	blogSelectedForm,
 			Model						model) {
-		/// Cookieの設定
+		String result = "";
+		result = this.execute(detailUser, pageidx, request, response, headerForm, blogSelectedForm, model);
+		return result;
+	}
+
+	/**
+	 * 受信処理
+	 * @param  detailUser		{@link SecLoginUserDetails}
+	 * @param  pageidx
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
+	 * @param  headerForm		{@link HeaderForm}
+	 * @param  blogSelectedForm	{@link BlogSelectedForm}
+	 * @param  model			{@link Model}
+	 * @return {@value AppConsts#URL_BLOG_MAIN_INDEX}
+	 */
+	private String execute(
+			SecLoginUserDetails			detailUser,
+			int 						pageidx,
+			HttpServletRequest			request,
+			HttpServletResponse 		response,
+			HeaderForm					headerForm,
+			BlogSelectedForm			blogSelectedForm,
+			Model						model) {
+		/// includeの設定
 		this.setInclude(detailUser, request, response, headerForm, model);
 
-		List<BlogMainModel> list = setBlogList(blogSelectedForm);
-		this.setPaging(list, pageidx, model);
-		this.setSelectTag(model);
+		// ブログモデルの取得
+		List<BlogMainModel> list = this.getBlogList(blogSelectedForm);
+		// ページング設定
+		this.setPaging(list, pageidx);
+		// タグリストの設定
+		this.setTagList();
 
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setIndexAttribute(model);
+		this.setIndexAttribute(blogSelectedForm);
 		list.clear();
+
 		return AppConsts.URL_BLOG_MAIN_INDEX;
 	}
-
+	
 	// -----------------------------------------------------------------------------------------
 
 	/**
 	 * ブログリストの取得
 	 * @param  blogSelectedForm {@link BlogSelectedForm}
-	 * @return List({@link BlogMainModel})
+	 * @return {@link List}<{@link BlogMainModel}>
 	 */
-	private List<BlogMainModel> setBlogList(
-			BlogSelectedForm blogSelectedForm) {
-		List<BlogMainModel> list      = null;
-		int                 selectidx = blogSelectedForm.getSelectIdx();
+	private List<BlogMainModel> getBlogList(BlogSelectedForm blogSelectedForm) {
+		if (blogSelectedForm == null)	return new ArrayList<BlogMainModel>();
+
+		List<BlogMainModel> list 		= null;
+		int 				selectidx 	= blogSelectedForm.getSelectIdx();
+		boolean				isDesc		= blogSelectedForm.getIsDesc();
 		if (selectidx == 1 ||  selectidx == 0) {
-			list = this.blogMainService.getAllPlus(this.descFlg);
+			list = this.blogMainService.getAllPlus(isDesc);
 		} else {
-			BlogTagModel tagModel = this.blogTagService.select(
-					new BlogTagId(selectidx));
+			BlogTagModel tagModel = this.blogTagService.select(new BlogTagId(selectidx));
 			list = this.blogMainService.select_byTagPlus(
 					tagModel.getTag(), 
-					this.descFlg);
+					isDesc);
 		}
+
 		return list;
 	}
 
 	/**
 	 * ページング設定
-	 * @param list		List({@link BlogMainModel})
-	 * @param pageidx
-	 * @param model		{@link Model}
+	 * @param list		{@link List}<{@link BlogMainModel}>
+	 * @param pageidx   ページ番号
 	 */
 	private void setPaging(
 			List<BlogMainModel> list, 
-			int pageidx, 
-			Model model) {
+			int pageidx) {
 		PageController      page         = new PageController();
 		List<BlogMainModel> blogpageList = page.setPaging(list, pageidx, BLOG_PAGE_MAX);
-
 		page.setPageName(AppConsts.REQUEST_MAPPING_BLOG);
 
-		model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN_LIST, blogpageList);
-		model.addAttribute(WebConsts.ATTRIBUTE_PAGING,         page);
+		this.getModel().addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN_LIST,	blogpageList);
+		this.getModel().addAttribute(WebConsts.ATTRIBUTE_PAGING,			page);
 	}
 
 	/**
 	 * タグリストの設定
-	 * @param model	{@link Model}
 	 */
-	private void setSelectTag(Model model) {
+	private void setTagList() {
 		List<BlogTagModel> list = this.blogTagService.getAll();
-		model.addAttribute(AppConsts.ATTRIBUTE_TAG_LIST, list);
-	}
-
-	/**
-	 * 並び順を降順に設定
-	 */
-	private void setPageDesc() {
-		this.descFlg = true;
-	}
-
-	/**
-	 * 並び順を昇順に設定
-	 */
-	private void setPageAsc() {
-		this.descFlg = false;
+		this.getModel().addAttribute(AppConsts.ATTRIBUTE_TAG_LIST, list);
 	}
 }

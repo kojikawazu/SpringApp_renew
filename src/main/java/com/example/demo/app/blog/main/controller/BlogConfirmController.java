@@ -99,16 +99,16 @@ public class BlogConfirmController extends SuperBlogMainController {
 			// attribute設定
 			this.setCommonAttribute(detailUser, request, response, headerForm, model);
 			if (edit.isEdit()) {
-				this.setEditorAttribute(edit, blogForm, model);
+				this.setEditorAttribute(edit, blogForm);
 			} else {
-				this.setAddFormAttribute(edit, model);
+				this.setAddFormAttribute(edit);
 			}
 			return AppConsts.URL_BLOG_MAIN_FORM;
 		}
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setConfirmAttribute(edit, model);
+		this.setConfirmAttribute(edit);
 		return AppConsts.URL_BLOG_MAIN_CONFIRM;
 	}
 	

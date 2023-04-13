@@ -98,6 +98,8 @@ public class IntroJsonReader implements SuperJsonReader {
 		jsonLogWriter.start("");
 		jsonLogWriter.setLogLevelWarning();
 
+		// ファイルの場所
+		jsonLogWriter.error("File path. [" + path.getFileName() + "]");
 		if (!path.toFile().exists()) {
 			// ファイル存在しないと読み込みエラー
 			jsonLogWriter.error("File not exists. [" + path.getFileName() + "]");

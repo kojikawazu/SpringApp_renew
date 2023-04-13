@@ -19,11 +19,12 @@ import com.example.demo.app.service.blog.BlogTagServiceUse;
 import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
-import com.example.demo.common.common.WebConsts;
 import com.example.demo.common.log.LogMessage;
 
 /**
  * ブログ選択コントローラー
+ * <br>
+ * extends {@link SuperBlogMainController}
  * @author nanai
  *
  */
@@ -60,7 +61,9 @@ public class BlogSelectedController extends SuperBlogMainController {
 				httpSession,
 				logMessage);
 	}
-	
+
+	/** --------------------------------------------------------------- */
+
 	/**
 	 * ブログ検索受信
 	 * @param  request				{@link HttpServletRequest}
@@ -77,9 +80,8 @@ public class BlogSelectedController extends SuperBlogMainController {
 			@Validated BlogSelectedForm	blogSelectedForm,
 			Model						model,
 			RedirectAttributes			redirectAttributes) {
-		redirectAttributes.addAttribute(WebConsts.ATTRIBUTE_SELECT_IDX, 
-				blogSelectedForm.getSelectIdx());
+		redirectAttributes.addAttribute(BlogSelectedForm.ATTRIBUTE_SELECT_IDX, blogSelectedForm.getSelectIdx());
+		redirectAttributes.addAttribute(BlogSelectedForm.ATTRIBUTE_IS_DESC,    blogSelectedForm.getIsDesc());
 		return AppConsts.REDIRECT_URL_BLOG_INDEX;
 	}
-
 }

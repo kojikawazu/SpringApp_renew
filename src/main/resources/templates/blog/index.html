@@ -7,7 +7,7 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title th:text="${title}">Inquiry home.</title>
-	
+
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" crossorigin="anonymous">
 
@@ -26,27 +26,34 @@
 <body>
 	<!-- ナビゲーションバー -->
 	<div th:replace="~{/block/header::headerA}"></div>
-	 
+
 	<!-- メイン画面 -->
 	<main role="main" class="container">
 		<div class="starter-template">
 		    <!-- タイトル -->
 	 		<h1 th:text="${title}">example</h1><br>
 	 		<p class="lead" th:text="${cont}">context</p>
+
+	 		<!-- 投稿ボタン -->
 	 		<a class="btn btn-primary" href="#" role="button" th:href="@{/blog/form}">ブログ投稿(デバッグ用)へ</a>
-	 		
+			<!-- 選択ボタン start -->
 	 		<form class="" th:action="@{/blog/selected}" method="post" th:object="${blogSelectedForm}">
 	 			<div class="input-group mb-3">
-				  <div class="input-group-prepend">
-				    <button type="submit" class="btn btn-outline-secondary">検索</button>
-				  </div>
-				  <select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon" th:field="*{selectIdx}">
-				    <option th:each="blogTag : ${tagList}" th:value="${blogTag.id}" th:text="${blogTag.tag}"></option>
-				  </select>
+					<div class="input-group-prepend">
+						<button type="submit" class="btn btn-outline-secondary">検索</button>
+					</div>
+					<select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon" th:field="*{selectIdx}">
+						<option th:each="blogTag : ${tagList}" th:value="${blogTag.id}" th:text="${blogTag.tag}"></option>
+					</select>
+					<select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" th:field="*{isDesc}">
+						<option value="true">降順</option >
+						<option value="false">昇順</option >
+					</select>
 				</div>
 	 		</form>
+	 		<!-- 選択ボタン end -->
 	 	</div>	
-	 	
+
  		<!-- メイン -->
  		<div class="bloglayout rounded" th:each="blogmain : ${blogmainList}" th:id="${blogmain.id}">
  			<!-- タイトル -->
@@ -81,11 +88,11 @@
 				<input type="submit" name="edit" class="btn btn-outline-dark" value="編集"  />
 				<input type="hidden" name="editor" th:value="${blogmain.id}" />	
 			</form>
-		 	
+
 			<!-- 境界線 -->
 			<!-- -------------------------------------------------------------------------------------- -->
 			<div class="lefter-clear blog-lines"></div>
-			
+
 			<!-- 返信枠 -->
 			<p class="reply-title-layout">返信内容 : </p>
 			<!-- 返信リスト -->
@@ -108,11 +115,11 @@
 				</div>	
 	 		</div>
 	 	</div>
-	 	
+
 	 	<!-- ページングバー -->
 		<div th:replace="~{/block/paging::pagingA}"></div>
 	 </main>
-	 
+
 	 <!-- フッター -->
 	<div th:replace="~{/block/footer::footerA}"></div>
 </body>
