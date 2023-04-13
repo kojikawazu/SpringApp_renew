@@ -95,7 +95,7 @@ public class BlogReplyController extends SuperBlogMainController {
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setReplyFormAttribute(blogReplyId, model);
+		this.setReplyFormAttribute(blogReplyId);
 		return AppConsts.URL_BLOG_REPLY_FORM;
 	}
 	
@@ -128,7 +128,7 @@ public class BlogReplyController extends SuperBlogMainController {
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setReplyFormAttribute(blogReplyId, model);
+		this.setReplyFormAttribute(blogReplyId);
 		return AppConsts.URL_BLOG_REPLY_FORM;
 	}
 	

@@ -113,9 +113,9 @@ public class BlogCompleteController extends SuperBlogMainController {
 			// attribute設定
 			this.setCommonAttribute(detailUser, request, response, headerForm, model);
 			if (edit.isEdit()) {
-				this.setEditorAttribute(edit, blogForm, model);
+				this.setEditorAttribute(edit, blogForm);
 			} else {
-				this.setAddFormAttribute(edit, model);
+				this.setAddFormAttribute(edit);
 			}
 			return AppConsts.URL_BLOG_MAIN_FORM;
 		}
@@ -179,7 +179,7 @@ public class BlogCompleteController extends SuperBlogMainController {
 				);
 		this.blogMainService.update(blog);
 		
-		this.setEditCompleteAttribute(edit, blogForm, model, redirectAttributes);
+		this.setEditCompleteAttribute(edit, blogForm, redirectAttributes);
 	}
 	
 	/**

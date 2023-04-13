@@ -97,7 +97,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setEditorAttribute(edit, blogForm, model);
+		this.setEditorAttribute(edit, blogForm);
 		return AppConsts.URL_BLOG_MAIN_FORM;
 	}
 	
@@ -132,7 +132,7 @@ public class BlogEditFormController extends SuperBlogMainController {
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setEditorAttribute(edit, blogForm, model);
+		this.setEditorAttribute(edit, blogForm);
 		return AppConsts.URL_BLOG_MAIN_FORM;
 	}
 }

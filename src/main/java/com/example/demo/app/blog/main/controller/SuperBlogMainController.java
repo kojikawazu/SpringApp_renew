@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.blog.main.form.BlogForm;
+import com.example.demo.app.blog.main.form.BlogSelectedForm;
 import com.example.demo.app.common.AppConsts;
 import com.example.demo.app.common.id.blog.BlogId;
 import com.example.demo.app.common.number.EditorSwitch;
@@ -112,6 +113,14 @@ public class SuperBlogMainController {
 
 	/** --------------------------------------------------------------- */
 
+	/** 
+	 * モデル 
+	 * {@link Model} 
+	 */
+	private Model						model;
+
+	/** --------------------------------------------------------------- */
+
 	/**
 	 * コンストラクタ
 	 * @param blogMainService		{@link BlogMainServiceUse}
@@ -127,7 +136,7 @@ public class SuperBlogMainController {
 	public SuperBlogMainController(
 			BlogMainServiceUse		blogMainService, 
 			BlogReplyServiceUse		blogReplyService, 
-			BlogTagServiceUse			blogTagService,
+			BlogTagServiceUse		blogTagService,
 			SecUserServiceUse		secUserService,
 			LoginServiceUse			loginService,
 			SessionModel			sessionModel,
@@ -146,10 +155,29 @@ public class SuperBlogMainController {
 	}
 
 	/**
-	 * 共通attribute設定
-	 * @param  detailUser	{@link SecLoginUserDetails}
+	 * modelの設定
+	 * @param model {@link Model}
+	 */
+	protected void setModel(Model model) {
+		if (model == null)	return;
+		this.model = model;
+	}
+
+	/**
+	 * modelの取得
+	 * @return {@link Model}
+	 */
+	protected Model getModel() {
+		return this.model;
+	}
+
+	/** --------------------------------------------------------------- */
+
+	/**
+	 * include設定
+	 * @param detailUser	{@link SecLoginUserDetails}
 	 * @param request		{@link HttpServletRequest}
-	 * @param  response		{@link HttpServletResponse}
+	 * @param response		{@link HttpServletResponse}
 	 * @param headerForm	{@link HeaderForm}
 	 * @param model 		{@link Model}
 	 */
@@ -159,15 +187,17 @@ public class SuperBlogMainController {
 			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model 				model) {
-		/** Cookieの設定 */
+		// Cookieの設定
 		this.headerController.setCookie(detailUser, request, response);
+		// modelの設定
+		this.setModel(model);
 	}
 
 	/**
 	 * 共通attribute設定
-	 * @param  detailUser	{@link SecLoginUserDetails}
+	 * @param detailUser	{@link SecLoginUserDetails}
 	 * @param request		{@link HttpServletRequest}
-	 * @param  response		{@link HttpServletResponse}
+	 * @param response		{@link HttpServletResponse}
 	 * @param headerForm	{@link HeaderForm}
 	 * @param model 		{@link Model}
 	 */
@@ -177,49 +207,48 @@ public class SuperBlogMainController {
 			HttpServletResponse response,
 			HeaderForm			headerForm,
 			Model 				model) {
-		/** ヘッダーの設定 */
+		// ヘッダーの設定
 		this.headerController.setHeader(detailUser, request, headerForm, model);
 	}
 
+	/** --------------------------------------------------------------- */
+
 	/**
 	 * 一覧attribute設定
-	 * @param model {@link Model}
+	 * @param blogSelectedForm {@link BlogSelectedForm}
 	 */
-	protected void setIndexAttribute(Model model) {
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,      TITLE_BLOG_INDEX);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,       CONT_BLOG_INDEX);
-		model.addAttribute(WebConsts.ATTRIBUTE_SELECT_IDX, "0");
+	protected void setIndexAttribute(BlogSelectedForm blogSelectedForm) {
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,      TITLE_BLOG_INDEX);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,       CONT_BLOG_INDEX);
+		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_SELECT_IDX, blogSelectedForm.getSelectIdx());
+		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_IS_DESC,    blogSelectedForm.getIsDesc());
 	}
 
 	/**
 	 * 追加フォームattribute設定
 	 * @param editor	{@link EditorSwitch}
-	 * @param model		{@link Model}
 	 */
 	protected void setAddFormAttribute(
-			EditorSwitch edit, 
-			Model        model) {
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,  TITLE_BLOG_ADD_FORM);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_ADD_FORM);
-		model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
+			EditorSwitch edit) {
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,  TITLE_BLOG_ADD_FORM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_ADD_FORM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
 	}
 
 	/**
 	 * 編集フォームattribute設定
 	 * @param editor	{@link EditorSwitch}
 	 * @param blogForm	{@link BlogForm}
-	 * @param model		{@link Model}
 	 */
 	protected void setEditorAttribute(
 			EditorSwitch edit, 
-			BlogForm     blogForm, 
-			Model        model) {
+			BlogForm     blogForm) {
 		BlogId        blogId = new BlogId(edit.getEditorNumber());
 		BlogMainModel result = this.blogMainService.select(blogId);
 
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,  TITLE_BLOG_EDIT_FORM);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_EDIT_FORM);
-		model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,  TITLE_BLOG_EDIT_FORM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_EDIT_FORM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
 
 		// データの取得
 		blogForm.setBlogTitle(   result.getTitle());
@@ -231,15 +260,13 @@ public class SuperBlogMainController {
 	/**
 	 * 投稿 or 編集確認attribute設定
 	 * @param edit		{@link EditorSwitch}
-	 * @param model		{@link Model}
 	 */
 	protected void setConfirmAttribute(
-			EditorSwitch edit, 
-			Model        model) {
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE, edit.isEdit() ? 
+			EditorSwitch edit) {
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE, edit.isEdit() ? 
 				TITLE_BLOG_EDIT_CONFIRM : TITLE_BLOG_ADD_CONFIRM);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_ADDEDIT_CONFIRM);
-		model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,   CONT_BLOG_ADDEDIT_CONFIRM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_EDITOR, edit.getEditorNumber());
 	}
 
 	/**
@@ -256,20 +283,18 @@ public class SuperBlogMainController {
 	 * 編集成功redirect_attribute設定
 	 * @param editor				{@link EditorSwitch}
 	 * @param blogForm				{@link BlogForm}
-	 * @param model					{@link Model}
 	 * @param redirectAttributes	{@link RedirectAttributes}
 	 */
 	protected void setEditCompleteAttribute(
 			EditorSwitch       edit, 
 			BlogForm           blogForm,
-			Model              model,
 			RedirectAttributes redirectAttributes) {
 		redirectAttributes.addAttribute(
 				WebConsts.ATTRIBUTE_EDITOR,    edit.getEditorNumber());
 		redirectAttributes.addFlashAttribute(
 				AppConsts.ATTRIBUTE_BLOG_FORM, blogForm);
 		redirectAttributes.addFlashAttribute(
-				WebConsts.ATTRIBUTE_MODEL,     model);
+				WebConsts.ATTRIBUTE_MODEL,     this.model);
 		redirectAttributes.addFlashAttribute(
 				WebConsts.ATTRIBUTE_COMPLETE, MESSAGE_BLOG_EDIT_COMPLETE);
 	}
@@ -277,33 +302,29 @@ public class SuperBlogMainController {
 	/**
 	 * 返信フォームattribute設定
 	 * @param blogReplyId	{@link BlogId}
-	 * @param model			{@link Model}
 	 */
 	protected void setReplyFormAttribute(
-			BlogId blogReplyId, 
-			Model  model) {
+			BlogId blogReplyId) {
 		BlogMainModel blogmainModel = this.blogMainService.select(blogReplyId);
 
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,     TITLE_BLOG_REPLY_FORM);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,      CONT_BLOG_REPLY_FORM);
-		model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN, blogmainModel);
-		model.addAttribute(WebConsts.ATTRIBUTE_ID,        blogReplyId.getId());
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,     TITLE_BLOG_REPLY_FORM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,      CONT_BLOG_REPLY_FORM);
+		this.model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN, blogmainModel);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_ID,        blogReplyId.getId());
 	}
 
 	/**
 	 * 返信確認attribute設定
 	 * @param blogReplyId	{@link BlogId}
-	 * @param model			{@link Model}
 	 */
 	protected void setReplyConfirmAttribute(
-			BlogId blogReplyId, 
-			Model  model) {
+			BlogId blogReplyId) {
 		BlogMainModel blogmainModel = this.blogMainService.select(blogReplyId);
 
-		model.addAttribute(WebConsts.ATTRIBUTE_TITLE,     TITLE_BLOG_REPLY_CONFIRM);
-		model.addAttribute(WebConsts.ATTRIBUTE_CONT,      CONT_BLOG_REPLY_CONFIRM);
-		model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN, blogmainModel);
-		model.addAttribute(WebConsts.ATTRIBUTE_ID,        blogReplyId.getId());
+		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,     TITLE_BLOG_REPLY_CONFIRM);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,      CONT_BLOG_REPLY_CONFIRM);
+		this.model.addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN, blogmainModel);
+		this.model.addAttribute(WebConsts.ATTRIBUTE_ID,        blogReplyId.getId());
 	}
 
 	/**

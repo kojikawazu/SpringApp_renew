@@ -98,13 +98,13 @@ public class BlogReplyConfirmController extends SuperBlogMainController {
 			// エラー
 			// attribute設定
 			this.setCommonAttribute(detailUser, request, response, headerForm, model);
-			this.setReplyFormAttribute(blogReplyId, model);
+			this.setReplyFormAttribute(blogReplyId);
 			return AppConsts.URL_BLOG_REPLY_FORM;
 		}
 		
 		// attribute設定
 		this.setCommonAttribute(detailUser, request, response, headerForm, model);
-		this.setReplyConfirmAttribute(blogReplyId, model);
+		this.setReplyConfirmAttribute(blogReplyId);
 		return AppConsts.URL_BLOG_REPLY_CONFIRM;
 	}
 }
