@@ -13,8 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.app.blog.main.form.BlogSelectedForm;
 import com.example.demo.app.common.AppConsts;
@@ -85,7 +85,6 @@ public class BlogMainController extends SuperBlogMainController {
 	/**
 	 * index
 	 * @param  detailUser		{@link SecLoginUserDetails}
-	 * @param  pageidx
 	 * @param  request			{@link HttpServletRequest}
 	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
@@ -96,22 +95,44 @@ public class BlogMainController extends SuperBlogMainController {
 	@GetMapping
 	public String index(
 			@AuthenticationPrincipal SecLoginUserDetails		detailUser,
-			@RequestParam(value = WebConsts.ATTRIBUTE_PAGE_IDX, 
-						required = false, defaultValue = "1") 	int pageidx,
 			HttpServletRequest			request,
 			HttpServletResponse 		response,
 			HeaderForm					headerForm,
 			@Validated BlogSelectedForm	blogSelectedForm,
 			Model						model) {
 		String result = "";
-		result = this.execute(detailUser, pageidx, request, response, headerForm, blogSelectedForm, model);
+		result = this.execute(detailUser, request, response, headerForm, blogSelectedForm, model);
 		return result;
 	}
 
 	/**
+	 * index
+	 * @param  detailUser		{@link SecLoginUserDetails}
+	 * @param  request			{@link HttpServletRequest}
+	 * @param  response			{@link HttpServletResponse}
+	 * @param  headerForm		{@link HeaderForm}
+	 * @param  blogSelectedForm	{@link BlogSelectedForm}
+	 * @param  model			{@link Model}
+	 * @return {@value AppConsts#URL_BLOG_MAIN_INDEX}
+	 */
+	@PostMapping
+	public String indexPost(
+			@AuthenticationPrincipal SecLoginUserDetails		detailUser,
+			HttpServletRequest			request,
+			HttpServletResponse 		response,
+			HeaderForm					headerForm,
+			@Validated BlogSelectedForm	blogSelectedForm,
+			Model						model) {
+		String result = "";
+		result = this.execute(detailUser, request, response, headerForm, blogSelectedForm, model);
+		return result;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------------------
+
+	/**
 	 * 受信処理
 	 * @param  detailUser		{@link SecLoginUserDetails}
-	 * @param  pageidx
 	 * @param  request			{@link HttpServletRequest}
 	 * @param  response			{@link HttpServletResponse}
 	 * @param  headerForm		{@link HeaderForm}
@@ -121,7 +142,6 @@ public class BlogMainController extends SuperBlogMainController {
 	 */
 	private String execute(
 			SecLoginUserDetails			detailUser,
-			int 						pageidx,
 			HttpServletRequest			request,
 			HttpServletResponse 		response,
 			HeaderForm					headerForm,
@@ -133,7 +153,7 @@ public class BlogMainController extends SuperBlogMainController {
 		// ブログモデルの取得
 		List<BlogMainModel> list = this.getBlogList(blogSelectedForm);
 		// ページング設定
-		this.setPaging(list, pageidx);
+		this.setPaging(list, blogSelectedForm);
 		// タグリストの設定
 		this.setTagList();
 
@@ -172,14 +192,17 @@ public class BlogMainController extends SuperBlogMainController {
 
 	/**
 	 * ページング設定
-	 * @param list		{@link List}<{@link BlogMainModel}>
-	 * @param pageidx   ページ番号
+	 * @param list				{@link List}<{@link BlogMainModel}>
+	 * @param  blogSelectedForm	{@link BlogSelectedForm}
 	 */
 	private void setPaging(
 			List<BlogMainModel> list, 
-			int pageidx) {
+			BlogSelectedForm	blogSelectedForm) {
+		if (list == null || blogSelectedForm == null)	return;
+
+		int                 pageIdx      = blogSelectedForm.getPagingIdx();
 		PageController      page         = new PageController();
-		List<BlogMainModel> blogpageList = page.setPaging(list, pageidx, BLOG_PAGE_MAX);
+		List<BlogMainModel> blogpageList = page.setPaging(list, pageIdx, BLOG_PAGE_MAX);
 		page.setPageName(AppConsts.REQUEST_MAPPING_BLOG);
 
 		this.getModel().addAttribute(AppConsts.ATTRIBUTE_BLOG_MAIN_LIST,	blogpageList);
