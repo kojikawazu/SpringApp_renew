@@ -220,8 +220,9 @@ public class SuperBlogMainController {
 	protected void setIndexAttribute(BlogSelectedForm blogSelectedForm) {
 		this.model.addAttribute(WebConsts.ATTRIBUTE_TITLE,      TITLE_BLOG_INDEX);
 		this.model.addAttribute(WebConsts.ATTRIBUTE_CONT,       CONT_BLOG_INDEX);
-		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_SELECT_IDX, blogSelectedForm.getSelectIdx());
-		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_IS_DESC,    blogSelectedForm.getIsDesc());
+		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_SELECT_IDX,    blogSelectedForm.getSelectIdx());
+		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_IS_DESC,       blogSelectedForm.getIsDesc());
+		this.model.addAttribute(BlogSelectedForm.ATTRIBUTE_PAGING_IDX,    blogSelectedForm.getPagingIdx());
 	}
 
 	/**

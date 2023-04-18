@@ -15,6 +15,9 @@ public class BlogSelectedForm {
 	/** attribute[isDesc] */
 	public static final String ATTRIBUTE_IS_DESC = "isDesc";
 
+	/** attribute[pagingIdx] */
+	public static final String ATTRIBUTE_PAGING_IDX = "pagingIdx";
+
 	// --------------------------------------------------------------------------------------------
 
 	/** 選択番号 */
@@ -25,6 +28,10 @@ public class BlogSelectedForm {
 	@NotNull
 	private boolean isDesc;
 
+	/** ページング番号 */
+	@NotNull
+	private int pagingIdx;
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
@@ -33,6 +40,7 @@ public class BlogSelectedForm {
 	public BlogSelectedForm() {
 		this.selectIdx = 0;
 		this.isDesc    = true;
+		this.pagingIdx = 1;
 	}
 
 	// --------------------------------------------------------------------------------------------
@@ -67,5 +75,21 @@ public class BlogSelectedForm {
 	 */
 	public void setIsDesc(boolean isDesc) {
 		this.isDesc = isDesc;
+	}
+
+	/**
+	 * getter
+	 * @return pagingIdx
+	 */
+	public int getPagingIdx() {
+		return this.pagingIdx;
+	}
+
+	/**
+	 * setter
+	 * @param pagingIdx
+	 */
+	public void setPagingIdx(int pagingIdx) {
+		this.pagingIdx = pagingIdx;
 	}
 }

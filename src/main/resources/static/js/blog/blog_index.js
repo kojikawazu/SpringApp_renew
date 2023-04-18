@@ -1,9 +1,61 @@
+// ---------------------------------------------------------------------------
+// 【ブログ.js】
+// ---------------------------------------------------------------------------
 
 /**
  * 削除確認
  */
 function checkDelete(){
 	return confirm("削除してもよろしいですか？");
+}
+
+/**
+ * リンククリック処理(前のページ番号へ)
+ */
+function OnLinkClick_Back() {
+	let pageIdx = parseInt(pagingBlogForm.pagingIdx.value, 10);
+
+	// 前のページ番号に設定
+	pageIdx--;
+	if (pageIdx <= 0)	pageIdx = 1;
+	pagingBlogForm.pagingIdx.value = pageIdx;
+	//console.log(pagingBlogForm.pagingIdx.value);
+
+	// フォーム送信
+	pagingBlogForm.submit();
+	return false;
+}
+
+/**
+ * リンククリック処理(ページ指定)
+ */
+function OnLinkClick_Paging(pageIdx) {
+	let     changePageIdx          = parseInt(pageIdx, 10);
+	pagingBlogForm.pagingIdx.value = changePageIdx;
+	//console.log(pagingBlogForm.pagingIdx.value);
+
+	// フォーム送信
+	pagingBlogForm.submit();
+	return false;
+}
+
+/**
+ * リンククリック処理(次のページ番号へ)
+ */
+function OnLinkClick_Next() {
+	let     pageIdx    = parseInt(pagingBlogForm.pagingIdx.value, 10);
+	const   pageSizeId = document.getElementById("pageSize");
+	let     pageSize   = parseInt(pageSizeId.textContent, 10);
+
+	// 次のページ番号に設定
+	pageIdx++;
+	if (pageIdx > pageSize)	pageIdx = pageSize;
+	pagingBlogForm.pagingIdx.value = pageIdx;
+	//console.log(pagingBlogForm.pagingIdx.value);
+
+	// フォーム送信
+	pagingBlogForm.submit();
+	return false;
 }
 
 /**

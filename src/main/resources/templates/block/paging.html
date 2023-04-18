@@ -5,28 +5,31 @@
 -->
 <div th:fragment="pagingA">
 	<!-- ページング -->
- 	<div class="paging">
- 		<!-- 前へ -->
-	 	<div class="lefter page-lt">
-	 		<a href="#" th:unless="${paging.currentPageIdx} == 1" th:href="@{${paging.pageName}(pageidx=${paging.currentPageIdx} - 1)}">前へ</a>
-	 		<div th:if="${paging.currentPageIdx} == 1">前へ</div>
-	 	</div>
-	 	<div class="lefter"><<< </div>
+	<form th:action="${paging.pageName}" method="get">
+		<div class="paging">
+	 		<!-- 前へ -->
+		 	<div class="lefter page-lt">
+		 		<a href="#" th:unless="${paging.currentPageIdx} == 1" th:href="@{${url}(pageidx=${paging.currentPageIdx} - 1)}">前へ</a>
+		 		<div th:if="${paging.currentPageIdx} == 1">前へ</div>
+		 	</div>
+		 	<div class="lefter"><<< </div>
 
-	 	<!-- ページ番号 -->
-	 	<div th:each="pageIdx : ${paging.pageNumberList}">
-	 		<a class="lefter page-number" href="#"  th:href="@{${paging.pageName}(pageidx=${pageIdx})}" th:unless="${paging.currentPageIdx} == ${pageIdx}" th:text="${pageIdx}">1</a>
-	 		<div class="lefter page-number" th:if="${paging.currentPageIdx} == ${pageIdx}" th:text="${pageIdx}">1</div>
-	 	</div>
-	 	<div class="lefter"> >>></div>
+		 	<!-- ページ番号 -->
+		 	<div th:each="pageIdx : ${paging.pageNumberList}">
+		 		<a class="lefter page-number" href="#" th:unless="${paging.currentPageIdx} == ${pageIdx}" th:href="@{${url}(pageidx=${pageIdx})}"  th:text="${pageIdx}">1</a>
+		 		<div class="lefter page-number" th:if="${paging.currentPageIdx} == ${pageIdx}" th:text="${pageIdx}">1</div>
+		 	</div>
+		 	<div class="lefter"> >>></div>
 
-	 	<!-- 次へ -->
-	 	<div class="lefter page-lt">
-	 		<a href="#" th:unless="${paging.currentPageIdx} == ${paging.pageSize}" th:href="@{${paging.pageName}(pageidx=${paging.currentPageIdx} + 1)}">次へ</a>
-	 		<div th:if="${paging.currentPageIdx} == ${paging.pageSize}">次へ</div>
-	 	</div>
- 	</div>
- 	<div class="lefter-clear"></div><br>
-</div>
+		 	<!-- 次へ -->
+		 	<div class="lefter page-lt">
+		 		<a href="#" th:unless="${paging.currentPageIdx} == ${paging.pageSize}" th:href="@{${url}(pageidx=${paging.currentPageIdx} + 1)}">次へ</a>
+		 		<div th:if="${paging.currentPageIdx} == ${paging.pageSize}">次へ</div>
+		 	</div>
+
+	 	</div><!-- class="paging" end -->
+	 	<div class="lefter-clear"></div><br>
+	</form ><!-- form end -->
+</div><!-- th:fragment="pagingA" end -->
 
 </html>
