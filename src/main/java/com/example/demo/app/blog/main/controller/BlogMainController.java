@@ -31,6 +31,7 @@ import com.example.demo.app.service.user.LoginServiceUse;
 import com.example.demo.app.service.user.SecUserServiceUse;
 import com.example.demo.app.session.user.SessionModel;
 import com.example.demo.common.common.WebConsts;
+import com.example.demo.common.encrypt.CommonEncrypt;
 import com.example.demo.common.log.LogMessage;
 
 /**
@@ -176,8 +177,8 @@ public class BlogMainController extends SuperBlogMainController {
 		if (blogSelectedForm == null)	return new ArrayList<BlogMainModel>();
 
 		List<BlogMainModel> list 		= null;
-		int 				selectidx 	= blogSelectedForm.getSelectIdx();
-		boolean				isDesc		= blogSelectedForm.getIsDesc();
+		int 				selectidx 	= blogSelectedForm.getSelectIdxDecrypted();
+		boolean				isDesc		= blogSelectedForm.getIsDescDecrypted();
 		if (selectidx == 1 ||  selectidx == 0) {
 			list = this.blogMainService.getAllPlus(isDesc);
 		} else {

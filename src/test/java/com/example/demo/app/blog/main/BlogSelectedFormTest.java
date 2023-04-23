@@ -24,8 +24,8 @@ class BlogSelectedFormTest {
 	
 	@Test
 	void SetTest() {
-		form.setSelectIdx(2);
-		assertEquals(form.getSelectIdx(), 2);
+		form.setSelectIdxBeforeEncrypt(2);
+		assertEquals(form.getSelectIdxDecrypted(), 2);
 	}
 	
 	@AfterEach
