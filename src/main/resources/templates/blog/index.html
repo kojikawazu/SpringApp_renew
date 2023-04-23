@@ -42,12 +42,14 @@
 					<div class="input-group-prepend">
 						<button type="submit" class="btn btn-outline-secondary">検索</button>
 					</div>
+					<!-- 選択タグ -->
 					<select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon" th:field="*{selectIdx}">
-						<option th:each="blogTag : ${tagList}" th:value="${blogTag.id}" th:text="${blogTag.tag}"></option>
+						<option th:each="blogTag : ${tagList}" th:value="${blogTag.getEncryptedId}" th:text="${blogTag.tag}"></option>
 					</select>
+					<!-- 降順/昇順 -->
 					<select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" th:field="*{isDesc}">
-						<option value="true">降順</option >
-						<option value="false">昇順</option >
+						<option value="ySG/WJvK2Ao=">降順</option >
+						<option value="CYRwvKR79nA=">昇順</option >
 					</select>
 				</div>
 	 		</form>

@@ -1,15 +1,15 @@
 package com.example.demo.app.common.id.user;
 
-import com.example.demo.common.id.SuperIdString;
+import com.example.demo.common.id.SuperIdInterface;
 
 /**
  * セッションIDクラス
  * <br>
- * implements {@link SuperIdString}
+ * implements {@link SuperIdInterface}
  * @author nanai
  *
  */
-public class SessionId implements SuperIdString {
+public class SessionId implements SuperIdInterface<String> {
 
 	/** ID */
 	private String id;
@@ -42,6 +42,7 @@ public class SessionId implements SuperIdString {
 	 * setter
 	 * @param id {@link String}
 	 */
+	@Override
 	public void setId(String id) {
 		if (id == null)	return;
 		this.id = id;
